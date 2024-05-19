@@ -1,6 +1,6 @@
 // src/components/Navbar.js
 import React from 'react';
-import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 
 const NavigationBar = () => {
   return (
@@ -8,12 +8,12 @@ const NavigationBar = () => {
       <Container>
         <Navbar.Brand href="/">IMAGEN</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Arriendo</Nav.Link>
-            <Nav.Link href="#home">En Venta</Nav.Link>
-            <Nav.Link href="#home">Terrenos</Nav.Link>
-            <Nav.Link href="#home">¡Quiero Vender!</Nav.Link>
+        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
+          <Nav>
+            <Nav.Link href="/">Arriendo</Nav.Link>
+            <Nav.Link href="/">En Venta</Nav.Link>
+            <Nav.Link href="/">Terrenos</Nav.Link>
+            <Nav.Link href="/">¡Quiero Vender!</Nav.Link>
             <Nav.Link href="/Contact">Contáctanos</Nav.Link>
           </Nav>
         </Navbar.Collapse>

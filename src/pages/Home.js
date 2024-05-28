@@ -1,23 +1,42 @@
 // src/pages/Home.js
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import portadaImage from '../assets/images/Corretaje-guzman-PortadaFacebook.png';
+import { Button, ButtonGroup } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGear, faToolbox } from '@fortawesome/free-solid-svg-icons';
 
 const Home = () => (
-  // <div>
-  //   <h1>Empresa de corretaje Chilena de primer nivel.</h1>
-  //   <p>Tu proyecto inmobiliario, nuestra prioridad.</p>
-  // </div>
-//card bg-dark text-white className
-<div className="card bg-dark text-dark">
-  <img src="" className="card-img" alt="..."/>
-  <div className="card-img-overlay">
-    <h1 className="card-title">Card title</h1>
-    <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-    <p className="card-text">Last updated 3 mins ago</p>
+  <div className="container-fluid p-0">
+    <div className="card bg-dark text-white position-relative overflow-hidden">
+      <img src={portadaImage} className="card-img" alt="Corretaje Guzman Portada" />
+      <div className="card-img-overlay d-flex flex-column justify-content-center align-items-center">
+        <div className="text-center mb-5">
+          <h1 className="card-title">Empresa de corretaje Chilena de primer nivel</h1>
+          <h3 className="card-text">Tu proyecto inmobiliario, nuestra prioridad.</h3>
+          <div className="d-flex mt-5 justify-content-center flex-wrap">
+            <button type="button" className="btn btn-primary mb-3 mx-2">Comprar / Arrendar</button>
+            <button type="button" className="btn btn-primary mb-3 mx-2">Tipo de Propiedad</button>
+            <button type="button" className="btn btn-primary mb-3 mx-2">Región</button>
+          </div>
+        </div>
+        <div className="text-center">
+          <ButtonGroup aria-label="Basic example" className="separator-group">
+            <Button variant="secondary">Tipo de Propiedad</Button>
+            <div className="separator"></div>
+            <Button variant="secondary">Región</Button>
+            <div className="separator"></div>
+            <Button variant="secondary">Comuna</Button>
+            <div className="separator"></div>
+            <Button variant="secondary">
+              <FontAwesomeIcon icon={faGear} />
+            </Button>
+            <div className="separator"></div>
+            <Button variant="secondary">BUSCAR</Button>
+          </ButtonGroup>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-
-  
 );
 
 export default Home;

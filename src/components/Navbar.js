@@ -1,12 +1,20 @@
-// src/components/Navbar.js
 import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
+import logoNav from '../assets/images/LOGO_PNG-17.png';
 
 const NavigationBar = () => {
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <Navbar expand="lg" className="navbar-custom" fixed="top">
       <Container>
-        <Navbar.Brand href="/">IMAGEN</Navbar.Brand>
+        <Navbar.Brand href="/" className="d-flex align-items-center">
+          <img
+            src={logoNav}
+            height="80" // Ajusta la altura de la imagen según sea necesario
+            width="auto" // Ancho automático para mantener la proporción
+            className="d-inline-block align-top me-3"
+            alt="Logo"
+          />
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
           <Nav>

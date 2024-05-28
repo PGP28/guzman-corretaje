@@ -34,11 +34,17 @@ footer {
 
 /* Estilo personalizado para el Navbar transparente */
 .navbar-custom {
-  background: rgba(255, 255, 255, 0); /* Fondo completamente transparente */
+  background: rgba(157, 211, 10, 86%); /* Fondo completamente transparente */
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1000; /* Asegura que esté sobre otros elementos */
+  z-index: 10; /* Asegura que esté sobre otros elementos */
+  
+}
+
+.navbar-custom img{
+  width: 20rem;
+  height: 90%;
 }
 
 /* Estilo para los enlaces del Navbar */

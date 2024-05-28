@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
-import logoNav from '../assets/images/LOGO_PNG-17.png';
+import logoNav from '../assets/images/LOGO_PNG-17.svg';
 
 const NavigationBar = () => {
   return (
@@ -9,9 +9,9 @@ const NavigationBar = () => {
         <Navbar.Brand href="/" className="d-flex align-items-center">
           <img
             src={logoNav}
-            height="80" // Ajusta la altura de la imagen según sea necesario
+            height="25rem" // Ajusta la altura de la imagen según sea necesario
             width="auto" // Ancho automático para mantener la proporción
-            className="d-inline-block align-top me-3"
+            className="align-top me-3"
             alt="Logo"
           />
         </Navbar.Brand>

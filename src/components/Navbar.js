@@ -6,7 +6,7 @@ const NavigationBar = () => {
   return (
     <Navbar expand="lg" className="navbar-custom" fixed="top">
       <Container>
-        <Navbar.Brand href="/" className="d-flex align-items-center">
+        {/* <Navbar.Brand href="/" className="d-flex align-items-center">
           <img
             src={logoNav}
             height="25rem" // Ajusta la altura de la imagen según sea necesario
@@ -14,7 +14,7 @@ const NavigationBar = () => {
             className="align-top me-3"
             alt="Logo"
           />
-        </Navbar.Brand>
+        </Navbar.Brand> */}
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
           <Nav>

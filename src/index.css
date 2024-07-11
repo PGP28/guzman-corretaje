@@ -34,7 +34,7 @@ footer {
 
 /* Estilo personalizado para el Navbar transparente */
 .navbar-custom {
-  background: rgba(157, 211, 10, 86%); /* Fondo completamente transparente */
+  /*background: rgba(157, 211, 10, 86%); /* Fondo completamente transparente */
   position: fixed;
   top: 0;
   width: 100%;
@@ -84,6 +84,3 @@ footer {
   max-width: 1000px;
 }
 
-h2, h3 {
-  color: #343a40;
-}

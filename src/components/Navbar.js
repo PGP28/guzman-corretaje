@@ -29,35 +29,50 @@ const NavigationBar = () => {
     // </Navbar>
 
 
-    <>
-      <Navbar className="bg-body-tertiary">
-        <Container className='image-container'>
-          <Navbar.Brand href="#home">
-            <img className='img-logo'
-              alt=""
-              src={logoNav}
-              width="30"
-              height="30"
+    // <>
+    //   <Navbar className="bg-body-tertiary">
+    //     <Container className='image-container'>
+    //       <Navbar.Brand href="/">
+    //         <img className='img-logo'
+    //           alt=""
+    //           src={logoNav}
+    //           width="30"
+    //           height="30"
 
-            />{' '}
+    //         />{' '}
 
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
-              <Nav>
-                <Nav.Link href="/">Arriendo</Nav.Link>
-                <Nav.Link href="/">En Venta</Nav.Link>
-                <Nav.Link href="/">Terrenos</Nav.Link>
-                <Nav.Link href="/">¡Quiero Vender!</Nav.Link>
-                <Nav.Link href="/Contact">Contáctanos</Nav.Link>
-              </Nav>
-            </Navbar.Collapse>
+    //         <Navbar.Toggle aria-controls="basic-navbar-nav" />
+    //         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
+    //           <Nav>
+    //             <Nav.Link href="/">Arriendo</Nav.Link>
+    //             <Nav.Link href="/">En Venta</Nav.Link>
+    //             <Nav.Link href="/">Terrenos</Nav.Link>
+    //             <Nav.Link href="/">¡Quiero Vender!</Nav.Link>
+    //             <Nav.Link href="/Contact">Contáctanos</Nav.Link>
+    //           </Nav>
+    //         </Navbar.Collapse>
 
-          </Navbar.Brand>
+    //       </Navbar.Brand>
+    //     </Container>
+    //   </Navbar>
+    // </>
+
+
+      <Navbar expand="lg" className="bg-body-tertiary">
+        <Container>
+          <Navbar.Brand href="/">Imagen</Navbar.Brand>
+          <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
+               <Nav>
+                 <Nav.Link href="/">Arriendo</Nav.Link>
+                 <Nav.Link href="/">En Venta</Nav.Link>
+                 <Nav.Link href="/">Terrenos</Nav.Link>
+                 <Nav.Link href="/QuieroVender">¡Quiero Vender!</Nav.Link>
+                 <Nav.Link href="/Contact">Contáctanos</Nav.Link>
+               </Nav>
+             </Navbar.Collapse>
         </Container>
       </Navbar>
-    </>
-
-
+    
   );
 };
 

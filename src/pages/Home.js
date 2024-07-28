@@ -1,7 +1,7 @@
 // src/pages/Home.js
 import React from 'react';
 import portadaImage from '../assets/images/ENCABEZADO-21.png';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import { Button, ButtonGroup, Image } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear, faToolbox } from '@fortawesome/free-solid-svg-icons';
 import Card from 'react-bootstrap/Card';
@@ -41,11 +41,20 @@ const Home = () => (
       </div>
     </div>
 
-    <div className="whatsapp">
-      <h3>Contactanos directamente en nuestro whatsapp</h3>
-      <Button variant="primary">Contactar</Button>{' '}
+    <div class="bg-dark">
+      <span class="text-white">
+        <h3>Contactanos directamente en nuestro whatsapp</h3>
+        <Button variant="primary">Contactar</Button>{' '}
+      </span>
     </div>
 
+    <div>
+      <h1>
+        Destacados de Corretaje Guzmán</h1>
+      <h2>Alternativas exclusivas para ti y tu familia</h2>
+    </div>
+
+    <br />
     <div className="container-fluid">
       <Row xs={1} md={2} lg={3} className="g-4">
         {Array.from({ length: 6 }).map((_, idx) => (
@@ -65,7 +74,22 @@ const Home = () => (
         ))}
       </Row>
     </div>
-    
+
+    <div className='container-fluid pt-4'>
+      <h2>Lo que piensan nuestros clientes de nosotros.</h2>
+      <Row>
+        <Col xs={6} md={4}>
+          <Image src={imgExample} roundedCircle />
+        </Col>
+        <Col xs={6} md={4}>
+          <Image src={imgExample} roundedCircle />
+        </Col>
+        <Col xs={6} md={4}>
+          <Image src={imgExample} roundedCircle />
+        </Col>
+      </Row>
+    </div>
+
   </div>
 
 );

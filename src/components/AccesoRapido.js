@@ -12,7 +12,7 @@ function AccesoRapido () {
             <p className="text-muted">CORRETAJE</p>
           </div>
           <div className="col-md-3 mb-3">
-            <h5 className="font-weight-bold">ACCESO RÁPITO</h5>
+            <h5 className="font-weight-bold">ACCESO RÁPIDO</h5>
             <ul className="list-unstyled">
               <li><a href="#">Arriendos</a></li>
               <li><a href="#">En venta</a></li>

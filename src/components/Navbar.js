@@ -63,7 +63,7 @@ const NavigationBar = () => {
           <Navbar.Brand href="/">Imagen</Navbar.Brand>
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
                <Nav>
-                 <Nav.Link href="/">Arriendo</Nav.Link>
+                 <Nav.Link href="/Arriendo">Arriendo</Nav.Link>
                  <Nav.Link href="/">En Venta</Nav.Link>
                  <Nav.Link href="/">Terrenos</Nav.Link>
                  <Nav.Link href="/QuieroVender">¡Quiero Vender!</Nav.Link>

@@ -1,0 +1,8 @@
+---
+deployment:
+  tasks:
+    - export DEPLOY_PATH=/home/cco93507/public_html
+    - /bin/bash npm install
+    - /bin/bash npm run build
+    - /bin/cp -r build/* $DEPLOY_PATH/
+    - echo "Deployment to $DEPLOY_PATH completed successfully."

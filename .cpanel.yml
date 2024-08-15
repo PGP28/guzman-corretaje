@@ -7,3 +7,4 @@ deployment:
     - /bin/bash npm run build
     - /bin/cp -r build/* $DEPLOY_PATH/
     - echo "Deployment to $DEPLOY_PATH completed successfully."
+    

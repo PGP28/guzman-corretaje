@@ -10,7 +10,7 @@ function App() {
     <div className="App">
       <div className="content">
         <Construccion />
-        {/* <AppRoutes /> */ }
+        {/* <AppRoutes /> */}
       </div>
       {/* <Footer /> */}
     </div>

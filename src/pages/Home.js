@@ -8,6 +8,9 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import imgExample from '../assets/images/Examples/images.png'
+import TarjetasPropiedades from '../components/TarjetasPropiedades';
+import AccesoRapido from '../components/AccesoRapido';
+
 
 const Home = () => (
   // <div className="container-fluid p-0">
@@ -91,42 +94,46 @@ const Home = () => (
   //   </div>
 
   // </div>
-<div className="container-fluid p-0">
+  <div className="container-fluid p-0">
 
-      <div className="row bg-primary text-white p-5">
-        <div className="col-12 text-center">
-          <h2 className="display-4">Empresa de corretaje Chilena de primer nivel.</h2>
-          <p className="lead">Tu proyecto inmobiliario, nuestra prioridad.</p>
-        </div>
-      </div>
-      <div className="row mt-4">
-        <div className="col-md-4">
-          <button className="btn btn-secondary btn-lg btn-block">Comprar / Arrendar</button>
-        </div>
-        <div className="col-md-4">
-          <button className="btn btn-secondary btn-lg btn-block">Tipo de propiedad</button>
-        </div>
-        <div className="col-md-4">
-          <button className="btn btn-secondary btn-lg btn-block">Región</button>
-        </div>
-      </div>
-      <div className="row mt-4">
-        <div className="col-md-4">
-          <button className="btn btn-secondary btn-lg btn-block">Tipo propiedad</button>
-        </div>
-        <div className="col-md-4">
-          <button className="btn btn-secondary btn-lg btn-block">Región</button>
-        </div>
-        <div className="col-md-4">
-          <button className="btn btn-secondary btn-lg btn-block">Comuna</button>
-        </div>
-      </div>
-      <div className="row mt-5">
-        <div className="col-12 text-center">
-          <button className="btn btn-primary btn-lg">BUSCAR</button>
-        </div>
+    <div className="row bg-primary text-white p-5">
+      <div className="col-12 text-center">
+        <h2 className="display-4">Empresa de corretaje Chilena de primer nivel.</h2>
+        <p className="lead">Tu proyecto inmobiliario, nuestra prioridad.</p>
       </div>
     </div>
+    <div className="row mt-4">
+      <div className="col-md-4">
+        <button className="btn btn-secondary btn-lg btn-block">Comprar / Arrendar</button>
+      </div>
+      <div className="col-md-4">
+        <button className="btn btn-secondary btn-lg btn-block">Tipo de propiedad</button>
+      </div>
+      <div className="col-md-4">
+        <button className="btn btn-secondary btn-lg btn-block">Región</button>
+      </div>
+    </div>
+    <div className="row mt-4">
+      <div className="col-md-4">
+        <button className="btn btn-secondary btn-lg btn-block">Tipo propiedad</button>
+      </div>
+      <div className="col-md-4">
+        <button className="btn btn-secondary btn-lg btn-block">Región</button>
+      </div>
+      <div className="col-md-4">
+        <button className="btn btn-secondary btn-lg btn-block">Comuna</button>
+      </div>
+    </div>
+    <div className="row mt-5">
+      <div className="col-12 text-center">
+        <button className="btn btn-primary btn-lg">BUSCAR</button>
+      </div>
+    </div>
+    <TarjetasPropiedades />
+    <AccesoRapido />
+  </div>
+
+
 );
 
 export default Home;

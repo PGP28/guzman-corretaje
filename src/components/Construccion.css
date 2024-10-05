@@ -32,4 +32,30 @@
     color: #d4af37;
 }
 
+@media only screen and (max-width: 768px) {
+    .construccion-container {
+        background-size: cover;
+        background-position: center;
+        padding-bottom: 70px;
+    }
 
+    .content {
+        padding: 20px;
+        max-width: 100%; /* Asegura que el contenido no se desborde */
+    }
+
+    .content h1 {
+        font-size: 1.5rem; /* Ajusta el tamaño de la fuente */
+        margin-bottom: 0.5rem;
+    }
+
+    .content p {
+        font-size: 1rem; /* Ajusta el tamaño del párrafo */
+        margin-bottom: 1rem;
+    }
+
+    .social-icons a {
+        font-size: 1.5rem;
+        margin: 0 0.5rem;
+    }
+}

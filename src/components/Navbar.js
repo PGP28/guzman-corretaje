@@ -1,25 +1,40 @@
-import React, { useState } from 'react';
-import { Navbar, Nav, Container, Collapse } from 'react-bootstrap';
+import React from 'react';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 import logoNav from '../assets/images/LOGO_PNG-17.svg';
 
 const NavigationBar = () => {
-  const [show, setShow] = useState(false);
   return (
 
-       <Navbar expand="lg" className="bg-body-tertiary">
-         <Container>
-           <Navbar.Brand href="/">Imagen</Navbar.Brand>
-           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
-                <Nav>
-                  <Nav.Link href="/Arriendo">Arriendo</Nav.Link>
-                  <Nav.Link href="/EnVenta">En Venta</Nav.Link>
-                  <Nav.Link href="/Terrenos">Terrenos</Nav.Link>
-                  <Nav.Link href="/QuieroVender">¡Quiero Vender!</Nav.Link>
-                  <Nav.Link href="/Contactanos">Contáctanos</Nav.Link>
-                </Nav>
-              </Navbar.Collapse>
-         </Container>
-       </Navbar>
+    <Navbar bg="dark" variant="dark" expand="lg">
+      <Container>
+        <Navbar.Brand href="/">Guzmán Corretaje</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="ms-auto">
+            <Nav.Link href="/Arriendo">Arriendo</Nav.Link>
+            <Nav.Link href="/EnVenta">En Venta</Nav.Link>
+            <Nav.Link href="/Terrenos">Terrenos</Nav.Link>
+            <Nav.Link href="/EnVenta">¡Quiero vender!</Nav.Link>
+            <Nav.Link href="/Contactanos">Contáctanos</Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+
+      //  <Navbar expand="lg" className="bg-body-tertiary"> 
+      //    <Container>
+      //      <Navbar.Brand href="/">Imagen</Navbar.Brand>
+      //      <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
+      //           <Nav>
+      //             <Nav.Link href="/Arriendo">Arriendo</Nav.Link>
+      //             <Nav.Link href="/EnVenta">En Venta</Nav.Link>
+      //             <Nav.Link href="/Terrenos">Terrenos</Nav.Link>
+      //             <Nav.Link href="/QuieroVender">¡Quiero Vender!</Nav.Link>
+      //             <Nav.Link href="/Contactanos">Contáctanos</Nav.Link>
+      //           </Nav>
+      //         </Navbar.Collapse>
+      //    </Container>
+      //  </Navbar>
 //------------------------------------------------------------------
     //   <Navbar bg="dark" variant="dark" expand="md" className="mb-5">
     //   <Container>

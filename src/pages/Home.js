@@ -1,139 +1,98 @@
-// src/pages/Home.js
 import React from 'react';
-import portadaImage from '../assets/images/ENCABEZADO-21.png';
-import { Button, ButtonGroup, Image } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGear, faToolbox } from '@fortawesome/free-solid-svg-icons';
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import imgExample from '../assets/images/Examples/images.png'
-import TarjetasPropiedades from '../components/TarjetasPropiedades';
-import AccesoRapido from '../components/AccesoRapido';
+import { Container, Row, Col, Button } from 'react-bootstrap';
+import './Home.css';  // Mantener el resto de los estilos en Home.css
+import houseIcon from '../assets/images/LOGOCASA.png'; // Icono de casa
+import TarjetasPropiedades from '../components/TarjetasPropiedades'; // Importar componente de tarjetas
+import NavigationBar from '../components/Navbar';  // Importar el Navbar
+import backgroundImage from '../assets/images/ENCABEZADO-21.png'; // Imagen de fondo para la parte superior
 
+const Home = () => {
+  return (
+    <div>
+      {/* Agregando el Navbar */}
+      <NavigationBar />
 
-const Home = () => (
-  // <div className="container-fluid p-0">
-  //   <div className="card bg-dark text-white position-relative overflow-hidden">
-  //     <img src={portadaImage} className="card-img" alt="Corretaje Guzman Portada" />
-  //     <div className="card-img-overlay d-flex flex-column justify-content-center align-items-center">
-  //       <div className="text-center mb-5">
-  //         <h1 className="card-title">Empresa de corretaje Chilena de primer nivel</h1>
-  //         <h3 className="card-text">Tu proyecto inmobiliario, nuestra prioridad.</h3>
-  //         {/* <div className="d-flex mt-5 justify-content-center flex-wrap">
-  //           <button type="button" className="btn btn-primary mb-3 mx-2">Comprar / Arrendar</button>
-  //           <button type="button" className="btn btn-primary mb-3 mx-2">Tipo de Propiedad</button>
-  //           <button type="button" className="btn btn-primary mb-3 mx-2">Región</button>
-  //         </div> */}
-  //       </div>
-  //       <div className="text-center">
-  //         <ButtonGroup aria-label="Basic example" className="separator-group">
-  //           <Button variant="secondary">Tipo de Propiedad</Button>
-  //           <div className="separator"></div>
-  //           <Button variant="secondary">Región</Button>
-  //           <div className="separator"></div>
-  //           <Button variant="secondary">Comuna</Button>
-  //           <div className="separator"></div>
-  //           <Button variant="secondary">
-  //             <FontAwesomeIcon icon={faGear} />
-  //           </Button>
-  //           <div className="separator"></div>
-  //           <Button variant="secondary">BUSCAR</Button>
-  //         </ButtonGroup>
-  //       </div>
-  //     </div>
-  //   </div>
+      {/* Primera Sección con imagen de fondo */}
+      <div 
+        className="home-container"
+        style={{
+          backgroundImage: `url(${backgroundImage})`,  // Imagen de fondo
+          backgroundSize: 'cover', 
+          backgroundPosition: 'center',
+          height: '100vh',
+          position: 'relative'
+        }}
+      >
+        <div className="home-overlay">
+          <Container>
+            {/* Texto principal */}
+            <Row className="justify-content-center text-center text-white">
+              <Col md={8}>
+                <h1 className="display-4">Empresa de corretaje Chilena de primer nivel.</h1>
+                <p className="lead">Tu proyecto inmobiliario, nuestra prioridad.</p>
+              </Col>
+            </Row>
 
-  //   <div class="bg-dark">
-  //     <span class="text-white">
-  //       <h3>Contactanos directamente en nuestro whatsapp</h3>
-  //       <Button variant="primary">Contactar</Button>{' '}
-  //     </span>
-  //   </div>
+            {/* Botones grandes */}
+            <Row className="justify-content-center mt-4">
+              <Col md={3}>
+                <Button variant="primary" size="lg" className="btn-block">Comprar / Arrendar</Button>
+              </Col>
+              <Col md={3}>
+                <Button variant="primary" size="lg" className="btn-block">Tipo de propiedad</Button>
+              </Col>
+              <Col md={3}>
+                <Button variant="primary" size="lg" className="btn-block">Región</Button>
+              </Col>
+            </Row>
 
-  //   <div>
-  //     <h1>
-  //       Destacados de Corretaje Guzmán</h1>
-  //     <h2>Alternativas exclusivas para ti y tu familia</h2>
-  //   </div>
-
-  //   <br />
-  //   <div className="container-fluid">
-  //     <Row xs={1} md={2} lg={3} className="g-4">
-  //       {Array.from({ length: 6 }).map((_, idx) => (
-  //         <Col key={idx}>
-  //           <Card>
-  //             <Card.Img variant="top" src={imgExample} />
-  //             <Card.Body>
-  //               <Card.Title>Card title</Card.Title>
-  //               <Card.Text>
-  //                 This is a longer card with supporting text below as a natural
-  //                 lead-in to additional content. This content is a little bit
-  //                 longer.
-  //               </Card.Text>
-  //             </Card.Body>
-  //           </Card>
-  //         </Col>
-  //       ))}
-  //     </Row>
-  //   </div>
-
-  //   <div className='container-fluid pt-4'>
-  //     <h2>Lo que piensan nuestros clientes de nosotros.</h2>
-  //     <Row>
-  //       <Col xs={6} md={4}>
-  //         <Image src={imgExample} roundedCircle />
-  //       </Col>
-  //       <Col xs={6} md={4}>
-  //         <Image src={imgExample} roundedCircle />
-  //       </Col>
-  //       <Col xs={6} md={4}>
-  //         <Image src={imgExample} roundedCircle />
-  //       </Col>
-  //     </Row>
-  //   </div>
-
-  // </div>
-  <div className="container-fluid p-0">
-
-    <div className="row bg-primary text-white p-5">
-      <div className="col-12 text-center">
-        <h2 className="display-4">Empresa de corretaje Chilena de primer nivel.</h2>
-        <p className="lead">Tu proyecto inmobiliario, nuestra prioridad.</p>
+            {/* Botones de búsqueda */}
+            <Row className="justify-content-center mt-4">
+              <Col md={2}>
+                <Button variant="secondary" size="lg" className="btn-block">Tipo propiedad</Button>
+              </Col>
+              <Col md={2}>
+                <Button variant="secondary" size="lg" className="btn-block">Región</Button>
+              </Col>
+              <Col md={2}>
+                <Button variant="secondary" size="lg" className="btn-block">Comuna</Button>
+              </Col>
+              <Col md={2}>
+                <Button variant="secondary" size="lg" className="btn-block">Buscar</Button>
+              </Col>
+            </Row>
+          </Container>
+        </div>
       </div>
+
+      {/* Segunda Sección */}
+      <div className="highlighted-section">
+        {/* Barra superior morada */}
+        <Row className="contact-bar text-white align-items-center">
+          <Col md={1}>
+            <img src={houseIcon} alt="Icono Casa" className="contact-house-icon" />
+          </Col>
+          <Col md={8} className="text-left">
+            <span>Contáctanos directamente en nuestro <strong>Whatsapp</strong></span>
+          </Col>
+          <Col md={3} className="text-right">
+            <Button variant="light" size="lg">contactar</Button>
+          </Col>
+        </Row>
+
+        {/* Sección de propiedades destacadas */}
+        <Row className="text-center mt-5">
+          <Col>
+            <h2 className="display-5">Destacados de Corretaje Guzmán</h2>
+            <p className="lead">Alternativas exclusivas para ti y tu familia</p>
+          </Col>
+        </Row>
+      </div>
+      
+      {/* Componente de Tarjetas de Propiedades */}
+      <TarjetasPropiedades />
     </div>
-    <div className="row mt-4">
-      <div className="col-md-4">
-        <button className="btn btn-secondary btn-lg btn-block">Comprar / Arrendar</button>
-      </div>
-      <div className="col-md-4">
-        <button className="btn btn-secondary btn-lg btn-block">Tipo de propiedad</button>
-      </div>
-      <div className="col-md-4">
-        <button className="btn btn-secondary btn-lg btn-block">Región</button>
-      </div>
-    </div>
-    <div className="row mt-4">
-      <div className="col-md-4">
-        <button className="btn btn-secondary btn-lg btn-block">Tipo propiedad</button>
-      </div>
-      <div className="col-md-4">
-        <button className="btn btn-secondary btn-lg btn-block">Región</button>
-      </div>
-      <div className="col-md-4">
-        <button className="btn btn-secondary btn-lg btn-block">Comuna</button>
-      </div>
-    </div>
-    <div className="row mt-5">
-      <div className="col-12 text-center">
-        <button className="btn btn-primary btn-lg">BUSCAR</button>
-      </div>
-    </div>
-    <TarjetasPropiedades />
-    <AccesoRapido />
-  </div>
-
-
-);
+  );
+};
 
 export default Home;

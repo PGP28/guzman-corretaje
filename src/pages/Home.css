@@ -1,0 +1,49 @@
+.home-container {
+    background-image: url('../assets/images/ENCABEZADO-21.png'); /* Imagen de fondo */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    position: relative;
+  }
+  
+  .home-overlay {
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .contact-bar {
+    background-color: #4C40F7; /* Fondo morado */
+    padding: 20px;
+    border-radius: 10px; /* Bordes redondeados */
+  }
+  
+  .contact-house-icon {
+    width: 60px;
+    height: auto;
+  }
+  
+  .highlighted-section {
+    background-color: #F8F9FA; /* Fondo claro para la sección destacada */
+    padding: 40px 0;
+  }
+  
+  .highlighted-section h2 {
+    color: #4C40F7; /* Color morado para el título */
+  }
+  
+  .highlighted-section p {
+    color: #6c757d; /* Subtítulo en gris */
+  }
+  
+  .card {
+    border: none;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Sombra suave para las tarjetas */
+  }
+  
+  .card .fa {
+    color: #4C40F7; /* Color morado para los íconos */
+  }
+  

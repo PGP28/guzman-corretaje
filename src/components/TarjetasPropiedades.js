@@ -4,7 +4,7 @@ import { Row, Col, Card } from 'react-bootstrap';
 const TarjetasPropiedades = () => {
   return (
     <Row className="justify-content-center mt-4">
-      {[...Array(3)].map((_, idx) => (
+      {[...Array(6)].map((_, idx) => (
         <Col md={4} key={idx} className="mb-4">
           <Card>
             <Card.Img variant="top" src="https://via.placeholder.com/300x200" alt="Imagen de la propiedad" />

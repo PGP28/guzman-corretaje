@@ -19,7 +19,7 @@ const Home = () => {
           backgroundImage: `url(${backgroundImage})`,  // Imagen de fondo
           backgroundSize: 'cover', 
           backgroundPosition: 'center',
-          height: '100vh',
+          height: '50vh',
           position: 'relative'
         }}
       >
@@ -34,7 +34,7 @@ const Home = () => {
             </Row>
 
             {/* Botones grandes */}
-            <Row className="justify-content-center mt-4">
+            {/* <Row className="justify-content-center mt-4">
               <Col md={3}>
                 <Button variant="primary" size="lg" className="btn-block">Comprar / Arrendar</Button>
               </Col>
@@ -44,10 +44,10 @@ const Home = () => {
               <Col md={3}>
                 <Button variant="primary" size="lg" className="btn-block">Región</Button>
               </Col>
-            </Row>
+            </Row> */}
 
             {/* Botones de búsqueda */}
-            <Row className="justify-content-center mt-4">
+            {/* <Row className="justify-content-center mt-4">
               <Col md={2}>
                 <Button variant="secondary" size="lg" className="btn-block">Tipo propiedad</Button>
               </Col>
@@ -60,7 +60,7 @@ const Home = () => {
               <Col md={2}>
                 <Button variant="secondary" size="lg" className="btn-block">Buscar</Button>
               </Col>
-            </Row>
+            </Row> */}
           </Container>
         </div>
       </div>

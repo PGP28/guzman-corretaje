@@ -6,6 +6,7 @@ import TarjetasPropiedades from '../components/TarjetasPropiedades'; // Importar
 import NavigationBar from '../components/Navbar';  // Importar el Navbar
 import backgroundImage from '../assets/images/ENCABEZADO-21.png'; // Imagen de fondo para la parte superior
 import Testimonios from '../components/Testimonios';
+import VenderPropiedad from '../components/VenderPropiedad';
 
 const Home = () => {
   return (
@@ -90,9 +91,10 @@ const Home = () => {
         </Row>
       </div>
       
-      {/* Componente de Tarjetas de Propiedades */}
+      
       <TarjetasPropiedades />
       <Testimonios />
+      <VenderPropiedad />
     </div>
   );
 };

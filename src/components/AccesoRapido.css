@@ -1,0 +1,30 @@
+.acceso-rapido-section {
+    /*background-color: #F8F9FA; /* Fondo claro */
+    padding: 60px 0;
+  }
+  
+  .acceso-rapido-section h5 {
+    color: #4C40F7; /* Color morado para los títulos */
+    margin-bottom: 20px;
+  }
+  
+  .acceso-rapido-section ul {
+    padding: 0;
+    list-style-type: none;
+  }
+  
+  .acceso-rapido-section ul li {
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .social-icons {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .social-icon {
+    font-size: 1.5rem;
+    color: #4C40F7;
+  }
+  

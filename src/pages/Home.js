@@ -7,6 +7,7 @@ import NavigationBar from '../components/Navbar';  // Importar el Navbar
 import backgroundImage from '../assets/images/ENCABEZADO-21.png'; // Imagen de fondo para la parte superior
 import Testimonios from '../components/Testimonios';
 import VenderPropiedad from '../components/VenderPropiedad';
+import AccesoRapido from '../components/AccesoRapido';
 
 const Home = () => {
   return (
@@ -95,6 +96,7 @@ const Home = () => {
       <TarjetasPropiedades />
       <Testimonios />
       <VenderPropiedad />
+      <AccesoRapido />
     </div>
   );
 };

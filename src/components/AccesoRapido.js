@@ -1,46 +1,48 @@
-// src/components/Footer.js
+// components/AccesoRapido.js
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import './AccesoRapido.css'; // Estilos específicos para esta sección
+import logo from '../assets/images/LOGO_JPG-15.jpg'; // Logo de la empresa
+import { FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaInstagram, FaTiktok } from 'react-icons/fa';
 
-function AccesoRapido () {
+const AccesoRapido = () => {
   return (
-    <footer className="py-5 bg-light mt-5">
-      <div className="container">
-        <div className="row">
-          <div className="col-md-3 mb-3">
-            <h5 className="font-weight-bold">GUZMAN</h5>
-            <p className="text-muted">CORRETAJE</p>
-          </div>
-          <div className="col-md-3 mb-3">
-            <h5 className="font-weight-bold">ACCESO RÁPIDO</h5>
+    <div className="acceso-rapido-section py-5">
+      <div>
+        <Row>
+          <Col md={3}>
+            <img src={logo} alt="Guzmán Corretaje" className="img-fluid mb-3" />
+          </Col>
+          <Col md={3}>
+            <h5 className="text-primary">ACCESO RÁPIDO</h5>
             <ul className="list-unstyled">
-              <li><a href="#">Arriendos</a></li>
-              <li><a href="#">En venta</a></li>
-              <li><a href="#">Terrenos</a></li>
-              <li><a href="#">¡Quiero vender!</a></li>
-              <li><a href="#">Contáctanos</a></li>
+              <li>Arriendos</li>
+              <li>En venta</li>
+              <li>Terrenos</li>
+              <li>¡Quiero vender!</li>
+              <li>Contáctanos</li>
             </ul>
-          </div>
-          <div className="col-md-3 mb-3">
-            <h5 className="font-weight-bold">CONTACTO Y SUCURSALES</h5>
+          </Col>
+          <Col md={3}>
+            <h5 className="text-primary">CONTACTO Y SUCURSALES</h5>
             <ul className="list-unstyled">
-              <li><a href="tel:+56956922206"><i className="fas fa-phone-alt"></i> +56 9 5692 2206</a></li>
-              <li><a href="mailto:contacto@corretajeguzman.cl"><i className="fas fa-envelope"></i> contacto@corretajeguzman.cl</a></li>
-              <li><a href="#"><i className="fas fa-map-marker-alt"></i> Av manquehue sur 350, oficina 201, Las Condes, Chile</a></li>
+              <li><FaWhatsapp /> +56 9 5692 2206</li>
+              <li><FaEnvelope /> contacto@corretajeguzman.cl</li>
+              <li><FaMapMarkerAlt /> Av manquehue sur 350, oficina 201, Las Condes, Chile</li>
             </ul>
-          </div>
-          <div className="col-md-3 mb-3">
-            <h5 className="font-weight-bold">SEGUINOS</h5>
-            <ul className="list-unstyled list-inline social-icons">
-              <li className="list-inline-item"><a href="#"><i className="fab fa-tiktok"></i></a></li>
-              <li className="list-inline-item"><a href="#"><i className="fab fa-facebook-f"></i></a></li>
-              <li className="list-inline-item"><a href="#"><i className="fab fa-instagram"></i></a></li>
-            </ul>
-          </div>
+          </Col>
+          <Col md={3}>
+            <h5 className="text-primary">SEGUINOS</h5>
+            <div className="social-icons">
+              <FaTiktok className="social-icon" />
+              <FaFacebook className="social-icon" />
+              <FaInstagram className="social-icon" />
+            </div>
+          </Col>
+        </Row>
         </div>
-      </div>
-    </footer>
-);
-}
+    </div>
+  );
+};
 
 export default AccesoRapido;

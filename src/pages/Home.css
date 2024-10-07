@@ -1,10 +1,4 @@
-.home-container {
-    /*background-image: url('../assets/images/ENCABEZADO-21.png');  Imagen de fondo */
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-    position: relative;
-  }
+
   
   .home-overlay {
     background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */

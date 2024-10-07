@@ -1,0 +1,14 @@
+.testimonios-section {
+    padding: 40px 0;
+    background-color: #F8F9FA; /* Fondo claro */
+  }
+  
+  .testimonial-card {
+    border: none;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  }
+  
+  .testimonial-card .card-title {
+    color: #4C40F7; /* Color morado para el nombre */
+  }
+  

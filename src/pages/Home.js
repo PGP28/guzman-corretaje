@@ -5,6 +5,7 @@ import houseIcon from '../assets/images/LOGOCASA.png'; // Icono de casa
 import TarjetasPropiedades from '../components/TarjetasPropiedades'; // Importar componente de tarjetas
 import NavigationBar from '../components/Navbar';  // Importar el Navbar
 import backgroundImage from '../assets/images/ENCABEZADO-21.png'; // Imagen de fondo para la parte superior
+import Testimonios from '../components/Testimonios';
 
 const Home = () => {
   return (
@@ -34,33 +35,33 @@ const Home = () => {
             </Row>
 
             {/* Botones grandes */}
-            {/* <Row className="justify-content-center mt-4">
+            <Row className="justify-content-center mt-4">
               <Col md={3}>
-                <Button variant="primary" size="lg" className="btn-block">Comprar / Arrendar</Button>
+                <Button variant="primary"  className="btn-block">Comprar / Arrendar</Button>
               </Col>
               <Col md={3}>
-                <Button variant="primary" size="lg" className="btn-block">Tipo de propiedad</Button>
+                <Button variant="primary"  className="btn-block">Tipo de propiedad</Button>
               </Col>
               <Col md={3}>
-                <Button variant="primary" size="lg" className="btn-block">Región</Button>
+                <Button variant="primary"  className="btn-block">Región</Button>
               </Col>
-            </Row> */}
+            </Row>
 
             {/* Botones de búsqueda */}
-            {/* <Row className="justify-content-center mt-4">
+            <Row className="justify-content-center mt-4">
               <Col md={2}>
-                <Button variant="secondary" size="lg" className="btn-block">Tipo propiedad</Button>
+                <Button variant="secondary" className="btn-block">Tipo propiedad</Button>
               </Col>
               <Col md={2}>
-                <Button variant="secondary" size="lg" className="btn-block">Región</Button>
+                <Button variant="secondary" className="btn-block">Región</Button>
               </Col>
               <Col md={2}>
-                <Button variant="secondary" size="lg" className="btn-block">Comuna</Button>
+                <Button variant="secondary" className="btn-block">Comuna</Button>
               </Col>
               <Col md={2}>
-                <Button variant="secondary" size="lg" className="btn-block">Buscar</Button>
+                <Button variant="secondary" className="btn-block">Buscar</Button>
               </Col>
-            </Row> */}
+            </Row>
           </Container>
         </div>
       </div>
@@ -91,6 +92,7 @@ const Home = () => {
       
       {/* Componente de Tarjetas de Propiedades */}
       <TarjetasPropiedades />
+      <Testimonios />
     </div>
   );
 };

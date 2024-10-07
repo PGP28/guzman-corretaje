@@ -37,7 +37,7 @@ const Testimonios = () => {
                 variant="top" 
                 src={testimonio.imagen} 
                 alt={`Foto de ${testimonio.nombre}`} 
-                className="rounded-circle mx-auto d-block mb-3"
+                className="rounded-circle mx-auto d-block mb-3 mt-4"
                 style={{ width: '150px', height: '150px', objectFit: 'cover' }}
               />
               <Card.Body>

@@ -7,20 +7,20 @@ import { FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaInstagram, FaTikt
 
 const AccesoRapido = () => {
   return (
-    <div className="acceso-rapido-section py-5">
-      <div>
-        <Row>
-          <Col md={3}>
-            <img src={logo} alt="Guzmán Corretaje" className="img-fluid mb-3" />
+    <div className="acceso-rapido-section">
+      <Container>
+        <Row className="align-items-center">
+          <Col md={3} className="text-center mb-4 mb-md-0">
+            <img src={logo} alt="Guzmán Corretaje" className="img-fluid" />
           </Col>
           <Col md={3}>
             <h5 className="text-primary">ACCESO RÁPIDO</h5>
             <ul className="list-unstyled">
-              <li>Arriendos</li>
-              <li>En venta</li>
-              <li>Terrenos</li>
-              <li>¡Quiero vender!</li>
-              <li>Contáctanos</li>
+              <li><a href="#arriendos">Arriendos</a></li>
+              <li><a href="#en-venta">En venta</a></li>
+              <li><a href="#terrenos">Terrenos</a></li>
+              <li><a href="#quiero-vender">¡Quiero vender!</a></li>
+              <li><a href="#contactanos">Contáctanos</a></li>
             </ul>
           </Col>
           <Col md={3}>
@@ -33,14 +33,20 @@ const AccesoRapido = () => {
           </Col>
           <Col md={3}>
             <h5 className="text-primary">SEGUINOS</h5>
-            <div className="social-icons">
-              <FaTiktok className="social-icon" />
-              <FaFacebook className="social-icon" />
-              <FaInstagram className="social-icon" />
+            <div className="d-flex justify-content-start gap-3">
+              <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer">
+                <FaTiktok className="social-icon" />
+              </a>
+              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+                <FaFacebook className="social-icon" />
+              </a>
+              <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+                <FaInstagram className="social-icon" />
+              </a>
             </div>
           </Col>
         </Row>
-        </div>
+      </Container>
     </div>
   );
 };

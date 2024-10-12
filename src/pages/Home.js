@@ -75,12 +75,15 @@ const Home = () => {
           <Col md={1}>
             <img src={houseIcon} alt="Icono Casa" className="contact-house-icon" />
           </Col>
+          <Container>
           <Col md={8} className="text-left">
             <span>Contáctanos directamente en nuestro <strong>Whatsapp</strong></span>
           </Col>
+          </Container>
           <Col md={3} className="text-right">
             <Button variant="light" size="lg">contactar</Button>
           </Col>
+          
         </Row>
 
         {/* Sección de propiedades destacadas */}

@@ -1,61 +1,60 @@
+/* El contenedor principal debe ocupar todo el espacio disponible */
 .construccion-container {
+    position: relative;
     display: flex;
     justify-content: center;
-    align-items: flex-end; /* Alinea el contenido hacia la parte inferior */
-    height: 100vh;
-    background-image: url('../assets/images/LOGO_JPG-13.jpg'); 
-    background-size: cover;
-    background-position: center;
-    color: #fff;
+    align-items: center;
+    height: 100vh; /* Ocupa todo el alto de la pantalla */
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Evitar desbordamientos */
+}
+
+/* Imagen de fondo que cubre toda la pantalla */
+.img-fondo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Asegura que la imagen cubra todo sin distorsión */
+    z-index: -1; /* La imagen va detrás del contenido */
+}
+
+/* Contenido centrado sobre la imagen */
+.content-text {
+    z-index: 1;
     text-align: center;
-    padding-bottom: 100px; /* Ajusta este valor según sea necesario */
+    color: white;
+    padding: 20px;
+    margin-top: 450px;
 }
 
-.content h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-}
 
-.content p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
+/* Asegura que los iconos sociales estén centrados */
+.social-icons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 20px;
 }
 
 .social-icons a {
-    color: #fff;
+    color: white;
     font-size: 2rem;
-    margin: 0 1rem;
-    transition: color 0.3s ease;
 }
 
 .social-icons a:hover {
-    color: #d4af37;
+    color: #d4af37; /* Color dorado al pasar sobre los iconos */
 }
 
-@media only screen and (max-width: 768px) {
-    .construccion-container {
-        background-size: cover;
-        background-position: center;
-        padding-bottom: 70px;
-    }
-
+/* Asegurarse de que el diseño sea responsivo */
+@media (max-width: 768px) {
     .content {
-        padding: 20px;
-        max-width: 100%; /* Asegura que el contenido no se desborde */
-    }
-
-    .content h1 {
-        font-size: 1.5rem; /* Ajusta el tamaño de la fuente */
-        margin-bottom: 0.5rem;
-    }
-
-    .content p {
-        font-size: 1rem; /* Ajusta el tamaño del párrafo */
-        margin-bottom: 1rem;
+        padding: 0px;
     }
 
     .social-icons a {
         font-size: 1.5rem;
-        margin: 0 0.5rem;
     }
 }

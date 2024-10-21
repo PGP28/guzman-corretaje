@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <div>
       {/* Agregando el Navbar */}
-      <NavigationBar />
+      {/* <NavigationBar /> */}
 
       {/* Primera Sección con imagen de fondo */}
       <div 

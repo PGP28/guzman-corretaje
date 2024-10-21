@@ -13,7 +13,7 @@ import PageNotFound from './pages/PageNotFound';
 
 const AppRoutes = () => (
   <Router>
-    
+    <NavigationBar/>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/Arriendo" element={<Arriendo />} />

@@ -44,12 +44,12 @@ footer {
 }
 
 .img-logo {
-  width: 500px; 
-  height: auto; 
+  width: 100%; /* Asegura que sea responsivo */
+  max-width: 500px; /* Limita el tamaño máximo */
+  height: auto; /* Mantiene la proporción de la imagen */
   margin-top: 10px;
- 
-
 }
+
 
 /* Estilo para los enlaces del Navbar */
 .navbar-custom .nav-link {

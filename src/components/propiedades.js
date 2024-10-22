@@ -8,14 +8,14 @@ const propiedades = [
     "precio": "39,50 UF",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../public/assets/img/departamento1-1.jpg",
-      "../../public/assets/img/departamento1-2.jpg",
-      "../../public/assets/img/departamento1-3.jpg",
-      "../../public/assets/img/departamento1-4.jpg",
-      "../../public/assets/img/departamento1-5.jpg",
-      "../../public/assets/img/departamento1-6.jpg",
-      "../../public/assets/img/departamento1-7.jpg",
-      "../../public/assets/img/departamento1-8.jpg"
+      "assets/img/departamento1-1.jpg",
+      "assets/img/departamento1-2.jpg",
+      "assets/img/departamento1-3.jpg",
+      "assets/img/departamento1-4.jpg",
+      "assets/img/departamento1-5.jpg",
+      "assets/img/departamento1-6.jpg",
+      "assets/img/departamento1-7.jpg",
+      "assets/img/departamento1-8.jpg"
     ],
     "detalle": {
       "dormitorios": 3,
@@ -34,16 +34,16 @@ const propiedades = [
     "precio": "41 UF",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento2-1.jpg",
-      "../../src/assets/img/departamento2-2.jpg",
-      "../../src/assets/img/departamento2-3.jpg",
-      "../../src/assets/img/departamento2-4.jpg",
-      "../../src/assets/img/departamento2-5.jpg",
-      "../../src/assets/img/departamento2-6.jpg",
-      "../../src/assets/img/departamento2-7.jpg",
-      "../../src/assets/img/departamento2-8.jpg",
-      "../../src/assets/img/departamento2-9.jpg",
-      "../../src/assets/img/departamento2-10.jpg"
+      "assets/img/departamento2-1.jpg",
+      "assets/img/departamento2-2.jpg",
+      "assets/img/departamento2-3.jpg",
+      "assets/img/departamento2-4.jpg",
+      "assets/img/departamento2-5.jpg",
+      "assets/img/departamento2-6.jpg",
+      "assets/img/departamento2-7.jpg",
+      "assets/img/departamento2-8.jpg",
+      "assets/img/departamento2-9.jpg",
+      "assets/img/departamento2-10.jpg"
     ],
     "detalle": {
       "dormitorios": 3,
@@ -62,12 +62,12 @@ const propiedades = [
     "precio": "$380.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento3-1.jpg",
-      "../../src/assets/img/departamento3-2.jpg",
-      "../../src/assets/img/departamento3-3.jpg",
-      "../../src/assets/img/departamento3-4.jpg",
-      "../../src/assets/img/departamento3-5.jpg",
-      "../../src/assets/img/departamento3-6.jpg"
+      "assets/img/departamento3-1.jpg",
+      "assets/img/departamento3-2.jpg",
+      "assets/img/departamento3-3.jpg",
+      "assets/img/departamento3-4.jpg",
+      "assets/img/departamento3-5.jpg",
+      "assets/img/departamento3-6.jpg"
     ],
     "detalle": {
       "dormitorios": 2,
@@ -86,13 +86,13 @@ const propiedades = [
     "precio": "$405.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento4-1.jpg",
-      "../../src/assets/img/departamento4-2.jpg",
-      "../../src/assets/img/departamento4-3.jpg",
-      "../../src/assets/img/departamento4-4.jpg",
-      "../../src/assets/img/departamento4-5.jpg",
-      "../../src/assets/img/departamento4-6.jpg",
-      "../../src/assets/img/departamento4-7.jpg"
+      "assets/img/departamento4-1.jpg",
+      "assets/img/departamento4-2.jpg",
+      "assets/img/departamento4-3.jpg",
+      "assets/img/departamento4-4.jpg",
+      "assets/img/departamento4-5.jpg",
+      "assets/img/departamento4-6.jpg",
+      "assets/img/departamento4-7.jpg"
     ],
     "detalle": {
       "dormitorios": 2,
@@ -111,13 +111,13 @@ const propiedades = [
     "precio": "$420.000 con gasto común incluido",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento5-1.jpg",
-      "../../src/assets/img/departamento5-2.jpg",
-      "../../src/assets/img/departamento5-3.jpg",
-      "../../src/assets/img/departamento5-4.jpg",
-      "../../src/assets/img/departamento5-5.jpg",
-      "../../src/assets/img/departamento5-6.jpg",
-      "../../src/assets/img/departamento5-7.jpg"
+      "assets/img/departamento5-1.jpg",
+      "assets/img/departamento5-2.jpg",
+      "assets/img/departamento5-3.jpg",
+      "assets/img/departamento5-4.jpg",
+      "assets/img/departamento5-5.jpg",
+      "assets/img/departamento5-6.jpg",
+      "assets/img/departamento5-7.jpg"
     ],
     "detalle": {
       "dormitorios": 2,
@@ -136,14 +136,14 @@ const propiedades = [
     "precio": "$380.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento6-1.jpg",
-      "../../src/assets/img/departamento6-2.jpg",
-      "../../src/assets/img/departamento6-3.jpg",
-      "../../src/assets/img/departamento6-4.jpg",
-      "../../src/assets/img/departamento6-5.jpg",
-      "../../src/assets/img/departamento6-6.jpg",
-      "../../src/assets/img/departamento6-7.jpg",
-      "../../src/assets/img/departamento6-8.jpg"
+      "assets/img/departamento6-1.jpg",
+      "assets/img/departamento6-2.jpg",
+      "assets/img/departamento6-3.jpg",
+      "assets/img/departamento6-4.jpg",
+      "assets/img/departamento6-5.jpg",
+      "assets/img/departamento6-6.jpg",
+      "assets/img/departamento6-7.jpg",
+      "assets/img/departamento6-8.jpg"
     ],
     "detalle": {
       "dormitorios": 1,
@@ -162,11 +162,11 @@ const propiedades = [
     "precio": "$460.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento7-1.jpg",
-      "../../src/assets/img/departamento7-2.jpg",
-      "../../src/assets/img/departamento7-3.jpg",
-      "../../src/assets/img/departamento7-4.jpg",
-      "../../src/assets/img/departamento7-5.jpg"
+      "assets/img/departamento7-1.jpg",
+      "assets/img/departamento7-2.jpg",
+      "assets/img/departamento7-3.jpg",
+      "assets/img/departamento7-4.jpg",
+      "assets/img/departamento7-5.jpg"
     ],
     "detalle": {
       "dormitorios": 2,
@@ -185,14 +185,14 @@ const propiedades = [
     "precio": "$520.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento8-1.jpg",
-      "../../src/assets/img/departamento8-2.jpg",
-      "../../src/assets/img/departamento8-3.jpg",
-      "../../src/assets/img/departamento8-4.jpg",
-      "../../src/assets/img/departamento8-5.jpg",
-      "../../src/assets/img/departamento8-6.jpg",
-      "../../src/assets/img/departamento8-7.jpg",
-      "../../src/assets/img/departamento8-8.jpg"
+      "assets/img/departamento8-1.jpg",
+      "assets/img/departamento8-2.jpg",
+      "assets/img/departamento8-3.jpg",
+      "assets/img/departamento8-4.jpg",
+      "assets/img/departamento8-5.jpg",
+      "assets/img/departamento8-6.jpg",
+      "assets/img/departamento8-7.jpg",
+      "assets/img/departamento8-8.jpg"
     ],
     "detalle": {
       "dormitorios": 2,
@@ -211,15 +211,15 @@ const propiedades = [
     "precio": "$370.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento9-1.jpg",
-      "../../src/assets/img/departamento9-2.jpg",
-      "../../src/assets/img/departamento9-2.jpg",
-      "../../src/assets/img/departamento9-3.jpg",
-      "../../src/assets/img/departamento9-4.jpg",
-      "../../src/assets/img/departamento9-5.jpg",
-      "../../src/assets/img/departamento9-6.jpg",
-      "../../src/assets/img/departamento9-7.jpg",
-      "../../src/assets/img/departamento9-8.jpg"
+      "assets/img/departamento9-1.jpg",
+      "assets/img/departamento9-2.jpg",
+      "assets/img/departamento9-2.jpg",
+      "assets/img/departamento9-3.jpg",
+      "assets/img/departamento9-4.jpg",
+      "assets/img/departamento9-5.jpg",
+      "assets/img/departamento9-6.jpg",
+      "assets/img/departamento9-7.jpg",
+      "assets/img/departamento9-8.jpg"
     ],
     "detalle": {
       "dormitorios": 3,
@@ -238,13 +238,13 @@ const propiedades = [
     "precio": "$270.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento10-1.jpg",
-      "../../src/assets/img/departamento10-2.jpg",
-      "../../src/assets/img/departamento10-3.jpg",
-      "../../src/assets/img/departamento10-4.jpg",
-      "../../src/assets/img/departamento10-5.jpg",
-      "../../src/assets/img/departamento10-6.jpg",
-      "../../src/assets/img/departamento10-7.jpg"
+      "assets/img/departamento10-1.jpg",
+      "assets/img/departamento10-2.jpg",
+      "assets/img/departamento10-3.jpg",
+      "assets/img/departamento10-4.jpg",
+      "assets/img/departamento10-5.jpg",
+      "assets/img/departamento10-6.jpg",
+      "assets/img/departamento10-7.jpg"
     ],
     "detalle": {
       "dormitorios": 1,
@@ -263,14 +263,14 @@ const propiedades = [
     "precio": "$390.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento11-1.jpg",
-      "../../src/assets/img/departamento11-2.jpg",
-      "../../src/assets/img/departamento11-3.jpg",
-      "../../src/assets/img/departamento11-4.jpg",
-      "../../src/assets/img/departamento11-5.jpg",
-      "../../src/assets/img/departamento11-6.jpg",
-      "../../src/assets/img/departamento11-7.jpg",
-      "../../src/assets/img/departamento11-8.jpg",
+      "assets/img/departamento11-1.jpg",
+      "assets/img/departamento11-2.jpg",
+      "assets/img/departamento11-3.jpg",
+      "assets/img/departamento11-4.jpg",
+      "assets/img/departamento11-5.jpg",
+      "assets/img/departamento11-6.jpg",
+      "assets/img/departamento11-7.jpg",
+      "assets/img/departamento11-8.jpg",
     ],
     "detalle": {
       "dormitorios": 2,
@@ -289,14 +289,14 @@ const propiedades = [
     "precio": "$550.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento12-1.jpg",
-      "../../src/assets/img/departamento12-2.jpg",
-      "../../src/assets/img/departamento12-3.jpg",
-      "../../src/assets/img/departamento12-4.jpg",
-      "../../src/assets/img/departamento12-5.jpg",
-      "../../src/assets/img/departamento12-6.jpg",
-      "../../src/assets/img/departamento12-7.jpg",
-      "../../src/assets/img/departamento12-8.jpg"
+      "assets/img/departamento12-1.jpg",
+      "assets/img/departamento12-2.jpg",
+      "assets/img/departamento12-3.jpg",
+      "assets/img/departamento12-4.jpg",
+      "assets/img/departamento12-5.jpg",
+      "assets/img/departamento12-6.jpg",
+      "assets/img/departamento12-7.jpg",
+      "assets/img/departamento12-8.jpg"
     ],
     "detalle": {
       "dormitorios": 3,
@@ -315,14 +315,14 @@ const propiedades = [
     "precio": "$550.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento13-1.jpg",
-      "../../src/assets/img/departamento13-2.jpg",
-      "../../src/assets/img/departamento13-3.jpg",
-      "../../src/assets/img/departamento13-4.jpg",
-      "../../src/assets/img/departamento13-5.jpg",
-      "../../src/assets/img/departamento13-6.jpg",
-      "../../src/assets/img/departamento13-7.jpg",
-      "../../src/assets/img/departamento13-8.jpg"
+      "assets/img/departamento13-1.jpg",
+      "assets/img/departamento13-2.jpg",
+      "assets/img/departamento13-3.jpg",
+      "assets/img/departamento13-4.jpg",
+      "assets/img/departamento13-5.jpg",
+      "assets/img/departamento13-6.jpg",
+      "assets/img/departamento13-7.jpg",
+      "assets/img/departamento13-8.jpg"
     ],
     "detalle": {
       "dormitorios": 2,
@@ -341,12 +341,12 @@ const propiedades = [
     "precio": "$490.000 sin estacionamiento, con estacionamiento ($550.000)",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento14-1.jpg",
-      "../../src/assets/img/departamento14-2.jpg",
-      "../../src/assets/img/departamento14-3.jpg",
-      "../../src/assets/img/departamento14-4.jpg",
-      "../../src/assets/img/departamento14-5.jpg",
-      "../../src/assets/img/departamento14-6.jpg"
+      "assets/img/departamento14-1.jpg",
+      "assets/img/departamento14-2.jpg",
+      "assets/img/departamento14-3.jpg",
+      "assets/img/departamento14-4.jpg",
+      "assets/img/departamento14-5.jpg",
+      "assets/img/departamento14-6.jpg"
     ],
     "detalle": {
       "dormitorios": 2,
@@ -365,16 +365,16 @@ const propiedades = [
     "precio": "UF 12.900",
     "categoria": "Venta de Casas",
     "imagenes": [
-      "../../src/assets/img/casa1-1.jpg",
-      "../../src/assets/img/casa1-2.jpg",
-      "../../src/assets/img/casa1-3.jpg",
-      "../../src/assets/img/casa1-4.jpg",
-      "../../src/assets/img/casa1-5.jpg",
-      "../../src/assets/img/casa1-6.jpg",
-      "../../src/assets/img/casa1-7.jpg",
-      "../../src/assets/img/casa1-8.jpg",
-      "../../src/assets/img/casa1-9.jpg",
-      "../../src/assets/img/casa1-10.jpg"
+      "assets/img/casa1-1.jpg",
+      "assets/img/casa1-2.jpg",
+      "assets/img/casa1-3.jpg",
+      "assets/img/casa1-4.jpg",
+      "assets/img/casa1-5.jpg",
+      "assets/img/casa1-6.jpg",
+      "assets/img/casa1-7.jpg",
+      "assets/img/casa1-8.jpg",
+      "assets/img/casa1-9.jpg",
+      "assets/img/casa1-10.jpg"
     ],
     "detalle": {
       "dormitorios": 4,
@@ -393,15 +393,15 @@ const propiedades = [
     "precio": "UF 21.882",
     "categoria": "Venta de Casas",
     "imagenes": [
-      "../../src/assets/img/casa2-1.jpg",
-      "../../src/assets/img/casa2-2.jpg",
-      "../../src/assets/img/casa2-3.jpg",
-      "../../src/assets/img/casa2-4.jpg",
-      "../../src/assets/img/casa2-5.jpg",
-      "../../src/assets/img/casa2-6.jpg",
-      "../../src/assets/img/casa2-7.jpg",
-      "../../src/assets/img/casa2-8.jpg",
-      "../../src/assets/img/casa2-9.jpg"
+      "assets/img/casa2-1.jpg",
+      "assets/img/casa2-2.jpg",
+      "assets/img/casa2-3.jpg",
+      "assets/img/casa2-4.jpg",
+      "assets/img/casa2-5.jpg",
+      "assets/img/casa2-6.jpg",
+      "assets/img/casa2-7.jpg",
+      "assets/img/casa2-8.jpg",
+      "assets/img/casa2-9.jpg"
     ],
     "detalle": {
       "dormitorios": 4,
@@ -420,11 +420,11 @@ const propiedades = [
     "precio": "$34.990.000",
     "categoria": "Venta de Terrenos",
     "imagenes": [
-      "../../src/assets/img/terreno1-1.jpg",
-      "../../src/assets/img/terreno1-2.jpg",
-      "../../src/assets/img/terreno1-3.jpg",
-      "../../src/assets/img/terreno1-4.jpg",
-      "../../src/assets/img/terreno1-5.jpg"
+      "assets/img/terreno1-1.jpg",
+      "assets/img/terreno1-2.jpg",
+      "assets/img/terreno1-3.jpg",
+      "assets/img/terreno1-4.jpg",
+      "assets/img/terreno1-5.jpg"
     ],
     "detalle": {
       "dormitorios": 0,
@@ -443,16 +443,16 @@ const propiedades = [
     "precio": "$650.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento18-1.jpg",
-      "../../src/assets/img/departamento18-2.jpg",
-      "../../src/assets/img/departamento18-3.jpg",
-      "../../src/assets/img/departamento18-4.jpg",
-      "../../src/assets/img/departamento18-5.jpg",
-      "../../src/assets/img/departamento18-6.jpg",
-      "../../src/assets/img/departamento18-7.jpg",
-      "../../src/assets/img/departamento18-8.jpg",
-      "../../src/assets/img/departamento18-9.jpg",
-      "../../src/assets/img/departamento18-10.jpg"
+      "assets/img/departamento18-1.jpg",
+      "assets/img/departamento18-2.jpg",
+      "assets/img/departamento18-3.jpg",
+      "assets/img/departamento18-4.jpg",
+      "assets/img/departamento18-5.jpg",
+      "assets/img/departamento18-6.jpg",
+      "assets/img/departamento18-7.jpg",
+      "assets/img/departamento18-8.jpg",
+      "assets/img/departamento18-9.jpg",
+      "assets/img/departamento18-10.jpg"
     ],
     "detalle": {
       "dormitorios": 2,
@@ -471,12 +471,12 @@ const propiedades = [
     "precio": "$750.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento19-1.jpg",
-      "../../src/assets/img/departamento19-2.jpg",
-      "../../src/assets/img/departamento19-3.jpg",
-      "../../src/assets/img/departamento19-4.jpg",
-      "../../src/assets/img/departamento19-5.jpg",
-      "../../src/assets/img/departamento19-6.jpg"
+      "assets/img/departamento19-1.jpg",
+      "assets/img/departamento19-2.jpg",
+      "assets/img/departamento19-3.jpg",
+      "assets/img/departamento19-4.jpg",
+      "assets/img/departamento19-5.jpg",
+      "assets/img/departamento19-6.jpg"
     ],
     "detalle": {
       "dormitorios": 3,
@@ -495,14 +495,14 @@ const propiedades = [
     "precio": "$510.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento20-1.jpg",
-      "../../src/assets/img/departamento20-2.jpg",
-      "../../src/assets/img/departamento20-3.jpg",
-      "../../src/assets/img/departamento20-4.jpg",
-      "../../src/assets/img/departamento20-5.jpg",
-      "../../src/assets/img/departamento20-6.jpg",
-      "../../src/assets/img/departamento20-7.jpg",
-      "../../src/assets/img/departamento20-8.jpg"
+      "assets/img/departamento20-1.jpg",
+      "assets/img/departamento20-2.jpg",
+      "assets/img/departamento20-3.jpg",
+      "assets/img/departamento20-4.jpg",
+      "assets/img/departamento20-5.jpg",
+      "assets/img/departamento20-6.jpg",
+      "assets/img/departamento20-7.jpg",
+      "assets/img/departamento20-8.jpg"
     ],
     "detalle": {
       "dormitorios": 3,
@@ -521,16 +521,16 @@ const propiedades = [
     "precio": "9.900 UF",
     "categoria": "Venta de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento21-1.jpg",
-      "../../src/assets/img/departamento21-2.jpg",
-      "../../src/assets/img/departamento21-3.jpg",
-      "../../src/assets/img/departamento21-4.jpg",
-      "../../src/assets/img/departamento21-5.jpg",
-      "../../src/assets/img/departamento21-6.jpg",
-      "../../src/assets/img/departamento21-7.jpg",
-      "../../src/assets/img/departamento21-8.jpg",
-      "../../src/assets/img/departamento21-9.jpg",
-      "../../src/assets/img/departamento21-10.jpg"
+      "assets/img/departamento21-1.jpg",
+      "assets/img/departamento21-2.jpg",
+      "assets/img/departamento21-3.jpg",
+      "assets/img/departamento21-4.jpg",
+      "assets/img/departamento21-5.jpg",
+      "assets/img/departamento21-6.jpg",
+      "assets/img/departamento21-7.jpg",
+      "assets/img/departamento21-8.jpg",
+      "assets/img/departamento21-9.jpg",
+      "assets/img/departamento21-10.jpg"
     ],
     "detalle": {
       "dormitorios": 2,
@@ -549,13 +549,13 @@ const propiedades = [
     "precio": "6.500 UF",
     "categoria": "Venta de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento22-1.jpg",
-      "../../src/assets/img/departamento22-2.jpg",
-      "../../src/assets/img/departamento22-3.jpg",
-      "../../src/assets/img/departamento22-4.jpg",
-      "../../src/assets/img/departamento22-5.jpg",
-      "../../src/assets/img/departamento22-6.jpg",
-      "../../src/assets/img/departamento22-7.jpg"
+      "assets/img/departamento22-1.jpg",
+      "assets/img/departamento22-2.jpg",
+      "assets/img/departamento22-3.jpg",
+      "assets/img/departamento22-4.jpg",
+      "assets/img/departamento22-5.jpg",
+      "assets/img/departamento22-6.jpg",
+      "assets/img/departamento22-7.jpg"
     ],
     "detalle": {
       "dormitorios": 1,
@@ -574,13 +574,13 @@ const propiedades = [
     "precio": "$400.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento23-1.jpg",
-      "../../src/assets/img/departamento23-2.jpg",
-      "../../src/assets/img/departamento23-3.jpg",
-      "../../src/assets/img/departamento23-4.jpg",
-      "../../src/assets/img/departamento23-5.jpg",
-      "../../src/assets/img/departamento23-6.jpg",
-      "../../src/assets/img/departamento23-7.jpg"
+      "assets/img/departamento23-1.jpg",
+      "assets/img/departamento23-2.jpg",
+      "assets/img/departamento23-3.jpg",
+      "assets/img/departamento23-4.jpg",
+      "assets/img/departamento23-5.jpg",
+      "assets/img/departamento23-6.jpg",
+      "assets/img/departamento23-7.jpg"
     ],
     "detalle": {
       "dormitorios": 2,
@@ -599,16 +599,16 @@ const propiedades = [
     "precio": "$137.990.000",
     "categoria": "Venta de Terrenos",
     "imagenes": [
-      "../../src/assets/img/terreno2-1.jpg",
-      "../../src/assets/img/terreno2-2.jpg",
-      "../../src/assets/img/terreno2-3.jpg",
-      "../../src/assets/img/terreno2-4.jpg",
-      "../../src/assets/img/terreno2-5.jpg",
-      "../../src/assets/img/terreno2-6.jpg",
-      "../../src/assets/img/terreno2-7.jpg",
-      "../../src/assets/img/terreno2-8.jpg",
-      "../../src/assets/img/terreno2-9.jpg",
-      "../../src/assets/img/terreno2-10.jpg"
+      "assets/img/terreno2-1.jpg",
+      "assets/img/terreno2-2.jpg",
+      "assets/img/terreno2-3.jpg",
+      "assets/img/terreno2-4.jpg",
+      "assets/img/terreno2-5.jpg",
+      "assets/img/terreno2-6.jpg",
+      "assets/img/terreno2-7.jpg",
+      "assets/img/terreno2-8.jpg",
+      "assets/img/terreno2-9.jpg",
+      "assets/img/terreno2-10.jpg"
     ],
     "detalle": {
       "dormitorios": 4,
@@ -627,13 +627,13 @@ const propiedades = [
     "precio": "$400.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento25-1.jpg",
-      "../../src/assets/img/departamento25-2.jpg",
-      "../../src/assets/img/departamento25-3.jpg",
-      "../../src/assets/img/departamento25-4.jpg",
-      "../../src/assets/img/departamento25-5.jpg",
-      "../../src/assets/img/departamento25-6.jpg",
-      "../../src/assets/img/departamento25-7.jpg"
+      "assets/img/departamento25-1.jpg",
+      "assets/img/departamento25-2.jpg",
+      "assets/img/departamento25-3.jpg",
+      "assets/img/departamento25-4.jpg",
+      "assets/img/departamento25-5.jpg",
+      "assets/img/departamento25-6.jpg",
+      "assets/img/departamento25-7.jpg"
     ],
     "detalle": {
       "dormitorios": 2,
@@ -652,16 +652,16 @@ const propiedades = [
     "precio": "$950.000 (sin amoblar $850.000)",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento26-1.jpg",
-      "../../src/assets/img/departamento26-2.jpg",
-      "../../src/assets/img/departamento26-3.jpg",
-      "../../src/assets/img/departamento26-4.jpg",
-      "../../src/assets/img/departamento26-5.jpg",
-      "../../src/assets/img/departamento26-6.jpg",
-      "../../src/assets/img/departamento26-7.jpg",
-      "../../src/assets/img/departamento26-8.jpg",
-      "../../src/assets/img/departamento26-9.jpg",
-      "../../src/assets/img/departamento26-10.jpg"
+      "assets/img/departamento26-1.jpg",
+      "assets/img/departamento26-2.jpg",
+      "assets/img/departamento26-3.jpg",
+      "assets/img/departamento26-4.jpg",
+      "assets/img/departamento26-5.jpg",
+      "assets/img/departamento26-6.jpg",
+      "assets/img/departamento26-7.jpg",
+      "assets/img/departamento26-8.jpg",
+      "assets/img/departamento26-9.jpg",
+      "assets/img/departamento26-10.jpg"
     ],
     "detalle": {
       "dormitorios": 2,
@@ -680,14 +680,14 @@ const propiedades = [
     "precio": "$480.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento27-1.jpg",
-      "../../src/assets/img/departamento27-2.jpg",
-      "../../src/assets/img/departamento27-3.jpg",
-      "../../src/assets/img/departamento27-4.jpg",
-      "../../src/assets/img/departamento27-5.jpg",
-      "../../src/assets/img/departamento27-6.jpg",
-      "../../src/assets/img/departamento27-7.jpg",
-      "../../src/assets/img/departamento27-8.jpg"
+      "assets/img/departamento27-1.jpg",
+      "assets/img/departamento27-2.jpg",
+      "assets/img/departamento27-3.jpg",
+      "assets/img/departamento27-4.jpg",
+      "assets/img/departamento27-5.jpg",
+      "assets/img/departamento27-6.jpg",
+      "assets/img/departamento27-7.jpg",
+      "assets/img/departamento27-8.jpg"
     ],
     "detalle": {
       "dormitorios": 2,
@@ -706,15 +706,15 @@ const propiedades = [
     "precio": "$380.000 (con Estacionamiento y sin estacionamiento $350.000)",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento28-1.jpg",
-      "../../src/assets/img/departamento28-2.jpg",
-      "../../src/assets/img/departamento28-3.jpg",
-      "../../src/assets/img/departamento28-4.jpg",
-      "../../src/assets/img/departamento28-5.jpg",
-      "../../src/assets/img/departamento28-6.jpg",
-      "../../src/assets/img/departamento28-7.jpg",
-      "../../src/assets/img/departamento28-8.jpg",
-      "../../src/assets/img/departamento28-9.jpg"
+      "assets/img/departamento28-1.jpg",
+      "assets/img/departamento28-2.jpg",
+      "assets/img/departamento28-3.jpg",
+      "assets/img/departamento28-4.jpg",
+      "assets/img/departamento28-5.jpg",
+      "assets/img/departamento28-6.jpg",
+      "assets/img/departamento28-7.jpg",
+      "assets/img/departamento28-8.jpg",
+      "assets/img/departamento28-9.jpg"
     ],
     "detalle": {
       "dormitorios": 3,
@@ -733,17 +733,17 @@ const propiedades = [
     "precio": "$550.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento29-1.jpg",
-      "../../src/assets/img/departamento29-2.jpg",
-      "../../src/assets/img/departamento29-3.jpg",
-      "../../src/assets/img/departamento29-4.jpg",
-      "../../src/assets/img/departamento29-5.jpg",
-      "../../src/assets/img/departamento29-6.jpg",
-      "../../src/assets/img/departamento29-7.jpg",
-      "../../src/assets/img/departamento29-8.jpg",
-      "../../src/assets/img/departamento29-9.jpg",
-      "../../src/assets/img/departamento29-10.jpg",
-      "../../src/assets/img/departamento29-11.jpg"
+      "assets/img/departamento29-1.jpg",
+      "assets/img/departamento29-2.jpg",
+      "assets/img/departamento29-3.jpg",
+      "assets/img/departamento29-4.jpg",
+      "assets/img/departamento29-5.jpg",
+      "assets/img/departamento29-6.jpg",
+      "assets/img/departamento29-7.jpg",
+      "assets/img/departamento29-8.jpg",
+      "assets/img/departamento29-9.jpg",
+      "assets/img/departamento29-10.jpg",
+      "assets/img/departamento29-11.jpg"
     ],
     "detalle": {
       "dormitorios": 3,
@@ -762,13 +762,13 @@ const propiedades = [
     "precio": "$350.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento30-1.jpg",
-      "../../src/assets/img/departamento30-2.jpg",
-      "../../src/assets/img/departamento30-3.jpg",
-      "../../src/assets/img/departamento30-4.jpg",
-      "../../src/assets/img/departamento30-5.jpg",
-      "../../src/assets/img/departamento30-6.jpg",
-      "../../src/assets/img/departamento30-7.jpg"
+      "assets/img/departamento30-1.jpg",
+      "assets/img/departamento30-2.jpg",
+      "assets/img/departamento30-3.jpg",
+      "assets/img/departamento30-4.jpg",
+      "assets/img/departamento30-5.jpg",
+      "assets/img/departamento30-6.jpg",
+      "assets/img/departamento30-7.jpg"
     ],
     "detalle": {
       "dormitorios": 1,
@@ -787,12 +787,12 @@ const propiedades = [
     "precio": "$320.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento31-1.jpg",
-      "../../src/assets/img/departamento31-2.jpg",
-      "../../src/assets/img/departamento31-3.jpg",
-      "../../src/assets/img/departamento31-4.jpg",
-      "../../src/assets/img/departamento31-5.jpg",
-      "../../src/assets/img/departamento31-6.jpg"
+      "assets/img/departamento31-1.jpg",
+      "assets/img/departamento31-2.jpg",
+      "assets/img/departamento31-3.jpg",
+      "assets/img/departamento31-4.jpg",
+      "assets/img/departamento31-5.jpg",
+      "assets/img/departamento31-6.jpg"
     ],
     "detalle": {
       "dormitorios": 1,
@@ -811,11 +811,11 @@ const propiedades = [
     "precio": "$350.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento32-1.jpg",
-      "../../src/assets/img/departamento32-2.jpg",
-      "../../src/assets/img/departamento32-3.jpg",
-      "../../src/assets/img/departamento32-4.jpg",
-      "../../src/assets/img/departamento32-5.jpg"
+      "assets/img/departamento32-1.jpg",
+      "assets/img/departamento32-2.jpg",
+      "assets/img/departamento32-3.jpg",
+      "assets/img/departamento32-4.jpg",
+      "assets/img/departamento32-5.jpg"
     ],
     "detalle": {
       "dormitorios": 1,
@@ -834,12 +834,12 @@ const propiedades = [
     "precio": "$550.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento33-1.jpg",
-      "../../src/assets/img/departamento33-3.jpg",
-      "../../src/assets/img/departamento33-4.jpg",
-      "../../src/assets/img/departamento33-5.jpg",
-      "../../src/assets/img/departamento33-6.jpg",
-      "../../src/assets/img/departamento33-7.jpg"
+      "assets/img/departamento33-1.jpg",
+      "assets/img/departamento33-3.jpg",
+      "assets/img/departamento33-4.jpg",
+      "assets/img/departamento33-5.jpg",
+      "assets/img/departamento33-6.jpg",
+      "assets/img/departamento33-7.jpg"
     ],
     "detalle": {
       "dormitorios": 2,
@@ -858,13 +858,13 @@ const propiedades = [
     "precio": "$700.000",
     "categoria": "Arriendo de Casas",
     "imagenes": [
-      "../../src/assets/img/casa34-1.jpg",
-      "../../src/assets/img/casa34-2.jpg",
-      "../../src/assets/img/casa34-3.jpg",
-      "../../src/assets/img/casa34-4.jpg",
-      "../../src/assets/img/casa34-5.jpg",
-      "../../src/assets/img/casa34-6.jpg",
-      "../../src/assets/img/casa34-7.jpg"
+      "assets/img/casa34-1.jpg",
+      "assets/img/casa34-2.jpg",
+      "assets/img/casa34-3.jpg",
+      "assets/img/casa34-4.jpg",
+      "assets/img/casa34-5.jpg",
+      "assets/img/casa34-6.jpg",
+      "assets/img/casa34-7.jpg"
     ],
     "detalle": {
       "dormitorios": 3,
@@ -883,14 +883,14 @@ const propiedades = [
     "precio": "$570.000",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento35-1.jpg",
-      "../../src/assets/img/departamento35-2.jpg",
-      "../../src/assets/img/departamento35-3.jpg",
-      "../../src/assets/img/departamento35-4.jpg",
-      "../../src/assets/img/departamento35-5.jpg",
-      "../../src/assets/img/departamento35-6.jpg",
-      "../../src/assets/img/departamento35-7.jpg",
-      "../../src/assets/img/departamento35-8.jpg"
+      "assets/img/departamento35-1.jpg",
+      "assets/img/departamento35-2.jpg",
+      "assets/img/departamento35-3.jpg",
+      "assets/img/departamento35-4.jpg",
+      "assets/img/departamento35-5.jpg",
+      "assets/img/departamento35-6.jpg",
+      "assets/img/departamento35-7.jpg",
+      "assets/img/departamento35-8.jpg"
     ],
     "detalle": {
       "dormitorios": 3,

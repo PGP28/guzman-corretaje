@@ -3,19 +3,19 @@ const propiedades = [
 
   {
     "id": 1,
-    "nombre": "Exclusivo Departamento en Las Condes",
+    "nombre": "Departamento en Las Condes",
     "ubicacion": "Av. Cristóbal Colón 3206, Las Condes",
     "precio": "39,50 UF",
     "categoria": "Arriendo de Departamentos",
     "imagenes": [
-      "../../src/assets/img/departamento1-1.jpg",
-      "../../src/assets/img/departamento1-2.jpg",
-      "../../src/assets/img/departamento1-3.jpg",
-      "../../src/assets/img/departamento1-4.jpg",
-      "../../src/assets/img/departamento1-5.jpg",
-      "../../src/assets/img/departamento1-6.jpg",
-      "../../src/assets/img/departamento1-7.jpg",
-      "../../src/assets/img/departamento1-8.jpg"
+      "../../public/assets/img/departamento1-1.jpg",
+      "../../public/assets/img/departamento1-2.jpg",
+      "../../public/assets/img/departamento1-3.jpg",
+      "../../public/assets/img/departamento1-4.jpg",
+      "../../public/assets/img/departamento1-5.jpg",
+      "../../public/assets/img/departamento1-6.jpg",
+      "../../public/assets/img/departamento1-7.jpg",
+      "../../public/assets/img/departamento1-8.jpg"
     ],
     "detalle": {
       "dormitorios": 3,
@@ -29,7 +29,7 @@ const propiedades = [
   },
   {
     "id": 2,
-    "nombre": "Exclusivo Departamento en Las Condes",
+    "nombre": "Departamento en Las Condes",
     "ubicacion": "Av. Padre Hurtado Sur 1777, Las Condes",
     "precio": "41 UF",
     "categoria": "Arriendo de Departamentos",
@@ -57,7 +57,7 @@ const propiedades = [
   },
   {
     "id": 3,
-    "nombre": "Exclusivo Departamento en La Florida",
+    "nombre": "Departamento en La Florida",
     "ubicacion": "Froilán Lagos Sepúlveda 1500, La Florida",
     "precio": "$380.000",
     "categoria": "Arriendo de Departamentos",
@@ -81,7 +81,7 @@ const propiedades = [
   },
   {
     "id": 4,
-    "nombre": "Exclusivo Departamento en La Florida",
+    "nombre": "Departamento en La Florida",
     "ubicacion": "Av. Vicuña Mackenna 8570, La Florida",
     "precio": "$405.000",
     "categoria": "Arriendo de Departamentos",
@@ -106,7 +106,7 @@ const propiedades = [
   },
   {
     "id": 5,
-    "nombre": "Exclusivo Departamento en Estación Central",
+    "nombre": "Departamento en Estación Central",
     "ubicacion": "Blanco Garcés 154, Estación Central",
     "precio": "$420.000 con gasto común incluido",
     "categoria": "Arriendo de Departamentos",
@@ -131,7 +131,7 @@ const propiedades = [
   },
   {
     "id": 6,
-    "nombre": "Exclusivo Departamento en Santiago",
+    "nombre": "Departamento en Santiago",
     "ubicacion": "Fray Camilo Henríquez 650, Santiago",
     "precio": "$380.000",
     "categoria": "Arriendo de Departamentos",
@@ -157,7 +157,7 @@ const propiedades = [
   },
   {
     "id": 7,
-    "nombre": "Exclusivo Departamento en Ñuñoa",
+    "nombre": "Departamento en Ñuñoa",
     "ubicacion": "San Eugenio 1551, Ñuñoa",
     "precio": "$460.000",
     "categoria": "Arriendo de Departamentos",
@@ -180,7 +180,7 @@ const propiedades = [
   },
   {
     "id": 8,
-    "nombre": "Exclusivo Departamento en Ñuñoa",
+    "nombre": "Departamento en Ñuñoa",
     "ubicacion": "Zañartu, Ñuñoa",
     "precio": "$520.000",
     "categoria": "Arriendo de Departamentos",
@@ -206,7 +206,7 @@ const propiedades = [
   },
   {
     "id": 9,
-    "nombre": "Exclusivo Departamento en San Miguel",
+    "nombre": "Departamento en San Miguel",
     "ubicacion": "Santa Rosa 5741, San Miguel",
     "precio": "$370.000",
     "categoria": "Arriendo de Departamentos",
@@ -233,7 +233,7 @@ const propiedades = [
   },
   {
     "id": 10,
-    "nombre": "Exclusivo Departamento en Independencia",
+    "nombre": "Departamento en Independencia",
     "ubicacion": "C. El Molino 1845, Independencia",
     "precio": "$270.000",
     "categoria": "Arriendo de Departamentos",
@@ -258,7 +258,7 @@ const propiedades = [
   },
   {
     "id": 11,
-    "nombre": "Exclusivo Departamento en Renca",
+    "nombre": "Departamento en Renca",
     "ubicacion": "Juana Atala De Hirmas 601, Renca",
     "precio": "$390.000",
     "categoria": "Arriendo de Departamentos",
@@ -284,7 +284,7 @@ const propiedades = [
   },
   {
     "id": 12,
-    "nombre": "Exclusivo Departamento en Santiago Centro",
+    "nombre": "Departamento en Santiago Centro",
     "ubicacion": "Huérfanos 1400, Santiago",
     "precio": "$550.000",
     "categoria": "Arriendo de Departamentos",
@@ -310,7 +310,7 @@ const propiedades = [
   },
   {
     "id": 13,
-    "nombre": "Exclusivo Departamento en Ñuñoa",
+    "nombre": "Departamento en Ñuñoa",
     "ubicacion": "Av. Vicuña Mackenna 1432, Ñuñoa",
     "precio": "$550.000",
     "categoria": "Arriendo de Departamentos",
@@ -336,7 +336,7 @@ const propiedades = [
   },
   {
     "id": 14,
-    "nombre": "Exclusivo Departamento en Santiago Centro",
+    "nombre": "Departamento en Santiago Centro",
     "ubicacion": "Carmen 390, Santa Isabel, Santiago",
     "precio": "$490.000 sin estacionamiento, con estacionamiento ($550.000)",
     "categoria": "Arriendo de Departamentos",
@@ -438,7 +438,7 @@ const propiedades = [
   },
   {
     "id": 18,
-    "nombre": "Exclusivo Departamento en Arriendo Ñuñoa",
+    "nombre": "Departamento en Arriendo Ñuñoa",
     "ubicacion": "Calle Los Cerezos 76, Ñuñoa",
     "precio": "$650.000",
     "categoria": "Arriendo de Departamentos",
@@ -466,7 +466,7 @@ const propiedades = [
   },
   {
     "id": 19,
-    "nombre": "Exclusivo Departamento en Pedro de Valdivia, Providencia",
+    "nombre": "Departamento en Pedro de Valdivia, Providencia",
     "ubicacion": "Av. Pedro De Valdivia 2038, Inés de Suárez, Providencia",
     "precio": "$750.000",
     "categoria": "Arriendo de Departamentos",
@@ -490,7 +490,7 @@ const propiedades = [
   },
   {
     "id": 20,
-    "nombre": "Exclusivo Departamento en Arriendo San Miguel",
+    "nombre": "Departamento en Arriendo San Miguel",
     "ubicacion": "Novena Avenida 1226, Ciudad del Niño, San Miguel",
     "precio": "$510.000",
     "categoria": "Arriendo de Departamentos",
@@ -516,7 +516,7 @@ const propiedades = [
   },
   {
     "id": 21,
-    "nombre": "Exclusivo Departamento en Venta Las Condes",
+    "nombre": "Departamento en Venta Las Condes",
     "ubicacion": "Alsacia 152, Las Condes",
     "precio": "9.900 UF",
     "categoria": "Venta de Departamentos",
@@ -544,7 +544,7 @@ const propiedades = [
   },
   {
     "id": 22,
-    "nombre": "Exclusivo Departamento en Venta Las Condes",
+    "nombre": "Departamento en Venta Las Condes",
     "ubicacion": "Alsacia 152, Las Condes",
     "precio": "6.500 UF",
     "categoria": "Venta de Departamentos",
@@ -569,7 +569,7 @@ const propiedades = [
   },
   {
     "id": 23,
-    "nombre": "Exclusivo Departamento en La Cisterna",
+    "nombre": "Departamento en La Cisterna",
     "ubicacion": "Av. Goycolea 602, La Cisterna",
     "precio": "$400.000",
     "categoria": "Arriendo de Departamentos",
@@ -622,7 +622,7 @@ const propiedades = [
   },
   {
     "id": 25,
-    "nombre": "Exclusivo Departamento en Arriendo Lord Cochrane",
+    "nombre": "Departamento en Arriendo Lord Cochrane",
     "ubicacion": "Lord Cochrane 277, Santiago, Chile, Parque Almagro",
     "precio": "$400.000",
     "categoria": "Arriendo de Departamentos",
@@ -647,7 +647,7 @@ const propiedades = [
   },
   {
     "id": 26,
-    "nombre": "Exclusivo Departamento en Arriendo Las Condes Amoblado",
+    "nombre": "Departamento en Arriendo Las Condes Amoblado",
     "ubicacion": "Los Vikingos 6300 - 6600, Metro Manquehue - Apumanque, Las Condes",
     "precio": "$950.000 (sin amoblar $850.000)",
     "categoria": "Arriendo de Departamentos",
@@ -675,7 +675,7 @@ const propiedades = [
   },
   {
     "id": 27,
-    "nombre": "Exclusivo Departamento en Arriendo Independencia",
+    "nombre": "Departamento en Arriendo Independencia",
     "ubicacion": "Avenida Independencia 5081, Conchali",
     "precio": "$480.000",
     "categoria": "Arriendo de Departamentos",
@@ -701,7 +701,7 @@ const propiedades = [
   },
   {
     "id": 28,
-    "nombre": "Exclusivo Departamento en Arriendo San Miguel",
+    "nombre": "Departamento en Arriendo San Miguel",
     "ubicacion": "Av. Sta. Rosa 5741, Ciudad del Niño, San Miguel",
     "precio": "$380.000 (con Estacionamiento y sin estacionamiento $350.000)",
     "categoria": "Arriendo de Departamentos",
@@ -728,7 +728,7 @@ const propiedades = [
   },
   {
     "id": 29,
-    "nombre": "Exclusivo Departamento en Arriendo La Florida",
+    "nombre": "Departamento en Arriendo La Florida",
     "ubicacion": "Walker Martinez Con Colombia Sn, La Florida",
     "precio": "$550.000",
     "categoria": "Arriendo de Departamentos",
@@ -757,7 +757,7 @@ const propiedades = [
   },
   {
     "id": 30,
-    "nombre": "Exclusivo Departamento en Arriendo Santiago Centro",
+    "nombre": "Departamento en Arriendo Santiago Centro",
     "ubicacion": "Av. Vicuña Mackenna 563, Santa Isabel, Santiago",
     "precio": "$350.000",
     "categoria": "Arriendo de Departamentos",
@@ -782,7 +782,7 @@ const propiedades = [
   },
   {
     "id": 31,
-    "nombre": "Exclusivo Departamento en Arriendo Santiago Centro",
+    "nombre": "Departamento en Arriendo Santiago Centro",
     "ubicacion": "Lord Cochrane / Esq. Eleuterio Ramírez",
     "precio": "$320.000",
     "categoria": "Arriendo de Departamentos",
@@ -806,7 +806,7 @@ const propiedades = [
   },
   {
     "id": 32,
-    "nombre": "Exclusivo Departamento en Arriendo en La Florida Semi Amoblado Nuevo",
+    "nombre": "Departamento en Arriendo en La Florida Semi Amoblado Nuevo",
     "ubicacion": "Okinawa 6930, La Florida",
     "precio": "$350.000",
     "categoria": "Arriendo de Departamentos",
@@ -829,7 +829,7 @@ const propiedades = [
   },
   {
     "id": 33,
-    "nombre": "Exclusivo Departamento en Arriendo en La Florida",
+    "nombre": "Departamento en Arriendo en La Florida",
     "ubicacion": "Lago Pirihueico 6300 - 6600, Plaza Vespucio, La Florida",
     "precio": "$550.000",
     "categoria": "Arriendo de Departamentos",
@@ -853,7 +853,7 @@ const propiedades = [
   },
   {
     "id": 34,
-    "nombre": "Exclusivo condominio de casa en Arriendo en La Florida",
+    "nombre": "condominio de casa en Arriendo en La Florida",
     "ubicacion": "La Florida , Alto",
     "precio": "$700.000",
     "categoria": "Arriendo de Casas",
@@ -878,7 +878,7 @@ const propiedades = [
   },
   {
     "id": 35,
-    "nombre": "Exclusivo Departamento en Arriendo La Florida",
+    "nombre": "Departamento en Arriendo La Florida",
     "ubicacion": "Av. Vicuña Mackenna 6187, Metro Mirador, La Florida",
     "precio": "$570.000",
     "categoria": "Arriendo de Departamentos",
@@ -902,4 +902,5 @@ const propiedades = [
       "descripcion": "Departamento con 3 dormitorios, 2 baños, cocina equipada, terraza, estacionamiento y bodega. Áreas comunes incluyen piscina, quincho, gimnasio, sala de eventos y bicicleteros."
     }
   }
-]
+];
+export default propiedades;

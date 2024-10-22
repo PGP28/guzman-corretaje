@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import './Home.css';  // Mantener el resto de los estilos en Home.css
 import houseIcon from '../assets/images/LOGOCASA.png'; // Icono de casa
 import TarjetasPropiedades from '../components/TarjetasPropiedades'; // Importar componente de tarjetas
+import propiedades from '../components/propiedades';
 import NavigationBar from '../components/Navbar';  // Importar el Navbar
 import backgroundImage from '../assets/images/ENCABEZADO-21.png'; // Imagen de fondo para la parte superior
 import Testimonios from '../components/Testimonios';
@@ -10,17 +11,41 @@ import VenderPropiedad from '../components/VenderPropiedad';
 import AccesoRapido from '../components/AccesoRapido';
 
 const Home = () => {
+
+  const [propiedadesFiltradas, setPropiedadesFiltradas] = useState([]);
+
+  useEffect(() => {
+    // Filtrar solo las propiedades en arriendo y que sean de casas o departamentos
+    const filtradas = propiedades
+      .filter(prop => 
+        prop.categoria.includes('Arriendo') && 
+        (prop.categoria.includes('Departamentos') || prop.categoria.includes('Casas'))
+      )
+      .sort((a, b) => {
+        // Convertir los precios a un valor numérico para poder ordenar
+        const precioA = parseFloat(a.precio.replace(/[^0-9.-]+/g,""));  // Remover caracteres no numéricos
+        const precioB = parseFloat(b.precio.replace(/[^0-9.-]+/g,""));
+        return precioB - precioA;  // Ordenar de mayor a menor precio
+      })
+      .slice(0, 6);  // Mostrar solo las primeras 6 propiedades
+      
+
+    // Almacenar las propiedades filtradas y ordenadas
+    setPropiedadesFiltradas(filtradas);
+  }, []);
+
+
   return (
     <div>
       {/* Agregando el Navbar */}
       {/* <NavigationBar /> */}
 
       {/* Primera Sección con imagen de fondo */}
-      <div 
+      <div
         className="home-container"
         style={{
           backgroundImage: `url(${backgroundImage})`,  // Imagen de fondo
-          backgroundSize: 'cover', 
+          backgroundSize: 'cover',
           backgroundPosition: 'center',
           height: '50vh',
           position: 'relative'
@@ -39,13 +64,13 @@ const Home = () => {
             {/* Botones grandes */}
             <Row className="justify-content-center mt-4">
               <Col md={3}>
-                <Button variant="primary"  className="btn-block">Comprar / Arrendar</Button>
+                <Button variant="primary" className="btn-block">Comprar / Arrendar</Button>
               </Col>
               <Col md={3}>
-                <Button variant="primary"  className="btn-block">Tipo de propiedad</Button>
+                <Button variant="primary" className="btn-block">Tipo de propiedad</Button>
               </Col>
               <Col md={3}>
-                <Button variant="primary"  className="btn-block">Región</Button>
+                <Button variant="primary" className="btn-block">Región</Button>
               </Col>
             </Row>
 
@@ -76,14 +101,14 @@ const Home = () => {
             <img src={houseIcon} alt="Icono Casa" className="contact-house-icon" />
           </Col>
           <Container>
-          <Col md={8} className="text-left">
-            <span>Contáctanos directamente en nuestro <strong>Whatsapp</strong></span>
-          </Col>
+            <Col md={8} className="text-left">
+              <span>Contáctanos directamente en nuestro <strong>Whatsapp</strong></span>
+            </Col>
           </Container>
           <Col md={3} className="text-right">
             <Button variant="light" size="lg">contactar</Button>
           </Col>
-          
+
         </Row>
 
         {/* Sección de propiedades destacadas */}
@@ -94,9 +119,9 @@ const Home = () => {
           </Col>
         </Row>
       </div>
-      
-      
-      <TarjetasPropiedades />
+
+
+      <TarjetasPropiedades propiedades={propiedadesFiltradas} />
       <Testimonios />
       <VenderPropiedad />
       <AccesoRapido />

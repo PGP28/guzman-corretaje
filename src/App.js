@@ -1,6 +1,6 @@
 // src/App.js
 import React from 'react';
-import './App.css';
+//import './App.css';
 import AppRoutes from './AppRoutes';
 import Footer from './components/Footer';
 import Construccion from './components/Construccion';

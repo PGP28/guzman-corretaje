@@ -4,20 +4,71 @@ import propiedades from '../components/propiedades';
 
 function Arriendo() {
   const [propiedadesArriendo, setPropiedadesArriendo] = useState([]);
+  const [paginaActual, setPaginaActual] = useState(1);
+  const propiedadesPorPagina = 6;
 
   useEffect(() => {
-    // Filtra solo las propiedades en arriendo
+    // Filtrar solo las propiedades en arriendo
     const filtradas = propiedades.filter((prop) => prop.categoria.includes('Arriendo'));
     setPropiedadesArriendo(filtradas);
   }, []);
 
+  // Obtener propiedades para la página actual
+  const indexUltimaPropiedad = paginaActual * propiedadesPorPagina;
+  const indexPrimeraPropiedad = indexUltimaPropiedad - propiedadesPorPagina;
+  const propiedadesPaginaActual = propiedadesArriendo.slice(indexPrimeraPropiedad, indexUltimaPropiedad);
+
+  // Cambiar página
+  const cambiarPagina = (numeroPagina) => setPaginaActual(numeroPagina);
+
+  // Crear los items de la paginación
+  const totalPaginas = Math.ceil(propiedadesArriendo.length / propiedadesPorPagina);
+  const itemsPaginacion = [];
+  for (let i = 1; i <= totalPaginas; i++) {
+    itemsPaginacion.push(
+      <Pagination.Item 
+        key={i} 
+        active={i === paginaActual} 
+        onClick={() => cambiarPagina(i)}>
+        {i}
+      </Pagination.Item>
+    );
+  }
+
+  // Contadores para tipo de propiedad y regiones
+  const contadorTipos = {
+    Casas: propiedadesArriendo.filter((prop) => prop.tipo === 'Casa').length,
+    Departamentos: propiedadesArriendo.filter((prop) => prop.tipo === 'Departamento').length,
+    Terrenos: propiedadesArriendo.filter((prop) => prop.tipo === 'Terreno').length,
+    Oficinas: propiedadesArriendo.filter((prop) => prop.tipo === 'Oficina').length,
+    Locales: propiedadesArriendo.filter((prop) => prop.tipo === 'Local').length,
+  };
+
+  const contadorRegiones = {
+    "Región de Arica y Parinacota": propiedadesArriendo.filter((prop) => prop.region === 'Región de Arica y Parinacota').length,
+    "Región de Tarapacá": propiedadesArriendo.filter((prop) => prop.region === 'Región de Tarapacá').length,
+    "Región de Antofagasta": propiedadesArriendo.filter((prop) => prop.region === 'Región de Antofagasta').length,
+    "Región de Atacama": propiedadesArriendo.filter((prop) => prop.region === 'Región de Atacama').length,
+    "Región de Coquimbo": propiedadesArriendo.filter((prop) => prop.region === 'Región de Coquimbo').length,
+    "Región de Valparaíso": propiedadesArriendo.filter((prop) => prop.region === 'Región de Valparaíso').length,
+    "Región Metropolitana": propiedadesArriendo.filter((prop) => prop.region === 'Región Metropolitana').length,
+    "Región del Libertador General Bernardo O’Higgins": propiedadesArriendo.filter((prop) => prop.region === 'Región del Libertador General Bernardo O’Higgins').length,
+    "Región del Maule": propiedadesArriendo.filter((prop) => prop.region === 'Región del Maule').length,
+    "Región de Ñuble": propiedadesArriendo.filter((prop) => prop.region === 'Región de Ñuble').length,
+    "Región del Biobío": propiedadesArriendo.filter((prop) => prop.region === 'Región del Biobío').length,
+    "Región de La Araucanía": propiedadesArriendo.filter((prop) => prop.region === 'Región de La Araucanía').length,
+    "Región de Los Ríos": propiedadesArriendo.filter((prop) => prop.region === 'Región de Los Ríos').length,
+    "Región de Los Lagos": propiedadesArriendo.filter((prop) => prop.region === 'Región de Los Lagos').length,
+    "Región de Aysén": propiedadesArriendo.filter((prop) => prop.region === 'Región de Aysén').length,
+    "Región de Magallanes y la Antártica Chilena": propiedadesArriendo.filter((prop) => prop.region === 'Región de Magallanes y la Antártica Chilena').length,
+};
+
+  
+
   return (
     <>
-      {/* Renderizar las propiedades */}
-      
-
       <Container fluid>
-        {/* Row for Search Buttons */}
+        {/* Botones de búsqueda */}
         <Row className="py-3 justify-content-center">
           <Col md="auto">
             <Button variant="primary" className="mr-2">Ubicación</Button>
@@ -27,11 +78,11 @@ function Arriendo() {
           </Col>
         </Row>
 
-        {/* Row for Title and Property Count */}
+        {/* Título y cantidad de propiedades */}
         <Row className="py-3">
           <Col md={8}>
-            <h2 className="text-primary">Venta de Propiedades Residenciales en Chile</h2>
-            <p>7182 propiedades encontradas (página 1 de 300)</p>
+            <h2 className="text-primary">Propiedades en Arriendo en Chile</h2>
+            <p>{propiedadesArriendo.length} propiedades encontradas</p>
           </Col>
           <Col md={4} className="text-right">
             <Button variant="outline-secondary" className="mr-2">Ordenar</Button>
@@ -40,81 +91,62 @@ function Arriendo() {
         </Row>
 
         <Row>
-          {/* Column for Filters (Left side) */}
+          {/* Columna de filtros */}
           <Col md={3}>
+            {/* Filtros por tipo de propiedad */}
             <Card className="mb-4">
               <Card.Header>Tipo de propiedades</Card.Header>
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <i className="fa fa-home mr-2"></i> Casas
-                  <span className="badge badge-primary float-right">346</span>
+                  <span className="badge badge-primary float-right">{contadorTipos.Casas}</span>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <i className="fa fa-building mr-2"></i> Departamentos
-                  <span className="badge badge-primary float-right">450</span>
+                  <span className="badge badge-primary float-right">{contadorTipos.Departamentos}</span>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <i className="fa fa-square mr-2"></i> Terrenos
-                  <span className="badge badge-primary float-right">200</span>
+                  <span className="badge badge-primary float-right">{contadorTipos.Terrenos}</span>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <i className="fa fa-briefcase mr-2"></i> Oficinas
-                  <span className="badge badge-primary float-right">234</span>
+                  <span className="badge badge-primary float-right">{contadorTipos.Oficinas}</span>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <i className="fa fa-store mr-2"></i> Locales
-                  <span className="badge badge-primary float-right">369</span>
+                  <span className="badge badge-primary float-right">{contadorTipos.Locales}</span>
                 </ListGroup.Item>
               </ListGroup>
             </Card>
 
+            {/* Filtros por región */}
             <Card>
               <Card.Header>Regiones en Chile</Card.Header>
               <ListGroup variant="flush">
-                <ListGroup.Item>
-                  Región Metropolitana
-                  <span className="badge badge-primary float-right">369</span>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  Región de Valparaíso
-                  <span className="badge badge-primary float-right">006</span>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  Región de Araucanía
-                  <span className="badge badge-primary float-right">046</span>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  Región de Los Ríos
-                  <span className="badge badge-primary float-right">300</span>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  Región de Los Lagos
-                  <span className="badge badge-primary float-right">006</span>
-                </ListGroup.Item>
+                {Object.keys(contadorRegiones).map((region) => (
+                  <ListGroup.Item key={region}>
+                    {region}
+                    <span className="badge badge-primary float-right">{contadorRegiones[region]}</span>
+                  </ListGroup.Item>
+                ))}
               </ListGroup>
             </Card>
           </Col>
 
-          {/* Column for Cards */}
+          {/* Columna de propiedades (Cards) */}
           <Col md={9}>
             <Row>
-              {propiedadesArriendo.map((prop) => (
+              {propiedadesPaginaActual.map((prop) => (
                 <Col md={4} key={prop.id}>
                   <Card className="mb-4">
-                    {/* Imagen de la propiedad */}
                     <Card.Img variant="top" src={prop.imagenes[0]} alt={prop.nombre} />
-
                     <Card.Body>
-                      {/* Título con el nombre de la propiedad */}
                       <Card.Title className="text-primary">{prop.nombre}</Card.Title>
-
-                      {/* Ubicación y precio */}
                       <Card.Text>
                         {prop.ubicacion} <br />
                         Precio: {prop.precio}
                       </Card.Text>
-
-                      {/* Información adicional de la propiedad */}
                       <div className="d-flex justify-content-between">
                         <span><i className="fa fa-building mr-1"></i> {prop.detalle.dormitorios} Dormitorios</span>
                         <span><i className="fa fa-bath mr-1"></i> {prop.detalle.baños} Baños</span>
@@ -128,40 +160,21 @@ function Arriendo() {
           </Col>
         </Row>
 
-        {/* Línea divisora */}
+        {/* Línea divisoria */}
         <Row className="mt-4">
-          <Col md={12}>
-            <hr />
-          </Col>
+          <Col md={12}><hr /></Col>
         </Row>
 
-        {/* Pagination with Results Info */}
+        {/* Paginación */}
         <Row className="mt-4">
-          <Col md={6} className="text-left">
-            <p>Mostrando página 1 de 300 (7182 resultados)</p>
-          </Col>
-          <Col md={6} className="text-right">
-            <Pagination className="justify-content-end">
-              <Pagination.First />
-              <Pagination.Prev />
-              <Pagination.Item active>{1}</Pagination.Item>
-              <Pagination.Item>{2}</Pagination.Item>
-              <Pagination.Item>{3}</Pagination.Item>
-              <Pagination.Item>{4}</Pagination.Item>
-              <Pagination.Item>{5}</Pagination.Item>
-              <Pagination.Item>{6}</Pagination.Item>
-              <Pagination.Ellipsis />
-              <Pagination.Item>{369}</Pagination.Item>
-              <Pagination.Next />
-              <Pagination.Last />
+          <Col className="d-flex justify-content-end">
+            <Pagination>
+              <Pagination.First onClick={() => cambiarPagina(1)} disabled={paginaActual === 1} />
+              <Pagination.Prev onClick={() => cambiarPagina(paginaActual - 1)} disabled={paginaActual === 1} />
+              {itemsPaginacion}
+              <Pagination.Next onClick={() => cambiarPagina(paginaActual + 1)} disabled={paginaActual === totalPaginas} />
+              <Pagination.Last onClick={() => cambiarPagina(totalPaginas)} disabled={paginaActual === totalPaginas} />
             </Pagination>
-          </Col>
-        </Row>
-
-        {/* Línea divisora */}
-        <Row className="mt-2">
-          <Col md={12}>
-            <hr />
           </Col>
         </Row>
       </Container>

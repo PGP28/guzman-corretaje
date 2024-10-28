@@ -7,6 +7,7 @@ const propiedades = [
     "ubicacion": "Av. Cristóbal Colón 3206, Las Condes",
     "precio": "39,50 UF",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento1-1.jpg",
       "assets/img/departamento1-2.jpg",
@@ -33,6 +34,7 @@ const propiedades = [
     "ubicacion": "Av. Padre Hurtado Sur 1777, Las Condes",
     "precio": "41 UF",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento2-1.jpg",
       "assets/img/departamento2-2.jpg",
@@ -61,6 +63,7 @@ const propiedades = [
     "ubicacion": "Froilán Lagos Sepúlveda 1500, La Florida",
     "precio": "$380.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento3-1.jpg",
       "assets/img/departamento3-2.jpg",
@@ -85,6 +88,7 @@ const propiedades = [
     "ubicacion": "Av. Vicuña Mackenna 8570, La Florida",
     "precio": "$405.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento4-1.jpg",
       "assets/img/departamento4-2.jpg",
@@ -110,6 +114,7 @@ const propiedades = [
     "ubicacion": "Blanco Garcés 154, Estación Central",
     "precio": "$420.000 con gasto común incluido",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento5-1.jpg",
       "assets/img/departamento5-2.jpg",
@@ -135,6 +140,7 @@ const propiedades = [
     "ubicacion": "Fray Camilo Henríquez 650, Santiago",
     "precio": "$380.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento6-1.jpg",
       "assets/img/departamento6-2.jpg",
@@ -161,6 +167,7 @@ const propiedades = [
     "ubicacion": "San Eugenio 1551, Ñuñoa",
     "precio": "$460.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento7-1.jpg",
       "assets/img/departamento7-2.jpg",
@@ -184,6 +191,7 @@ const propiedades = [
     "ubicacion": "Zañartu, Ñuñoa",
     "precio": "$520.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento8-1.jpg",
       "assets/img/departamento8-2.jpg",
@@ -210,6 +218,7 @@ const propiedades = [
     "ubicacion": "Santa Rosa 5741, San Miguel",
     "precio": "$370.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento9-1.jpg",
       "assets/img/departamento9-2.jpg",
@@ -237,6 +246,7 @@ const propiedades = [
     "ubicacion": "C. El Molino 1845, Independencia",
     "precio": "$270.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento10-1.jpg",
       "assets/img/departamento10-2.jpg",
@@ -262,6 +272,7 @@ const propiedades = [
     "ubicacion": "Juana Atala De Hirmas 601, Renca",
     "precio": "$390.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento11-1.jpg",
       "assets/img/departamento11-2.jpg",
@@ -288,6 +299,7 @@ const propiedades = [
     "ubicacion": "Huérfanos 1400, Santiago",
     "precio": "$550.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento12-1.jpg",
       "assets/img/departamento12-2.jpg",
@@ -314,6 +326,7 @@ const propiedades = [
     "ubicacion": "Av. Vicuña Mackenna 1432, Ñuñoa",
     "precio": "$550.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento13-1.jpg",
       "assets/img/departamento13-2.jpg",
@@ -340,6 +353,7 @@ const propiedades = [
     "ubicacion": "Carmen 390, Santa Isabel, Santiago",
     "precio": "$490.000 sin estacionamiento, con estacionamiento ($550.000)",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento14-1.jpg",
       "assets/img/departamento14-2.jpg",
@@ -360,10 +374,11 @@ const propiedades = [
   },
   {
     "id": 15,
-    "nombre": "Amplia Casa en Condominio Borde Blanco I, Chicureo - Colina",
+    "nombre": "Casa en Condominio Borde Blanco I, Chicureo - Colina",
     "ubicacion": "Chicureo, Colina",
     "precio": "UF 12.900",
     "categoria": "Venta de Casas",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/casa1-1.jpg",
       "assets/img/casa1-2.jpg",
@@ -388,10 +403,11 @@ const propiedades = [
   },
   {
     "id": 16,
-    "nombre": "Exclusiva Casa en Venta - La Reina",
+    "nombre": "Casa en Venta - La Reina",
     "ubicacion": "Av. Príncipe de Gales, La Reina",
     "precio": "UF 21.882",
     "categoria": "Venta de Casas",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/casa2-1.jpg",
       "assets/img/casa2-2.jpg",
@@ -419,6 +435,7 @@ const propiedades = [
     "ubicacion": "Litueche, Pichilemu",
     "precio": "$34.990.000",
     "categoria": "Venta de Terrenos",
+    "region": "Región del Libertador General Bernardo O’Higgins",
     "imagenes": [
       "assets/img/terreno1-1.jpg",
       "assets/img/terreno1-2.jpg",
@@ -442,6 +459,7 @@ const propiedades = [
     "ubicacion": "Calle Los Cerezos 76, Ñuñoa",
     "precio": "$650.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento18-1.jpg",
       "assets/img/departamento18-2.jpg",
@@ -470,6 +488,7 @@ const propiedades = [
     "ubicacion": "Av. Pedro De Valdivia 2038, Inés de Suárez, Providencia",
     "precio": "$750.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento19-1.jpg",
       "assets/img/departamento19-2.jpg",
@@ -494,6 +513,7 @@ const propiedades = [
     "ubicacion": "Novena Avenida 1226, Ciudad del Niño, San Miguel",
     "precio": "$510.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento20-1.jpg",
       "assets/img/departamento20-2.jpg",
@@ -520,6 +540,7 @@ const propiedades = [
     "ubicacion": "Alsacia 152, Las Condes",
     "precio": "9.900 UF",
     "categoria": "Venta de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento21-1.jpg",
       "assets/img/departamento21-2.jpg",
@@ -548,6 +569,7 @@ const propiedades = [
     "ubicacion": "Alsacia 152, Las Condes",
     "precio": "6.500 UF",
     "categoria": "Venta de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento22-1.jpg",
       "assets/img/departamento22-2.jpg",
@@ -573,6 +595,7 @@ const propiedades = [
     "ubicacion": "Av. Goycolea 602, La Cisterna",
     "precio": "$400.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento23-1.jpg",
       "assets/img/departamento23-2.jpg",
@@ -598,6 +621,7 @@ const propiedades = [
     "ubicacion": "Litueche, Pichilemu",
     "precio": "$137.990.000",
     "categoria": "Venta de Terrenos",
+    "region": "Región del Libertador General Bernardo O’Higgins",
     "imagenes": [
       "assets/img/terreno2-1.jpg",
       "assets/img/terreno2-2.jpg",
@@ -626,6 +650,7 @@ const propiedades = [
     "ubicacion": "Lord Cochrane 277, Santiago, Chile, Parque Almagro",
     "precio": "$400.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento25-1.jpg",
       "assets/img/departamento25-2.jpg",
@@ -651,6 +676,7 @@ const propiedades = [
     "ubicacion": "Los Vikingos 6300 - 6600, Metro Manquehue - Apumanque, Las Condes",
     "precio": "$950.000 (sin amoblar $850.000)",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento26-1.jpg",
       "assets/img/departamento26-2.jpg",
@@ -679,6 +705,7 @@ const propiedades = [
     "ubicacion": "Avenida Independencia 5081, Conchali",
     "precio": "$480.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento27-1.jpg",
       "assets/img/departamento27-2.jpg",
@@ -705,6 +732,7 @@ const propiedades = [
     "ubicacion": "Av. Sta. Rosa 5741, Ciudad del Niño, San Miguel",
     "precio": "$380.000 (con Estacionamiento y sin estacionamiento $350.000)",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento28-1.jpg",
       "assets/img/departamento28-2.jpg",
@@ -732,6 +760,7 @@ const propiedades = [
     "ubicacion": "Walker Martinez Con Colombia Sn, La Florida",
     "precio": "$550.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento29-1.jpg",
       "assets/img/departamento29-2.jpg",
@@ -761,6 +790,7 @@ const propiedades = [
     "ubicacion": "Av. Vicuña Mackenna 563, Santa Isabel, Santiago",
     "precio": "$350.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento30-1.jpg",
       "assets/img/departamento30-2.jpg",
@@ -786,6 +816,7 @@ const propiedades = [
     "ubicacion": "Lord Cochrane / Esq. Eleuterio Ramírez",
     "precio": "$320.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento31-1.jpg",
       "assets/img/departamento31-2.jpg",
@@ -810,6 +841,7 @@ const propiedades = [
     "ubicacion": "Okinawa 6930, La Florida",
     "precio": "$350.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento32-1.jpg",
       "assets/img/departamento32-2.jpg",
@@ -833,6 +865,7 @@ const propiedades = [
     "ubicacion": "Lago Pirihueico 6300 - 6600, Plaza Vespucio, La Florida",
     "precio": "$550.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento33-1.jpg",
       "assets/img/departamento33-3.jpg",
@@ -853,10 +886,11 @@ const propiedades = [
   },
   {
     "id": 34,
-    "nombre": "condominio de casa en Arriendo en La Florida",
+    "nombre": "Casa en Arriendo en La Florida",
     "ubicacion": "La Florida , Alto",
     "precio": "$700.000",
     "categoria": "Arriendo de Casas",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/casa34-1.jpg",
       "assets/img/casa34-2.jpg",
@@ -873,7 +907,7 @@ const propiedades = [
       "gastos_comunes": "No especificado",
       "estacionamientos": 1,
       "bodega": 0,
-      "descripcion": "Casa con 3 dormitorios, 2 baños, cocina integrada con logia, patio y termo eléctrico. Áreas comunes no especificadas."
+      "descripcion": "Casa en condominio con 3 dormitorios, 2 baños, cocina integrada con logia, patio y termo eléctrico. Áreas comunes no especificadas."
     }
   },
   {
@@ -882,6 +916,7 @@ const propiedades = [
     "ubicacion": "Av. Vicuña Mackenna 6187, Metro Mirador, La Florida",
     "precio": "$570.000",
     "categoria": "Arriendo de Departamentos",
+    "region": "Región Metropolitana",
     "imagenes": [
       "assets/img/departamento35-1.jpg",
       "assets/img/departamento35-2.jpg",

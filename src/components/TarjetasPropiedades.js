@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Card, Pagination } from 'react-bootstrap';
+import { Container, Row, Col, Card } from 'react-bootstrap';
 
 const TarjetasPropiedades = ({ propiedades }) => {
   return (

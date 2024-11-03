@@ -11,6 +11,7 @@ import EnVenta from './pages/EnVenta';
 import Terrenos from './pages/Terrenos';
 import PageNotFound from './pages/PageNotFound';
 
+
 const AppRoutes = () => (
   <Router>
     <NavigationBar/>
@@ -24,6 +25,8 @@ const AppRoutes = () => (
 
       <Route path="/Construccion" element={<Construccion />} />
       <Route path="/PageNotFound" element={<PageNotFound />} />
+      
+
     </Routes>
   </Router>
 );

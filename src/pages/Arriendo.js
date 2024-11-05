@@ -1,6 +1,80 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, ListGroup, Pagination } from 'react-bootstrap';
 import propiedades from '../components/propiedades';
+import AccesoRapido from '../components/AccesoRapido';
+
+// Subcomponente para cada tarjeta de propiedad con controles personalizados
+function PropiedadCard({ propiedad }) {
+  const [imagenIndex, setImagenIndex] = useState(0);
+
+  const siguienteImagen = () => {
+    setImagenIndex((prevIndex) =>
+      prevIndex === propiedad.imagenes.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const anteriorImagen = () => {
+    setImagenIndex((prevIndex) =>
+      prevIndex === 0 ? propiedad.imagenes.length - 1 : prevIndex - 1
+    );
+  };
+
+  return (
+    <Card className="mb-4">
+      <div className="position-relative">
+        <Card.Img
+          variant="top"
+          src={propiedad.imagenes[imagenIndex]}
+          alt={propiedad.nombre}
+        />
+        <button
+          onClick={anteriorImagen}
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '10px',
+            transform: 'translateY(-50%)',
+            fontSize: '1.5rem',
+            color: 'white',
+            backgroundColor: 'transparent',
+            border: 'none',
+            cursor: 'pointer'
+          }}
+        >
+          {'<'}
+        </button>
+        <button
+          onClick={siguienteImagen}
+          style={{
+            position: 'absolute',
+            top: '50%',
+            right: '10px',
+            transform: 'translateY(-50%)',
+            fontSize: '1.5rem',
+            color: 'white',
+            backgroundColor: 'transparent',
+            border: 'none',
+            cursor: 'pointer'
+          }}
+        >
+          {'>'}
+        </button>
+      </div>
+      <Card.Body>
+        <Card.Title className="text-primary">{propiedad.nombre}</Card.Title>
+        <Card.Text>
+          {propiedad.ubicacion} <br />
+          Precio: {propiedad.precio}
+        </Card.Text>
+        <div className="d-flex justify-content-between">
+          <span><i className="fa fa-building mr-1"></i> {propiedad.detalle.dormitorios} Dormitorios</span>
+          <span><i className="fa fa-bath mr-1"></i> {propiedad.detalle.baños} Baños</span>
+          <span><i className="fa fa-ruler-combined mr-1"></i> {propiedad.detalle.metros_cuadrados} m²</span>
+        </div>
+      </Card.Body>
+    </Card>
+  );
+}
 
 function Arriendo() {
   const [propiedadesArriendo, setPropiedadesArriendo] = useState([]);
@@ -8,62 +82,42 @@ function Arriendo() {
   const propiedadesPorPagina = 6;
 
   useEffect(() => {
-    // Filtrar solo las propiedades en arriendo
     const filtradas = propiedades.filter((prop) => prop.categoria.includes('Arriendo'));
     setPropiedadesArriendo(filtradas);
   }, []);
 
-  // Obtener propiedades para la página actual
   const indexUltimaPropiedad = paginaActual * propiedadesPorPagina;
   const indexPrimeraPropiedad = indexUltimaPropiedad - propiedadesPorPagina;
   const propiedadesPaginaActual = propiedadesArriendo.slice(indexPrimeraPropiedad, indexUltimaPropiedad);
 
-  // Cambiar página
   const cambiarPagina = (numeroPagina) => setPaginaActual(numeroPagina);
 
-  // Crear los items de la paginación
   const totalPaginas = Math.ceil(propiedadesArriendo.length / propiedadesPorPagina);
   const itemsPaginacion = [];
   for (let i = 1; i <= totalPaginas; i++) {
     itemsPaginacion.push(
-      <Pagination.Item 
-        key={i} 
-        active={i === paginaActual} 
-        onClick={() => cambiarPagina(i)}>
+      <Pagination.Item
+        key={i}
+        active={i === paginaActual}
+        onClick={() => cambiarPagina(i)}
+      >
         {i}
       </Pagination.Item>
     );
   }
 
-  // Contadores para tipo de propiedad y regiones
+  // Crear el contador de tipos de propiedad usando el atributo 'nombre'
   const contadorTipos = {
-    Casas: propiedadesArriendo.filter((prop) => prop.tipo === 'Casa').length,
-    Departamentos: propiedadesArriendo.filter((prop) => prop.tipo === 'Departamento').length,
-    Terrenos: propiedadesArriendo.filter((prop) => prop.tipo === 'Terreno').length,
-    Oficinas: propiedadesArriendo.filter((prop) => prop.tipo === 'Oficina').length,
-    Locales: propiedadesArriendo.filter((prop) => prop.tipo === 'Local').length,
+    Casa: propiedadesArriendo.filter((prop) => prop.nombre.includes('Casa')).length,
+    Departamento: propiedadesArriendo.filter((prop) => prop.nombre.includes('Departamento')).length,
+    Terreno: propiedadesArriendo.filter((prop) => prop.nombre.includes('Terreno')).length,
+    Oficina: propiedadesArriendo.filter((prop) => prop.nombre.includes('Oficina')).length,
   };
 
-  const contadorRegiones = {
-    "Región de Arica y Parinacota": propiedadesArriendo.filter((prop) => prop.region === 'Región de Arica y Parinacota').length,
-    "Región de Tarapacá": propiedadesArriendo.filter((prop) => prop.region === 'Región de Tarapacá').length,
-    "Región de Antofagasta": propiedadesArriendo.filter((prop) => prop.region === 'Región de Antofagasta').length,
-    "Región de Atacama": propiedadesArriendo.filter((prop) => prop.region === 'Región de Atacama').length,
-    "Región de Coquimbo": propiedadesArriendo.filter((prop) => prop.region === 'Región de Coquimbo').length,
-    "Región de Valparaíso": propiedadesArriendo.filter((prop) => prop.region === 'Región de Valparaíso').length,
-    "Región Metropolitana": propiedadesArriendo.filter((prop) => prop.region === 'Región Metropolitana').length,
-    "Región del Libertador General Bernardo O’Higgins": propiedadesArriendo.filter((prop) => prop.region === 'Región del Libertador General Bernardo O’Higgins').length,
-    "Región del Maule": propiedadesArriendo.filter((prop) => prop.region === 'Región del Maule').length,
-    "Región de Ñuble": propiedadesArriendo.filter((prop) => prop.region === 'Región de Ñuble').length,
-    "Región del Biobío": propiedadesArriendo.filter((prop) => prop.region === 'Región del Biobío').length,
-    "Región de La Araucanía": propiedadesArriendo.filter((prop) => prop.region === 'Región de La Araucanía').length,
-    "Región de Los Ríos": propiedadesArriendo.filter((prop) => prop.region === 'Región de Los Ríos').length,
-    "Región de Los Lagos": propiedadesArriendo.filter((prop) => prop.region === 'Región de Los Lagos').length,
-    "Región de Aysén": propiedadesArriendo.filter((prop) => prop.region === 'Región de Aysén').length,
-    "Región de Magallanes y la Antártica Chilena": propiedadesArriendo.filter((prop) => prop.region === 'Región de Magallanes y la Antártica Chilena').length,
-};
-
-  
+  const contadorRegiones = propiedadesArriendo.reduce((acc, prop) => {
+    acc[prop.region] = (acc[prop.region] || 0) + 1;
+    return acc;
+  }, {});
 
   return (
     <>
@@ -98,24 +152,20 @@ function Arriendo() {
               <Card.Header>Tipo de propiedades</Card.Header>
               <ListGroup variant="flush">
                 <ListGroup.Item>
-                  <i className="fa fa-home mr-2"></i> Casas
-                  <span className="badge badge-primary float-right">{contadorTipos.Casas}</span>
+                  <i className="fa fa-home mr-2"></i> Casa
+                  <span className="badge badge-primary float-right">{contadorTipos.Casa}</span>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <i className="fa fa-building mr-2"></i> Departamentos
-                  <span className="badge badge-primary float-right">{contadorTipos.Departamentos}</span>
+                  <i className="fa fa-building mr-2"></i> Departamento
+                  <span className="badge badge-primary float-right">{contadorTipos.Departamento}</span>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <i className="fa fa-square mr-2"></i> Terrenos
-                  <span className="badge badge-primary float-right">{contadorTipos.Terrenos}</span>
+                  <i className="fa fa-square mr-2"></i> Terreno
+                  <span className="badge badge-primary float-right">{contadorTipos.Terreno}</span>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <i className="fa fa-briefcase mr-2"></i> Oficinas
-                  <span className="badge badge-primary float-right">{contadorTipos.Oficinas}</span>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <i className="fa fa-store mr-2"></i> Locales
-                  <span className="badge badge-primary float-right">{contadorTipos.Locales}</span>
+                  <i className="fa fa-briefcase mr-2"></i> Oficina
+                  <span className="badge badge-primary float-right">{contadorTipos.Oficina}</span>
                 </ListGroup.Item>
               </ListGroup>
             </Card>
@@ -139,21 +189,7 @@ function Arriendo() {
             <Row>
               {propiedadesPaginaActual.map((prop) => (
                 <Col md={4} key={prop.id}>
-                  <Card className="mb-4">
-                    <Card.Img variant="top" src={prop.imagenes[0]} alt={prop.nombre} />
-                    <Card.Body>
-                      <Card.Title className="text-primary">{prop.nombre}</Card.Title>
-                      <Card.Text>
-                        {prop.ubicacion} <br />
-                        Precio: {prop.precio}
-                      </Card.Text>
-                      <div className="d-flex justify-content-between">
-                        <span><i className="fa fa-building mr-1"></i> {prop.detalle.dormitorios} Dormitorios</span>
-                        <span><i className="fa fa-bath mr-1"></i> {prop.detalle.baños} Baños</span>
-                        <span><i className="fa fa-ruler-combined mr-1"></i> {prop.detalle.metros_cuadrados} m²</span>
-                      </div>
-                    </Card.Body>
-                  </Card>
+                  <PropiedadCard propiedad={prop} />
                 </Col>
               ))}
             </Row>
@@ -167,6 +203,9 @@ function Arriendo() {
 
         {/* Paginación */}
         <Row className="mt-4">
+          <Col md={6} className="text-left">
+            <p>Mostrando página {paginaActual} de {totalPaginas} ({propiedadesArriendo.length} resultados)</p>
+          </Col>
           <Col className="d-flex justify-content-end">
             <Pagination>
               <Pagination.First onClick={() => cambiarPagina(1)} disabled={paginaActual === 1} />
@@ -177,6 +216,13 @@ function Arriendo() {
             </Pagination>
           </Col>
         </Row>
+
+        {/* Línea divisoria */}
+        <Row className="mt-4">
+          <Col md={12}><hr /></Col>
+        </Row>
+
+        <AccesoRapido />
       </Container>
     </>
   );

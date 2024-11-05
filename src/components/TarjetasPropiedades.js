@@ -67,8 +67,8 @@ function PropiedadCard({ propiedad }) {
           {propiedad.precio}
         </Card.Text>
         <div className="d-flex justify-content-between">
-          <span><i className="fa fa-building mr-1"></i> {propiedad.categoria}</span>
-          <span><i className="fa fa-map-marker mr-1"></i> {propiedad.ubicacion}</span>
+          <span><i className="fa fa-building mr-1"></i> {propiedad.detalle.dormitorios} Dormitorios</span>
+          <span><i className="fa fa-bath mr-1"></i> {propiedad.detalle.baños} Baños</span>
           <span><i className="fa fa-ruler-combined mr-1"></i> {propiedad.detalle.metros_cuadrados} m²</span>
         </div>
       </Card.Body>

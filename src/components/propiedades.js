@@ -637,7 +637,7 @@ const propiedades = [
     "detalle": {
       "dormitorios": 4,
       "baños": 3,
-      "metros_cuadrados": 152,
+      "metros_cuadrados": 5000,
       "gastos_comunes": "No especificado",
       "estacionamientos": 0,
       "bodega": 1,

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Pagination } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import propiedades from '../components/propiedades';
 import AccesoRapido from '../components/AccesoRapido';
 
 // Subcomponente para cada tarjeta de propiedad con controles personalizados
 function PropiedadCard({ propiedad }) {
   const [imagenIndex, setImagenIndex] = useState(0);
+  const navigate = useNavigate();
 
   // Función para avanzar a la siguiente imagen
   const siguienteImagen = () => {
@@ -21,8 +23,13 @@ function PropiedadCard({ propiedad }) {
     );
   };
 
+  // Función para manejar el clic en la imagen y redirigir a DetallesPropiedades
+  const handleCardClick = () => {
+    navigate("/DetallesPropiedades", { state: { propiedad } });
+  };
+
   return (
-    <Card className="mb-4">
+    <Card className="mb-4" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
       <div className="position-relative">
         <Card.Img 
           variant="top" 
@@ -31,7 +38,7 @@ function PropiedadCard({ propiedad }) {
         />
         {/* Controles personalizados sin fondo ni borde */}
         <button 
-          onClick={anteriorImagen} 
+          onClick={(e) => { e.stopPropagation(); anteriorImagen(); }} 
           className="btn-control" 
           style={{
             position: 'absolute',
@@ -48,7 +55,7 @@ function PropiedadCard({ propiedad }) {
           {'<'}
         </button>
         <button 
-          onClick={siguienteImagen} 
+          onClick={(e) => { e.stopPropagation(); siguienteImagen(); }} 
           className="btn-control" 
           style={{
             position: 'absolute',
@@ -162,11 +169,6 @@ function Terrenos() {
             <Pagination.Last onClick={() => cambiarPagina(totalPaginas)} disabled={paginaActual === totalPaginas} />
           </Pagination>
         </Col>
-      </Row>
-
-      {/* Línea divisoria */}
-      <Row className="mt-4">
-        <Col md={12}><hr /></Col>
       </Row>
 
       <AccesoRapido />

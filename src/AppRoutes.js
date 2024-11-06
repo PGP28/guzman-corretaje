@@ -10,6 +10,7 @@ import Arriendo from './pages/Arriendo';
 import EnVenta from './pages/EnVenta';
 import Terrenos from './pages/Terrenos';
 import PageNotFound from './pages/PageNotFound';
+import DetallesPropiedades from './components/DetallesPropiedades';
 
 
 const AppRoutes = () => (
@@ -22,6 +23,8 @@ const AppRoutes = () => (
       <Route path="/Terrenos" element={<Terrenos />} />
       <Route path="/QuieroVender" element={<QuieroVender />} />
       <Route path="/Contactanos" element={<Contactanos />} />
+
+      <Route path="/DetallesPropiedades" element={<DetallesPropiedades />} />
 
       <Route path="/Construccion" element={<Construccion />} />
       <Route path="/PageNotFound" element={<PageNotFound />} />

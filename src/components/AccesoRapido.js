@@ -1,6 +1,6 @@
 // components/AccesoRapido.js
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import './AccesoRapido.css'; // Estilos específicos para esta sección
 import logo from '../assets/images/LOGO_JPG-15.jpg'; // Logo de la empresa
 import { FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaInstagram, FaTiktok } from 'react-icons/fa';
@@ -8,7 +8,7 @@ import { FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaInstagram, FaTikt
 const AccesoRapido = () => {
   return (
     <div className="acceso-rapido-section">
-      <Container>
+      
         <Row className="align-items-center">
           <Col md={3} className="text-center mb-4 mb-md-0">
             <img src={logo} alt="Guzmán Corretaje" className="img-fluid" />
@@ -46,7 +46,7 @@ const AccesoRapido = () => {
             </div>
           </Col>
         </Row>
-      </Container>
+      
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import React from 'react';
 import './Construccion.css'; // Carga de los estilos ajustados
-import Footer from './Footer';
 import { FaFacebookF, FaInstagram, FaWhatsapp, FaTiktok } from 'react-icons/fa';
 import logoImage from '../assets/images/LOGO_JPG-13.jpg'; // Ruta de la imagen de fondo
 

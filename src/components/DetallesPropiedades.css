@@ -1,0 +1,62 @@
+.property-details h3 {
+  font-size: 1.5rem;
+}
+
+.details-icons p {
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+}
+
+.contact-form {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.contact-form .form-control {
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.contact-form button {
+  width: 100%;
+  background-color: #4C40F7;
+  border: none;
+  color: white;
+}
+
+.main-image {
+  max-height: 600px; /* Ajusta este valor para el alto deseado */
+  object-fit: cover;
+  border-radius: 8px;
+  width: 50%; /* Ajusta el ancho de la imagen principal */
+}
+
+.thumbnail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid #ddd; /* Agrega un borde para hacer que las miniaturas se destaquen */
+}
+
+.text-primary {
+  color: #4C40F7; /* Color morado */
+}
+
+.mb-2 {
+  margin-bottom: 10px;
+}
+
+.thumbnail-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

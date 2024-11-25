@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Image, Button, ListGroup, Form } from 'react-bootstrap';
+import { Container, Row, Col, Image, Button, Form } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import AccesoRapido from './AccesoRapido';
 import './DetallesPropiedades.css'; // Importación del archivo de estilos

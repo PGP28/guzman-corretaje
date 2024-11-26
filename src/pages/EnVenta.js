@@ -118,7 +118,7 @@ function EnVenta() {
       {/* Título y cantidad de propiedades */}
       <Row className="py-3">
         <Col md={3}>
-          <h2 className="text-primary">Listado de Propiedades</h2>
+          <h2 className="text-primary">Propiedades en Venta</h2>
           <p>{propiedadesVenta.length} Propiedades encontradas</p>
         </Col>
         <Col md={3} className="text-right">

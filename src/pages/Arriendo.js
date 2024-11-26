@@ -123,25 +123,25 @@ function Arriendo() {
     <>
       <Container fluid>
         {/* Botones de búsqueda */}
-        <Row className="py-3 justify-content-center">
+        {/* <Row className="py-3 justify-content-center">
           <Col md="auto">
             <Button variant="primary" className="mr-2">Ubicación</Button>
             <Button variant="primary" className="mr-2">Operación y precio</Button>
             <Button variant="primary" className="mr-2">Tipo de propiedad</Button>
             <Button variant="dark">BUSCAR</Button>
           </Col>
-        </Row>
+        </Row> */}
 
         {/* Título y cantidad de propiedades */}
         <Row className="py-3">
           <Col md={8}>
-            <h2 className="text-primary">Propiedades en Arriendo en Chile</h2>
+            <h2 className="text-primary">Propiedades en Arriendo</h2>
             <p>{propiedadesArriendo.length} propiedades encontradas</p>
           </Col>
-          <Col md={4} className="text-right">
+          {/* <Col md={4} className="text-right">
             <Button variant="outline-secondary" className="mr-2">Ordenar</Button>
             <Button variant="outline-secondary">Filtros</Button>
-          </Col>
+          </Col> */}
         </Row>
 
         <Row>

@@ -62,7 +62,7 @@ const Home = () => {
             </Row>
 
             {/* Botones grandes */}
-            <Row className="justify-content-center mt-4">
+            {/* <Row className="justify-content-center mt-4">
               <Col md={3}>
                 <Button variant="primary" className="btn-block">Comprar / Arrendar</Button>
               </Col>
@@ -72,10 +72,10 @@ const Home = () => {
               <Col md={3}>
                 <Button variant="primary" className="btn-block">Región</Button>
               </Col>
-            </Row>
+            </Row> */}
 
             {/* Botones de búsqueda */}
-            <Row className="justify-content-center mt-4">
+            {/* <Row className="justify-content-center mt-4">
               <Col md={2}>
                 <Button variant="secondary" className="btn-block">Tipo propiedad</Button>
               </Col>
@@ -88,7 +88,7 @@ const Home = () => {
               <Col md={2}>
                 <Button variant="secondary" className="btn-block">Buscar</Button>
               </Col>
-            </Row>
+            </Row> */}
           </Container>
         </div>
       </div>
@@ -106,7 +106,7 @@ const Home = () => {
             </Col>
           </Container>
           <Col md={3} className="text-right">
-            <Button variant="light" size="lg">contactar</Button>
+            <Button href="https://wa.me/+56987141468?text=Hola%20me%20interesa%20saber%20más%20sobre%20sus%20propiedades" target="_blank" variant="light" size="lg">Contactar</Button>
           </Col>
 
         </Row>

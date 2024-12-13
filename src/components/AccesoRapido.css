@@ -1,16 +1,17 @@
 .acceso-rapido-section {
-  /*background-color: #ffffff; /* Fondo completamente blanco */
-  /* padding: 60px 0; */
+  padding: 20px 10px; /* Espaciado general */
 }
 
 .acceso-rapido-section h5 {
   color: #4C40F7; /* Color morado para los títulos */
   margin-bottom: 20px;
+  text-align: center; /* Centrar títulos para móviles */
 }
 
 .acceso-rapido-section ul {
   padding: 0;
   list-style-type: none;
+  text-align: center; /* Centrar textos */
 }
 
 .acceso-rapido-section ul li {
@@ -20,10 +21,26 @@
 
 .social-icons {
   display: flex;
+  justify-content: center; /* Centrar iconos sociales en móviles */
   gap: 15px;
 }
 
 .social-icon {
   font-size: 1.5rem;
   color: #4C40F7;
+}
+
+/* Ajustes para pantallas más grandes */
+@media (min-width: 768px) {
+  .acceso-rapido-section ul {
+    text-align: left; /* Textos alineados a la izquierda */
+  }
+
+  .acceso-rapido-section h5 {
+    text-align: left; /* Títulos alineados a la izquierda */
+  }
+
+  .social-icons {
+    justify-content: flex-start; /* Iconos alineados a la izquierda */
+  }
 }

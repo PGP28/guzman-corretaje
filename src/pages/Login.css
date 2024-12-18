@@ -1,0 +1,12 @@
+.login-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+  }
+  
+  h2 {
+    color: #4c40f7;
+  }
+  

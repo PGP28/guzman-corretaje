@@ -25,7 +25,7 @@ const AccesoRapido = () => {
         <Col md={3} className="mb-4 mb-md-0">
           <h5 className="text-primary">CONTACTO Y SUCURSALES</h5>
           <ul className="list-unstyled">
-            <li><FaWhatsapp /> +56 9 8714 1468</li> 
+            <li><FaWhatsapp /> +56 9 5238 9494</li> 
             <li><FaEnvelope /> contacto@corretajeguzman.cl</li>
             <li><FaMapMarkerAlt /> Av manquehue sur 350, oficina 201, Las Condes, Chile</li>
           </ul>

@@ -26,9 +26,9 @@ const VenderPropiedad = () => {
             <h3>¿Quieres vender tu propiedad o terreno?</h3>
             <p>Contamos con un equipo de agentes altamente calificados para vender tu propiedad en tiempo récord.</p>
           </Col>
-          <Col md={3} className="text-md-2-right col-md-3">
+          {/* <Col md={3} className="text-md-2-right col-md-3">
             <Button variant="light" size="lg">¡CONTÁCTANOS AHORA!</Button>
-          </Col>
+          </Col> */}
         </Row>
         </div>
     </div>

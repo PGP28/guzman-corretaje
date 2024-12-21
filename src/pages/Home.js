@@ -76,7 +76,7 @@ const Home = () => {
           </div>
           <div className="boton-contactar">
             <Button
-              href="https://wa.me/+56987141468?text=Hola%20me%20interesa%20saber%20más%20sobre%20sus%20propiedades"
+              href="https://wa.me/+56987141468?text=Hola,%20vengo%20de%20la%20pagina%20web%20y%20me%20interesa%20saber%20más%20sobre%20sus%20propiedades."
               target="_blank"
               variant="light"
               size="lg"

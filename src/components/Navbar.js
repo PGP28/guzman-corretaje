@@ -25,7 +25,7 @@ const NavigationBar = () => {
 
         {/* Menú de navegación */}
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ml-auto d-flex align-items-center">
+          <Nav className="mx-auto d-flex align-items-center justify-content-center">
             <Nav.Link href="/Arriendo" className="px-3">
               Arriendos
             </Nav.Link>
@@ -35,12 +35,12 @@ const NavigationBar = () => {
             <Nav.Link href="/Terrenos" className="px-3">
               Terrenos
             </Nav.Link>
-            <Nav.Link href="/QuieroVender" className="px-3">
+            {/* <Nav.Link href="/QuieroVender" className="px-3">
               ¡Quiero vender!
             </Nav.Link>
             <Nav.Link href="/Contactanos" className="px-3">
               Contáctanos
-            </Nav.Link>
+            </Nav.Link> */}
           </Nav>
         </Navbar.Collapse>
       </Container>

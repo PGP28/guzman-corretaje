@@ -7,7 +7,7 @@ const Footer = () => (
     <Container>
       <Row>
         <Col md="12">
-          &copy; {new Date().getFullYear()} - GUZMAN Corretaje | Agentes inmobiliarios en Chile | Todos los derechos reservados.
+          &copy; {new Date().getFullYear()} - Guzmán Corretaje | Agentes inmobiliarios en Chile | Todos los derechos reservados.
         </Col>
       </Row>
     </Container>

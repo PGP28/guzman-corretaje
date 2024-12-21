@@ -7,9 +7,10 @@ const Login = ({ onLogin }) => {
   const [error, setError] = useState(null);
 
   const handleSuccess = (credentialResponse) => {
-    const adminEmail = "ingenieriaguzman1@gmail.com";
+    const allowedEmails = ["ingenieriaguzman1@gmail.com", "guzmanpropiedades12@gmail.com"]; // Correos permitidos
     const decoded = JSON.parse(atob(credentialResponse.credential.split(".")[1]));
-    if (decoded.email === adminEmail) {
+
+    if (allowedEmails.includes(decoded.email)) {
       onLogin(decoded);
     } else {
       setError("No tienes permisos para acceder.");

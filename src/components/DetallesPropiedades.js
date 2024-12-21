@@ -26,9 +26,9 @@ function DetallesPropiedades() {
             <h2 className="text-primary">{propiedad.nombre}</h2>
             <p>{propiedad.ubicacion}</p>
           </Col>
-          <Col xs="auto">
+          {/* <Col xs="auto">
             <Button variant="primary">Compartir</Button>
-          </Col>
+          </Col> */}
         </Row>
 
         {/* Sección de imágenes */}
@@ -99,7 +99,7 @@ function DetallesPropiedades() {
           </Col>
 
           {/* Formulario de contacto */}
-          <Col md={4} className="contact-form">
+          {/* <Col md={4} className="contact-form">
             <p>Hola 👋 ¿Te gustaría recibir más información? ¡Contáctanos! ✍️</p>
             <Form>
               <Form.Group controlId="email">
@@ -118,7 +118,7 @@ function DetallesPropiedades() {
               </Form.Group>
               <Button variant="primary" type="submit" className="mt-3">Contactar</Button>
             </Form>
-          </Col>
+          </Col> */}
         </Row>
 
         {/* Línea divisoria final */}

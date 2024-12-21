@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Button, Pagination } from 'react-bootstrap';
+import { Container, Row, Col, Card, Pagination } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { LazyLoadImage } from 'react-lazy-load-image-component'; // Importa LazyLoadImage
+import 'react-lazy-load-image-component/src/effects/blur.css'; // Efecto de carga
 import propiedades from '../components/propiedades';
 import AccesoRapido from '../components/AccesoRapido';
 
@@ -11,16 +13,20 @@ function PropiedadCard({ propiedad }) {
 
   // Función para avanzar a la siguiente imagen
   const siguienteImagen = () => {
-    setImagenIndex((prevIndex) => 
-      prevIndex === propiedad.imagenes.length - 1 ? 0 : prevIndex + 1
-    );
+    if (propiedad.imagenes?.length) {
+      setImagenIndex((prevIndex) =>
+        prevIndex === propiedad.imagenes.length - 1 ? 0 : prevIndex + 1
+      );
+    }
   };
 
   // Función para retroceder a la imagen anterior
   const anteriorImagen = () => {
-    setImagenIndex((prevIndex) => 
-      prevIndex === 0 ? propiedad.imagenes.length - 1 : prevIndex - 1
-    );
+    if (propiedad.imagenes?.length) {
+      setImagenIndex((prevIndex) =>
+        prevIndex === 0 ? propiedad.imagenes.length - 1 : prevIndex - 1
+      );
+    }
   };
 
   // Función para manejar el clic en la imagen y redirigir a DetallesPropiedades
@@ -31,42 +37,43 @@ function PropiedadCard({ propiedad }) {
   return (
     <Card className="mb-4" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
       <div className="position-relative">
-        <Card.Img 
-          variant="top" 
-          src={propiedad.imagenes[imagenIndex]} 
-          alt={propiedad.nombre} 
+        <LazyLoadImage
+          effect="blur" // Efecto de carga
+          src={propiedad.imagenes[imagenIndex]}
+          alt={propiedad.nombre}
+          className="card-img-top"
         />
         {/* Controles personalizados sin fondo ni borde */}
-        <button 
-          onClick={(e) => { e.stopPropagation(); anteriorImagen(); }} 
-          className="btn-control" 
+        <button
+          onClick={(e) => { e.stopPropagation(); anteriorImagen(); }}
+          className="btn-control"
           style={{
             position: 'absolute',
             top: '50%',
             left: '10px',
             transform: 'translateY(-50%)',
-            fontSize: '1.5rem',
+            fontSize: '2rem',
             color: 'white',
             backgroundColor: 'transparent',
             border: 'none',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
         >
           {'<'}
         </button>
-        <button 
-          onClick={(e) => { e.stopPropagation(); siguienteImagen(); }} 
-          className="btn-control" 
+        <button
+          onClick={(e) => { e.stopPropagation(); siguienteImagen(); }}
+          className="btn-control"
           style={{
             position: 'absolute',
             top: '50%',
             right: '10px',
             transform: 'translateY(-50%)',
-            fontSize: '1.5rem',
+            fontSize: '2rem',
             color: 'white',
             backgroundColor: 'transparent',
             border: 'none',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
         >
           {'>'}
@@ -124,23 +131,13 @@ function Terrenos() {
   return (
     <Container fluid>
       <Row className="py-3">
-        <Col md={9}>
-          <div className="d-flex justify-content-center">
-            <Button variant="outline-primary" className="mr-3">Ubicación</Button>
-            <Button variant="outline-primary" className="mr-3">Operación y precio</Button>
-            <Button variant="outline-primary" className="mr-3">Tipo de propiedad</Button>
-            <Button variant="primary">BUSCAR</Button>
-          </div>
-        </Col>
-      </Row>
-      <Row className="py-3">
         <Col md={12}>
           <h2>Terrenos en Venta</h2>
           <p>{propiedadesTerrenos.length} propiedades encontradas</p>
         </Col>
       </Row>
 
-      <Col md={9}>
+      <Col md={12}>
         <Row>
           {propiedadesPaginaActual.map((prop) => (
             <Col md={4} key={prop.id}>
@@ -169,6 +166,11 @@ function Terrenos() {
             <Pagination.Last onClick={() => cambiarPagina(totalPaginas)} disabled={paginaActual === totalPaginas} />
           </Pagination>
         </Col>
+      </Row>
+
+      {/* Línea divisoria */}
+      <Row className="mt-4">
+        <Col md={12}><hr /></Col>
       </Row>
 
       <AccesoRapido />

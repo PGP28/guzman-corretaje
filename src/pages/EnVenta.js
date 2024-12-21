@@ -37,7 +37,7 @@ function PropiedadCard({ propiedad }) {
             top: '50%',
             left: '10px',
             transform: 'translateY(-50%)',
-            fontSize: '1.5rem',
+            fontSize: '2rem',
             color: 'white',
             backgroundColor: 'transparent',
             border: 'none',
@@ -53,7 +53,7 @@ function PropiedadCard({ propiedad }) {
             top: '50%',
             right: '10px',
             transform: 'translateY(-50%)',
-            fontSize: '1.5rem',
+            fontSize: '2rem',
             color: 'white',
             backgroundColor: 'transparent',
             border: 'none',
@@ -117,25 +117,25 @@ function EnVenta() {
     <Container fluid>
       {/* Título y cantidad de propiedades */}
       <Row className="py-3">
-        <Col md={3}>
+        <Col md={12}>
           <h2 className="text-primary">Propiedades en Venta</h2>
           <p>{propiedadesVenta.length} Propiedades encontradas</p>
         </Col>
-        <Col md={3} className="text-right">
+        {/* <Col md={3} className="text-right">
           <p className="mr-2">Ordenar por</p>
           <DropdownButton id="dropdown-basic-button" title="Más Reciente">
             <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
             <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
             <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
           </DropdownButton>
-        </Col>
-        <Col md={6} className="text-right">
+        </Col> */}
+        {/* <Col md={6} className="text-right">
           <p className="mr-2">Inicio {'>'} Listado de Propiedades</p>
-        </Col>
+        </Col> */}
       </Row>
 
       {/* Columna de propiedades (Cards) */}
-      <Col md={9}>
+      <Col md={12}>
         <Row>
           {propiedadesPaginaActual.map((prop) => (
             <Col md={4} key={prop.id}>

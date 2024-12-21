@@ -25,13 +25,13 @@ const AccesoRapido = () => {
         <Col md={3} className="mb-4 mb-md-0">
           <h5 className="text-primary">CONTACTO Y SUCURSALES</h5>
           <ul className="list-unstyled">
-            <li><FaWhatsapp /> +56 9 5692 2206</li>
+            <li><FaWhatsapp /> +56 9 8714 1468</li> 
             <li><FaEnvelope /> contacto@corretajeguzman.cl</li>
             <li><FaMapMarkerAlt /> Av manquehue sur 350, oficina 201, Las Condes, Chile</li>
           </ul>
         </Col>
         <Col md={3}>
-          <h5 className="text-primary">SEGUINOS</h5>
+          <h5 className="text-primary">SIGUENOS</h5>
           <div className="social-icons d-flex justify-content-center justify-content-md-start gap-3">
             <a href="https://www.tiktok.com/@corretaje_guzman?_t=8ouQxhDHKnl&_r=1" target="_blank" rel="noopener noreferrer">
               <FaTiktok className="social-icon" />

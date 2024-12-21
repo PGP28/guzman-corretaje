@@ -34,7 +34,7 @@ function PropiedadCard({ propiedad }) {
             top: '50%',
             left: '10px',
             transform: 'translateY(-50%)',
-            fontSize: '1.5rem',
+            fontSize: '2rem',
             color: 'white',
             backgroundColor: 'transparent',
             border: 'none',
@@ -50,7 +50,7 @@ function PropiedadCard({ propiedad }) {
             top: '50%',
             right: '10px',
             transform: 'translateY(-50%)',
-            fontSize: '1.5rem',
+            fontSize: '2rem',
             color: 'white',
             backgroundColor: 'transparent',
             border: 'none',
@@ -134,7 +134,7 @@ function Arriendo() {
 
         {/* Título y cantidad de propiedades */}
         <Row className="py-3">
-          <Col md={8}>
+          <Col md={12}>
             <h2 className="text-primary">Propiedades en Arriendo</h2>
             <p>{propiedadesArriendo.length} propiedades encontradas</p>
           </Col>

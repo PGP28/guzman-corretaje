@@ -7,7 +7,11 @@ const Login = ({ onLogin }) => {
   const [error, setError] = useState(null);
 
   const handleSuccess = (credentialResponse) => {
-    const allowedEmails = ["ingenieriaguzman1@gmail.com", "guzmanpropiedades12@gmail.com"]; // Correos permitidos
+    const allowedEmails = [
+      "ingenieriaguzman1@gmail.com", 
+      "guzmanpropiedades12@gmail.com",
+      "andres22.pgpa@gmail.com"
+    ]; // Correos permitidos
     const decoded = JSON.parse(atob(credentialResponse.credential.split(".")[1]));
 
     if (allowedEmails.includes(decoded.email)) {

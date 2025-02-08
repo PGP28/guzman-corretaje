@@ -351,7 +351,7 @@ const propiedades = [
     "id": 14,
     "nombre": "Departamento en Santiago Centro",
     "ubicacion": "Carmen 390, Santa Isabel, Santiago",
-    "precio": "$490.000 sin estacionamiento, con estacionamiento ($550.000)",
+    "precio": "$490.000",
     "categoria": "Arriendo de Departamentos",
     "region": "Región Metropolitana",
     "imagenes": [
@@ -369,7 +369,7 @@ const propiedades = [
       "gastos_comunes": "$100.000",
       "estacionamientos": 1,
       "bodega": 0,
-      "descripcion": "Departamento con 2 dormitorios, 2 baños, cocina, terraza, balcones y áreas comunes como piscina, quincho, gimnasio y sala de eventos."
+      "descripcion": "Departamento con 2 dormitorios, 2 baños, cocina, terraza, balcones y áreas comunes como piscina, quincho, gimnasio y sala de eventos. $490.000 sin estacionamiento, con estacionamiento ($550.000)"
     }
   },
   {
@@ -730,7 +730,7 @@ const propiedades = [
     "id": 28,
     "nombre": "Departamento en Arriendo San Miguel",
     "ubicacion": "Av. Sta. Rosa 5741, Ciudad del Niño, San Miguel",
-    "precio": "$380.000 (con Estacionamiento y sin estacionamiento $350.000)",
+    "precio": "$380.000",
     "categoria": "Arriendo de Departamentos",
     "region": "Región Metropolitana",
     "imagenes": [
@@ -751,7 +751,7 @@ const propiedades = [
       "gastos_comunes": "$60.000",
       "estacionamientos": 1,
       "bodega": 0,
-      "descripcion": "Departamento con 3 dormitorios, 1 baño, cocina equipada, terraza y estacionamiento. Áreas comunes incluyen piscina, quincho, gimnasio, sala de eventos, sala de juegos y lavandería."
+      "descripcion": "Departamento con 3 dormitorios, 1 baño, cocina equipada, terraza y estacionamiento. Áreas comunes incluyen piscina, quincho, gimnasio, sala de eventos, sala de juegos y lavandería. $380.000 (con Estacionamiento y sin estacionamiento $350.000)"
     }
   },
   {

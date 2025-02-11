@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Form, Button, Image, Table } from "react-bootstrap";
 import { FaStar, FaTrash } from "react-icons/fa";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { Spinner, Modal } from "react-bootstrap";
+
 
 const SubirPropiedades = ({ onLogout }) => {
   const API_URL = "http://127.0.0.1:5000/api";
@@ -12,6 +14,8 @@ const SubirPropiedades = ({ onLogout }) => {
   const [communes, setCommunes] = useState([]);
   const [propiedad, setPropiedad] = useState(null);
   const [imagenesOrdenadas, setImagenesOrdenadas] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   useEffect(() => {
     fetch(`${API_URL}/ubicaciones`)
@@ -82,36 +86,56 @@ const SubirPropiedades = ({ onLogout }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
+    setIsLoading(true); // ✅ Mostrar loader
 
+    const formData = new FormData(e.target);
     imagenesOrdenadas.forEach((img) => {
       formData.append("imagenes", img.file);
     });
 
-    if (propiedad) {
-      fetch(`${API_URL}/properties/${propiedad.id}/update`, {
-        method: "PUT",
-        body: formData
+    const requestOptions = {
+      method: propiedad ? "PUT" : "POST",
+      body: formData,
+    };
+
+    const url = propiedad
+      ? `${API_URL}/properties/${propiedad.id}/update`
+      : `${API_URL}/properties/create`;
+
+    fetch(url, requestOptions)
+      .then((res) => res.json())
+      .then((data) => {
+        alert(propiedad ? "Propiedad actualizada exitosamente" : "Propiedad creada exitosamente");
+        resetForm(); // ✅ Limpiar formulario después de guardar
       })
-        .then(res => res.json())
-        .then(data => alert("Propiedad actualizada exitosamente"))
-        .catch(err => console.error(err));
-    } else {
-      fetch(`${API_URL}/properties/create`, {
-        method: "POST",
-        body: formData
-      })
-        .then(res => res.json())
-        .then(data => alert("Propiedad creada exitosamente"))
-        .catch(err => console.error(err));
-    }
+      .catch((err) => console.error(err))
+      .finally(() => setIsLoading(false)); // ✅ Ocultar loader al finalizar
   };
+
+
+  const resetForm = () => {
+    setPropiedad(null);
+    setSelectedRegion("");
+    setSelectedCity("");
+    setCommunes([]);
+    setImagenesOrdenadas([]);
+    document.querySelector("form").reset(); // Limpia los inputs
+  };
+
 
   return (
     <div className="mt-5">
       <Row className="justify-content-center">
         <Col md={8}>
           <h2 className="text-center mb-3">{propiedad ? "Editar Propiedad" : "Subir Información de Propiedad"}</h2>
+          <Modal show={isLoading} centered backdrop="static" keyboard={false}>
+            <Modal.Body className="text-center">
+              <Spinner animation="border" role="status" />
+              <p className="mt-3">Guardando información, por favor espera...</p>
+            </Modal.Body>
+          </Modal>
+
+
           <Form className="shadow p-4 rounded" onSubmit={handleSubmit}>
 
             <Form.Group controlId="formCategoria" className="mb-3">
@@ -173,21 +197,31 @@ const SubirPropiedades = ({ onLogout }) => {
               <Form.Check inline label="UF" name="unidad_medida" type="radio" id="priceUF" value="UF" />
             </Form.Group>
 
-            {["Dormitorios", "Baños", "Metros Cuadrados", "Gastos Comunes", "Estacionamientos", "Bodega", "Superficie útil", "Superficie total"].map((label) => (
+            {[
+              { label: "Dormitorios", name: "dormitorios" },
+              { label: "Baños", name: "banos" },
+              { label: "Metros Cuadrados", name: "metros_cuadrados" },
+              { label: "Gastos Comunes", name: "gastos_comunes" },
+              { label: "Estacionamientos", name: "estacionamientos" },
+              { label: "Bodega", name: "bodega" },
+              { label: "Superficie útil", name: "superficie_util" },  // ✅ Corrección aquí
+              { label: "Superficie total", name: "superficie_total" }
+            ].map(({ label, name }) => (
               <Form.Group controlId={`form${label}`} className="mb-3" key={label}>
                 <Form.Label>{label}</Form.Label>
-                <Form.Control type="number" name={label.toLowerCase().replace(/ /g, "_")} placeholder={`Ingrese ${label}`} required />
+                <Form.Control type="number" name={name} placeholder={`Ingrese ${label}`} required />
               </Form.Group>
             ))}
 
+
             <Form.Group controlId="formFechaEntrega" className="mb-3">
               <Form.Label>Fecha de Entrega</Form.Label>
-              <Form.Control type="date" name="fecha_entrega" required />
+              <Form.Control type="date" name="fecha_entrega" />
             </Form.Group>
 
             <Form.Group controlId="formConstructora" className="mb-3">
               <Form.Label>Constructora</Form.Label>
-              <Form.Control type="text" name="constructora" placeholder="Ingrese el nombre de la constructora" required />
+              <Form.Control type="text" name="constructora" placeholder="Ingrese el nombre de la constructora" />
             </Form.Group>
 
             <Form.Group controlId="formDescripcion" className="mb-3">

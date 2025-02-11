@@ -11,7 +11,8 @@ import Terrenos from './pages/Terrenos';
 import PageNotFound from './pages/PageNotFound';
 import DetallesPropiedades from './components/DetallesPropiedades';
 import Login from './pages/Login';
-import Dashboard from './components/dashboard';
+import Dashboard from './components/dashboard/SubirPropiedades';
+//import Dashboard from './components/dashboard/EditarPropiedades';
 
 const AppRoutes = () => {
   const [user, setUser] = useState(null);
@@ -41,14 +42,14 @@ const AppRoutes = () => {
             !user ? (
               <Login onLogin={(data) => setUser(data)} />
             ) : (
-              <Navigate to="/dashboard" />
+              <Navigate to="/dashboard/SubirPropiedades" />
             )
           }
         />
 
         {/* Ruta protegida */}
         <Route
-          path="/dashboard"
+          path="/dashboard/SubirPropiedades"
           element={
             user ? (
               <Dashboard onLogout={handleLogout} />

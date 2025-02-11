@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Form, Button, Image, Table } from "react-bootstrap";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaTrash } from "react-icons/fa";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
-const Dashboard = ({ onLogout }) => {
+const EditarPropiedades = ({ onLogout }) => {
   const API_URL = "http://127.0.0.1:5000/api";
   const [ubicaciones, setUbicaciones] = useState({});
   const [selectedRegion, setSelectedRegion] = useState("");
@@ -224,9 +224,9 @@ const Dashboard = ({ onLogout }) => {
                                     <FaStar color={img.isMain ? "gold" : "gray"} size={20} />
                                   </Button>
                                 </td>
-                                <td>
-                                  <Button variant="danger" onClick={() => handleImageDelete(index)}>Eliminar</Button>
-                                </td>
+                                <Button variant="link" onClick={() => handleImageDelete(index)}>
+                                    <FaTrash color="red" size={20} />
+                                  </Button>
                               </tr>
                             )}
                           </Draggable>
@@ -253,4 +253,4 @@ const Dashboard = ({ onLogout }) => {
   );
 };
 
-export default Dashboard;
+export default EditarPropiedades;

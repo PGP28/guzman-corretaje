@@ -6,7 +6,7 @@ import { Spinner, Modal } from "react-bootstrap";
 
 
 const SubirPropiedades = ({ onLogout }) => {
-  const API_URL = "http://127.0.0.1:5000/api";
+  const API_URL = "https://guzman-corretaje-backend.vercel.app/api";
   const [ubicaciones, setUbicaciones] = useState({});
   const [selectedRegion, setSelectedRegion] = useState("");
   const [selectedCity, setSelectedCity] = useState("");

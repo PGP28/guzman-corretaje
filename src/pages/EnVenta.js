@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button, Card, Pagination, Dropdown, DropdownButton } from 'react-bootstrap';
-import propiedades from '../components/propiedades';
 import AccesoRapido from '../components/AccesoRapido';
+import axios from 'axios';
 
 // Subcomponente para cada tarjeta de propiedad con controles personalizados
 function PropiedadCard({ propiedad }) {
   const [imagenIndex, setImagenIndex] = useState(0);
 
-  // Función para avanzar a la siguiente imagen
   const siguienteImagen = () => {
     setImagenIndex((prevIndex) =>
       prevIndex === propiedad.imagenes.length - 1 ? 0 : prevIndex + 1
     );
   };
 
-  // Función para retroceder a la imagen anterior
   const anteriorImagen = () => {
     setImagenIndex((prevIndex) =>
       prevIndex === 0 ? propiedad.imagenes.length - 1 : prevIndex - 1
@@ -26,12 +24,11 @@ function PropiedadCard({ propiedad }) {
       <div className="position-relative">
         <Card.Img
           variant="top"
-          src={propiedad.imagenes[imagenIndex]}
+          src={propiedad.imagenes?.[imagenIndex] || 'https://via.placeholder.com/300'}
           alt={propiedad.nombre}
         />
-        {/* Controles personalizados sin fondo ni borde */}
         <button
-          onClick={anteriorImagen}
+          onClick={(e) => { e.stopPropagation(); anteriorImagen(); }}
           style={{
             position: 'absolute',
             top: '50%',
@@ -47,7 +44,7 @@ function PropiedadCard({ propiedad }) {
           {'<'}
         </button>
         <button
-          onClick={siguienteImagen}
+          onClick={(e) => { e.stopPropagation(); siguienteImagen(); }}
           style={{
             position: 'absolute',
             top: '50%',
@@ -70,9 +67,9 @@ function PropiedadCard({ propiedad }) {
           Precio: {propiedad.precio}
         </Card.Text>
         <div className="d-flex justify-content-between">
-          <span><i className="fa fa-building mr-1"></i> {propiedad.detalle.dormitorios} Dormitorios</span>
-          <span><i className="fa fa-bath mr-1"></i> {propiedad.detalle.baños} Baños</span>
-          <span><i className="fa fa-ruler-combined mr-1"></i> {propiedad.detalle.metros_cuadrados} m²</span>
+          <span>{propiedad.detalles?.dormitorios} Dormitorios</span>
+          <span>{propiedad.detalles?.banos} Baños</span>
+          <span>{propiedad.detalles?.metros_cuadrados} m²</span>
         </div>
       </Card.Body>
     </Card>
@@ -85,20 +82,20 @@ function EnVenta() {
   const propiedadesPorPagina = 6;
 
   useEffect(() => {
-    // Filtra solo las propiedades en venta
-    const filtradas = propiedades.filter((prop) => prop.categoria.includes('Venta'));
-    setPropiedadesVenta(filtradas);
+    axios.get('https://guzman-corretaje-backend-1.onrender.com/api/properties') // 🔁 Reemplaza con tu URL real
+      .then(response => {
+        const filtradas = response.data.filter((prop) => prop.categoria.includes('Venta'));
+        setPropiedadesVenta(filtradas);
+      })
+      .catch(error => console.error('Error al obtener propiedades en venta:', error));
   }, []);
 
-  // Obtener propiedades para la página actual
   const indexUltimaPropiedad = paginaActual * propiedadesPorPagina;
   const indexPrimeraPropiedad = indexUltimaPropiedad - propiedadesPorPagina;
   const propiedadesPaginaActual = propiedadesVenta.slice(indexPrimeraPropiedad, indexUltimaPropiedad);
 
-  // Cambiar página
   const cambiarPagina = (numeroPagina) => setPaginaActual(numeroPagina);
 
-  // Crear los items de la paginación
   const totalPaginas = Math.ceil(propiedadesVenta.length / propiedadesPorPagina);
   const itemsPaginacion = [];
   for (let i = 1; i <= totalPaginas; i++) {
@@ -115,44 +112,33 @@ function EnVenta() {
 
   return (
     <Container fluid>
-      {/* Título y cantidad de propiedades */}
       <Row className="py-3">
         <Col md={12}>
           <h2 className="text-primary">Propiedades en Venta</h2>
           <p>{propiedadesVenta.length} Propiedades encontradas</p>
         </Col>
-        {/* <Col md={3} className="text-right">
-          <p className="mr-2">Ordenar por</p>
-          <DropdownButton id="dropdown-basic-button" title="Más Reciente">
-            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-          </DropdownButton>
-        </Col> */}
-        {/* <Col md={6} className="text-right">
-          <p className="mr-2">Inicio {'>'} Listado de Propiedades</p>
-        </Col> */}
       </Row>
 
-      {/* Columna de propiedades (Cards) */}
       <Col md={12}>
         <Row>
-          {propiedadesPaginaActual.map((prop) => (
-            <Col md={4} key={prop.id}>
-              <PropiedadCard propiedad={prop} />
+          {propiedadesPaginaActual.length > 0 ? (
+            propiedadesPaginaActual.map((prop) => (
+              <Col md={4} key={prop.id}>
+                <PropiedadCard propiedad={prop} />
+              </Col>
+            ))
+          ) : (
+            <Col md={12} className="text-center">
+              <p className="text-muted mt-4">No hay propiedades disponibles en esta categoría por el momento.</p>
             </Col>
-          ))}
+          )}
         </Row>
       </Col>
 
-      {/* Línea divisoria */}
       <Row className="mt-4">
-        <Col md={12}>
-          <hr />
-        </Col>
+        <Col md={12}><hr /></Col>
       </Row>
 
-      {/* Paginación */}
       <Row className="mt-4">
         <Col md={6} className="text-left">
           <p>Mostrando página {paginaActual} de {totalPaginas} ({propiedadesVenta.length} resultados)</p>
@@ -168,11 +154,8 @@ function EnVenta() {
         </Col>
       </Row>
 
-      {/* Línea divisoria */}
       <Row className="mt-2">
-        <Col md={12}>
-          <hr />
-        </Col>
+        <Col md={12}><hr /></Col>
       </Row>
 
       <AccesoRapido />

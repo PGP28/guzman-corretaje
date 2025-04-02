@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Pagination } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { LazyLoadImage } from 'react-lazy-load-image-component'; // Importa LazyLoadImage
-import 'react-lazy-load-image-component/src/effects/blur.css'; // Efecto de carga
-import propiedades from '../components/propiedades';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 import AccesoRapido from '../components/AccesoRapido';
+import axios from 'axios';
 
-// Subcomponente para cada tarjeta de propiedad con controles personalizados
+// Subcomponente para cada tarjeta
 function PropiedadCard({ propiedad }) {
   const [imagenIndex, setImagenIndex] = useState(0);
   const navigate = useNavigate();
 
-  // Función para avanzar a la siguiente imagen
   const siguienteImagen = () => {
     if (propiedad.imagenes?.length) {
       setImagenIndex((prevIndex) =>
@@ -20,7 +19,6 @@ function PropiedadCard({ propiedad }) {
     }
   };
 
-  // Función para retroceder a la imagen anterior
   const anteriorImagen = () => {
     if (propiedad.imagenes?.length) {
       setImagenIndex((prevIndex) =>
@@ -29,7 +27,6 @@ function PropiedadCard({ propiedad }) {
     }
   };
 
-  // Función para manejar el clic en la imagen y redirigir a DetallesPropiedades
   const handleCardClick = () => {
     navigate("/DetallesPropiedades", { state: { propiedad } });
   };
@@ -38,12 +35,11 @@ function PropiedadCard({ propiedad }) {
     <Card className="mb-4" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
       <div className="position-relative">
         <LazyLoadImage
-          effect="blur" // Efecto de carga
-          src={propiedad.imagenes[imagenIndex]}
+          effect="blur"
+          src={propiedad.imagenes?.[imagenIndex] || 'https://via.placeholder.com/300'}
           alt={propiedad.nombre}
           className="card-img-top"
         />
-        {/* Controles personalizados sin fondo ni borde */}
         <button
           onClick={(e) => { e.stopPropagation(); anteriorImagen(); }}
           className="btn-control"
@@ -86,9 +82,9 @@ function PropiedadCard({ propiedad }) {
           Precio: {propiedad.precio}
         </Card.Text>
         <div className="d-flex justify-content-between">
-          <span><i className="fa fa-building mr-1"></i> {propiedad.detalle.dormitorios} Dormitorios</span>
-          <span><i className="fa fa-bath mr-1"></i> {propiedad.detalle.baños} Baños</span>
-          <span><i className="fa fa-ruler-combined mr-1"></i> {propiedad.detalle.metros_cuadrados} m²</span>
+          <span>{propiedad.detalles?.dormitorios} Dormitorios</span>
+          <span>{propiedad.detalles?.banos} Baños</span>
+          <span>{propiedad.detalles?.metros_cuadrados} m²</span>
         </div>
       </Card.Body>
     </Card>
@@ -101,20 +97,20 @@ function Terrenos() {
   const propiedadesPorPagina = 6;
 
   useEffect(() => {
-    // Filtrar propiedades de tipo Terrenos
-    const filtradas = propiedades.filter((prop) => prop.categoria.includes('Terrenos'));
-    setPropiedadesTerrenos(filtradas);
+    axios.get('https://guzman-corretaje-backend-1.onrender.com/api/properties') // 🔁 reemplaza con tu URL real
+      .then(response => {
+        const terrenos = response.data.filter(prop => prop.categoria.includes("Terrenos"));
+        setPropiedadesTerrenos(terrenos);
+      })
+      .catch(error => console.error('Error al cargar propiedades:', error));
   }, []);
 
-  // Obtener propiedades para la página actual
   const indexUltimaPropiedad = paginaActual * propiedadesPorPagina;
   const indexPrimeraPropiedad = indexUltimaPropiedad - propiedadesPorPagina;
   const propiedadesPaginaActual = propiedadesTerrenos.slice(indexPrimeraPropiedad, indexUltimaPropiedad);
 
-  // Cambiar página
   const cambiarPagina = (numeroPagina) => setPaginaActual(numeroPagina);
 
-  // Crear los items de la paginación
   const totalPaginas = Math.ceil(propiedadesTerrenos.length / propiedadesPorPagina);
   const itemsPaginacion = [];
   for (let i = 1; i <= totalPaginas; i++) {
@@ -139,20 +135,24 @@ function Terrenos() {
 
       <Col md={12}>
         <Row>
-          {propiedadesPaginaActual.map((prop) => (
-            <Col md={4} key={prop.id}>
-              <PropiedadCard propiedad={prop} />
+          {propiedadesPaginaActual.length > 0 ? (
+            propiedadesPaginaActual.map((prop) => (
+              <Col md={4} key={prop.id}>
+                <PropiedadCard propiedad={prop} />
+              </Col>
+            ))
+          ) : (
+            <Col md={12} className="text-center">
+              <p className="text-muted mt-4">No hay propiedades disponibles en esta categoría por el momento.</p>
             </Col>
-          ))}
+          )}
         </Row>
       </Col>
 
-      {/* Línea divisoria */}
       <Row className="mt-4">
         <Col md={12}><hr /></Col>
       </Row>
 
-      {/* Paginación */}
       <Row className="mt-4">
         <Col md={6} className="text-left">
           <p>Mostrando página {paginaActual} de {totalPaginas} ({propiedadesTerrenos.length} resultados)</p>
@@ -168,7 +168,6 @@ function Terrenos() {
         </Col>
       </Row>
 
-      {/* Línea divisoria */}
       <Row className="mt-4">
         <Col md={12}><hr /></Col>
       </Row>

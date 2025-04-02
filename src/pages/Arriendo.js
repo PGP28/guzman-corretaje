@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, ListGroup, Pagination } from 'react-bootstrap';
-import propiedades from '../components/propiedades';
 import AccesoRapido from '../components/AccesoRapido';
+import axios from 'axios';
 
 // Subcomponente para cada tarjeta de propiedad con controles personalizados
 function PropiedadCard({ propiedad }) {
@@ -24,7 +24,7 @@ function PropiedadCard({ propiedad }) {
       <div className="position-relative">
         <Card.Img
           variant="top"
-          src={propiedad.imagenes[imagenIndex]}
+          src={propiedad.imagenes?.[imagenIndex] || 'https://via.placeholder.com/300'}
           alt={propiedad.nombre}
         />
         <button
@@ -67,9 +67,9 @@ function PropiedadCard({ propiedad }) {
           Precio: {propiedad.precio}
         </Card.Text>
         <div className="d-flex justify-content-between">
-          <span><i className="fa fa-building mr-1"></i> {propiedad.detalle.dormitorios} Dormitorios</span>
-          <span><i className="fa fa-bath mr-1"></i> {propiedad.detalle.baños} Baños</span>
-          <span><i className="fa fa-ruler-combined mr-1"></i> {propiedad.detalle.metros_cuadrados} m²</span>
+          <span>{propiedad.detalles?.dormitorios} Dormitorios</span>
+          <span>{propiedad.detalles?.banos} Baños</span>
+          <span>{propiedad.detalles?.metros_cuadrados} m²</span>
         </div>
       </Card.Body>
     </Card>
@@ -82,8 +82,12 @@ function Arriendo() {
   const propiedadesPorPagina = 6;
 
   useEffect(() => {
-    const filtradas = propiedades.filter((prop) => prop.categoria.includes('Arriendo'));
-    setPropiedadesArriendo(filtradas);
+    axios.get('https://guzman-corretaje-backend-1.onrender.com/api/properties') // 🔁 Reemplaza con tu URL real
+      .then(response => {
+        const filtradas = response.data.filter((prop) => prop.categoria.includes('Arriendo'));
+        setPropiedadesArriendo(filtradas);
+      })
+      .catch(error => console.error('Error al obtener propiedades en arriendo:', error));
   }, []);
 
   const indexUltimaPropiedad = paginaActual * propiedadesPorPagina;
@@ -106,7 +110,7 @@ function Arriendo() {
     );
   }
 
-  // Crear el contador de tipos de propiedad usando el atributo 'nombre'
+  // Contador de tipos
   const contadorTipos = {
     Casa: propiedadesArriendo.filter((prop) => prop.nombre.includes('Casa')).length,
     Departamento: propiedadesArriendo.filter((prop) => prop.nombre.includes('Departamento')).length,
@@ -122,55 +126,28 @@ function Arriendo() {
   return (
     <>
       <Container fluid>
-        {/* Botones de búsqueda */}
-        {/* <Row className="py-3 justify-content-center">
-          <Col md="auto">
-            <Button variant="primary" className="mr-2">Ubicación</Button>
-            <Button variant="primary" className="mr-2">Operación y precio</Button>
-            <Button variant="primary" className="mr-2">Tipo de propiedad</Button>
-            <Button variant="dark">BUSCAR</Button>
-          </Col>
-        </Row> */}
-
-        {/* Título y cantidad de propiedades */}
         <Row className="py-3">
           <Col md={12}>
             <h2 className="text-primary">Propiedades en Arriendo</h2>
             <p>{propiedadesArriendo.length} propiedades encontradas</p>
           </Col>
-          {/* <Col md={4} className="text-right">
-            <Button variant="outline-secondary" className="mr-2">Ordenar</Button>
-            <Button variant="outline-secondary">Filtros</Button>
-          </Col> */}
         </Row>
 
         <Row>
-          {/* Columna de filtros */}
+          {/* Filtros */}
           <Col md={3}>
-            {/* Filtros por tipo de propiedad */}
             <Card className="mb-4">
               <Card.Header>Tipo de propiedades</Card.Header>
               <ListGroup variant="flush">
-                <ListGroup.Item>
-                  <i className="fa fa-home mr-2"></i> Casa
-                  <span className="badge badge-primary float-right">{contadorTipos.Casa}</span>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <i className="fa fa-building mr-2"></i> Departamento
-                  <span className="badge badge-primary float-right">{contadorTipos.Departamento}</span>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <i className="fa fa-square mr-2"></i> Terreno
-                  <span className="badge badge-primary float-right">{contadorTipos.Terreno}</span>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <i className="fa fa-briefcase mr-2"></i> Oficina
-                  <span className="badge badge-primary float-right">{contadorTipos.Oficina}</span>
-                </ListGroup.Item>
+                {Object.entries(contadorTipos).map(([tipo, cantidad]) => (
+                  <ListGroup.Item key={tipo}>
+                    {tipo}
+                    <span className="badge badge-primary float-right">{cantidad}</span>
+                  </ListGroup.Item>
+                ))}
               </ListGroup>
             </Card>
 
-            {/* Filtros por región */}
             <Card>
               <Card.Header>Regiones en Chile</Card.Header>
               <ListGroup variant="flush">
@@ -184,24 +161,28 @@ function Arriendo() {
             </Card>
           </Col>
 
-          {/* Columna de propiedades (Cards) */}
+          {/* Cards */}
           <Col md={9}>
             <Row>
-              {propiedadesPaginaActual.map((prop) => (
-                <Col md={4} key={prop.id}>
-                  <PropiedadCard propiedad={prop} />
+              {propiedadesPaginaActual.length > 0 ? (
+                propiedadesPaginaActual.map((prop) => (
+                  <Col md={4} key={prop.id}>
+                    <PropiedadCard propiedad={prop} />
+                  </Col>
+                ))
+              ) : (
+                <Col md={12} className="text-center">
+                  <p className="text-muted mt-4">No hay propiedades disponibles en esta categoría por el momento.</p>
                 </Col>
-              ))}
+              )}
             </Row>
           </Col>
         </Row>
 
-        {/* Línea divisoria */}
         <Row className="mt-4">
           <Col md={12}><hr /></Col>
         </Row>
 
-        {/* Paginación */}
         <Row className="mt-4">
           <Col md={6} className="text-left">
             <p>Mostrando página {paginaActual} de {totalPaginas} ({propiedadesArriendo.length} resultados)</p>
@@ -217,7 +198,6 @@ function Arriendo() {
           </Col>
         </Row>
 
-        {/* Línea divisoria */}
         <Row className="mt-4">
           <Col md={12}><hr /></Col>
         </Row>

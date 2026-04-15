@@ -1,0 +1,74 @@
+/* QuieroVender — Responsive completo */
+.quiero-vender-page { background-color: #ffffff; }
+
+.quiero-vender-hero {
+  background-image: url('../assets/images/ENCABEZADO-21.png');
+  background-size: cover;
+  background-position: center;
+  margin-top: -62px;
+  padding-top: 0;
+}
+.quiero-vender-hero-overlay { background-color: rgba(85,41,170,0.85); padding: 48px 32px; padding-top: calc(62px + 24px); }
+.qv-logo { max-width: 100px; height: auto; }
+.qv-hero-titulo { color: #fff; font-weight: 700; font-size: clamp(18px,3vw,30px); margin-bottom: 8px; }
+.qv-hero-subtitulo { color: rgba(255,255,255,0.85); font-size: 15px; margin: 0; }
+
+.qv-beneficios-section { padding: 48px 0 24px; background-color: #faf8ff; }
+.qv-beneficio-card {
+  background: #fff; border: 1px solid #ede8fa; border-radius: 10px;
+  padding: 20px 16px; text-align: center; height: 100%; transition: box-shadow 0.2s;
+}
+.qv-beneficio-card:hover { box-shadow: 0 4px 18px rgba(63,27,134,0.12); }
+.qv-beneficio-icon { font-size: 28px; color: #5529aa; margin-bottom: 10px; }
+.qv-beneficio-titulo { color: #3f1b86; font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+.qv-beneficio-texto { color: #666; font-size: 12px; line-height: 1.5; margin: 0; }
+
+.qv-form-section { padding: 48px 0 64px; }
+.qv-form-box { background: #faf8ff; border: 1px solid #ede8fa; border-radius: 14px; padding: 32px 28px; }
+.qv-form-titulo { color: #3f1b86; font-weight: 700; font-size: 20px; margin-bottom: 6px; }
+.qv-form-subtitulo { color: #666; font-size: 14px; margin-bottom: 20px; }
+
+.qv-input { border: 1px solid #d5d5d5 !important; border-radius: 8px !important; font-size: 14px !important; }
+.qv-input:focus { border-color: #5529aa !important; box-shadow: 0 0 0 2px rgba(85,41,170,0.15) !important; }
+
+.qv-btn-submit {
+  background-color: #3f1b86; color: #fff; border: none; border-radius: 8px;
+  padding: 13px; font-weight: 700; font-size: 15px; cursor: pointer; transition: background-color 0.2s;
+}
+.qv-btn-submit:hover { background-color: #5529aa; }
+.qv-enviado { background-color: #e8f5e9; color: #2e7d32; border-radius: 8px; padding: 20px; text-align: center; font-weight: 600; }
+
+/* Tablet horizontal 768–991px */
+@media (min-width: 768px) and (max-width: 991px) {
+  .quiero-vender-hero-overlay { padding: 36px 24px; }
+  .qv-beneficio-card { padding: 16px 12px; }
+  .qv-beneficio-icon { font-size: 24px; }
+  .qv-form-box { padding: 28px 24px; }
+}
+
+/* Tablet vertical 576–767px */
+@media (min-width: 576px) and (max-width: 767px) {
+  .quiero-vender-hero-overlay { padding: 32px 20px; }
+  .qv-hero-titulo { text-align: center; }
+  .qv-hero-subtitulo { text-align: center; }
+  .qv-logo { display: block; margin: 0 auto 12px; }
+  .qv-beneficios-section { padding: 32px 0 16px; }
+  .qv-form-section { padding: 32px 0 48px; }
+  .qv-form-box { padding: 24px 20px; }
+}
+
+/* Móvil < 576px */
+@media (max-width: 575px) {
+  .quiero-vender-hero-overlay { padding: 28px 16px; }
+  .qv-hero-titulo { font-size: 18px; text-align: center; }
+  .qv-hero-subtitulo { font-size: 13px; text-align: center; }
+  .qv-logo { display: block; margin: 0 auto 12px; max-width: 80px; }
+  .qv-beneficios-section { padding: 24px 0 12px; }
+  .qv-beneficio-card { padding: 14px 10px; }
+  .qv-beneficio-titulo { font-size: 13px; }
+  .qv-beneficio-texto { font-size: 11px; }
+  .qv-form-section { padding: 24px 0 40px; }
+  .qv-form-box { padding: 20px 16px; }
+  .qv-form-titulo { font-size: 17px; }
+  .qv-btn-submit { font-size: 14px; padding: 12px; }
+}

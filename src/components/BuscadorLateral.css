@@ -1,0 +1,285 @@
+/* ============================================
+   BUSCADOR LATERAL — Responsive completo
+   ============================================ */
+
+.buscador-lateral {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 2px 12px rgba(63, 27, 134, 0.08);
+}
+
+.buscador-lateral__titulo {
+  color: #3f1b86;
+  font-weight: 700;
+  font-size: 18px;
+  margin: 0 0 4px 0;
+}
+
+.buscador-lateral__campo {
+  width: 100%;
+}
+
+.buscador-lateral__select {
+  width: 100%;
+  height: 42px;
+  border: 1px solid #d5d5d5;
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%233f1b86' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.buscador-lateral__select:focus {
+  border-color: #5529aa;
+  box-shadow: 0 0 0 2px rgba(85, 41, 170, 0.15);
+}
+
+.buscador-lateral__select:disabled {
+  background-color: #f5f5f5;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.buscador-lateral__avanzado-toggle {
+  background: none;
+  border: none;
+  border-top: 1px solid #ede8fa;
+  color: #3f1b86;
+  font-weight: 700;
+  font-size: 15px;
+  text-align: left;
+  padding: 10px 0 4px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
+  margin-top: 4px;
+  transition: color 0.2s;
+}
+
+.buscador-lateral__avanzado-toggle:hover {
+  color: #5529aa;
+}
+
+.buscador-lateral__chevron {
+  font-size: 12px;
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.buscador-lateral__chevron.open {
+  transform: rotate(180deg);
+}
+
+.buscador-lateral__avanzado {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 8px;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.buscador-lateral__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #222;
+  margin: 0;
+}
+
+.buscador-lateral__radio-label {
+  font-weight: 400;
+  font-size: 13px;
+  cursor: pointer;
+  color: #444;
+}
+
+.buscador-lateral__precio-row {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.buscador-lateral__input {
+  height: 42px;
+  border: 1px solid #d5d5d5;
+  border-radius: 3px;
+  padding: 0 10px;
+  font-size: 14px;
+  color: #333;
+  outline: none;
+  flex: 1;
+  min-width: 0; /* Clave: evita que flex items desborden su contenedor */
+  width: 100%;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.buscador-lateral__input--full {
+  width: 100%;
+  flex: none;
+  border-radius: 8px;
+}
+
+.buscador-lateral__input:focus {
+  border-color: #5529aa;
+  box-shadow: 0 0 0 2px rgba(85, 41, 170, 0.15);
+}
+
+.buscador-lateral__check-label {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  gap: 6px;
+}
+
+.buscador-lateral__check-label input[type='checkbox'] {
+  width: 14px;
+  height: 14px;
+  accent-color: #5529aa;
+  cursor: pointer;
+}
+
+.buscador-lateral__btn-buscar {
+  width: 100%;
+  height: 46px;
+  background-color: #3f1b86;
+  color: #d9d9d9;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 6px;
+  letter-spacing: 0.5px;
+  transition: background-color 0.2s;
+}
+
+.buscador-lateral__btn-buscar:hover {
+  background-color: #5529aa;
+  color: #fff;
+}
+
+.buscador-lateral__btn-limpiar {
+  width: 100%;
+  height: 38px;
+  background-color: transparent;
+  color: #5529aa;
+  border: 1px solid #5529aa;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.buscador-lateral__btn-limpiar:hover {
+  background-color: #5529aa;
+  color: #fff;
+}
+
+/* ── TABLET HORIZONTAL 768–991px ── */
+/* El buscador lateral es más angosto, reducimos fuentes y padding */
+@media (min-width: 768px) and (max-width: 991px) {
+  .buscador-lateral {
+    padding: 16px 12px;
+    gap: 8px;
+  }
+
+  .buscador-lateral__titulo {
+    font-size: 15px;
+  }
+
+  .buscador-lateral__select {
+    height: 38px;
+    font-size: 13px;
+  }
+
+  .buscador-lateral__avanzado-toggle {
+    font-size: 13px;
+  }
+
+  .buscador-lateral__btn-buscar {
+    height: 40px;
+    font-size: 13px;
+  }
+
+  .buscador-lateral__btn-limpiar {
+    height: 34px;
+    font-size: 12px;
+  }
+}
+
+/* ── TABLET VERTICAL y MÓVIL < 768px ──
+   El buscador lateral se convierte en un acordeón colapsable
+   que aparece arriba del listado */
+@media (max-width: 767px) {
+  .buscador-lateral {
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 16px;
+  }
+
+  /* En móvil/tablet-v mostramos el buscador en grilla de 2 columnas */
+  .buscador-lateral__campos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .buscador-lateral__select {
+    height: 40px;
+    font-size: 13px;
+  }
+
+  .buscador-lateral__btn-buscar {
+    height: 42px;
+    font-size: 14px;
+  }
+
+  .buscador-lateral__precio-row {
+    flex-direction: row; /* mantener fila en tablet-v */
+  }
+}
+
+/* ── MÓVIL < 576px ── */
+@media (max-width: 575px) {
+  .buscador-lateral__campos-grid {
+    grid-template-columns: 1fr; /* una columna en móvil pequeño */
+  }
+
+  .buscador-lateral__select {
+    height: 42px;
+  }
+
+  .buscador-lateral__precio-row {
+    flex-direction: column;
+  }
+
+  .buscador-lateral__input {
+    width: 100%;
+    flex: none;
+  }
+}

@@ -1,0 +1,154 @@
+/* ============================================
+   FOOTER — Responsive completo
+   ============================================ */
+
+.footer-guzman {
+  width: 100%;
+  margin-top: auto;
+}
+
+.footer-main {
+  background-color: #ffffff;
+  border-top: 1px solid #e8e8e8;
+  padding: 4px 0 0 0;
+}
+
+.footer-logo-col {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.footer-logo {
+  max-width: 200px;
+  height: auto;
+  object-fit: contain;
+}
+
+.footer-titulo {
+  color: #3f1b86;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 12px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.footer-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.footer-link {
+  color: #515151;
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-link:hover {
+  color: #5529aa;
+  text-decoration: none;
+}
+
+.footer-contacto-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.footer-icon {
+  color: #5529aa;
+  font-size: 14px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.footer-social {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background-color: #f0ebff;
+  border-radius: 8px;
+  color: #3f1b86;
+  font-size: 17px;
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s, transform 0.2s;
+}
+
+.footer-social-link:hover {
+  background-color: #3f1b86;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.footer-copyright {
+  background-color: #ebebeb;
+  padding: 16px 0;
+  margin-top: 4px;
+}
+
+.footer-copyright-text {
+  color: #3f1b86;
+  font-size: 12px;
+  text-align: center;
+  margin: 0;
+}
+
+/* ── TABLET HORIZONTAL 768–991px ── */
+@media (min-width: 768px) and (max-width: 991px) {
+  .footer-logo { max-width: 150px; }
+  .footer-titulo { font-size: 12px; }
+  .footer-link { font-size: 12px; }
+  .footer-social-link { width: 30px; height: 30px; font-size: 15px; }
+}
+
+/* ── TABLET VERTICAL 576–767px ── */
+@media (min-width: 576px) and (max-width: 767px) {
+  .footer-titulo { font-size: 13px; margin-bottom: 10px; }
+  .footer-link { font-size: 13px; }
+  .footer-copyright-text { font-size: 11px; padding: 0 12px; }
+}
+
+/* ── MÓVIL < 576px ── */
+@media (max-width: 575px) {
+  .footer-main { padding: 0; }
+
+  /* Acceso rápido (xs=6) y Síguenos (xs=6) van en la misma fila */
+  /* No centrar — quedan alineados a la izquierda cada uno en su mitad */
+  .footer-titulo {
+    font-size: 12px;
+    margin-bottom: 8px;
+    margin-top: 16px;
+  }
+
+  .footer-lista { gap: 6px; }
+  .footer-link { font-size: 12px; }
+
+  /* Contacto ocupa fila completa — alineado a la izquierda */
+  .footer-contacto-item { gap: 6px; }
+  .footer-icon { font-size: 13px; }
+
+  .footer-social { gap: 8px; }
+  .footer-social-link { width: 32px; height: 32px; font-size: 15px; }
+
+  .footer-copyright { padding: 12px 0; }
+  .footer-copyright-text {
+    font-size: 10px;
+    padding: 0 10px;
+    line-height: 1.5;
+  }
+}

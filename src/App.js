@@ -1,5 +1,4 @@
 // src/App.js
-
 import React from "react";
 import AppRoutes from './AppRoutes';
 import Footer from './components/Footer';

@@ -1,0 +1,103 @@
+/* Contactanos — Responsive completo */
+.contactanos-page { background-color: #ffffff; }
+
+.contactanos-header {
+  background: linear-gradient(135deg, #3f1b86 0%, #5529aa 100%);
+  padding: 48px 32px 40px;
+  padding-top: calc(62px + 24px);
+  margin-top: -62px;
+}
+.contactanos-titulo { color: #fff; font-weight: 700; font-size: clamp(22px,3vw,36px); margin-bottom: 6px; }
+.contactanos-subtitulo { color: rgba(255,255,255,0.8); font-size: 15px; margin: 0; }
+
+.contactanos-section { padding: 48px 0 64px; }
+
+.contactanos-form-box {
+  background: #faf8ff; border: 1px solid #ede8fa;
+  border-radius: 14px; padding: 32px 28px; height: 100%;
+}
+.contactanos-form-titulo { color: #3f1b86; font-weight: 700; font-size: 18px; margin-bottom: 6px; }
+.contactanos-form-subtitulo { color: #666; font-size: 13px; margin-bottom: 20px; }
+
+.contactanos-input { border: 1px solid #d5d5d5 !important; border-radius: 8px !important; font-size: 14px !important; }
+.contactanos-input:focus { border-color: #5529aa !important; box-shadow: 0 0 0 2px rgba(85,41,170,0.15) !important; }
+
+.contactanos-btn-submit {
+  background-color: #3f1b86; color: #fff; border: none; border-radius: 8px;
+  padding: 13px; font-weight: 700; font-size: 14px; cursor: pointer; transition: background-color 0.2s;
+}
+.contactanos-btn-submit:hover { background-color: #5529aa; }
+.contactanos-enviado { background-color: #e8f5e9; color: #2e7d32; border-radius: 8px; padding: 20px; text-align: center; font-weight: 600; }
+
+.contactanos-info-box {
+  background: #ffffff; border: 1px solid #ede8fa;
+  border-radius: 14px; padding: 28px 24px; height: 100%;
+}
+.contactanos-info-titulo { color: #3f1b86; font-weight: 700; font-size: 18px; margin-bottom: 20px; }
+.contactanos-info-lista { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 18px; }
+.contactanos-info-item { display: flex; align-items: flex-start; gap: 14px; }
+.contactanos-info-icon {
+  width: 36px; height: 36px; background-color: #f0ebff; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: #3f1b86; font-size: 16px; flex-shrink: 0;
+}
+.contactanos-info-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 2px; }
+.contactanos-info-valor { color: #333; font-size: 14px; text-decoration: none; transition: color 0.2s; }
+.contactanos-info-valor:hover { color: #5529aa; }
+
+.contactanos-redes { margin-top: 24px; padding-top: 20px; border-top: 1px solid #f0f0f0; }
+.contactanos-redes-titulo { color: #3f1b86; font-weight: 700; font-size: 13px; margin-bottom: 12px; }
+.contactanos-redes-iconos { display: flex; gap: 10px; }
+.contactanos-red-link {
+  width: 36px; height: 36px; background-color: #f0ebff; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: #3f1b86; font-size: 17px; text-decoration: none;
+  transition: background-color 0.2s, color 0.2s;
+}
+.contactanos-red-link:hover { background-color: #3f1b86; color: #fff; }
+
+.contactanos-btn-wa {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin-top: 20px; background-color: #25d366; color: #fff !important;
+  border-radius: 8px; padding: 12px; font-weight: 700; font-size: 14px;
+  text-decoration: none !important; transition: background-color 0.2s;
+}
+.contactanos-btn-wa:hover { background-color: #1da851; }
+
+/* Tablet horizontal 768–991px */
+@media (min-width: 768px) and (max-width: 991px) {
+  .contactanos-header { padding: 36px 24px 32px; }
+  .contactanos-section { padding: 32px 0 48px; }
+  .contactanos-form-box { padding: 24px 20px; }
+  .contactanos-info-box { padding: 24px 18px; }
+  .contactanos-form-titulo { font-size: 16px; }
+  .contactanos-info-titulo { font-size: 16px; }
+  .contactanos-info-valor { font-size: 13px; }
+}
+
+/* Tablet vertical 576–767px */
+@media (min-width: 576px) and (max-width: 767px) {
+  .contactanos-header { padding: 32px 20px 28px; }
+  .contactanos-titulo { font-size: 26px; }
+  .contactanos-section { padding: 28px 0 40px; }
+  .contactanos-form-box { padding: 22px 18px; margin-bottom: 16px; height: auto; }
+  .contactanos-info-box { padding: 22px 18px; height: auto; }
+}
+
+/* Móvil < 576px */
+@media (max-width: 575px) {
+  .contactanos-header { padding: 28px 16px 24px; }
+  .contactanos-titulo { font-size: 22px; }
+  .contactanos-subtitulo { font-size: 13px; }
+  .contactanos-section { padding: 20px 0 32px; }
+  .contactanos-form-box { padding: 18px 14px; margin-bottom: 12px; height: auto; }
+  .contactanos-info-box { padding: 18px 14px; height: auto; }
+  .contactanos-form-titulo { font-size: 15px; }
+  .contactanos-info-titulo { font-size: 15px; margin-bottom: 14px; }
+  .contactanos-info-lista { gap: 12px; }
+  .contactanos-info-valor { font-size: 13px; }
+  .contactanos-info-icon { width: 30px; height: 30px; font-size: 14px; }
+  .contactanos-redes-iconos { gap: 8px; }
+  .contactanos-red-link { width: 32px; height: 32px; font-size: 15px; }
+  .contactanos-btn-wa { font-size: 13px; padding: 11px; }
+}

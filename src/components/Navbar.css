@@ -1,0 +1,139 @@
+/* ============================================
+   NAVBAR — Responsive completo
+   ============================================ */
+
+.navbar-guzman {
+  transition: background-color 0.35s ease, box-shadow 0.35s ease;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  z-index: 1050;
+  background-color: #3f1b86 !important; /* fallback — evita fondo blanco de Bootstrap */
+}
+
+.navbar-transparent {
+  background-color: transparent !important;
+  box-shadow: none;
+}
+
+.navbar-solid {
+  background-color: #3f1b86 !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+
+.navbar-brand-guzman {
+  padding: 0;
+}
+
+.navbar-logo {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+  max-width: 160px; /* Evita que el logo se corte en tablets */
+}
+
+.nav-link-guzman {
+  color: #ffffff !important;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 8px 14px !important;
+  position: relative;
+  transition: color 0.2s ease, opacity 0.2s ease;
+  white-space: nowrap;
+  text-decoration: none !important;
+}
+
+.nav-link-guzman:hover {
+  color: #d4bcff !important;
+}
+
+.nav-link-guzman.nav-link-active {
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+.nav-link-guzman.nav-link-active::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 14px;
+  right: 14px;
+  height: 2px;
+  background-color: #8a60da;
+  border-radius: 2px;
+}
+
+.navbar-toggler-guzman {
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  background-color: transparent !important;
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.toggler-icon {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: #ffffff;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Tablet vertical + horizontal y móvil — menú colapsado */
+@media (max-width: 991px) {
+  .navbar-solid,
+  .navbar-transparent {
+    background-color: #3f1b86 !important;
+  }
+
+  .navbar-collapse {
+    background-color: #3f1b86;
+    padding: 12px 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    margin-top: 8px;
+  }
+
+  .nav-link-guzman {
+    padding: 10px 16px !important;
+    font-size: 15px;
+    border-radius: 6px;
+  }
+
+  .nav-link-guzman:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-link-guzman.nav-link-active::after {
+    display: none;
+  }
+
+  .nav-link-guzman.nav-link-active {
+    background-color: rgba(138, 96, 218, 0.25);
+  }
+}
+
+/* Tablet horizontal — logo un poco más pequeño */
+@media (min-width: 768px) and (max-width: 991px) {
+  .navbar-logo {
+    height: 32px;
+  }
+}
+
+/* Móvil */
+@media (max-width: 575px) {
+  .navbar-logo {
+    height: 28px;
+  }
+}
+
+/* padding-top global para compensar navbar fijo */
+body {
+  padding-top: 62px;
+}
+
+/* Home anula el padding-top con margin-top negativo en .home-container */
+/* Las demás páginas heredan el padding-top correctamente */

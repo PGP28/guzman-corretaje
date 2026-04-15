@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Construccion from './components/Construccion';
 import Home from './pages/Home';
 import QuieroVender from './pages/QuieroVender';
 import Contactanos from './pages/Contactanos';
@@ -12,14 +11,13 @@ import PageNotFound from './pages/PageNotFound';
 import DetallesPropiedades from './components/DetallesPropiedades';
 import Login from './pages/Login';
 import Dashboard from './components/dashboard/SubirPropiedades';
-//import Dashboard from './components/dashboard/EditarPropiedades';
 
 const AppRoutes = () => {
   const [user, setUser] = useState(null);
 
   const handleLogout = () => {
     setUser(null);
-    window.location.href = "/login"; // Redirige a la página de login
+    window.location.href = '/login';
   };
 
   return (
@@ -33,33 +31,28 @@ const AppRoutes = () => {
         <Route path="/QuieroVender" element={<QuieroVender />} />
         <Route path="/Contactanos" element={<Contactanos />} />
         <Route path="/DetallesPropiedades" element={<DetallesPropiedades />} />
-        <Route path="/Construccion" element={<Construccion />} />
 
-        {/* Ruta para Login */}
+        {/* Login */}
         <Route
           path="/login"
           element={
-            !user ? (
-              <Login onLogin={(data) => setUser(data)} />
-            ) : (
-              <Navigate to="/dashboard/SubirPropiedades" />
-            )
+            !user
+              ? <Login onLogin={(data) => setUser(data)} />
+              : <Navigate to="/dashboard/SubirPropiedades" />
           }
         />
 
-        {/* Ruta protegida */}
+        {/* Dashboard protegido */}
         <Route
           path="/dashboard/SubirPropiedades"
           element={
-            user ? (
-              <Dashboard onLogout={handleLogout} />
-            ) : (
-              <Navigate to="/login" />
-            )
+            user
+              ? <Dashboard onLogout={handleLogout} />
+              : <Navigate to="/login" />
           }
         />
 
-        {/* Ruta no encontrada */}
+        {/* 404 */}
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </Router>

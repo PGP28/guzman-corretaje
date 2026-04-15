@@ -1,164 +1,110 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Button, Card, Pagination, Dropdown, DropdownButton } from 'react-bootstrap';
-import AccesoRapido from '../components/AccesoRapido';
+import { Container, Row, Col, Pagination } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
+import BuscadorLateral from '../components/BuscadorLateral';
+import TarjetasPropiedades from '../components/TarjetasPropiedades';
 import axios from 'axios';
 
-// Subcomponente para cada tarjeta de propiedad con controles personalizados
-function PropiedadCard({ propiedad }) {
-  const [imagenIndex, setImagenIndex] = useState(0);
-
-  const siguienteImagen = () => {
-    setImagenIndex((prevIndex) =>
-      prevIndex === propiedad.imagenes.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
-  const anteriorImagen = () => {
-    setImagenIndex((prevIndex) =>
-      prevIndex === 0 ? propiedad.imagenes.length - 1 : prevIndex - 1
-    );
-  };
-
-  return (
-    <Card className="mb-4">
-      <div className="position-relative">
-        <Card.Img
-          variant="top"
-          src={propiedad.imagenes?.[imagenIndex] || 'https://via.placeholder.com/300'}
-          alt={propiedad.nombre}
-        />
-        <button
-          onClick={(e) => { e.stopPropagation(); anteriorImagen(); }}
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '10px',
-            transform: 'translateY(-50%)',
-            fontSize: '2rem',
-            color: 'white',
-            backgroundColor: 'transparent',
-            border: 'none',
-            cursor: 'pointer'
-          }}
-        >
-          {'<'}
-        </button>
-        <button
-          onClick={(e) => { e.stopPropagation(); siguienteImagen(); }}
-          style={{
-            position: 'absolute',
-            top: '50%',
-            right: '10px',
-            transform: 'translateY(-50%)',
-            fontSize: '2rem',
-            color: 'white',
-            backgroundColor: 'transparent',
-            border: 'none',
-            cursor: 'pointer'
-          }}
-        >
-          {'>'}
-        </button>
-      </div>
-      <Card.Body>
-        <Card.Title className="text-primary">{propiedad.nombre}</Card.Title>
-        <Card.Text>
-          {propiedad.ubicacion} <br />
-          Precio: {propiedad.precio}
-        </Card.Text>
-        <div className="d-flex justify-content-between">
-          <span>{propiedad.detalles?.dormitorios} Dormitorios</span>
-          <span>{propiedad.detalles?.banos} Baños</span>
-          <span>{propiedad.detalles?.metros_cuadrados} m²</span>
-        </div>
-      </Card.Body>
-    </Card>
-  );
-}
+const API_BASE = 'https://guzman-corretaje-backend-1.onrender.com/api';
 
 function EnVenta() {
-  const [propiedadesVenta, setPropiedadesVenta] = useState([]);
+  const location = useLocation();
+  const [todasPropiedades, setTodasPropiedades] = useState([]);
+  const [propiedadesFiltradas, setPropiedadesFiltradas] = useState([]);
   const [paginaActual, setPaginaActual] = useState(1);
+  const [cargando, setCargando] = useState(true);
   const propiedadesPorPagina = 6;
 
   useEffect(() => {
-    axios.get('https://guzman-corretaje-backend-1.onrender.com/api/properties') // 🔁 Reemplaza con tu URL real
-      .then(response => {
-        const filtradas = response.data.filter((prop) => prop.categoria.includes('Venta'));
-        setPropiedadesVenta(filtradas);
+    setCargando(true);
+    axios.get(`${API_BASE}/properties`)
+      .then((res) => {
+        const venta = res.data.filter((p) => p.categoria?.toLowerCase().includes('venta'));
+        setTodasPropiedades(venta);
+        setPropiedadesFiltradas(aplicarFiltrosURL(venta, location.search));
       })
-      .catch(error => console.error('Error al obtener propiedades en venta:', error));
+      .catch(() => {})
+      .finally(() => setCargando(false));
   }, []);
 
-  const indexUltimaPropiedad = paginaActual * propiedadesPorPagina;
-  const indexPrimeraPropiedad = indexUltimaPropiedad - propiedadesPorPagina;
-  const propiedadesPaginaActual = propiedadesVenta.slice(indexPrimeraPropiedad, indexUltimaPropiedad);
+  const aplicarFiltrosURL = (lista, search) => {
+    const params = new URLSearchParams(search);
+    let resultado = [...lista];
+    const tipo = params.get('tipo');
+    const region = params.get('region');
+    const comuna = params.get('comuna');
+    if (tipo) resultado = resultado.filter((p) => p.nombre?.toLowerCase().includes(tipo.toLowerCase()));
+    if (region) resultado = resultado.filter((p) => p.region === region);
+    if (comuna) resultado = resultado.filter((p) => p.comuna === comuna);
+    return resultado;
+  };
 
-  const cambiarPagina = (numeroPagina) => setPaginaActual(numeroPagina);
+  const handleFiltrar = (filtros) => {
+    let resultado = [...todasPropiedades];
+    if (filtros.tipoPropiedad) resultado = resultado.filter((p) => p.nombre?.toLowerCase().includes(filtros.tipoPropiedad.toLowerCase()));
+    if (filtros.region) resultado = resultado.filter((p) => p.region === filtros.region);
+    if (filtros.comuna) resultado = resultado.filter((p) => p.comuna === filtros.comuna);
+    if (filtros.precioDesde) resultado = resultado.filter((p) => parseFloat(p.precio) >= parseFloat(filtros.precioDesde));
+    if (filtros.precioHasta) resultado = resultado.filter((p) => parseFloat(p.precio) <= parseFloat(filtros.precioHasta));
+    setPropiedadesFiltradas(resultado);
+    setPaginaActual(1);
+  };
 
-  const totalPaginas = Math.ceil(propiedadesVenta.length / propiedadesPorPagina);
-  const itemsPaginacion = [];
-  for (let i = 1; i <= totalPaginas; i++) {
-    itemsPaginacion.push(
-      <Pagination.Item
-        key={i}
-        active={i === paginaActual}
-        onClick={() => cambiarPagina(i)}
-      >
-        {i}
-      </Pagination.Item>
-    );
-  }
+  const indexUltimo = paginaActual * propiedadesPorPagina;
+  const indexPrimero = indexUltimo - propiedadesPorPagina;
+  const propiedadesPagina = propiedadesFiltradas.slice(indexPrimero, indexUltimo);
+  const totalPaginas = Math.ceil(propiedadesFiltradas.length / propiedadesPorPagina);
 
   return (
-    <Container fluid>
-      <Row className="py-3">
-        <Col md={12}>
-          <h2 className="text-primary">Propiedades en Venta</h2>
-          <p>{propiedadesVenta.length} Propiedades encontradas</p>
+    <Container fluid className="px-4 mt-3">
+      <Row>
+        {/* Buscador lateral */}
+        <Col xs={12} md={4} lg={3} className="mb-4">
+          <BuscadorLateral onFiltrar={handleFiltrar} />
         </Col>
-      </Row>
 
-      <Col md={12}>
-        <Row>
-          {propiedadesPaginaActual.length > 0 ? (
-            propiedadesPaginaActual.map((prop) => (
-              <Col md={4} key={prop.id}>
-                <PropiedadCard propiedad={prop} />
-              </Col>
-            ))
-          ) : (
-            <Col md={12} className="text-center">
-              <p className="text-muted mt-4">No hay propiedades disponibles en esta categoría por el momento.</p>
+        {/* Listado */}
+        <Col xs={12} md={8} lg={9}>
+          <Row className="mb-3 align-items-center">
+            <Col>
+              <h4 style={{ color: '#3f1b86', fontWeight: 700 }}>Propiedades en Venta</h4>
+              <p className="text-muted mb-0">{propiedadesFiltradas.length} propiedades encontradas</p>
             </Col>
+          </Row>
+
+          {cargando ? (
+            <div className="text-center py-5">
+              <div className="spinner-border" style={{ color: '#5529aa' }} role="status" />
+              <p className="mt-3 text-muted">Cargando propiedades...</p>
+            </div>
+          ) : propiedadesPagina.length > 0 ? (
+            <TarjetasPropiedades propiedades={propiedadesPagina} />
+          ) : (
+            <div className="text-center py-5">
+              <p className="text-muted">No hay propiedades disponibles con los filtros seleccionados.</p>
+            </div>
           )}
-        </Row>
-      </Col>
 
-      <Row className="mt-4">
-        <Col md={12}><hr /></Col>
-      </Row>
-
-      <Row className="mt-4">
-        <Col md={6} className="text-left">
-          <p>Mostrando página {paginaActual} de {totalPaginas} ({propiedadesVenta.length} resultados)</p>
+          {totalPaginas > 1 && (
+            <Row className="mt-3">
+              <Col className="d-flex justify-content-between align-items-center">
+                <small className="text-muted">Página {paginaActual} de {totalPaginas}</small>
+                <Pagination size="sm" className="mb-0">
+                  <Pagination.First onClick={() => setPaginaActual(1)} disabled={paginaActual === 1} />
+                  <Pagination.Prev onClick={() => setPaginaActual((p) => p - 1)} disabled={paginaActual === 1} />
+                  {[...Array(totalPaginas)].map((_, i) => (
+                    <Pagination.Item key={i + 1} active={i + 1 === paginaActual} onClick={() => setPaginaActual(i + 1)}>
+                      {i + 1}
+                    </Pagination.Item>
+                  ))}
+                  <Pagination.Next onClick={() => setPaginaActual((p) => p + 1)} disabled={paginaActual === totalPaginas} />
+                  <Pagination.Last onClick={() => setPaginaActual(totalPaginas)} disabled={paginaActual === totalPaginas} />
+                </Pagination>
+              </Col>
+            </Row>
+          )}
         </Col>
-        <Col className="d-flex justify-content-end">
-          <Pagination>
-            <Pagination.First onClick={() => cambiarPagina(1)} disabled={paginaActual === 1} />
-            <Pagination.Prev onClick={() => cambiarPagina(paginaActual - 1)} disabled={paginaActual === 1} />
-            {itemsPaginacion}
-            <Pagination.Next onClick={() => cambiarPagina(paginaActual + 1)} disabled={paginaActual === totalPaginas} />
-            <Pagination.Last onClick={() => cambiarPagina(totalPaginas)} disabled={paginaActual === totalPaginas} />
-          </Pagination>
-        </Col>
       </Row>
-
-      <Row className="mt-2">
-        <Col md={12}><hr /></Col>
-      </Row>
-
-      <AccesoRapido />
     </Container>
   );
 }

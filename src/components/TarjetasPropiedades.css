@@ -1,0 +1,198 @@
+/* ============================================
+   TARJETAS PROPIEDADES — Responsive completo
+   ============================================ */
+
+.tarjetas-section {
+  padding: 20px 0 40px 0;
+}
+
+.tarjetas-titulo {
+  color: #3f1b86;
+  font-weight: 700;
+  font-size: clamp(20px, 3vw, 32px);
+}
+
+.tarjetas-subtitulo {
+  color: #5529aa;
+  font-size: clamp(14px, 2vw, 20px);
+  margin-top: -4px;
+}
+
+.tarjeta-propiedad {
+  border: 1px solid #dcdcdc !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.25s, transform 0.2s;
+  height: 100%;
+}
+
+.tarjeta-propiedad:hover {
+  box-shadow: 0 6px 24px rgba(63, 27, 134, 0.15) !important;
+  transform: translateY(-4px);
+}
+
+.tarjeta-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background-color: #bebebe;
+}
+
+.tarjeta-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.tarjeta-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.45);
+  border: none;
+  color: white;
+  font-size: 1.8rem;
+  line-height: 1;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  z-index: 2;
+  padding: 0;
+}
+
+.tarjeta-nav:hover {
+  background-color: rgba(63, 27, 134, 0.75);
+}
+
+.tarjeta-nav--left { left: 8px; }
+.tarjeta-nav--right { right: 8px; }
+
+.tarjeta-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #3f1b86;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  z-index: 2;
+  letter-spacing: 0.3px;
+}
+
+.tarjeta-dots {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  z-index: 2;
+}
+
+.tarjeta-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.55);
+  transition: background-color 0.2s;
+}
+
+.tarjeta-dot--active {
+  background-color: #ffffff;
+}
+
+.tarjeta-body {
+  padding: 14px 16px 16px !important;
+}
+
+.tarjeta-nombre {
+  color: #5e1ae3;
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.tarjeta-ubicacion {
+  color: #666;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.tarjeta-precio {
+  color: #222;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.tarjeta-detalles {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 10px;
+}
+
+.tarjeta-detalle-item {
+  font-size: 12px;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+}
+
+.tarjeta-icono {
+  font-size: 13px;
+}
+
+/* ── TABLET HORIZONTAL 768–991px ── */
+@media (min-width: 768px) and (max-width: 991px) {
+  .tarjeta-img-wrapper,
+  .tarjeta-img {
+    height: 175px;
+  }
+
+  .tarjeta-nombre {
+    font-size: 14px;
+  }
+
+  .tarjeta-precio {
+    font-size: 15px;
+  }
+}
+
+/* ── TABLET VERTICAL 576–767px ── */
+@media (min-width: 576px) and (max-width: 767px) {
+  .tarjeta-img-wrapper,
+  .tarjeta-img {
+    height: 190px;
+  }
+}
+
+/* ── MÓVIL < 576px ── */
+@media (max-width: 575px) {
+  .tarjetas-section {
+    padding: 10px 0 24px 0;
+  }
+
+  .tarjeta-img-wrapper,
+  .tarjeta-img {
+    height: 200px;
+  }
+
+  .tarjeta-propiedad:hover {
+    transform: none; /* Desactivar hover lift en táctil */
+  }
+}

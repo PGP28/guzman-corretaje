@@ -1,54 +1,69 @@
-// components/Testimonios.js
 import React from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
-import './Testimonios.css'; // Estilos específicos para esta sección
+import { Container, Row, Col } from 'react-bootstrap';
+import './Testimonios.css';
+
+// Avatares con UI Avatars — genera iniciales con fondo morado
+const avatar = (nombre) =>
+  `https://ui-avatars.com/api/?name=${encodeURIComponent(nombre)}&background=5529aa&color=fff&size=120&bold=true&rounded=true`;
 
 const Testimonios = () => {
   const testimonios = [
     {
       nombre: 'María González',
       texto: 'Guzmán me ayudó a encontrar mi hogar ideal. ¡Excelente servicio y atención personalizada!',
-      imagen: 'https://via.placeholder.com/150', // Reemplaza con la URL correcta de la imagen
     },
     {
       nombre: 'Pedro Mitre',
-      texto: 'Como inversionista, confío en Guzmán para todas mis transacciones inmobiliarias. Profesionales y eficientes',
-      imagen: 'https://via.placeholder.com/150', // Reemplaza con la URL correcta de la imagen
+      texto: 'Como inversionista, confío en Guzmán para todas mis transacciones inmobiliarias. Profesionales y eficientes.',
     },
     {
       nombre: 'Marta Ramos',
       texto: 'Guzmán hizo que la compra de mi departamento fuera rápida y sin complicaciones. Los recomiendo ampliamente.',
-      imagen: 'https://via.placeholder.com/150', // Reemplaza con la URL correcta de la imagen
     },
   ];
 
   return (
-    <div className="testimonios-section my-5">
-      <Row className="text-center mb-4">
-        <Col>
-          <h2 className="display-5">Lo que piensan nuestros clientes de nosotros.</h2>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        {testimonios.map((testimonio, idx) => (
-          <Col md={4} key={idx} className="mb-4">
-            <Card className="testimonial-card">
-              <Card.Img 
-                variant="top" 
-                src={testimonio.imagen} 
-                alt={`Foto de ${testimonio.nombre}`} 
-                className="rounded-circle mx-auto d-block mb-3 mt-4"
-                style={{ width: '150px', height: '150px', objectFit: 'cover' }}
-              />
-              <Card.Body>
-                <h5 className="card-title text-center">{testimonio.nombre}</h5>
-                <p className="card-text text-center">{testimonio.texto}</p>
-              </Card.Body>
-            </Card>
+    <section className="testimonios-section">
+      <Container>
+        {/* Título */}
+        <Row className="text-center mb-5">
+          <Col>
+            <h2 className="testimonios-titulo">
+              Lo que piensan nuestros clientes de nosotros.
+            </h2>
           </Col>
-        ))}
-      </Row>
-    </div>
+        </Row>
+
+        {/* Cards */}
+        <Row className="justify-content-center">
+          {testimonios.map((t, idx) => (
+            <Col xs={12} md={4} key={idx} className="mb-4 d-flex">
+              <div className="testimonio-card">
+                {/* Avatar circular */}
+                <div className="testimonio-avatar-wrapper">
+                  <img
+                    src={avatar(t.nombre)}
+                    alt={`Foto de ${t.nombre}`}
+                    className="testimonio-avatar"
+                  />
+                </div>
+
+                {/* Estrellas */}
+                <div className="testimonio-estrellas" aria-label="5 estrellas">
+                  {'★★★★★'}
+                </div>
+
+                {/* Nombre */}
+                <h5 className="testimonio-nombre">{t.nombre}</h5>
+
+                {/* Texto */}
+                <p className="testimonio-texto">"{t.texto}"</p>
+              </div>
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    </section>
   );
 };
 

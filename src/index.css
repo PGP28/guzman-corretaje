@@ -1,10 +1,17 @@
 @import '~@fortawesome/fontawesome-free/css/all.css';
 
-/* Otros estilos */
+/* ================================================
+   GLOBAL BASE
+   ================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  max-width: 100%;
 }
 
 #root {
@@ -17,74 +24,41 @@ html, body {
   display: flex;
   flex-direction: column;
   flex: 1;
+  max-width: 100%;
 }
 
 .content {
   flex: 1;
+  max-width: 100%;
+  /* NO overflow-x:hidden — rompe position:fixed del navbar */
 }
 
-footer {
-  background-color: #343a40;
+/* ================================================
+   BOTONES NAV DE TARJETAS DE PROPIEDADES
+   ================================================ */
+.card-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.45);
+  border: none;
   color: white;
-  text-align: center;
-  padding: 1rem;
-  position: relative;
-  width: 100%;
+  font-size: 1.8rem;
+  line-height: 1;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  z-index: 2;
 }
 
-/* Estilo personalizado para el Navbar transparente */
-.image-container {
-  width: 400px;
-  max-height: 120px; 
-  overflow: hidden; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  
+.card-nav-btn:hover {
+  background-color: rgba(63, 27, 134, 0.75);
 }
 
-.img-logo {
-  width: 100%; /* Asegura que sea responsivo */
-  max-width: 500px; /* Limita el tamaño máximo */
-  height: auto; /* Mantiene la proporción de la imagen */
-  margin-top: 10px;
-}
-
-
-/* Estilo para los enlaces del Navbar */
-.navbar-custom .nav-link {
-  color: white !important;
-}
-
-.navbar-custom .navbar-brand {
-  color: white !important;
-}
-
-/* Estilo para el separador entre los botones */
-.separator {
-  width: 1px;
-  height: 40px; /* Altura deseada para la línea */
-  background-color: rgba(255, 255, 255, 0.5);
-  margin: 0;
-  border-left: 2px solid rgb(53, 0, 62); /* Agrega una línea divisoria */
-}
-
-/* Estilos personalizados para el formulario de contacto */
-.contact-icons {
-  color: #343a40;
-}
-
-.contact-icons a {
-  margin-right: 15px;
-  color: inherit;
-  text-decoration: none;
-}
-
-.contact-icons a:hover {
-  color: #007bff; /* Cambia el color al pasar el cursor */
-}
-
-.container {
-  max-width: 800px;
-}
-
+.card-nav-btn--left { left: 8px; }
+.card-nav-btn--right { right: 8px; }

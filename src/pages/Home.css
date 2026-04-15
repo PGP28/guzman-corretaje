@@ -1,67 +1,214 @@
+/* ============================================
+   HOME — Responsive completo
+   móvil < 576 | tablet-v 576-767 | tablet-h 768-991 | desktop ≥ 992
+   ============================================ */
+
 .home-container {
   position: relative;
-  height: 50vh; /* Altura fija para la sección */
+  min-height: 70vh;
   background-size: cover;
   background-position: center;
+  /* Compensar navbar fijo: en vez de margin-top negativo
+     usamos margin-top negativo con padding-top para evitar
+     colapso de margen */
+  margin-top: -62px;
+  padding-top: 62px;
 }
 
 .home-overlay {
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
+  background: linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(44,12,108,0.18) 100%);
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   display: flex;
-  justify-content: center; /* Centrar horizontalmente */
-  align-items: flex-start; /* Inicia en la parte superior */
-  /*padding-top: 10%;  Ajustar altura del texto */
+  justify-content: center;
+  align-items: center;
   text-align: center;
   color: white;
+}
+
+/* ── Wrapper barra WhatsApp ── */
+.contact-bar-wrapper {
+  position: relative;
+  overflow: visible;
+}
+
+/* Casa decorativa — oculta por defecto, solo desktop */
+.contact-house-deco {
+  display: none;
+  position: absolute;
+  left: 86px;
+  top: -20px;
+  height: 130px;
+  width: auto;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 3;
 }
 
 .contact-bar {
-  background-color: #4c40f7; /* Fondo morado */
-  padding: 20px;
+  background-color: #5529aa;
+  padding: 0;
   display: flex;
-  flex-direction: column; /* Configuración inicial para dispositivos móviles */
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
   color: white;
+  height: 68px;
+  min-height: 68px;
+  position: relative;
+  z-index: 1;
 }
 
-.icono-casa img {
-  width: 50px; /* Tamaño del icono */
-  height: auto;
+/* Contenedor interno alineado con el buscador hero */
+.contact-bar-inner {
+  width: 100%;
+  max-width: calc(760px * (10/12)); /* Igual que Col lg=10 del buscador */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+}
+
+.contact-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.contact-wa-icon {
+  font-size: 20px;
+  color: #ffffff;
+  flex-shrink: 0;
 }
 
 .texto-whatsapp {
-  text-align: center;
-  font-size: 1rem;
-  margin-top: 10px;
+  font-size: 15px;
+  margin: 0;
+  padding: 0;
+  color: #ffffff;
 }
 
-.boton-contactar button {
-  background-color: white;
-  color: #3F1B86; /* Texto del botón */
-  border: none;
+.boton-contactar button,
+.boton-contactar a {
+  background-color: #8a60da !important;
+  color: #ffffff !important;
+  border: none !important;
   font-weight: bold;
-  padding: 10px 20px;
+  padding: 8px 22px;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 14px;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
-.boton-contactar button:hover {
-  background-color: #e0e0e0; /* Color en hover */
+.boton-contactar button:hover,
+.boton-contactar a:hover {
+  background-color: #7f4edd !important;
 }
 
-/* Ajuste para pantallas medianas o mayores */
-@media (min-width: 768px) {
-  .contact-bar {
-    flex-direction: row; /* Cambiar a disposición horizontal */
-    justify-content: space-between; /* Separar elementos */
-    text-align: start;
+/* Títulos destacados */
+.destacados-titulo {
+  color: #3f1b86;
+  font-weight: 700;
+  font-size: clamp(20px, 3vw, 32px);
+}
+
+.destacados-subtitulo {
+  color: #5529aa;
+  font-size: clamp(14px, 2vw, 20px);
+  margin-top: -4px;
+}
+
+/* ── DESKTOP ≥ 992px ── */
+@media (min-width: 992px) {
+  .contact-house-deco {
+    display: block;
   }
+
+  .home-container {
+    min-height: 70vh;
+  }
+}
+
+/* ── TABLET HORIZONTAL 768–991px ── */
+@media (min-width: 768px) and (max-width: 991px) {
+  .home-container {
+    min-height: 75vh;
+  }
+
+  .contact-house-deco {
+    display: none; /* Ocultar en tablet para no romper layout */
+  }
+
+  .contact-bar {
+    padding: 0 20px;
+    height: 68px;
+  }
+
+  .texto-whatsapp {
+    font-size: 14px;
+  }
+}
+
+/* ── TABLET VERTICAL 576–767px ── */
+@media (min-width: 576px) and (max-width: 767px) {
+  .home-container {
+    min-height: 80vh;
+  }
+
+  .contact-bar {
+    height: auto;
+    min-height: 68px;
+    padding: 12px 20px;
+    gap: 8px;
+  }
+
+  .texto-whatsapp {
+    font-size: 14px;
+  }
+}
+
+/* ── MÓVIL < 576px ── */
+@media (max-width: 575px) {
+  .home-container {
+    min-height: 85vh;
+  }
+
+  .contact-bar {
+    height: auto;
+    min-height: 68px;
+  }
+
+  .contact-bar-inner {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 16px;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .contact-bar-left {
+    flex-direction: column;
+    gap: 6px;
+    justify-content: center;
+  }
+
+  .texto-whatsapp {
+    font-size: 13px;
+  }
+
   .boton-contactar {
-    margin-top: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .boton-contactar a {
+    display: block;
+    width: 100%;
   }
 }

@@ -20,6 +20,10 @@ const Login = ({ onLogin }) => {
       const decoded = JSON.parse(atob(credentialResponse.credential.split(".")[1]));
       if (ALLOWED_EMAILS.includes(decoded.email)) {
         setError(null);
+        // Guardar foto en localStorage para evitar problemas de CORS
+        if (decoded.picture) {
+          localStorage.setItem(`guzman_perfil_usuario_foto_${decoded.email}`, decoded.picture);
+        }
         onLogin(decoded);
       } else {
         setError("No tienes permisos para acceder a este panel.");
@@ -65,6 +69,10 @@ const Login = ({ onLogin }) => {
               <div className="login-stat-card">
                 <span className="login-stat-icon">📍</span>
                 <span className="login-stat-label">Ubicaciones</span>
+              </div>
+              <div className="login-stat-card">
+                <span className="login-stat-icon">🚧</span>
+                <span className="login-stat-label">Construcción</span>
               </div>
             </div>
           </div>

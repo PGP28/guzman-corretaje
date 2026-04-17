@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Form, Image } from 'react-bootstrap';
-import { FaSearch, FaEdit, FaTrash, FaSave, FaArrowLeft } from 'react-icons/fa';
+import { FaSearch, FaEdit, FaTrash, FaSave, FaArrowLeft, FaStar } from 'react-icons/fa';
 import { useSearchParams } from 'react-router-dom';
+import {
+  DndContext, closestCenter, PointerSensor, useSensor, useSensors
+} from '@dnd-kit/core';
+import {
+  SortableContext, rectSortingStrategy,
+  useSortable, arrayMove
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import API_BASE_URL from '../../config';
 import { getCorredoresActivos } from './corredoresHelper';
 import './SeccionDashboard.css';
@@ -13,6 +21,42 @@ const ESTADOS = [
   { value: 'arrendada',  label: '🔒 Arrendada',   color: '#b45309', bg: '#fef3c7' },
   { value: 'vendida',    label: '✅ Vendida',      color: '#1565c0', bg: '#e3f2fd' },
 ];
+
+// ── Item sortable de imagen ─────────────────────────────────────
+
+const SortableImagen = ({ img, idx, onEliminar, onPortada }) => {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({ id: img?.id?.toString() || idx.toString() });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    zIndex: isDragging ? 100 : 'auto',
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} className={`ep-imagen-item ${idx === 0 ? 'portada' : ''}`}>
+      {/* Handle drag */}
+      <div className="ep-imagen-drag" {...attributes} {...listeners} title="Arrastra para reordenar">
+        ⋮⋮
+      </div>
+      <img src={img?.url || img} alt={`Foto ${idx + 1}`} className="ep-imagen-thumb" />
+      {/* Estrella portada */}
+      <button
+        type="button"
+        className={`ep-imagen-star ${idx === 0 ? 'active' : ''}`}
+        title={idx === 0 ? 'Portada actual' : 'Convertir en portada'}
+        onClick={() => onPortada(idx)}
+      >
+        <FaStar />
+      </button>
+      {/* Eliminar */}
+      <button type="button" className="ep-imagen-del" title="Eliminar" onClick={() => onEliminar(idx, img)}>✕</button>
+      <span className="ep-imagen-num">{idx === 0 ? '🏠' : idx + 1}</span>
+    </div>
+  );
+};
 
 const EditarPropiedades = ({ rol = 'admin', userName }) => {
   const [searchParams] = useSearchParams();
@@ -29,6 +73,31 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
   const [confirmDelete, setConfirmDelete]     = useState(null);
 
   const esCorrector = rol === 'corredor';
+
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
+
+  const handleDragEnd = ({ active, over }) => {
+    if (!over || active.id === over.id) return;
+    setSeleccionada(prev => {
+      const oldIdx = prev.imagenes.findIndex((img, i) => (img?.id?.toString() || i.toString()) === active.id);
+      const newIdx = prev.imagenes.findIndex((img, i) => (img?.id?.toString() || i.toString()) === over.id);
+      return { ...prev, imagenes: arrayMove(prev.imagenes, oldIdx, newIdx) };
+    });
+  };
+
+  const handleEliminarImagen = (idx, img) => {
+    if (img?.id) fetch(`${API_URL}/properties/${seleccionada.id}/imagen/${img.id}`, { method: 'DELETE' }).catch(() => {});
+    setSeleccionada(prev => ({ ...prev, imagenes: prev.imagenes.filter((_, i) => i !== idx) }));
+  };
+
+  const handlePortada = (idx) => {
+    if (idx === 0) return;
+    setSeleccionada(prev => {
+      const imgs = [...prev.imagenes];
+      const [selected] = imgs.splice(idx, 1);
+      return { ...prev, imagenes: [selected, ...imgs] };
+    });
+  };
 
   useEffect(() => { cargarPropiedades(); }, []);
 
@@ -94,8 +163,21 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
     ['dormitorios','banos','metros_cuadrados','gastos_comunes','estacionamientos','bodega','descripcion','superficie_util','superficie_total']
       .forEach(d => { if (seleccionada.detalles?.[d] !== undefined) formData.append(d, seleccionada.detalles[d]); });
 
-    fetch(`${API_URL}/properties/${seleccionada.id}/update`, { method: 'PUT', body: formData })
-      .then(r => r.json())
+    // Guardar orden de imágenes
+    const idsConId = seleccionada.imagenes?.filter(img => img?.id).map(img => img.id);
+    const guardarOrden = idsConId?.length > 0
+      ? fetch(`${API_URL}/properties/${seleccionada.id}/imagenes/orden`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orden: idsConId })
+        })
+      : Promise.resolve();
+
+    Promise.all([
+      fetch(`${API_URL}/properties/${seleccionada.id}/update`, { method: 'PUT', body: formData }),
+      guardarOrden
+    ])
+      .then(([r]) => r.json())
       .then(() => {
         if (seleccionada.estado) {
           return fetch(`${API_URL}/properties/${seleccionada.id}/estado`, {
@@ -210,6 +292,41 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
           {/* ── Secciones solo para admin ── */}
           {!esCorrector && (
             <>
+              {/* Imágenes actuales */}
+              {seleccionada.imagenes?.length > 0 && (
+                <div className="sd-card active" style={{ marginTop: 16 }}>
+                  <div className="sd-card-header">
+                    <span className="sd-card-icon">🖼️</span>
+                    <div>
+                      <h3 className="sd-card-titulo">Imágenes actuales</h3>
+                      <p className="sd-card-subtitulo">
+                        {seleccionada.imagenes.length} fotos — arrastra para reordenar · ★ para portada · ✕ para eliminar
+                      </p>
+                    </div>
+                  </div>
+                  <div className="sd-card-body">
+                    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                      <SortableContext
+                        items={seleccionada.imagenes.map((img, i) => img?.id?.toString() || i.toString())}
+                        strategy={rectSortingStrategy}
+                      >
+                        <div className="ep-imagenes-grid">
+                          {seleccionada.imagenes.map((img, idx) => (
+                            <SortableImagen
+                              key={img?.id?.toString() || idx}
+                              img={img}
+                              idx={idx}
+                              onEliminar={handleEliminarImagen}
+                              onPortada={handlePortada}
+                            />
+                          ))}
+                        </div>
+                      </SortableContext>
+                    </DndContext>
+                  </div>
+                </div>
+              )}
+
               {/* Información */}
               <div className="sd-card active" style={{ marginTop: 16 }}>
                 <div className="sd-card-header">
@@ -422,7 +539,7 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
             return (
               <div key={p.id} className="ep-item">
                 <div className="ep-item-img">
-                  {p.imagenes?.[0] ? <Image src={p.imagenes[0]} className="ep-img" /> : <div className="ep-img-placeholder">🏠</div>}
+                  {p.imagenes?.[0] ? <Image src={p.imagenes[0]?.url || p.imagenes[0]} className="ep-img" /> : <div className="ep-img-placeholder">🏠</div>}
                 </div>
                 <div className="ep-item-info">
                   <div className="ep-item-top">

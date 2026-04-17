@@ -9,7 +9,7 @@ function DetallesPropiedades() {
   const { propiedad } = location.state || {};
 
   const [imagenIndex, setImagenIndex] = useState(0);
-  const imagenPrincipal = propiedad?.imagenes?.[imagenIndex] || '';
+  const imagenPrincipal = propiedad?.imagenes?.[imagenIndex]?.url || propiedad?.imagenes?.[imagenIndex] || '';
   const [formData, setFormData] = useState({ email: '', telefono: '', mensaje: '' });
   const [enviado, setEnviado] = useState(false);
 
@@ -134,7 +134,7 @@ function DetallesPropiedades() {
                 className={`detalles-thumb-item ${imagenIndex === index ? 'active' : ''}`}
                 onClick={() => setImagenIndex(index)}
               >
-                <img src={img} alt={`Foto ${index + 1}`} />
+                <img src={img?.url || img} alt={`Foto ${index + 1}`} />
                 <span className="detalles-thumb-num">{index + 1}</span>
               </div>
             ))}

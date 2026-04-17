@@ -68,7 +68,7 @@
   width: auto;
   object-fit: contain;
   filter: brightness(0) invert(1);
-  margin-bottom: 8px;
+  margin-bottom: 28px;
 }
 
 .login-left-titulo {
@@ -89,9 +89,9 @@
 
 /* Tarjetas de stats decorativas */
 .login-stats {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
-  flex-wrap: wrap;
   margin-top: 8px;
 }
 

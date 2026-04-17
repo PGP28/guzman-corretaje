@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
 import './TarjetasPropiedades.css';
 
 function PropiedadCard({ propiedad }) {
   const [imagenIndex, setImagenIndex] = useState(0);
   const navigate = useNavigate();
 
-  const imagenes = propiedad.imagenes || [];
+  const imagenes = (propiedad.imagenes || []).map(i => i?.url || i);
 
   const siguienteImagen = (e) => {
     e.stopPropagation();
@@ -39,18 +37,26 @@ function PropiedadCard({ propiedad }) {
     <Card className="tarjeta-propiedad" onClick={handleClick}>
       {/* Imagen con carousel */}
       <div className={`tarjeta-img-wrapper ${(propiedad.estado && propiedad.estado !== 'disponible') ? 'no-disponible' : ''}`}>
-        <LazyLoadImage
+        <img
           src={imagenes[imagenIndex] || 'https://via.placeholder.com/367x207?text=Sin+imagen'}
           alt={propiedad.nombre}
           className="tarjeta-img"
-          wrapperClassName="tarjeta-img-lazy"
+          loading="lazy"
         />
 
         {/* Botones de navegación */}
         {imagenes.length > 1 && (
           <>
-            <button className="tarjeta-nav tarjeta-nav--left" onClick={anteriorImagen}>&#8249;</button>
-            <button className="tarjeta-nav tarjeta-nav--right" onClick={siguienteImagen}>&#8250;</button>
+            <button className="tarjeta-nav tarjeta-nav--left" onClick={anteriorImagen}>
+              <svg width="10" height="18" viewBox="0 0 10 18" fill="none">
+                <path d="M9 1L1 9L9 17" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <button className="tarjeta-nav tarjeta-nav--right" onClick={siguienteImagen}>
+              <svg width="10" height="18" viewBox="0 0 10 18" fill="none">
+                <path d="M1 1L9 9L1 17" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
           </>
         )}
 

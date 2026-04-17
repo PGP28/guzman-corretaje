@@ -10,7 +10,7 @@
 .footer-main {
   background-color: #ffffff;
   border-top: 1px solid #e8e8e8;
-  padding: 4px 0 0 0;
+  padding: 4px 0;
 }
 
 .footer-logo-col {
@@ -101,12 +101,79 @@
   margin-top: 4px;
 }
 
+.footer-copyright-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .footer-copyright-text {
   color: #3f1b86;
   font-size: 12px;
   text-align: center;
   margin: 0;
 }
+
+.footer-portal-link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #aaa;
+  text-decoration: none;
+  transition: color 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.footer-portal-link:hover { color: #5529aa; }
+.footer-portal-icon { font-size: 10px; }
+
+.footer-lista-separator {
+  height: 1px;
+  background: #e0e0e0;
+  margin: 6px 0;
+  list-style: none;
+}
+
+/* Acceso rápido en 2 columnas */
+.footer-acceso-grid {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+}
+
+.footer-acceso-divider {
+  width: 1px;
+  background: #e0e0e0;
+  align-self: stretch;
+  margin: 0 12px;
+  flex-shrink: 0;
+}
+
+/* Portal corredores debajo */
+.footer-portal-wrapper {
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.footer-portal-hr {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 0 0 8px 0;
+  width: 100%;
+}
+
+.footer-link-portal {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #5529aa !important;
+  font-weight: 600 !important;
+  font-size: 13px;
+}
+.footer-link-portal:hover { color: #3f1b86 !important; }
 
 /* ── TABLET HORIZONTAL 768–991px ── */
 @media (min-width: 768px) and (max-width: 991px) {

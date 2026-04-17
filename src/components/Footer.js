@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaInstagram, FaTiktok } from 'react-icons/fa';
+import { FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaInstagram, FaTiktok, FaLock } from 'react-icons/fa';
 import logo from '../assets/images/LOGO_PNG-19.png';
 import './Footer.css';
 
@@ -16,17 +16,32 @@ const Footer = () => (
             <img src={logo} alt="Guzmán Corretaje" className="footer-logo" />
           </Col>
 
-          {/* Acceso Rápido */}
+          {/* Acceso Rápido — dividido en 2 subcolumnas */}
           <Col xs={6} md={3} className="mb-3 mb-md-0">
             <h6 className="footer-titulo">ACCESO RÁPIDO</h6>
-            <ul className="footer-lista">
-              <li><a href="/Arriendo" className="footer-link">Arriendos</a></li>
-              <li><a href="/EnVenta" className="footer-link">En venta</a></li>
-              <li><a href="/Terrenos" className="footer-link">Terrenos</a></li>
-              <li><a href="/Construccion" className="footer-link">Construcción</a></li>
-              <li><a href="/QuieroVender" className="footer-link">¡Quiero vender!</a></li>
-              <li><a href="/Contactanos" className="footer-link">Contáctanos</a></li>
-            </ul>
+            <div className="footer-acceso-grid">
+              {/* Columna izquierda */}
+              <ul className="footer-lista">
+                <li><a href="/Arriendo" className="footer-link">Arriendos</a></li>
+                <li><a href="/EnVenta" className="footer-link">En venta</a></li>
+                <li><a href="/Terrenos" className="footer-link">Terrenos</a></li>
+              </ul>
+              {/* Divisor vertical */}
+              <div className="footer-acceso-divider" />
+              {/* Columna derecha */}
+              <ul className="footer-lista">
+                <li><a href="/Construccion" className="footer-link">Construcción</a></li>
+                <li><a href="/QuieroVender" className="footer-link">¡Quiero vender!</a></li>
+                <li><a href="/Contactanos" className="footer-link">Contáctanos</a></li>
+              </ul>
+            </div>
+            {/* Divisor horizontal + portal */}
+            <div className="footer-portal-wrapper">
+              <hr className="footer-portal-hr" />
+              <a href="/login" className="footer-link footer-link-portal">
+                <FaLock className="footer-portal-icon" /> Portal corredores
+              </a>
+            </div>
           </Col>
 
           {/* Síguenos — en móvil va junto a Acceso Rápido en la misma fila */}

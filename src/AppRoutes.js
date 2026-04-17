@@ -6,6 +6,7 @@ import Contactanos from './pages/Contactanos';
 import Construccion from './pages/Construccion';
 import NavigationBar from './components/Navbar';
 import WhatsAppFloat from './components/WhatsAppFloat';
+import Footer from './components/Footer';
 import Arriendo from './pages/Arriendo';
 import EnVenta from './pages/EnVenta';
 import Terrenos from './pages/Terrenos';
@@ -14,19 +15,18 @@ import DetallesPropiedades from './components/DetallesPropiedades';
 import Login from './pages/Login';
 import DashboardLayout from './components/dashboard/DashboardLayout';
 
-// Wrapper que oculta el navbar en rutas del dashboard y login
 const AppContent = ({ user, onLogin, onLogout }) => {
   const location = useLocation();
   const isDashboard = location.pathname.startsWith('/dashboard');
   const isLogin = location.pathname === '/login';
   const hideNavbar = isDashboard || isLogin;
+  const hideFooter = isDashboard || isLogin;
 
   return (
     <>
       {!hideNavbar && <NavigationBar />}
       <WhatsAppFloat />
       <Routes>
-        {/* Rutas públicas */}
         <Route path="/" element={<Home />} />
         <Route path="/Arriendo" element={<Arriendo />} />
         <Route path="/EnVenta" element={<EnVenta />} />
@@ -35,30 +35,11 @@ const AppContent = ({ user, onLogin, onLogout }) => {
         <Route path="/Contactanos" element={<Contactanos />} />
         <Route path="/Construccion" element={<Construccion />} />
         <Route path="/DetallesPropiedades" element={<DetallesPropiedades />} />
-
-        {/* Login */}
-        <Route
-          path="/login"
-          element={
-            !user
-              ? <Login onLogin={onLogin} />
-              : <Navigate to="/dashboard" replace />
-          }
-        />
-
-        {/* Dashboard — todas las sub-rutas manejadas internamente */}
-        <Route
-          path="/dashboard/*"
-          element={
-            user
-              ? <DashboardLayout user={user} onLogout={onLogout} />
-              : <Navigate to="/login" replace />
-          }
-        />
-
-        {/* 404 */}
+        <Route path="/login" element={!user ? <Login onLogin={onLogin} /> : <Navigate to="/dashboard" replace />} />
+        <Route path="/dashboard/*" element={user ? <DashboardLayout user={user} onLogout={onLogout} /> : <Navigate to="/login" replace />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+      {!hideFooter && <Footer />}
     </>
   );
 };

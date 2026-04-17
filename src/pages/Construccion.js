@@ -23,20 +23,19 @@ function Construccion() {
     const msg = encodeURIComponent(
       `Hola, soy ${formData.nombre}. Solicito información sobre: ${formData.servicio}. ${formData.descripcion} Contacto: ${formData.email} / ${formData.telefono}`
     );
-    // Guardar en localStorage para el dashboard
-    const solicitudes = JSON.parse(localStorage.getItem('guzman_solicitudes') || '[]');
+    // Guardar en localStorage para el dashboard de construcción
+    const solicitudes = JSON.parse(localStorage.getItem('guzman_solicitudes_construccion') || '[]');
     solicitudes.unshift({
       id: Date.now(),
       nombre:   formData.nombre,
       email:    formData.email,
       telefono: formData.telefono,
-      mensaje:  `[Construcción] ${formData.servicio}: ${formData.descripcion}`,
+      mensaje:  `${formData.servicio}: ${formData.descripcion}`,
       estado:   'nueva',
-      corredor: null,
       fecha:    new Date().toLocaleDateString('es-CL'),
       origen:   'Construcción',
     });
-    localStorage.setItem('guzman_solicitudes', JSON.stringify(solicitudes));
+    localStorage.setItem('guzman_solicitudes_construccion', JSON.stringify(solicitudes));
     window.open(`https://wa.me/+56952389494?text=${msg}`, '_blank');
     setEnviado(true);
   };

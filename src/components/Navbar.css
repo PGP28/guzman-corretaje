@@ -130,6 +130,45 @@
   }
 }
 
+/* Botón acceso privado */
+.navbar-acceso-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid;
+  transition: all 0.2s;
+  white-space: nowrap;
+  background: none;
+}
+.navbar-acceso-btn.transparent {
+  border-color: rgba(255,255,255,0.5);
+  color: rgba(255,255,255,0.85);
+}
+.navbar-acceso-btn.transparent:hover {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  border-color: #fff;
+}
+.navbar-acceso-btn.solid {
+  border-color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.85);
+}
+.navbar-acceso-btn.solid:hover {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  border-color: #fff;
+}
+.navbar-acceso-icon { font-size: 11px; }
+
+@media (max-width: 991px) {
+  .navbar-acceso-btn { margin: 8px 16px 4px; }
+}
+
 /* padding-top global para compensar navbar fijo */
 body {
   padding-top: 62px;

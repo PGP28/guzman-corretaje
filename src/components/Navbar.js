@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { FaLock } from 'react-icons/fa';
 import logoNav from '../assets/images/LOGO_PNG-17_Modified.png';
 import './Navbar.css';
 
@@ -8,24 +9,28 @@ const NavigationBar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
-  // Solo aplicar efecto transparente en la Home
   const isHome = location.pathname === '/';
 
   useEffect(() => {
-    if (!isHome) {
-      setScrolled(true);
-      return;
-    }
+    if (!isHome) { setScrolled(true); return; }
     setScrolled(false);
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 60);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isHome, location.pathname]);
 
   const isSolid = !isHome || scrolled || expanded;
+
+  const links = [
+    { href: '/Arriendo',     label: 'Arriendos' },
+    { href: '/EnVenta',      label: 'En venta' },
+    { href: '/Terrenos',     label: 'Terrenos' },
+    { href: '/Construccion', label: 'Construcción' },
+    { href: '/QuieroVender', label: '¡Quiero vender!' },
+    { href: '/Contactanos',  label: 'Contáctanos' },
+  ];
 
   return (
     <Navbar
@@ -36,66 +41,44 @@ const NavigationBar = () => {
       className={`navbar-guzman ${isSolid ? 'navbar-solid' : 'navbar-transparent'}`}
     >
       <Container fluid className="px-4">
+
         {/* Logo */}
         <Navbar.Brand href="/" className="navbar-brand-guzman">
-          <img
-            src={logoNav}
-            alt="Guzmán Corretaje"
-            className="navbar-logo"
-          />
+          <img src={logoNav} alt="Guzmán Corretaje" className="navbar-logo" />
         </Navbar.Brand>
 
-        {/* Botón hamburguesa personalizado */}
-        <Navbar.Toggle
-          aria-controls="navbar-nav-guzman"
-          className="navbar-toggler-guzman"
-        >
+        {/* Hamburguesa */}
+        <Navbar.Toggle aria-controls="navbar-nav-guzman" className="navbar-toggler-guzman">
           <span className="toggler-icon" />
           <span className="toggler-icon" />
           <span className="toggler-icon" />
         </Navbar.Toggle>
 
-        {/* Links de navegación */}
         <Navbar.Collapse id="navbar-nav-guzman">
+          {/* Links centrados */}
           <Nav className="mx-auto d-flex align-items-center">
-            <Nav.Link
-              href="/Arriendo"
-              className={`nav-link-guzman ${location.pathname === '/Arriendo' ? 'nav-link-active' : ''}`}
-            >
-              Arriendos
-            </Nav.Link>
-            <Nav.Link
-              href="/EnVenta"
-              className={`nav-link-guzman ${location.pathname === '/EnVenta' ? 'nav-link-active' : ''}`}
-            >
-              En venta
-            </Nav.Link>
-            <Nav.Link
-              href="/Terrenos"
-              className={`nav-link-guzman ${location.pathname === '/Terrenos' ? 'nav-link-active' : ''}`}
-            >
-              Terrenos
-            </Nav.Link>
-            <Nav.Link
-              href="/Construccion"
-              className={`nav-link-guzman ${location.pathname === '/Construccion' ? 'nav-link-active' : ''}`}
-            >
-              Construcción
-            </Nav.Link>
-            <Nav.Link
-              href="/QuieroVender"
-              className={`nav-link-guzman ${location.pathname === '/QuieroVender' ? 'nav-link-active' : ''}`}
-            >
-              ¡Quiero vender!
-            </Nav.Link>
-            <Nav.Link
-              href="/Contactanos"
-              className={`nav-link-guzman ${location.pathname === '/Contactanos' ? 'nav-link-active' : ''}`}
-            >
-              Contáctanos
-            </Nav.Link>
+            {links.map(l => (
+              <Nav.Link
+                key={l.href}
+                href={l.href}
+                className={`nav-link-guzman ${location.pathname === l.href ? 'nav-link-active' : ''}`}
+              >
+                {l.label}
+              </Nav.Link>
+            ))}
           </Nav>
+
+          {/* Botón acceso privado — extremo derecho */}
+          <button
+            className={`navbar-acceso-btn ${isSolid ? 'solid' : 'transparent'}`}
+            onClick={() => { navigate('/login'); setExpanded(false); }}
+            title="Portal de corredores"
+          >
+            <FaLock className="navbar-acceso-icon" />
+            <span>Acceso privado</span>
+          </button>
         </Navbar.Collapse>
+
       </Container>
     </Navbar>
   );

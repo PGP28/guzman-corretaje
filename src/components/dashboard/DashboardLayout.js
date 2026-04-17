@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { FaBars, FaTimes, FaHome, FaUpload, FaEdit, FaUsers, FaSignOutAlt,
-         FaChevronLeft, FaUser, FaEnvelope, FaGift } from 'react-icons/fa';
+         FaChevronLeft, FaUser, FaEnvelope, FaGift, FaHardHat } from 'react-icons/fa';
 import DashboardInicio from './DashboardInicio';
 import DashboardCorredor from './DashboardCorredor';
 import SubirPropiedad from './SubirPropiedad';
@@ -10,6 +10,7 @@ import GestionCorredores from './GestionCorredores';
 import MiPerfil from './MiPerfil';
 import Solicitudes from './Solicitudes';
 import SolicitarBono from './SolicitarBono';
+import Construccion from './Construccion';
 import { getRolUsuario } from './rolesHelper';
 import './DashboardLayout.css';
 
@@ -22,8 +23,9 @@ const getNavItems = (rol) => {
     { id: 'perfil',     label: 'Mi Perfil',   icon: <FaUser />,    path: '/dashboard/perfil' },
   ];
   if (rol === 'admin') {
-    base.splice(1, 0, { id: 'subir', label: 'Subir', icon: <FaUpload />, path: '/dashboard/subir' });
-    base.splice(4, 0, { id: 'corredores', label: 'Corredores', icon: <FaUsers />, path: '/dashboard/corredores' });
+    base.splice(1, 0, { id: 'subir',       label: 'Subir',        icon: <FaUpload />,   path: '/dashboard/subir' });
+    base.splice(4, 0, { id: 'corredores',  label: 'Corredores',   icon: <FaUsers />,    path: '/dashboard/corredores' });
+    base.splice(5, 0, { id: 'construccion',label: 'Construcción', icon: <FaHardHat />,  path: '/dashboard/construccion' });
   } else {
     // Corredor tiene sección de bonos
     base.splice(3, 0, { id: 'bonos', label: 'Mis bonos', icon: <FaGift />, path: '/dashboard/bonos' });
@@ -176,8 +178,9 @@ const DashboardLayout = ({ user: userProp, onLogout }) => {
             } />
 
             {/* Solo admin */}
-            {rol === 'admin' && <Route path="/subir"      element={<SubirPropiedad />} />}
-            {rol === 'admin' && <Route path="/corredores" element={<GestionCorredores />} />}
+            {rol === 'admin' && <Route path="/subir"        element={<SubirPropiedad />} />}
+            {rol === 'admin' && <Route path="/corredores"   element={<GestionCorredores />} />}
+            {rol === 'admin' && <Route path="/construccion" element={<Construccion />} />}
 
             {/* Ambos roles */}
             <Route path="/editar"      element={<EditarPropiedades rol={rol} userEmail={user?.email} userName={user?.name} />} />

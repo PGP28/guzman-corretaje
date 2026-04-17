@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { useNavigate } from 'react-router-dom';
+import { FaArrowLeft } from 'react-icons/fa';
 import logoNav from '../assets/images/LOGO_PNG-17_Modified.png';
 import "./Login.css";
 
@@ -11,6 +13,7 @@ const ALLOWED_EMAILS = [
 
 const Login = ({ onLogin }) => {
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSuccess = (credentialResponse) => {
     try {
@@ -105,6 +108,11 @@ const Login = ({ onLogin }) => {
             <p className="login-info">
               Solo cuentas autorizadas por Guzmán Corretaje pueden acceder a este panel.
             </p>
+
+            {/* Volver al sitio */}
+            <button className="login-btn-home" onClick={() => navigate('/')}>
+              <FaArrowLeft className="me-2" /> Volver al sitio web
+            </button>
           </div>
         </div>
 

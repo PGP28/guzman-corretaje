@@ -303,3 +303,27 @@
     font-size: 12px;
   }
 }
+
+/* Botón volver al home */
+.login-btn-home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 9px 0;
+  background: none;
+  border: 1.5px solid #e0d4ff;
+  border-radius: 10px;
+  color: #8a60da;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.login-btn-home:hover {
+  background: #f0ebff;
+  border-color: #8a60da;
+  color: #3f1b86;
+}

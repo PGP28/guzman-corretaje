@@ -77,6 +77,12 @@ const NavigationBar = () => {
               Terrenos
             </Nav.Link>
             <Nav.Link
+              href="/Construccion"
+              className={`nav-link-guzman ${location.pathname === '/Construccion' ? 'nav-link-active' : ''}`}
+            >
+              Construcción
+            </Nav.Link>
+            <Nav.Link
               href="/QuieroVender"
               className={`nav-link-guzman ${location.pathname === '/QuieroVender' ? 'nav-link-active' : ''}`}
             >

@@ -1,12 +1,305 @@
-.login-container {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
+/* ============================================
+   LOGIN — Layout dividido, paleta Guzmán
+   ============================================ */
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  margin-top: -62px;
+  background-color: #f4f0ff;
+}
+
+/* ── LADO IZQUIERDO ── */
+.login-left {
+  flex: 1;
+  background: linear-gradient(150deg, #3f1b86 0%, #5529aa 50%, #8a60da 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 60px 48px;
+  min-height: 100vh;
+}
+
+/* Círculos decorativos */
+.login-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.12;
+  background-color: #ffffff;
+}
+
+.login-circle--1 {
+  width: 400px;
+  height: 400px;
+  top: -100px;
+  right: -120px;
+}
+
+.login-circle--2 {
+  width: 280px;
+  height: 280px;
+  bottom: -80px;
+  left: -60px;
+}
+
+.login-circle--3 {
+  width: 150px;
+  height: 150px;
+  top: 45%;
+  left: 20px;
+  opacity: 0.08;
+}
+
+/* Contenido lado izquierdo */
+.login-left-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 380px;
+}
+
+.login-left-logo {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  margin-bottom: 8px;
+}
+
+.login-left-titulo {
+  color: #ffffff;
+  font-weight: 800;
+  font-size: clamp(28px, 3vw, 42px);
+  line-height: 1.2;
+  margin: 0;
+}
+
+.login-left-subtitulo {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 320px;
+}
+
+/* Tarjetas de stats decorativas */
+.login-stats {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.login-stat-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.login-stat-card:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.login-stat-icon {
+  font-size: 18px;
+}
+
+/* ── LADO DERECHO ── */
+.login-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 48px;
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
+/* Card del formulario */
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* Ícono superior */
+.login-icon-wrapper {
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, #3f1b86, #8a60da);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 24px rgba(63, 27, 134, 0.3);
+}
+
+.login-icon {
+  font-size: 30px;
+  filter: grayscale(0);
+}
+
+/* Títulos */
+.login-titulo {
+  color: #3f1b86;
+  font-weight: 700;
+  font-size: 26px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.login-subtitulo {
+  color: #888;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 32px;
+  line-height: 1.5;
+}
+
+/* Divisor */
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.login-divider-line {
+  flex: 1;
+  height: 1px;
+  background-color: #e8e8e8;
+}
+
+.login-divider-text {
+  color: #bbb;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* Botón Google */
+.login-google-btn {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Error */
+.login-error {
+  background-color: #fff5f5;
+  border: 1px solid #ffc0c0;
+  color: #cc0000;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 13px;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+/* Info */
+.login-info {
+  color: #bbb;
+  font-size: 11px;
+  text-align: center;
+  margin: 8px 0 0 0;
+  line-height: 1.6;
+  max-width: 280px;
+}
+
+/* ── RESPONSIVE ── */
+
+/* Tablet horizontal — lado izquierdo más angosto */
+@media (min-width: 768px) and (max-width: 991px) {
+  .login-left {
+    padding: 48px 32px;
+    flex: 0.8;
+  }
+
+  .login-right {
+    padding: 48px 32px;
+  }
+
+  .login-left-titulo {
+    font-size: 28px;
+  }
+}
+
+/* Tablet vertical y móvil — apila verticalmente */
+@media (max-width: 767px) {
+  .login-page {
+    flex-direction: column;
+  }
+
+  .login-left {
+    min-height: auto;
+    padding: 80px 24px 40px;
+    flex: none;
+  }
+
+  .login-left-content {
     align-items: center;
-    background-color: #f8f9fa;
+    text-align: center;
   }
-  
-  h2 {
-    color: #4c40f7;
+
+  .login-left-subtitulo {
+    text-align: center;
   }
-  
+
+  .login-stats {
+    justify-content: center;
+  }
+
+  .login-circle--1 {
+    width: 250px;
+    height: 250px;
+    top: -60px;
+    right: -60px;
+  }
+
+  .login-right {
+    min-height: auto;
+    padding: 40px 24px 60px;
+    flex: none;
+  }
+}
+
+/* Móvil pequeño */
+@media (max-width: 575px) {
+  .login-left {
+    padding: 80px 20px 32px;
+  }
+
+  .login-right {
+    padding: 32px 20px 48px;
+  }
+
+  .login-titulo {
+    font-size: 22px;
+  }
+
+  .login-stat-card {
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+}

@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './BuscadorHero.css';
 
-const API_URL = 'https://guzman-corretaje-backend-1.onrender.com/api';
+import API_BASE_URL from '../config';
+
+const API_URL = `${API_BASE_URL}/api`;
 
 const BuscadorHero = () => {
   const navigate = useNavigate();

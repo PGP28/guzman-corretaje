@@ -1,0 +1,110 @@
+/* ── GRÁFICO MÉTRICAS ── */
+.gm-card {
+  background: #fff;
+  border: 1px solid #ede8fa;
+  border-radius: 16px;
+  padding: 24px 28px;
+  box-shadow: 0 2px 12px rgba(63,27,134,0.06);
+}
+
+.gm-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.gm-titulo {
+  color: #3f1b86;
+  font-weight: 700;
+  font-size: 17px;
+  margin: 0 0 4px;
+}
+
+.gm-subtitulo {
+  color: #888;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* Leyenda */
+.gm-leyenda {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.gm-leyenda-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  border: 1.5px solid #d5d5d5;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #888;
+  transition: all 0.2s;
+}
+.gm-leyenda-btn.active  { background: #faf8ff; }
+.gm-leyenda-btn.inactivo { opacity: 0.5; }
+.gm-leyenda-btn:hover { opacity: 1; }
+
+.gm-leyenda-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Chart */
+.gm-chart {
+  width: 100%;
+}
+
+/* Tooltip */
+.gm-tooltip {
+  background: #fff;
+  border: 1px solid #ede8fa;
+  border-radius: 10px;
+  padding: 10px 14px;
+  box-shadow: 0 4px 16px rgba(63,27,134,0.12);
+  font-size: 13px;
+}
+
+.gm-tooltip-mes {
+  color: #3f1b86;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.gm-tooltip-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 2px 0;
+}
+
+.gm-tooltip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.gm-nota {
+  font-size: 11px;
+  color: #aaa;
+  margin: 12px 0 0;
+  text-align: right;
+}
+
+@media (max-width: 767px) {
+  .gm-card { padding: 18px 16px; }
+  .gm-header { flex-direction: column; }
+  .gm-leyenda { gap: 6px; }
+}

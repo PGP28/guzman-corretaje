@@ -16,6 +16,20 @@ function Contactanos() {
     const msg = encodeURIComponent(
       `Hola, soy ${formData.nombre}. ${formData.mensaje} Mi contacto: ${formData.email} / ${formData.telefono}`
     );
+    // Guardar solicitud en localStorage para el dashboard
+    const solicitudes = JSON.parse(localStorage.getItem('guzman_solicitudes') || '[]');
+    solicitudes.unshift({
+      id: Date.now(),
+      nombre:   formData.nombre,
+      email:    formData.email,
+      telefono: formData.telefono,
+      mensaje:  formData.mensaje,
+      estado:   'nueva',
+      corredor: null,
+      fecha:    new Date().toLocaleDateString('es-CL'),
+      origen:   'Contáctanos',
+    });
+    localStorage.setItem('guzman_solicitudes', JSON.stringify(solicitudes));
     window.open(`https://wa.me/+56952389494?text=${msg}`, '_blank');
     setEnviado(true);
   };

@@ -23,6 +23,7 @@ const Footer = () => (
               <li><a href="/Arriendo" className="footer-link">Arriendos</a></li>
               <li><a href="/EnVenta" className="footer-link">En venta</a></li>
               <li><a href="/Terrenos" className="footer-link">Terrenos</a></li>
+              <li><a href="/Construccion" className="footer-link">Construcción</a></li>
               <li><a href="/QuieroVender" className="footer-link">¡Quiero vender!</a></li>
               <li><a href="/Contactanos" className="footer-link">Contáctanos</a></li>
             </ul>

@@ -1,0 +1,196 @@
+/* ── SOLICITUDES ── */
+.sol-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.sol-stat {
+  background: #fff;
+  border: 2px solid;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sol-stat-icon { font-size: 20px; }
+.sol-stat-num  { font-size: 26px; font-weight: 800; }
+.sol-stat-label { font-size: 12px; color: #888; }
+
+/* Lista */
+.sol-lista { display: flex; flex-direction: column; gap: 10px; }
+
+.sol-item {
+  background: #fff;
+  border: 1px solid #ede8fa;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+.sol-item:hover { box-shadow: 0 2px 12px rgba(63,27,134,0.08); }
+.sol-item.expanded { border-color: #5529aa; }
+
+.sol-item-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  cursor: pointer;
+}
+
+.sol-item-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3f1b86, #8a60da);
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sol-item-info { flex: 1; min-width: 0; }
+.sol-item-top  { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 3px; }
+
+.sol-item-nombre {
+  font-weight: 700;
+  font-size: 14px;
+  color: #3f1b86;
+}
+
+.sol-item-estado {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sol-item-meta {
+  font-size: 12px;
+  color: #888;
+  display: block;
+}
+
+.sol-item-corredor {
+  font-size: 11px;
+  color: #2e7d32;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.sol-item-chevron {
+  font-size: 10px;
+  color: #888;
+  flex-shrink: 0;
+}
+
+/* Detalle */
+.sol-item-detalle {
+  padding: 16px 20px 20px;
+  border-top: 1px solid #f0ebff;
+  background: #faf8ff;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sol-item-mensaje {
+  font-size: 14px;
+  color: #444;
+  margin: 0;
+  background: #fff;
+  border: 1px solid #ede8fa;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.sol-acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sol-accion-grupo { display: flex; flex-direction: column; gap: 8px; }
+.sol-accion-titulo { font-size: 12px; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: 0.4px; }
+
+.sol-estado-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.sol-estado-btn {
+  background: #fff;
+  border: 1px solid #d5d5d5;
+  color: #666;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.sol-estado-btn.active { font-weight: 700; }
+.sol-estado-btn:hover  { border-color: #5529aa; background: #f0ebff; color: #3f1b86; }
+
+.sol-asignar { display: flex; gap: 8px; align-items: center; }
+.sol-btn-asignar {
+  background: #3f1b86;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+.sol-btn-asignar:hover { background: #5529aa; }
+
+.sol-btn-wa {
+  background: #25d366;
+  color: #fff !important;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none !important;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s;
+}
+.sol-btn-wa:hover { background: #1da851; }
+
+.sol-btn-email {
+  background: #1565c0;
+  color: #fff !important;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none !important;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s;
+}
+.sol-btn-email:hover { background: #0d47a1; }
+
+@media (max-width: 767px) {
+  .sol-stats { grid-template-columns: 1fr 1fr; }
+  .sol-item-header { padding: 12px 14px; }
+  .sol-item-detalle { padding: 12px 14px; }
+  .sol-asignar { flex-direction: column; }
+}

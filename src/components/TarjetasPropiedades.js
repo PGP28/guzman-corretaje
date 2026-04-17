@@ -28,15 +28,22 @@ function PropiedadCard({ propiedad }) {
   // Compatibilidad con estructura del backend (detalles) y datos estáticos (detalle)
   const detalles = propiedad.detalles || propiedad.detalle || {};
 
+  const formatPrecio = (precio, unidad) => {
+    if (unidad === 'UF') return `UF ${precio}`;
+    const num = parseFloat(precio);
+    if (isNaN(num)) return `$ ${precio}`;
+    return `$ ${num.toLocaleString('es-CL')}`;
+  };
+
   return (
     <Card className="tarjeta-propiedad" onClick={handleClick}>
       {/* Imagen con carousel */}
-      <div className="tarjeta-img-wrapper">
+      <div className={`tarjeta-img-wrapper ${(propiedad.estado && propiedad.estado !== 'disponible') ? 'no-disponible' : ''}`}>
         <LazyLoadImage
-          effect="blur"
           src={imagenes[imagenIndex] || 'https://via.placeholder.com/367x207?text=Sin+imagen'}
           alt={propiedad.nombre}
           className="tarjeta-img"
+          wrapperClassName="tarjeta-img-lazy"
         />
 
         {/* Botones de navegación */}
@@ -50,6 +57,13 @@ function PropiedadCard({ propiedad }) {
         {/* Badge de categoría */}
         {propiedad.categoria && (
           <span className="tarjeta-badge">{propiedad.categoria}</span>
+        )}
+
+        {/* Badge de estado */}
+        {propiedad.estado && propiedad.estado !== 'disponible' && (
+          <span className={`tarjeta-badge-estado tarjeta-badge-estado--${propiedad.estado}`}>
+            {propiedad.estado === 'arrendada' ? '🔒 Arrendada' : '✅ Vendida'}
+          </span>
         )}
 
         {/* Indicadores de imagen */}
@@ -79,11 +93,7 @@ function PropiedadCard({ propiedad }) {
 
         {/* Precio */}
         <p className="tarjeta-precio">
-          {propiedad.unidad_medida === 'UF'
-            ? `UF ${propiedad.precio}`
-            : propiedad.precio
-              ? `$ ${propiedad.precio}`
-              : 'Consultar precio'}
+          {formatPrecio(propiedad.precio, propiedad.unidad_medida)}
         </p>
 
         {/* Detalles */}

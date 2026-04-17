@@ -8,9 +8,8 @@ function DetallesPropiedades() {
   const navigate = useNavigate();
   const { propiedad } = location.state || {};
 
-  const [imagenPrincipal, setImagenPrincipal] = useState(
-    propiedad ? propiedad.imagenes?.[0] : ''
-  );
+  const [imagenIndex, setImagenIndex] = useState(0);
+  const imagenPrincipal = propiedad?.imagenes?.[imagenIndex] || '';
   const [formData, setFormData] = useState({ email: '', telefono: '', mensaje: '' });
   const [enviado, setEnviado] = useState(false);
 
@@ -25,6 +24,13 @@ function DetallesPropiedades() {
 
   const detalles = propiedad.detalles || propiedad.detalle || {};
 
+  const formatPrecio = (precio, unidad) => {
+    if (unidad === 'UF') return `UF ${precio}`;
+    const num = parseFloat(precio);
+    if (isNaN(num)) return `$ ${precio}`;
+    return `$ ${num.toLocaleString('es-CL')}`;
+  };
+
   const handleFormChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -34,6 +40,21 @@ function DetallesPropiedades() {
     const msg = encodeURIComponent(
       `Hola, me interesa la propiedad "${propiedad.nombre}" ubicada en ${propiedad.ubicacion}. ${formData.mensaje}`
     );
+    // Guardar solicitud en localStorage para el dashboard
+    const solicitudes = JSON.parse(localStorage.getItem('guzman_solicitudes') || '[]');
+    solicitudes.unshift({
+      id: Date.now(),
+      nombre:   'Cliente interesado',
+      email:    formData.email,
+      telefono: formData.telefono,
+      mensaje:  `Propiedad: ${propiedad.nombre} (${propiedad.ubicacion}). ${formData.mensaje}`,
+      estado:   'nueva',
+      corredor: null,
+      fecha:    new Date().toLocaleDateString('es-CL'),
+      origen:   'Detalle propiedad',
+      propiedad_id: propiedad.id,
+    });
+    localStorage.setItem('guzman_solicitudes', JSON.stringify(solicitudes));
     window.open(`https://wa.me/+56952389494?text=${msg}`, '_blank');
     setEnviado(true);
   };
@@ -47,50 +68,77 @@ function DetallesPropiedades() {
           <button className="detalles-back" onClick={() => navigate(-1)}>
             ← Volver
           </button>
-          <h2 className="detalles-titulo">{propiedad.nombre}</h2>
+          <div className="detalles-titulo-row">
+            <h2 className="detalles-titulo">{propiedad.nombre}</h2>
+            {propiedad.estado && propiedad.estado !== 'disponible' && (
+              <span className={`detalles-estado-badge detalles-estado-badge--${propiedad.estado}`}>
+                {propiedad.estado === 'arrendada' ? '🔒 Arrendada' : '✅ Vendida'}
+              </span>
+            )}
+          </div>
           <p className="detalles-ubicacion">📍 {propiedad.ubicacion}</p>
         </Col>
         <Col xs="auto">
           <span className="detalles-precio">
-            {propiedad.unidad_medida === 'UF'
-              ? `UF ${propiedad.precio}`
-              : `$ ${propiedad.precio}`}
+            {formatPrecio(propiedad.precio, propiedad.unidad_medida)}
           </span>
         </Col>
       </Row>
 
       {/* Galería de imágenes */}
-      <Row className="mb-4">
-        <Col md={8} className="d-flex justify-content-center align-items-center">
-          <Image
-            src={imagenPrincipal || 'https://via.placeholder.com/800x500?text=Sin+imagen'}
-            alt="Imagen principal"
-            fluid
-            className="detalles-img-principal"
-          />
-        </Col>
-        <Col md={4}>
-          <Row className="g-2">
-            {propiedad.imagenes?.slice(1, 5).map((img, index) => (
-              <Col xs={6} key={index}>
-                <Image
-                  src={img}
-                  alt={`Imagen ${index + 2}`}
-                  thumbnail
-                  fluid
-                  className={`detalles-img-thumb ${imagenPrincipal === img ? 'detalles-img-thumb--active' : ''}`}
-                  onClick={() => setImagenPrincipal(img)}
-                />
-              </Col>
-            ))}
-            {propiedad.imagenes?.length > 5 && (
-              <Col xs={6}>
-                <div className="detalles-img-mas">
-                  +{propiedad.imagenes.length - 5} fotos
-                </div>
-              </Col>
+      <Row className="mb-4 g-3">
+        {/* Imagen principal */}
+        <Col md={8}>
+          <div className="detalles-img-principal-wrapper">
+            <Image
+              src={imagenPrincipal || 'https://via.placeholder.com/800x500?text=Sin+imagen'}
+              alt="Imagen principal"
+              className="detalles-img-principal"
+            />
+            {/* Contador */}
+            {propiedad.imagenes?.length > 1 && (
+              <span className="detalles-img-contador">
+                {imagenIndex + 1} / {propiedad.imagenes.length}
+              </span>
             )}
-          </Row>
+            {/* Flechas navegación */}
+            {propiedad.imagenes?.length > 1 && (
+              <>
+                <button
+                  className="detalles-nav detalles-nav--left"
+                  onClick={() => setImagenIndex(i => i === 0 ? propiedad.imagenes.length - 1 : i - 1)}
+                >
+                  <svg width="12" height="20" viewBox="0 0 12 20" fill="none">
+                    <path d="M10 2L2 10L10 18" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+                <button
+                  className="detalles-nav detalles-nav--right"
+                  onClick={() => setImagenIndex(i => i === propiedad.imagenes.length - 1 ? 0 : i + 1)}
+                >
+                  <svg width="12" height="20" viewBox="0 0 12 20" fill="none">
+                    <path d="M2 2L10 10L2 18" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+              </>
+            )}
+          </div>
+        </Col>
+
+        {/* Grid miniaturas scrolleable */}
+        <Col md={4}>
+          <div className="detalles-thumbs-grid">
+            {propiedad.imagenes?.map((img, index) => (
+              <div
+                key={index}
+                className={`detalles-thumb-item ${imagenIndex === index ? 'active' : ''}`}
+                onClick={() => setImagenIndex(index)}
+              >
+                <img src={img} alt={`Foto ${index + 1}`} />
+                <span className="detalles-thumb-num">{index + 1}</span>
+              </div>
+            ))}
+          </div>
         </Col>
       </Row>
 
@@ -107,7 +155,7 @@ function DetallesPropiedades() {
 
           <Row className="detalles-grid mt-3">
             {detalles.dormitorios != null && (
-              <Col xs={6} md={4} className="detalles-item">
+              <Col xs={6} md={3} className="detalles-item">
                 <span className="detalles-item-icon">🛏</span>
                 <div>
                   <div className="detalles-item-label">Dormitorios</div>
@@ -116,7 +164,7 @@ function DetallesPropiedades() {
               </Col>
             )}
             {detalles.banos != null && (
-              <Col xs={6} md={4} className="detalles-item">
+              <Col xs={6} md={3} className="detalles-item">
                 <span className="detalles-item-icon">🚿</span>
                 <div>
                   <div className="detalles-item-label">Baños</div>
@@ -125,7 +173,7 @@ function DetallesPropiedades() {
               </Col>
             )}
             {detalles.metros_cuadrados != null && (
-              <Col xs={6} md={4} className="detalles-item">
+              <Col xs={6} md={3} className="detalles-item">
                 <span className="detalles-item-icon">📐</span>
                 <div>
                   <div className="detalles-item-label">Superficie útil</div>
@@ -134,7 +182,7 @@ function DetallesPropiedades() {
               </Col>
             )}
             {detalles.superficie_total != null && (
-              <Col xs={6} md={4} className="detalles-item">
+              <Col xs={6} md={3} className="detalles-item">
                 <span className="detalles-item-icon">📏</span>
                 <div>
                   <div className="detalles-item-label">Superficie total</div>
@@ -143,7 +191,7 @@ function DetallesPropiedades() {
               </Col>
             )}
             {detalles.estacionamientos != null && (
-              <Col xs={6} md={4} className="detalles-item">
+              <Col xs={6} md={3} className="detalles-item">
                 <span className="detalles-item-icon">🚗</span>
                 <div>
                   <div className="detalles-item-label">Estacionamientos</div>
@@ -152,7 +200,7 @@ function DetallesPropiedades() {
               </Col>
             )}
             {detalles.bodega != null && detalles.bodega > 0 && (
-              <Col xs={6} md={4} className="detalles-item">
+              <Col xs={6} md={3} className="detalles-item">
                 <span className="detalles-item-icon">📦</span>
                 <div>
                   <div className="detalles-item-label">Bodega</div>
@@ -161,7 +209,7 @@ function DetallesPropiedades() {
               </Col>
             )}
             {detalles.gastos_comunes && (
-              <Col xs={6} md={4} className="detalles-item">
+              <Col xs={6} md={3} className="detalles-item">
                 <span className="detalles-item-icon">💰</span>
                 <div>
                   <div className="detalles-item-label">Gastos comunes</div>
@@ -170,7 +218,7 @@ function DetallesPropiedades() {
               </Col>
             )}
             {propiedad.constructora && (
-              <Col xs={6} md={4} className="detalles-item">
+              <Col xs={6} md={3} className="detalles-item">
                 <span className="detalles-item-icon">🏗</span>
                 <div>
                   <div className="detalles-item-label">Constructora</div>
@@ -179,7 +227,7 @@ function DetallesPropiedades() {
               </Col>
             )}
             {propiedad.fecha_entrega && (
-              <Col xs={6} md={4} className="detalles-item">
+              <Col xs={6} md={3} className="detalles-item">
                 <span className="detalles-item-icon">📅</span>
                 <div>
                   <div className="detalles-item-label">Fecha entrega</div>

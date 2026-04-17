@@ -1,0 +1,169 @@
+/* ── MI PERFIL ── */
+.perfil-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 300px) 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* Foto */
+.perfil-avatar-wrapper {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  margin-bottom: 16px;
+}
+
+.perfil-avatar-img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ede8fa;
+}
+
+.perfil-avatar-placeholder {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3f1b86, #8a60da);
+  color: #fff;
+  font-size: 36px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #ede8fa;
+}
+
+.perfil-avatar-btn {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #3f1b86;
+  color: #fff;
+  border: 2px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.perfil-avatar-btn:hover { background: #5529aa; }
+
+.perfil-nombre-display {
+  color: #3f1b86;
+  font-weight: 700;
+  font-size: 17px;
+  margin: 0 0 4px;
+  text-align: center;
+}
+
+.perfil-email-display {
+  color: #888;
+  font-size: 12px;
+  text-align: center;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.perfil-cargo-badge {
+  background: #f0ebff;
+  color: #3f1b86;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  display: block;
+  text-align: center;
+}
+
+.perfil-btn-foto {
+  background: #3f1b86;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.perfil-btn-foto:hover { background: #5529aa; }
+
+.perfil-btn-google {
+  background: none;
+  border: 1px solid #d5d5d5;
+  color: #888;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s;
+}
+.perfil-btn-google:hover { border-color: #5529aa; color: #3f1b86; }
+
+/* Campo con ícono */
+.perfil-campo-icono {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.perfil-campo-icon {
+  color: #8a60da;
+  font-size: 16px;
+  margin-top: 32px;
+  flex-shrink: 0;
+}
+
+/* Responsive */
+/* Tablet horizontal 768-991px: apila y foto en horizontal */
+@media (max-width: 991px) {
+  .perfil-layout {
+    grid-template-columns: 1fr;
+  }
+
+  /* Foto y datos del usuario en fila horizontal */
+  .perfil-foto-col .sd-card-body {
+    flex-direction: row !important;
+    align-items: center;
+    gap: 24px;
+    padding: 24px 20px !important;
+    flex-wrap: wrap;
+  }
+
+  .perfil-avatar-wrapper { margin-bottom: 0; flex-shrink: 0; }
+  .perfil-nombre-display,
+  .perfil-email-display,
+  .perfil-cargo-badge { text-align: left; }
+  .perfil-btn-foto,
+  .perfil-btn-google { width: auto; }
+}
+
+/* Móvil < 576px */
+@media (max-width: 575px) {
+  .perfil-layout { grid-template-columns: 1fr; }
+  .perfil-foto-col .sd-card-body {
+    flex-direction: column !important;
+    align-items: center;
+    padding: 20px 16px !important;
+  }
+  .perfil-nombre-display,
+  .perfil-email-display,
+  .perfil-cargo-badge { text-align: center; }
+  .perfil-btn-foto,
+  .perfil-btn-google { width: 100%; }
+}

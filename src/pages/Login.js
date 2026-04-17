@@ -1,96 +1,114 @@
 import React, { useState } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
+import logoNav from '../assets/images/LOGO_PNG-17_Modified.png';
 import "./Login.css";
+
+const ALLOWED_EMAILS = [
+  "ingenieriaguzman1@gmail.com",
+  "guzmanpropiedades12@gmail.com",
+  "andres22.pgpa@gmail.com"
+];
 
 const Login = ({ onLogin }) => {
   const [error, setError] = useState(null);
 
   const handleSuccess = (credentialResponse) => {
-    const allowedEmails = [
-      "ingenieriaguzman1@gmail.com", 
-      "guzmanpropiedades12@gmail.com",
-      "andres22.pgpa@gmail.com"
-    ]; // Correos permitidos
-    const decoded = JSON.parse(atob(credentialResponse.credential.split(".")[1]));
-
-    if (allowedEmails.includes(decoded.email)) {
-      onLogin(decoded);
-    } else {
-      setError("No tienes permisos para acceder.");
+    try {
+      const decoded = JSON.parse(atob(credentialResponse.credential.split(".")[1]));
+      if (ALLOWED_EMAILS.includes(decoded.email)) {
+        setError(null);
+        onLogin(decoded);
+      } else {
+        setError("No tienes permisos para acceder a este panel.");
+      }
+    } catch {
+      setError("Error al procesar las credenciales.");
     }
   };
 
   const handleError = () => {
-    setError("Error en el inicio de sesión.");
+    setError("Error al iniciar sesión con Google. Intenta nuevamente.");
   };
 
   return (
     <GoogleOAuthProvider clientId="5209620256-ersm6c8r2umre8gopg3ntsbambvjjdpm.apps.googleusercontent.com">
-      <Container className="d-flex justify-content-center align-items-center vh-100">
-        <Row>
-          <Col>
-            <Card className="shadow-lg p-4" style={{ maxWidth: "400px", borderRadius: "10px" }}>
-              <Card.Body>
-                <h2 className="text-center font-weight-bold mb-4">Iniciar Sesión</h2>
-                <p className="text-center text-muted mb-4">
-                  Ingresa tus credenciales para continuar
-                </p>
+      <div className="login-page">
 
-                {/* Botón de Google */}
-                <div className="d-flex justify-content-center mb-4">
-                  <GoogleLogin
-                    onSuccess={handleSuccess}
-                    onError={handleError}
-                  />
-                </div>
+        {/* ── Lado izquierdo — decorativo ── */}
+        <div className="login-left">
+          {/* Círculos decorativos de fondo */}
+          <div className="login-circle login-circle--1" />
+          <div className="login-circle login-circle--2" />
+          <div className="login-circle login-circle--3" />
 
-                {/* Separador */}
-                <div className="text-center mb-4">
-                  <hr style={{ width: "45%", display: "inline-block" }} />
-                  <span className="mx-2 text-muted">o</span>
-                  <hr style={{ width: "45%", display: "inline-block" }} />
-                </div>
+          {/* Contenido izquierdo */}
+          <div className="login-left-content">
+            <img src={logoNav} alt="Guzmán Corretaje" className="login-left-logo" />
+            <h1 className="login-left-titulo">Panel de<br />Administración</h1>
+            <p className="login-left-subtitulo">
+              Gestiona propiedades, imágenes y contenido del sitio web de Guzmán Corretaje.
+            </p>
 
-                {/* Campos de correo y contraseña */}
-                <Form>
-                  <Form.Group controlId="formEmail">
-                    <Form.Label>Correo Electrónico</Form.Label>
-                    <Form.Control
-                      type="email"
-                      placeholder="correo@ejemplo.com"
-                      className="rounded-pill"
-                    />
-                  </Form.Group>
+            {/* Tarjetas decorativas de stats */}
+            <div className="login-stats">
+              <div className="login-stat-card">
+                <span className="login-stat-icon">🏠</span>
+                <span className="login-stat-label">Propiedades</span>
+              </div>
+              <div className="login-stat-card">
+                <span className="login-stat-icon">📸</span>
+                <span className="login-stat-label">Imágenes</span>
+              </div>
+              <div className="login-stat-card">
+                <span className="login-stat-icon">📍</span>
+                <span className="login-stat-label">Ubicaciones</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                  <Form.Group controlId="formPassword" className="mt-3">
-                    <Form.Label>Contraseña</Form.Label>
-                    <Form.Control
-                      type="password"
-                      placeholder="*******"
-                      className="rounded-pill"
-                    />
-                  </Form.Group>
+        {/* ── Lado derecho — formulario ── */}
+        <div className="login-right">
+          <div className="login-card">
 
-                  {/* Botón de Iniciar Sesión */}
-                  <div className="text-center mt-4">
-                    <Button
-                      variant="primary"
-                      type="submit"
-                      className="btn-block rounded-pill"
-                    >
-                      Iniciar Sesión
-                    </Button>
-                  </div>
-                </Form>
+            {/* Ícono superior */}
+            <div className="login-icon-wrapper">
+              <span className="login-icon">🔐</span>
+            </div>
 
-                {/* Mensaje de error */}
-                {error && <p className="text-danger text-center mt-3">{error}</p>}
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+            <h2 className="login-titulo">Inicio de Sesión</h2>
+            <p className="login-subtitulo">
+              Usa tu cuenta de Google autorizada para continuar
+            </p>
+
+            {/* Botón Google */}
+            <div className="login-google-btn">
+              <GoogleLogin
+                onSuccess={handleSuccess}
+                onError={handleError}
+                theme="outline"
+                size="large"
+                width="300"
+                text="signin_with"
+                locale="es"
+              />
+            </div>
+
+            {/* Error */}
+            {error && (
+              <div className="login-error">
+                ⚠️ {error}
+              </div>
+            )}
+
+            {/* Info */}
+            <p className="login-info">
+              Solo cuentas autorizadas por Guzmán Corretaje pueden acceder a este panel.
+            </p>
+          </div>
+        </div>
+
+      </div>
     </GoogleOAuthProvider>
   );
 };

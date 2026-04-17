@@ -10,7 +10,9 @@ import VenderPropiedad from '../components/VenderPropiedad';
 import BuscadorHero from '../components/BuscadorHero';
 import axios from 'axios';
 
-const API_BASE = 'https://guzman-corretaje-backend-1.onrender.com/api';
+import API_BASE_URL from '../config';
+
+const API_BASE = `${API_BASE_URL}/api`;
 
 const Home = () => {
   const [propiedadesFiltradas, setPropiedadesFiltradas] = useState([]);

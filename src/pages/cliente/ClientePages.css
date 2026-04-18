@@ -1,0 +1,289 @@
+/* ── PÁGINAS CLIENTE ── */
+.cp-page { display: flex; flex-direction: column; gap: 24px; }
+
+.cp-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 16px; flex-wrap: wrap;
+}
+
+.cp-saludo {
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 16px;
+  background: linear-gradient(135deg, #0f6e56, #1a9e7a);
+  border-radius: 16px; padding: 24px 28px; color: #fff;
+}
+.cp-titulo   { font-size: 24px; font-weight: 800; margin: 0 0 4px; color: #0f6e56; }
+.cp-subtitulo { font-size: 14px; color: #888; margin: 0; }
+.cp-saludo .cp-titulo { color: #fff; }
+.cp-saludo .cp-subtitulo { color: rgba(255,255,255,0.8); }
+.cp-avatar {
+  width: 60px; height: 60px; border-radius: 50%;
+  object-fit: cover; border: 3px solid rgba(255,255,255,0.4);
+  flex-shrink: 0;
+}
+
+/* Stats */
+.cp-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+}
+.cp-stat {
+  background: #fff; border: 1px solid #e0faf4;
+  border-radius: 14px; padding: 18px 20px;
+  display: flex; align-items: center; gap: 14px;
+  cursor: pointer; transition: box-shadow 0.2s; position: relative;
+  box-shadow: 0 2px 8px rgba(15,110,86,0.06);
+}
+.cp-stat:hover { box-shadow: 0 4px 16px rgba(15,110,86,0.12); }
+.cp-stat-icon { font-size: 26px; flex-shrink: 0; }
+.cp-stat-valor { display: block; font-size: 26px; font-weight: 800; color: #0f6e56; line-height: 1; }
+.cp-stat-label { font-size: 12px; color: #888; }
+.cp-stat-badge {
+  position: absolute; top: 8px; right: 8px;
+  background: #e53935; color: #fff;
+  font-size: 10px; font-weight: 800;
+  padding: 2px 7px; border-radius: 20px;
+}
+
+/* Sections */
+.cp-section { display: flex; flex-direction: column; gap: 14px; }
+.cp-section-header { display: flex; align-items: center; justify-content: space-between; }
+.cp-section-titulo { color: #0f6e56; font-weight: 700; font-size: 17px; margin: 0; }
+
+.cp-btn-buscar {
+  display: flex; align-items: center; gap: 6px;
+  background: #0f6e56; color: #fff; border: none;
+  border-radius: 10px; padding: 8px 16px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: background 0.2s;
+}
+.cp-btn-buscar:hover { background: #0a5240; }
+
+.cp-ver-mas {
+  background: none; border: none; color: #0f6e56;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  text-align: left; padding: 0;
+}
+
+/* Reservas lista (inicio) */
+.cp-reservas-lista { display: flex; flex-direction: column; gap: 8px; }
+.cp-reserva-item {
+  background: #fff; border: 1px solid #e0faf4; border-radius: 10px;
+  padding: 12px 16px; display: flex;
+  align-items: center; justify-content: space-between; gap: 12px;
+}
+.cp-reserva-nombre { font-weight: 700; font-size: 14px; color: #222; display: block; }
+.cp-reserva-fecha  { font-size: 12px; color: #888; }
+.cp-reserva-estado {
+  font-size: 12px; font-weight: 700;
+  padding: 3px 10px; border-radius: 20px; white-space: nowrap;
+}
+.cp-reserva-estado--pendiente  { background: #fff8e1; color: #b45309; }
+.cp-reserva-estado--confirmada { background: #e8f5e9; color: #2e7d32; }
+.cp-reserva-estado--cancelada  { background: #fff5f5; color: #e53935; }
+
+/* Props grid */
+.cp-props-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+}
+.cp-prop-card {
+  background: #fff; border: 1px solid #e0faf4;
+  border-radius: 12px; overflow: hidden; cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+.cp-prop-card:hover { box-shadow: 0 4px 16px rgba(15,110,86,0.12); }
+.cp-prop-img { width: 100%; height: 130px; object-fit: cover; display: block; }
+.cp-prop-body { padding: 12px; }
+.cp-prop-cat   { font-size: 10px; color: #0f6e56; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 4px; }
+.cp-prop-nombre { font-size: 13px; font-weight: 700; color: #222; margin: 0 0 4px; }
+.cp-prop-ubicacion { font-size: 11px; color: #888; margin: 0 0 4px; }
+.cp-prop-precio { font-size: 14px; font-weight: 800; color: #0f6e56; margin: 0; }
+
+/* Reservas full */
+.cp-reservas-lista-full { display: flex; flex-direction: column; gap: 12px; }
+.cp-reserva-card {
+  background: #fff; border: 1px solid #e0faf4;
+  border-radius: 14px; overflow: hidden;
+  display: flex; gap: 0; position: relative;
+}
+.cp-reserva-img { width: 120px; height: 120px; object-fit: cover; flex-shrink: 0; }
+.cp-reserva-body { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.cp-reserva-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.cp-reserva-nombre { font-weight: 700; font-size: 15px; color: #222; margin: 0; }
+.cp-reserva-badge { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+.cp-reserva-ubicacion { font-size: 13px; color: #666; margin: 0; }
+.cp-reserva-meta { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: #888; }
+.cp-reserva-nota {
+  font-size: 12px; color: #444; background: #f0fdf8;
+  border-left: 3px solid #1a9e7a; padding: 8px 12px; border-radius: 4px;
+}
+.cp-reserva-del {
+  position: absolute; top: 12px; right: 12px;
+  background: none; border: none; color: #e53935;
+  font-size: 18px; cursor: pointer; transition: opacity 0.2s;
+}
+.cp-reserva-del:hover { opacity: 0.7; }
+
+/* Chat */
+.cp-chat-page { height: calc(100vh - 56px - 56px); }
+.cp-chat-wrapper {
+  flex: 1; background: #fff; border: 1px solid #e0faf4;
+  border-radius: 16px; display: flex; flex-direction: column;
+  overflow: hidden; min-height: 400px; max-height: 600px;
+}
+.cp-chat-empty {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 8px; color: #aaa; padding: 40px;
+}
+.cp-chat-empty span { font-size: 48px; }
+.cp-chat-empty p { font-size: 16px; font-weight: 600; color: #666; margin: 0; }
+.cp-chat-empty small { font-size: 13px; }
+
+.cp-chat-mensajes {
+  flex: 1; overflow-y: auto; padding: 20px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.cp-mensaje { display: flex; flex-direction: column; max-width: 70%; }
+.cp-mensaje.enviado   { align-self: flex-end; align-items: flex-end; }
+.cp-mensaje.recibido  { align-self: flex-start; align-items: flex-start; }
+
+.cp-mensaje-burbuja {
+  padding: 10px 14px; border-radius: 16px;
+  position: relative;
+}
+.cp-mensaje.enviado  .cp-mensaje-burbuja { background: #0f6e56; color: #fff; border-bottom-right-radius: 4px; }
+.cp-mensaje.recibido .cp-mensaje-burbuja { background: #f0fdf8; color: #222; border: 1px solid #e0faf4; border-bottom-left-radius: 4px; }
+.cp-mensaje-texto { font-size: 14px; margin: 0 0 4px; line-height: 1.5; }
+.cp-mensaje-hora  { font-size: 10px; opacity: 0.65; }
+.cp-mensaje-autor { font-size: 11px; color: #0f6e56; font-weight: 600; margin-top: 2px; }
+
+.cp-chat-input {
+  display: flex; gap: 10px; padding: 16px;
+  border-top: 1px solid #e0faf4; background: #fff;
+}
+.cp-chat-field {
+  flex: 1; border: 1.5px solid #d5d5d5; border-radius: 24px;
+  padding: 10px 18px; font-size: 14px; outline: none;
+  transition: border-color 0.2s; font-family: inherit;
+}
+.cp-chat-field:focus { border-color: #0f6e56; }
+.cp-chat-send {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: #0f6e56; color: #fff; border: none;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; cursor: pointer; transition: background 0.2s;
+  flex-shrink: 0;
+}
+.cp-chat-send:hover:not(:disabled) { background: #0a5240; }
+.cp-chat-send:disabled { background: #ccc; cursor: not-allowed; }
+
+/* Pagos */
+.cp-pagos-reservas { display: flex; flex-direction: column; gap: 8px; }
+.cp-pago-item {
+  background: #fff; border: 1px solid #e0faf4; border-radius: 10px;
+  padding: 14px 18px; display: flex;
+  align-items: center; justify-content: space-between;
+}
+.cp-pago-nombre { font-weight: 700; font-size: 14px; color: #222; display: block; }
+.cp-pago-monto  { font-size: 15px; font-weight: 800; color: #0f6e56; display: block; }
+.cp-pago-estado { font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
+.cp-pago-estado.pendiente { background: #fff8e1; color: #b45309; }
+.cp-pago-estado.revision  { background: #e3f2fd; color: #1565c0; }
+
+.cp-metodos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.cp-metodo-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  background: #fff; border: 2px solid #e0faf4; border-radius: 14px;
+  padding: 24px 20px; cursor: pointer; transition: all 0.2s; text-align: center;
+}
+.cp-metodo-btn:hover  { border-color: #1a9e7a; }
+.cp-metodo-btn.active { border-color: #0f6e56; background: #f0fdf8; }
+.cp-metodo-btn span   { font-size: 15px; font-weight: 700; color: #222; }
+.cp-metodo-btn small  { font-size: 12px; color: #888; }
+.cp-metodo-icon { font-size: 32px; color: #0f6e56; }
+
+.cp-transferencia { background: #fff; border: 1px solid #e0faf4; border-radius: 14px; padding: 24px; }
+.cp-transferencia-titulo { font-size: 16px; font-weight: 700; color: #0f6e56; margin: 0 0 16px; }
+.cp-transferencia-datos  { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+.cp-dato-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0fdf8; }
+.cp-dato-label { font-size: 12px; color: #888; text-transform: uppercase; font-weight: 600; }
+.cp-dato-valor-row { display: flex; align-items: center; gap: 8px; }
+.cp-dato-valor { font-size: 14px; font-weight: 700; color: #222; }
+.cp-copiar-btn { background: none; border: none; color: #0f6e56; cursor: pointer; font-size: 14px; padding: 4px; }
+
+.cp-comprobante h4  { font-size: 15px; font-weight: 700; color: #0f6e56; margin: 0 0 6px; }
+.cp-comprobante p   { font-size: 13px; color: #666; margin: 0 0 12px; }
+.cp-comprobante-input {
+  width: 100%; border: 1.5px solid #d5d5d5; border-radius: 8px;
+  padding: 10px 14px; font-size: 14px; margin-bottom: 12px;
+  outline: none; transition: border-color 0.2s;
+}
+.cp-comprobante-input:focus { border-color: #0f6e56; }
+
+.cp-btn-primary {
+  background: #0f6e56; color: #fff; border: none;
+  border-radius: 10px; padding: 10px 24px;
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  transition: background 0.2s;
+}
+.cp-btn-primary:hover:not(:disabled) { background: #0a5240; }
+.cp-btn-primary:disabled { background: #ccc; cursor: not-allowed; }
+
+.cp-transbank {
+  background: #fff; border: 1px solid #e0faf4; border-radius: 14px; padding: 24px;
+}
+.cp-transbank-info { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 16px; }
+.cp-transbank-icon { font-size: 36px; flex-shrink: 0; }
+.cp-transbank-info h3 { font-size: 16px; font-weight: 700; color: #0f6e56; margin: 0 0 6px; }
+.cp-transbank-info p  { font-size: 13px; color: #666; margin: 0; }
+.cp-transbank-nota {
+  background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px;
+  padding: 12px 16px; font-size: 13px; color: #b45309;
+}
+
+.cp-pago-confirmado {
+  text-align: center; padding: 48px; background: #f0fdf8;
+  border: 1px solid #e0faf4; border-radius: 16px;
+}
+.cp-confirmado-icon { font-size: 48px; color: #2e7d32; margin-bottom: 16px; }
+.cp-pago-confirmado h3 { color: #0f6e56; font-weight: 700; margin: 0 0 8px; }
+.cp-pago-confirmado p  { color: #666; font-size: 14px; margin: 0; }
+
+/* Empty */
+.cp-empty {
+  text-align: center; padding: 60px 20px;
+  background: #fff; border: 1px solid #e0faf4; border-radius: 14px; color: #aaa;
+}
+.cp-empty span { font-size: 48px; display: block; margin-bottom: 12px; }
+.cp-empty p    { font-size: 16px; font-weight: 600; color: #666; margin: 0 0 6px; }
+.cp-empty small { font-size: 13px; }
+
+/* Confirm modal */
+.cp-confirm-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  z-index: 1000; display: flex; align-items: center; justify-content: center;
+}
+.cp-confirm-modal {
+  background: #fff; border-radius: 16px; padding: 28px;
+  max-width: 400px; width: 90%;
+}
+.cp-confirm-modal h4 { font-size: 18px; font-weight: 700; margin: 0 0 12px; color: #333; }
+.cp-confirm-modal p  { font-size: 14px; color: #666; margin: 0 0 20px; }
+.cp-confirm-btns { display: flex; gap: 10px; justify-content: flex-end; }
+.cp-btn-secondary {
+  background: #fff; border: 1.5px solid #d5d5d5; color: #666;
+  border-radius: 8px; padding: 8px 18px; font-size: 13px;
+  font-weight: 600; cursor: pointer;
+}
+.cp-btn-danger {
+  background: #e53935; color: #fff; border: none;
+  border-radius: 8px; padding: 8px 18px; font-size: 13px;
+  font-weight: 700; cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  .cp-stats   { grid-template-columns: 1fr; }
+  .cp-props-grid { grid-template-columns: 1fr; }
+  .cp-metodos { grid-template-columns: 1fr; }
+  .cp-reserva-img { width: 80px; height: 80px; }
+}

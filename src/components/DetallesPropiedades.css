@@ -190,6 +190,23 @@
   box-shadow: 0 0 0 2px rgba(85, 41, 170, 0.15) !important;
 }
 
+.detalles-btn-reservar {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #0f6e56, #1a9e7a);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 14px;
+  transition: opacity 0.2s;
+  text-align: center;
+}
+.detalles-btn-reservar:hover { opacity: 0.9; }
+
 .detalles-btn-contacto {
   background-color: #3f1b86 !important; border: none !important;
   border-radius: 8px !important; font-weight: 700 !important;

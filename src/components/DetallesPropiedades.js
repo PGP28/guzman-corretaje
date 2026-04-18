@@ -22,6 +22,19 @@ function DetallesPropiedades() {
     );
   }
 
+  const handleReservar = () => {
+    sessionStorage.setItem('guzman_reservar_propiedad', JSON.stringify({
+      id: propiedad.id,
+      nombre: propiedad.nombre,
+      ubicacion: propiedad.ubicacion,
+      precio: propiedad.precio,
+      unidad_medida: propiedad.unidad_medida,
+      imagen: propiedad.imagenes?.[0]?.url || propiedad.imagenes?.[0] || '',
+      corredor: propiedad.corredor_asignado,
+    }));
+    navigate('/cliente/login');
+  };
+
   const detalles = propiedad.detalles || propiedad.detalle || {};
 
   const formatPrecio = (precio, unidad) => {
@@ -255,6 +268,16 @@ function DetallesPropiedades() {
             <p className="detalles-contacto-subtitulo">
               Déjanos tus datos y te contactamos a la brevedad.
             </p>
+
+            {/* Botón reservar */}
+            {(propiedad.estado || 'disponible') === 'disponible' && (
+              <button
+                className="detalles-btn-reservar"
+                onClick={handleReservar}
+              >
+                🗓 Reservar esta propiedad
+              </button>
+            )}
 
             {enviado ? (
               <div className="detalles-contacto-enviado">

@@ -129,6 +129,8 @@
 }
 .footer-portal-link:hover { color: #5529aa; }
 .footer-portal-icon { font-size: 10px; }
+.footer-link-cliente { color: #0f9e7a !important; }
+.footer-link-cliente:hover { color: #0a7558 !important; }
 
 .footer-lista-separator {
   height: 1px;

@@ -1,5 +1,13 @@
-/* ── PÁGINAS CLIENTE ── */
+/* ── PÁGINAS CLIENTE — Paleta morada Guzmán ── */
 .cp-page { display: flex; flex-direction: column; gap: 24px; }
+
+.cp-btn-back {
+  background: none; border: none; color: #5529aa;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  padding: 0; margin-bottom: 12px;
+  display: flex; align-items: center;
+}
+.cp-btn-back:hover { color: #3f1b86; }
 
 .cp-header {
   display: flex; align-items: flex-start;
@@ -9,10 +17,10 @@
 .cp-saludo {
   display: flex; align-items: center;
   justify-content: space-between; gap: 16px;
-  background: linear-gradient(135deg, #0f6e56, #1a9e7a);
+  background: linear-gradient(135deg, #3f1b86, #5529aa);
   border-radius: 16px; padding: 24px 28px; color: #fff;
 }
-.cp-titulo   { font-size: 24px; font-weight: 800; margin: 0 0 4px; color: #0f6e56; }
+.cp-titulo   { font-size: 24px; font-weight: 800; margin: 0 0 4px; color: #3f1b86; }
 .cp-subtitulo { font-size: 14px; color: #888; margin: 0; }
 .cp-saludo .cp-titulo { color: #fff; }
 .cp-saludo .cp-subtitulo { color: rgba(255,255,255,0.8); }
@@ -27,15 +35,15 @@
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
 }
 .cp-stat {
-  background: #fff; border: 1px solid #e0faf4;
+  background: #fff; border: 1px solid #ede8fa;
   border-radius: 14px; padding: 18px 20px;
   display: flex; align-items: center; gap: 14px;
   cursor: pointer; transition: box-shadow 0.2s; position: relative;
-  box-shadow: 0 2px 8px rgba(15,110,86,0.06);
+  box-shadow: 0 2px 8px rgba(63, 27, 134, 0.06);
 }
-.cp-stat:hover { box-shadow: 0 4px 16px rgba(15,110,86,0.12); }
+.cp-stat:hover { box-shadow: 0 4px 16px rgba(63, 27, 134, 0.12); }
 .cp-stat-icon { font-size: 26px; flex-shrink: 0; }
-.cp-stat-valor { display: block; font-size: 26px; font-weight: 800; color: #0f6e56; line-height: 1; }
+.cp-stat-valor { display: block; font-size: 26px; font-weight: 800; color: #3f1b86; line-height: 1; }
 .cp-stat-label { font-size: 12px; color: #888; }
 .cp-stat-badge {
   position: absolute; top: 8px; right: 8px;
@@ -47,19 +55,19 @@
 /* Sections */
 .cp-section { display: flex; flex-direction: column; gap: 14px; }
 .cp-section-header { display: flex; align-items: center; justify-content: space-between; }
-.cp-section-titulo { color: #0f6e56; font-weight: 700; font-size: 17px; margin: 0; }
+.cp-section-titulo { color: #3f1b86; font-weight: 700; font-size: 17px; margin: 0; }
 
 .cp-btn-buscar {
   display: flex; align-items: center; gap: 6px;
-  background: #0f6e56; color: #fff; border: none;
+  background: #5529aa; color: #fff; border: none;
   border-radius: 10px; padding: 8px 16px;
   font-size: 13px; font-weight: 600; cursor: pointer;
   transition: background 0.2s;
 }
-.cp-btn-buscar:hover { background: #0a5240; }
+.cp-btn-buscar:hover { background: #3f1b86; }
 
 .cp-ver-mas {
-  background: none; border: none; color: #0f6e56;
+  background: none; border: none; color: #5529aa;
   font-size: 13px; font-weight: 600; cursor: pointer;
   text-align: left; padding: 0;
 }
@@ -67,10 +75,12 @@
 /* Reservas lista (inicio) */
 .cp-reservas-lista { display: flex; flex-direction: column; gap: 8px; }
 .cp-reserva-item {
-  background: #fff; border: 1px solid #e0faf4; border-radius: 10px;
+  background: #fff; border: 1px solid #ede8fa; border-radius: 10px;
   padding: 12px 16px; display: flex;
   align-items: center; justify-content: space-between; gap: 12px;
+  cursor: pointer; transition: box-shadow 0.2s;
 }
+.cp-reserva-item:hover { box-shadow: 0 2px 8px rgba(63, 27, 134, 0.1); }
 .cp-reserva-nombre { font-weight: 700; font-size: 14px; color: #222; display: block; }
 .cp-reserva-fecha  { font-size: 12px; color: #888; }
 .cp-reserva-estado {
@@ -86,22 +96,22 @@
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
 }
 .cp-prop-card {
-  background: #fff; border: 1px solid #e0faf4;
+  background: #fff; border: 1px solid #ede8fa;
   border-radius: 12px; overflow: hidden; cursor: pointer;
   transition: box-shadow 0.2s;
 }
-.cp-prop-card:hover { box-shadow: 0 4px 16px rgba(15,110,86,0.12); }
+.cp-prop-card:hover { box-shadow: 0 4px 16px rgba(63, 27, 134, 0.12); }
 .cp-prop-img { width: 100%; height: 130px; object-fit: cover; display: block; }
 .cp-prop-body { padding: 12px; }
-.cp-prop-cat   { font-size: 10px; color: #0f6e56; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 4px; }
+.cp-prop-cat   { font-size: 10px; color: #5529aa; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 4px; }
 .cp-prop-nombre { font-size: 13px; font-weight: 700; color: #222; margin: 0 0 4px; }
 .cp-prop-ubicacion { font-size: 11px; color: #888; margin: 0 0 4px; }
-.cp-prop-precio { font-size: 14px; font-weight: 800; color: #0f6e56; margin: 0; }
+.cp-prop-precio { font-size: 14px; font-weight: 800; color: #3f1b86; margin: 0; }
 
 /* Reservas full */
 .cp-reservas-lista-full { display: flex; flex-direction: column; gap: 12px; }
 .cp-reserva-card {
-  background: #fff; border: 1px solid #e0faf4;
+  background: #fff; border: 1px solid #ede8fa;
   border-radius: 14px; overflow: hidden;
   display: flex; gap: 0; position: relative;
 }
@@ -113,8 +123,8 @@
 .cp-reserva-ubicacion { font-size: 13px; color: #666; margin: 0; }
 .cp-reserva-meta { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: #888; }
 .cp-reserva-nota {
-  font-size: 12px; color: #444; background: #f0fdf8;
-  border-left: 3px solid #1a9e7a; padding: 8px 12px; border-radius: 4px;
+  font-size: 12px; color: #444; background: #f4f0ff;
+  border-left: 3px solid #5529aa; padding: 8px 12px; border-radius: 4px;
 }
 .cp-reserva-del {
   position: absolute; top: 12px; right: 12px;
@@ -126,7 +136,7 @@
 /* Chat */
 .cp-chat-page { height: calc(100vh - 56px - 56px); }
 .cp-chat-wrapper {
-  flex: 1; background: #fff; border: 1px solid #e0faf4;
+  flex: 1; background: #fff; border: 1px solid #ede8fa;
   border-radius: 16px; display: flex; flex-direction: column;
   overflow: hidden; min-height: 400px; max-height: 600px;
 }
@@ -151,41 +161,41 @@
   padding: 10px 14px; border-radius: 16px;
   position: relative;
 }
-.cp-mensaje.enviado  .cp-mensaje-burbuja { background: #0f6e56; color: #fff; border-bottom-right-radius: 4px; }
-.cp-mensaje.recibido .cp-mensaje-burbuja { background: #f0fdf8; color: #222; border: 1px solid #e0faf4; border-bottom-left-radius: 4px; }
+.cp-mensaje.enviado  .cp-mensaje-burbuja { background: #5529aa; color: #fff; border-bottom-right-radius: 4px; }
+.cp-mensaje.recibido .cp-mensaje-burbuja { background: #f4f0ff; color: #222; border: 1px solid #ede8fa; border-bottom-left-radius: 4px; }
 .cp-mensaje-texto { font-size: 14px; margin: 0 0 4px; line-height: 1.5; }
 .cp-mensaje-hora  { font-size: 10px; opacity: 0.65; }
-.cp-mensaje-autor { font-size: 11px; color: #0f6e56; font-weight: 600; margin-top: 2px; }
+.cp-mensaje-autor { font-size: 11px; color: #5529aa; font-weight: 600; margin-top: 2px; }
 
 .cp-chat-input {
   display: flex; gap: 10px; padding: 16px;
-  border-top: 1px solid #e0faf4; background: #fff;
+  border-top: 1px solid #ede8fa; background: #fff;
 }
 .cp-chat-field {
   flex: 1; border: 1.5px solid #d5d5d5; border-radius: 24px;
   padding: 10px 18px; font-size: 14px; outline: none;
   transition: border-color 0.2s; font-family: inherit;
 }
-.cp-chat-field:focus { border-color: #0f6e56; }
+.cp-chat-field:focus { border-color: #5529aa; }
 .cp-chat-send {
   width: 44px; height: 44px; border-radius: 50%;
-  background: #0f6e56; color: #fff; border: none;
+  background: #5529aa; color: #fff; border: none;
   display: flex; align-items: center; justify-content: center;
   font-size: 16px; cursor: pointer; transition: background 0.2s;
   flex-shrink: 0;
 }
-.cp-chat-send:hover:not(:disabled) { background: #0a5240; }
+.cp-chat-send:hover:not(:disabled) { background: #3f1b86; }
 .cp-chat-send:disabled { background: #ccc; cursor: not-allowed; }
 
 /* Pagos */
 .cp-pagos-reservas { display: flex; flex-direction: column; gap: 8px; }
 .cp-pago-item {
-  background: #fff; border: 1px solid #e0faf4; border-radius: 10px;
+  background: #fff; border: 1px solid #ede8fa; border-radius: 10px;
   padding: 14px 18px; display: flex;
   align-items: center; justify-content: space-between;
 }
 .cp-pago-nombre { font-weight: 700; font-size: 14px; color: #222; display: block; }
-.cp-pago-monto  { font-size: 15px; font-weight: 800; color: #0f6e56; display: block; }
+.cp-pago-monto  { font-size: 15px; font-weight: 800; color: #3f1b86; display: block; }
 .cp-pago-estado { font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
 .cp-pago-estado.pendiente { background: #fff8e1; color: #b45309; }
 .cp-pago-estado.revision  { background: #e3f2fd; color: #1565c0; }
@@ -193,48 +203,48 @@
 .cp-metodos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
 .cp-metodo-btn {
   display: flex; flex-direction: column; align-items: center; gap: 8px;
-  background: #fff; border: 2px solid #e0faf4; border-radius: 14px;
+  background: #fff; border: 2px solid #ede8fa; border-radius: 14px;
   padding: 24px 20px; cursor: pointer; transition: all 0.2s; text-align: center;
 }
-.cp-metodo-btn:hover  { border-color: #1a9e7a; }
-.cp-metodo-btn.active { border-color: #0f6e56; background: #f0fdf8; }
+.cp-metodo-btn:hover  { border-color: #8a60da; }
+.cp-metodo-btn.active { border-color: #5529aa; background: #f4f0ff; }
 .cp-metodo-btn span   { font-size: 15px; font-weight: 700; color: #222; }
 .cp-metodo-btn small  { font-size: 12px; color: #888; }
-.cp-metodo-icon { font-size: 32px; color: #0f6e56; }
+.cp-metodo-icon { font-size: 32px; color: #5529aa; }
 
-.cp-transferencia { background: #fff; border: 1px solid #e0faf4; border-radius: 14px; padding: 24px; }
-.cp-transferencia-titulo { font-size: 16px; font-weight: 700; color: #0f6e56; margin: 0 0 16px; }
+.cp-transferencia { background: #fff; border: 1px solid #ede8fa; border-radius: 14px; padding: 24px; }
+.cp-transferencia-titulo { font-size: 16px; font-weight: 700; color: #3f1b86; margin: 0 0 16px; }
 .cp-transferencia-datos  { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
-.cp-dato-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0fdf8; }
+.cp-dato-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f4f0ff; }
 .cp-dato-label { font-size: 12px; color: #888; text-transform: uppercase; font-weight: 600; }
 .cp-dato-valor-row { display: flex; align-items: center; gap: 8px; }
 .cp-dato-valor { font-size: 14px; font-weight: 700; color: #222; }
-.cp-copiar-btn { background: none; border: none; color: #0f6e56; cursor: pointer; font-size: 14px; padding: 4px; }
+.cp-copiar-btn { background: none; border: none; color: #5529aa; cursor: pointer; font-size: 14px; padding: 4px; }
 
-.cp-comprobante h4  { font-size: 15px; font-weight: 700; color: #0f6e56; margin: 0 0 6px; }
+.cp-comprobante h4  { font-size: 15px; font-weight: 700; color: #3f1b86; margin: 0 0 6px; }
 .cp-comprobante p   { font-size: 13px; color: #666; margin: 0 0 12px; }
 .cp-comprobante-input {
   width: 100%; border: 1.5px solid #d5d5d5; border-radius: 8px;
   padding: 10px 14px; font-size: 14px; margin-bottom: 12px;
   outline: none; transition: border-color 0.2s;
 }
-.cp-comprobante-input:focus { border-color: #0f6e56; }
+.cp-comprobante-input:focus { border-color: #5529aa; }
 
 .cp-btn-primary {
-  background: #0f6e56; color: #fff; border: none;
+  background: #5529aa; color: #fff; border: none;
   border-radius: 10px; padding: 10px 24px;
   font-size: 14px; font-weight: 700; cursor: pointer;
   transition: background 0.2s;
 }
-.cp-btn-primary:hover:not(:disabled) { background: #0a5240; }
+.cp-btn-primary:hover:not(:disabled) { background: #3f1b86; }
 .cp-btn-primary:disabled { background: #ccc; cursor: not-allowed; }
 
 .cp-transbank {
-  background: #fff; border: 1px solid #e0faf4; border-radius: 14px; padding: 24px;
+  background: #fff; border: 1px solid #ede8fa; border-radius: 14px; padding: 24px;
 }
 .cp-transbank-info { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 16px; }
 .cp-transbank-icon { font-size: 36px; flex-shrink: 0; }
-.cp-transbank-info h3 { font-size: 16px; font-weight: 700; color: #0f6e56; margin: 0 0 6px; }
+.cp-transbank-info h3 { font-size: 16px; font-weight: 700; color: #3f1b86; margin: 0 0 6px; }
 .cp-transbank-info p  { font-size: 13px; color: #666; margin: 0; }
 .cp-transbank-nota {
   background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px;
@@ -242,17 +252,17 @@
 }
 
 .cp-pago-confirmado {
-  text-align: center; padding: 48px; background: #f0fdf8;
-  border: 1px solid #e0faf4; border-radius: 16px;
+  text-align: center; padding: 48px; background: #f4f0ff;
+  border: 1px solid #ede8fa; border-radius: 16px;
 }
 .cp-confirmado-icon { font-size: 48px; color: #2e7d32; margin-bottom: 16px; }
-.cp-pago-confirmado h3 { color: #0f6e56; font-weight: 700; margin: 0 0 8px; }
+.cp-pago-confirmado h3 { color: #3f1b86; font-weight: 700; margin: 0 0 8px; }
 .cp-pago-confirmado p  { color: #666; font-size: 14px; margin: 0; }
 
 /* Empty */
 .cp-empty {
   text-align: center; padding: 60px 20px;
-  background: #fff; border: 1px solid #e0faf4; border-radius: 14px; color: #aaa;
+  background: #fff; border: 1px solid #ede8fa; border-radius: 14px; color: #aaa;
 }
 .cp-empty span { font-size: 48px; display: block; margin-bottom: 12px; }
 .cp-empty p    { font-size: 16px; font-weight: 600; color: #666; margin: 0 0 6px; }
@@ -286,4 +296,327 @@
   .cp-props-grid { grid-template-columns: 1fr; }
   .cp-metodos { grid-template-columns: 1fr; }
   .cp-reserva-img { width: 80px; height: 80px; }
+}
+
+/* ── EXPLORAR ── */
+.cp-explorar-filtros {
+  display: flex; flex-direction: column; gap: 12px;
+}
+.cp-buscador {
+  position: relative; width: 100%;
+}
+.cp-buscador-icon {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  color: #888; font-size: 14px;
+}
+.cp-buscador-input {
+  width: 100%; padding: 10px 14px 10px 40px;
+  border: 1.5px solid #d5d5d5; border-radius: 10px;
+  font-size: 14px; outline: none;
+}
+.cp-buscador-input:focus { border-color: #5529aa; }
+
+.cp-cat-filtros {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.cp-cat-btn {
+  background: #fff; border: 1.5px solid #d5d5d5;
+  border-radius: 20px; padding: 6px 14px;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; color: #666;
+}
+.cp-cat-btn:hover { border-color: #8a60da; color: #5529aa; }
+.cp-cat-btn.active { background: #5529aa; color: #fff; border-color: #5529aa; }
+
+/* ── DETALLE PROPIEDAD ── */
+.cp-detalle-grid {
+  display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px;
+}
+.cp-galeria { display: flex; flex-direction: column; gap: 12px; }
+.cp-galeria-main {
+  position: relative; width: 100%; height: 400px;
+  background: #f0f0f0; border-radius: 14px; overflow: hidden;
+}
+.cp-galeria-main img { width: 100%; height: 100%; object-fit: cover; }
+.cp-galeria-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(0,0,0,0.45); border: none; color: #fff;
+  width: 38px; height: 38px; border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.cp-galeria-nav:hover { background: rgba(63,27,134,0.75); }
+.cp-galeria-nav--left  { left: 12px; }
+.cp-galeria-nav--right { right: 12px; }
+.cp-galeria-contador {
+  position: absolute; bottom: 12px; right: 12px;
+  background: rgba(0,0,0,0.6); color: #fff;
+  font-size: 12px; font-weight: 600;
+  padding: 4px 10px; border-radius: 20px;
+}
+.cp-galeria-thumbs {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  gap: 8px;
+}
+.cp-galeria-thumb {
+  width: 100%; aspect-ratio: 1;
+  object-fit: cover; border-radius: 8px;
+  cursor: pointer; opacity: 0.6;
+  transition: opacity 0.2s;
+  border: 2px solid transparent;
+}
+.cp-galeria-thumb:hover { opacity: 1; }
+.cp-galeria-thumb.active { opacity: 1; border-color: #5529aa; }
+
+.cp-detalle-info { display: flex; flex-direction: column; gap: 12px; }
+.cp-detalle-titulo {
+  color: #3f1b86; font-weight: 800; font-size: 26px; margin: 4px 0 0;
+}
+.cp-detalle-ubicacion { color: #666; font-size: 14px; margin: 0; }
+.cp-detalle-precio {
+  color: #3f1b86; font-weight: 800; font-size: 28px; margin: 8px 0;
+}
+.cp-detalle-specs {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  padding: 14px 0; border-top: 1px solid #ede8fa; border-bottom: 1px solid #ede8fa;
+}
+.cp-detalle-specs > div {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; color: #444; font-weight: 600;
+}
+.cp-detalle-subtitle {
+  color: #3f1b86; font-weight: 700; font-size: 15px;
+  margin: 12px 0 4px;
+}
+.cp-detalle-desc { font-size: 14px; color: #555; line-height: 1.6; margin: 0; }
+.cp-detalle-corredor {
+  background: #f4f0ff; border-left: 3px solid #5529aa;
+  padding: 10px 14px; font-size: 13px; color: #444;
+  border-radius: 4px;
+}
+.cp-btn-reservar-grande {
+  background: linear-gradient(135deg, #3f1b86, #5529aa);
+  color: #fff; border: none; border-radius: 12px;
+  padding: 14px; font-size: 16px; font-weight: 700;
+  cursor: pointer; margin-top: 12px;
+  transition: opacity 0.2s;
+}
+.cp-btn-reservar-grande:hover { opacity: 0.9; }
+.cp-detalle-ya-reservada {
+  background: #fff8e1; border: 1px solid #ffe082;
+  border-radius: 10px; padding: 14px;
+  font-size: 13px; color: #b45309; line-height: 1.6;
+}
+.cp-detalle-ya-reservada button {
+  background: none; border: none; color: #5529aa;
+  font-weight: 700; text-decoration: underline;
+  padding: 0; cursor: pointer; margin-left: 6px;
+}
+
+/* ── MODAL ── */
+.cp-modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  z-index: 1000; display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.cp-modal {
+  background: #fff; border-radius: 16px; padding: 28px;
+  max-width: 500px; width: 100%;
+}
+.cp-modal-titulo { color: #3f1b86; font-weight: 700; margin: 0 0 8px; font-size: 20px; }
+.cp-modal-subtitulo { color: #666; font-size: 14px; margin: 0 0 20px; line-height: 1.6; }
+.cp-campo { margin-bottom: 16px; }
+.cp-campo label {
+  display: block; font-size: 12px; font-weight: 600;
+  color: #555; margin-bottom: 6px;
+}
+.cp-textarea {
+  width: 100%; border: 1.5px solid #d5d5d5; border-radius: 10px;
+  padding: 10px 14px; font-size: 14px; outline: none; resize: vertical;
+  font-family: inherit;
+}
+.cp-textarea:focus { border-color: #5529aa; }
+.cp-modal-btns {
+  display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;
+}
+.cp-modal-exito { text-align: center; padding: 20px 0; }
+.cp-modal-exito h2 { color: #3f1b86; margin: 16px 0 8px; }
+.cp-modal-exito p  { color: #666; font-size: 14px; }
+.cp-exito-icon { font-size: 60px; color: #2e7d32; }
+
+/* ── RESERVA DETALLE (timeline 5 etapas) ── */
+.cp-reserva-header {
+  display: flex; gap: 20px; align-items: center;
+  background: #fff; border-radius: 14px; padding: 20px;
+  border: 1px solid #ede8fa;
+}
+.cp-reserva-header-img {
+  width: 120px; height: 120px; border-radius: 12px;
+  object-fit: cover; flex-shrink: 0;
+}
+
+.cp-progreso-bar {
+  background: #fff; border: 1px solid #ede8fa;
+  border-radius: 12px; padding: 16px 20px;
+}
+.cp-progreso-labels {
+  display: flex; justify-content: space-between; margin-bottom: 8px;
+  font-size: 12px; font-weight: 600; color: #666;
+}
+.cp-progreso-track {
+  width: 100%; height: 8px; background: #f4f0ff;
+  border-radius: 4px; overflow: hidden;
+}
+.cp-progreso-fill {
+  height: 100%; background: linear-gradient(90deg, #3f1b86, #8a60da);
+  transition: width 0.4s ease;
+}
+
+.cp-timeline {
+  background: #fff; border: 1px solid #ede8fa;
+  border-radius: 14px; padding: 20px;
+  display: flex; justify-content: space-between; position: relative;
+  overflow-x: auto;
+}
+.cp-timeline-step {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; flex: 1; position: relative; min-width: 100px;
+}
+.cp-timeline-icon {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px;
+  margin-bottom: 8px; transition: all 0.25s;
+  border: 2px solid; z-index: 2;
+}
+.cp-timeline-step--pendiente  .cp-timeline-icon { background: #f5f5f5; color: #bbb; border-color: #e5e5e5; }
+.cp-timeline-step--activa     .cp-timeline-icon { background: #5529aa; color: #fff; border-color: #5529aa; box-shadow: 0 0 0 6px rgba(85, 41, 170, 0.15); }
+.cp-timeline-step--completada .cp-timeline-icon { background: #2e7d32; color: #fff; border-color: #2e7d32; }
+
+.cp-timeline-content { display: flex; flex-direction: column; gap: 2px; }
+.cp-timeline-label { font-size: 12px; font-weight: 700; color: #333; }
+.cp-timeline-desc  { font-size: 10px; color: #999; }
+.cp-timeline-step--completada .cp-timeline-label { color: #2e7d32; }
+.cp-timeline-step--activa .cp-timeline-label { color: #3f1b86; }
+
+.cp-timeline-connector {
+  position: absolute; top: 22px; left: 50%; width: 100%;
+  height: 2px; background: #e5e5e5; z-index: 1;
+}
+.cp-timeline-step--completada + .cp-timeline-step .cp-timeline-connector,
+.cp-timeline-step--completada .cp-timeline-connector {
+  background: #2e7d32;
+}
+
+/* Panel etapa actual */
+.cp-etapa-panel {
+  background: #fff; border: 1px solid #ede8fa;
+  border-radius: 14px; overflow: hidden;
+}
+.cp-etapa-panel-header {
+  display: flex; align-items: center; gap: 14px;
+  padding: 20px 24px; background: linear-gradient(135deg, #f4f0ff, #ede8fa);
+  border-bottom: 1px solid #ede8fa;
+}
+.cp-etapa-panel-icon { font-size: 32px; }
+.cp-etapa-panel-header h3 {
+  font-size: 18px; color: #3f1b86; margin: 0 0 4px; font-weight: 700;
+}
+.cp-etapa-sub {
+  font-size: 11px; font-weight: 700; padding: 3px 10px;
+  border-radius: 20px; display: inline-block;
+}
+.cp-etapa-body { padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+.cp-etapa-body p { margin: 0; color: #555; line-height: 1.6; font-size: 14px; }
+
+.cp-mensaje-card, .cp-visita-card, .cp-monto-card, .cp-success-card, .cp-error-card {
+  padding: 14px 18px; border-radius: 10px; font-size: 14px;
+}
+.cp-mensaje-card { background: #f4f0ff; border-left: 3px solid #5529aa; }
+.cp-mensaje-card strong { display: block; margin-bottom: 6px; color: #3f1b86; font-size: 12px; }
+.cp-mensaje-card p { margin: 0; }
+.cp-visita-card {
+  background: #e3f2fd; border: 1px solid #bbdefb; color: #1565c0;
+  text-align: center; font-size: 16px;
+}
+.cp-monto-card {
+  background: #fff8e1; border: 1px solid #ffe082;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.cp-monto-card strong { font-size: 22px; color: #b45309; }
+.cp-success-card { background: #e8f5e9; color: #2e7d32; text-align: center; }
+.cp-error-card { background: #ffebee; color: #e53935; }
+
+.cp-etapa-btns {
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+.cp-etapa-btns button { flex: 1; }
+
+/* Documentos */
+.cp-docs-lista { display: flex; flex-direction: column; gap: 8px; }
+.cp-doc-item {
+  background: #f9f9f9; border: 1px solid #e5e5e5;
+  border-radius: 8px; padding: 12px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.cp-doc-estado { font-size: 12px; color: #666; }
+
+/* Historial */
+.cp-historial {
+  background: #fff; border: 1px solid #ede8fa;
+  border-radius: 14px; padding: 20px;
+}
+.cp-historial-lista {
+  display: flex; flex-direction: column; gap: 10px; margin-top: 12px;
+}
+.cp-historial-item {
+  display: flex; gap: 16px; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid #f4f0ff;
+  font-size: 13px; flex-wrap: wrap;
+}
+.cp-historial-item:last-child { border-bottom: none; }
+.cp-historial-fecha { color: #888; font-size: 11px; min-width: 130px; }
+.cp-historial-accion { flex: 1; color: #333; font-weight: 500; }
+.cp-historial-autor { color: #999; font-size: 11px; font-style: italic; }
+
+/* Reserva con progreso mini en listado */
+.cp-reserva-progreso-mini { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+.cp-progreso-track-mini {
+  flex: 1; height: 4px; background: #eee;
+  border-radius: 2px; overflow: hidden;
+}
+.cp-progreso-fill-mini {
+  height: 100%; transition: width 0.4s;
+}
+.cp-reserva-subestado { font-size: 11px; font-weight: 600; font-style: italic; }
+.cp-reserva-etapa {
+  font-size: 11px; font-weight: 700; padding: 3px 10px;
+  border-radius: 20px; white-space: nowrap;
+}
+.cp-reserva-chevron {
+  color: #ccc; font-size: 14px;
+  margin: 0 16px; flex-shrink: 0;
+}
+.cp-reserva-card { cursor: pointer; transition: box-shadow 0.2s; }
+.cp-reserva-card:hover { box-shadow: 0 4px 16px rgba(63, 27, 134, 0.12); }
+.cp-reserva-card.cerrada { opacity: 0.7; }
+
+.cp-btn-danger-outline {
+  background: none; border: 1.5px solid #e53935;
+  color: #e53935; border-radius: 10px;
+  padding: 10px 20px; font-size: 13px;
+  font-weight: 600; cursor: pointer;
+  align-self: flex-start; transition: all 0.2s;
+}
+.cp-btn-danger-outline:hover { background: #e53935; color: #fff; }
+
+@media (max-width: 767px) {
+  .cp-detalle-grid { grid-template-columns: 1fr; }
+  .cp-galeria-main { height: 280px; }
+  .cp-timeline { padding: 14px; }
+  .cp-timeline-step { min-width: 80px; }
+  .cp-timeline-label { font-size: 10px; }
+  .cp-timeline-desc { display: none; }
+  .cp-reserva-header { flex-direction: column; text-align: center; }
+  .cp-reserva-header-img { width: 100%; height: 180px; }
 }

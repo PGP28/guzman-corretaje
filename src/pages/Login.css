@@ -132,12 +132,46 @@
 /* Card del formulario */
 .login-card {
   width: 100%;
-  max-width: 400px;
+  max-width: 440px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0;
 }
+
+/* Tabs cliente/corredor */
+.login-tabs {
+  display: flex;
+  width: 100%;
+  background: #f4f0ff;
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 24px;
+  gap: 4px;
+}
+.login-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.login-tab:hover { color: #5529aa; }
+.login-tab.active {
+  background: #fff;
+  color: #3f1b86;
+  box-shadow: 0 2px 6px rgba(63, 27, 134, 0.1);
+}
+.login-tab-icon { font-size: 11px; }
 
 /* Ícono superior */
 .login-icon-wrapper {

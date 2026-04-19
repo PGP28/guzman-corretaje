@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FaLock, FaUser } from 'react-icons/fa';
+import { FaLock } from 'react-icons/fa';
 import logoNav from '../assets/images/LOGO_PNG-17_Modified.png';
 import './Navbar.css';
 
@@ -68,24 +68,14 @@ const NavigationBar = () => {
             ))}
           </Nav>
 
-          {/* Botón portal cliente */}
-          <button
-            className={`navbar-acceso-btn navbar-cliente-btn ${isSolid ? 'solid' : 'transparent'}`}
-            onClick={() => { navigate('/cliente'); setExpanded(false); }}
-            title="Portal de clientes"
-          >
-            <FaUser className="navbar-acceso-icon" />
-            <span>Mi portal</span>
-          </button>
-
-          {/* Botón acceso privado — extremo derecho */}
+          {/* Botón único — Iniciar sesión */}
           <button
             className={`navbar-acceso-btn ${isSolid ? 'solid' : 'transparent'}`}
             onClick={() => { navigate('/login'); setExpanded(false); }}
-            title="Portal de corredores"
+            title="Iniciar sesión"
           >
             <FaLock className="navbar-acceso-icon" />
-            <span>Acceso privado</span>
+            <span>Iniciar sesión</span>
           </button>
         </Navbar.Collapse>
 

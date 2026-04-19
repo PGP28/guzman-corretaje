@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaInstagram, FaTiktok, FaLock, FaUser } from 'react-icons/fa';
+import { FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaInstagram, FaTiktok, FaLock, FaBriefcase } from 'react-icons/fa';
 import logo from '../assets/images/LOGO_PNG-19.png';
 import './Footer.css';
 
@@ -38,11 +38,11 @@ const Footer = () => (
             {/* Divisor horizontal + portal */}
             <div className="footer-portal-wrapper">
               <hr className="footer-portal-hr" />
-              <a href="/cliente" className="footer-link footer-link-portal footer-link-cliente">
-                <FaUser className="footer-portal-icon" /> Mi portal cliente
+              <a href="/TrabajaConNosotros" className="footer-link footer-link-portal footer-link-trabajo">
+                <FaBriefcase className="footer-portal-icon" /> Trabaja con nosotros
               </a>
               <a href="/login" className="footer-link footer-link-portal" style={{ marginTop: 6 }}>
-                <FaLock className="footer-portal-icon" /> Portal corredores
+                <FaLock className="footer-portal-icon" /> Iniciar sesión
               </a>
             </div>
           </Col>

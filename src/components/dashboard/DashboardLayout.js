@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { FaBars, FaTimes, FaHome, FaUpload, FaEdit, FaUsers, FaSignOutAlt,
-         FaChevronLeft, FaUser, FaEnvelope, FaGift, FaHardHat } from 'react-icons/fa';
+         FaChevronLeft, FaUser, FaEnvelope, FaGift, FaHardHat, FaCalendarCheck, FaBriefcase } from 'react-icons/fa';
 import DashboardInicio from './DashboardInicio';
 import DashboardCorredor from './DashboardCorredor';
 import SubirPropiedad from './SubirPropiedad';
@@ -11,6 +11,8 @@ import MiPerfil from './MiPerfil';
 import Solicitudes from './Solicitudes';
 import SolicitarBono from './SolicitarBono';
 import Construccion from './Construccion';
+import Reservas from './Reservas';
+import Postulaciones from './Postulaciones';
 import { getRolUsuario } from './rolesHelper';
 import './DashboardLayout.css';
 
@@ -19,16 +21,17 @@ const getNavItems = (rol) => {
   const base = [
     { id: 'inicio',     label: 'Inicio',      icon: <FaHome />,    path: '/dashboard' },
     { id: 'editar',     label: rol === 'admin' ? 'Editar' : 'Mis propiedades', icon: <FaEdit />, path: '/dashboard/editar' },
+    { id: 'reservas',   label: 'Reservas',    icon: <FaCalendarCheck />, path: '/dashboard/reservas' },
     { id: 'solicitudes',label: 'Solicitudes', icon: <FaEnvelope />, path: '/dashboard/solicitudes' },
     { id: 'perfil',     label: 'Mi Perfil',   icon: <FaUser />,    path: '/dashboard/perfil' },
   ];
   if (rol === 'admin') {
-    base.splice(1, 0, { id: 'subir',       label: 'Subir',        icon: <FaUpload />,   path: '/dashboard/subir' });
-    base.splice(4, 0, { id: 'corredores',  label: 'Corredores',   icon: <FaUsers />,    path: '/dashboard/corredores' });
-    base.splice(5, 0, { id: 'construccion',label: 'Construcción', icon: <FaHardHat />,  path: '/dashboard/construccion' });
+    base.splice(1, 0, { id: 'subir',       label: 'Subir',         icon: <FaUpload />,   path: '/dashboard/subir' });
+    base.splice(5, 0, { id: 'corredores',  label: 'Corredores',    icon: <FaUsers />,    path: '/dashboard/corredores' });
+    base.splice(6, 0, { id: 'construccion',label: 'Construcción',  icon: <FaHardHat />,  path: '/dashboard/construccion' });
+    base.splice(7, 0, { id: 'postulaciones', label: 'Postulaciones', icon: <FaBriefcase />, path: '/dashboard/postulaciones' });
   } else {
-    // Corredor tiene sección de bonos
-    base.splice(3, 0, { id: 'bonos', label: 'Mis bonos', icon: <FaGift />, path: '/dashboard/bonos' });
+    base.splice(4, 0, { id: 'bonos', label: 'Mis bonos', icon: <FaGift />, path: '/dashboard/bonos' });
   }
   return base;
 };
@@ -178,12 +181,14 @@ const DashboardLayout = ({ user: userProp, onLogout }) => {
             } />
 
             {/* Solo admin */}
-            {rol === 'admin' && <Route path="/subir"        element={<SubirPropiedad />} />}
-            {rol === 'admin' && <Route path="/corredores"   element={<GestionCorredores />} />}
-            {rol === 'admin' && <Route path="/construccion" element={<Construccion />} />}
+            {rol === 'admin' && <Route path="/subir"          element={<SubirPropiedad />} />}
+            {rol === 'admin' && <Route path="/corredores"     element={<GestionCorredores />} />}
+            {rol === 'admin' && <Route path="/construccion"   element={<Construccion />} />}
+            {rol === 'admin' && <Route path="/postulaciones"  element={<Postulaciones />} />}
 
             {/* Ambos roles */}
             <Route path="/editar"      element={<EditarPropiedades rol={rol} userEmail={user?.email} userName={user?.name} />} />
+            <Route path="/reservas"    element={<Reservas rol={rol} userName={user?.name} />} />
             <Route path="/solicitudes" element={<Solicitudes rol={rol} userName={user?.name} />} />
             <Route path="/perfil"      element={<MiPerfil user={user} onUpdateUser={u => setUser(u)} />} />
             {/* Solo corredor */}

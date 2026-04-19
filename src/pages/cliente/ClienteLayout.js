@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { FaHome, FaCalendarCheck, FaComments, FaCreditCard, FaSignOutAlt, FaChevronLeft, FaBars, FaTimes } from 'react-icons/fa';
+import { FaHome, FaCalendarCheck, FaComments, FaCreditCard, FaSignOutAlt, FaChevronLeft, FaBars, FaTimes, FaSearch } from 'react-icons/fa';
 import ClienteInicio from './ClienteInicio';
 import ClienteReservas from './ClienteReservas';
 import ClienteMensajes from './ClienteMensajes';
 import ClientePagos from './ClientePagos';
+import ClienteExplorar from './ClienteExplorar';
+import ClientePropiedadDetalle from './ClientePropiedadDetalle';
+import ClienteReservaDetalle from './ClienteReservaDetalle';
 import './ClienteLayout.css';
 
 const NAV_ITEMS = [
   { id: 'inicio',   label: 'Inicio',    icon: <FaHome />,          path: '/cliente' },
+  { id: 'explorar', label: 'Explorar',  icon: <FaSearch />,        path: '/cliente/explorar' },
   { id: 'reservas', label: 'Reservas',  icon: <FaCalendarCheck />, path: '/cliente/reservas' },
   { id: 'mensajes', label: 'Mensajes',  icon: <FaComments />,      path: '/cliente/mensajes' },
   { id: 'pagos',    label: 'Pagos',     icon: <FaCreditCard />,    path: '/cliente/pagos' },
@@ -111,11 +115,14 @@ const ClienteLayout = ({ user, onLogout }) => {
 
         <div className="cl-content">
           <Routes>
-            <Route path="/"         element={<ClienteInicio user={user} />} />
-            <Route path="/reservas" element={<ClienteReservas user={user} />} />
-            <Route path="/mensajes" element={<ClienteMensajes user={user} />} />
-            <Route path="/pagos"    element={<ClientePagos user={user} />} />
-            <Route path="*"         element={<Navigate to="/cliente" replace />} />
+            <Route path="/"              element={<ClienteInicio user={user} />} />
+            <Route path="/explorar"      element={<ClienteExplorar />} />
+            <Route path="/propiedad/:id" element={<ClientePropiedadDetalle user={user} />} />
+            <Route path="/reservas"      element={<ClienteReservas user={user} />} />
+            <Route path="/reserva/:id"   element={<ClienteReservaDetalle user={user} />} />
+            <Route path="/mensajes"      element={<ClienteMensajes user={user} />} />
+            <Route path="/pagos"         element={<ClientePagos user={user} />} />
+            <Route path="*"              element={<Navigate to="/cliente" replace />} />
           </Routes>
         </div>
       </div>

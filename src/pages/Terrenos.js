@@ -55,7 +55,7 @@ function Terrenos() {
   const totalPaginas = Math.ceil(propiedadesFiltradas.length / propiedadesPorPagina);
 
   return (
-    <Container fluid className="px-4 mt-3">
+    <Container fluid className="px-4 mt-3" style={{ paddingBottom: 0, marginBottom: 0 }}>
       <Row>
         {/* Buscador lateral */}
         <Col xs={12} md={4} lg={3} className="mb-4">

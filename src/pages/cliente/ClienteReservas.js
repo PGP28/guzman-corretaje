@@ -1,35 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { FaTrash, FaCheckCircle, FaClock, FaTimesCircle } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FaChevronRight } from 'react-icons/fa';
+import { getReservasCliente, ETAPAS, SUB_ESTADOS, calcularProgreso } from './reservaHelper';
 import './ClientePages.css';
 
-const ESTADOS = {
-  pendiente:  { label: '⏳ Pendiente',  color: '#b45309', bg: '#fff8e1' },
-  confirmada: { label: '✅ Confirmada', color: '#2e7d32', bg: '#e8f5e9' },
-  cancelada:  { label: '❌ Cancelada',  color: '#e53935', bg: '#fff5f5' },
-};
-
 const ClienteReservas = ({ user }) => {
-  const key = `guzman_reservas_${user?.email}`;
-  const [reservas, setReservas] = useState(() => JSON.parse(localStorage.getItem(key) || '[]'));
-  const [confirmDel, setConfirmDel] = useState(null);
+  const navigate = useNavigate();
+  const [reservas] = useState(() => getReservasCliente(user?.email));
 
-  const guardar = (lista) => { setReservas(lista); localStorage.setItem(key, JSON.stringify(lista)); };
-
-  const handleCancelar = (id) => {
-    guardar(reservas.map(r => r.id === id ? { ...r, estado: 'cancelada' } : r));
-    setConfirmDel(null);
-  };
-
-  const pendientes  = reservas.filter(r => r.estado === 'pendiente').length;
-  const confirmadas = reservas.filter(r => r.estado === 'confirmada').length;
+  const activas  = reservas.filter(r => !['rechazado'].includes(r.sub_estado) && r.etapa_actual !== 'completada');
+  const cerradas = reservas.filter(r => ['rechazado'].includes(r.sub_estado) || r.etapa_actual === 'completada');
 
   return (
     <div className="cp-page">
       <div className="cp-header">
         <div>
           <h1 className="cp-titulo">Mis reservas</h1>
-          <p className="cp-subtitulo">{reservas.length} total · {pendientes} pendientes · {confirmadas} confirmadas</p>
+          <p className="cp-subtitulo">{activas.length} activas · {cerradas.length} cerradas</p>
         </div>
+        <button className="cp-btn-buscar" onClick={() => navigate('/cliente/explorar')}>
+          + Nueva reserva
+        </button>
       </div>
 
       {reservas.length === 0 ? (
@@ -37,58 +28,77 @@ const ClienteReservas = ({ user }) => {
           <span>📋</span>
           <p>No tienes reservas aún</p>
           <small>Explora propiedades disponibles y haz una reserva</small>
+          <button className="cp-btn-primary" onClick={() => navigate('/cliente/explorar')} style={{ marginTop: 16 }}>
+            Explorar propiedades
+          </button>
         </div>
       ) : (
-        <div className="cp-reservas-lista-full">
-          {reservas.map(r => {
-            const est = ESTADOS[r.estado] || ESTADOS.pendiente;
-            return (
-              <div key={r.id} className="cp-reserva-card">
-                {r.propiedad_imagen && (
-                  <img src={r.propiedad_imagen} alt={r.propiedad_nombre} className="cp-reserva-img" />
-                )}
-                <div className="cp-reserva-body">
-                  <div className="cp-reserva-top">
-                    <h3 className="cp-reserva-nombre">{r.propiedad_nombre}</h3>
-                    <span className="cp-reserva-badge" style={{ color: est.color, background: est.bg }}>
-                      {est.label}
-                    </span>
-                  </div>
-                  <p className="cp-reserva-ubicacion">📍 {r.propiedad_ubicacion}</p>
-                  <div className="cp-reserva-meta">
-                    <span>📅 Reservado: {r.fecha}</span>
-                    <span>💰 Monto: {r.monto ? `$ ${Number(r.monto).toLocaleString('es-CL')}` : 'Por definir'}</span>
-                    {r.corredor && <span>👤 Corredor: {r.corredor}</span>}
-                    {r.pago_estado && <span>💳 Pago: {r.pago_estado === 'pagado' ? '✅ Pagado' : '⏳ Pendiente'}</span>}
-                  </div>
-                  {r.nota_admin && (
-                    <div className="cp-reserva-nota">
-                      <strong>Mensaje del corredor:</strong> {r.nota_admin}
+        <>
+          {activas.length > 0 && (
+            <div className="cp-section">
+              <h2 className="cp-section-titulo">Activas</h2>
+              <div className="cp-reservas-lista-full">
+                {activas.map(r => {
+                  const etapa = ETAPAS[r.etapa_actual] || ETAPAS.solicitud;
+                  const subEst = SUB_ESTADOS[r.sub_estado] || SUB_ESTADOS.pendiente;
+                  const progreso = calcularProgreso(r);
+                  return (
+                    <div key={r.id} className="cp-reserva-card" onClick={() => navigate(`/cliente/reserva/${r.id}`)}>
+                      {r.propiedad_imagen && (
+                        <img src={r.propiedad_imagen} alt={r.propiedad_nombre} className="cp-reserva-img" />
+                      )}
+                      <div className="cp-reserva-body">
+                        <div className="cp-reserva-top">
+                          <h3 className="cp-reserva-nombre">{r.propiedad_nombre}</h3>
+                          <span className="cp-reserva-badge" style={{ color: etapa.color, background: etapa.color + '15' }}>
+                            {etapa.icon} {etapa.label}
+                          </span>
+                        </div>
+                        <p className="cp-reserva-ubicacion">📍 {r.propiedad_ubicacion}</p>
+                        <div className="cp-reserva-progreso-mini">
+                          <div className="cp-progreso-track-mini">
+                            <div className="cp-progreso-fill-mini" style={{ width: `${progreso}%`, background: etapa.color }} />
+                          </div>
+                          <span style={{ fontSize: 11, color: '#888' }}>{progreso}%</span>
+                        </div>
+                        <span className="cp-reserva-subestado" style={{ color: subEst.color }}>
+                          {subEst.label}
+                        </span>
+                      </div>
+                      <FaChevronRight className="cp-reserva-chevron" />
                     </div>
-                  )}
-                </div>
-                {r.estado === 'pendiente' && (
-                  <button className="cp-reserva-del" onClick={() => setConfirmDel(r.id)} title="Cancelar reserva">
-                    <FaTimesCircle />
-                  </button>
-                )}
+                  );
+                })}
               </div>
-            );
-          })}
-        </div>
-      )}
-
-      {confirmDel && (
-        <div className="cp-confirm-overlay">
-          <div className="cp-confirm-modal">
-            <h4>⚠️ Cancelar reserva</h4>
-            <p>¿Confirmas que deseas cancelar esta reserva?</p>
-            <div className="cp-confirm-btns">
-              <button className="cp-btn-secondary" onClick={() => setConfirmDel(null)}>No, mantener</button>
-              <button className="cp-btn-danger" onClick={() => handleCancelar(confirmDel)}>Sí, cancelar</button>
             </div>
-          </div>
-        </div>
+          )}
+
+          {cerradas.length > 0 && (
+            <div className="cp-section">
+              <h2 className="cp-section-titulo">Cerradas</h2>
+              <div className="cp-reservas-lista-full">
+                {cerradas.map(r => (
+                  <div key={r.id} className="cp-reserva-card cerrada" onClick={() => navigate(`/cliente/reserva/${r.id}`)}>
+                    {r.propiedad_imagen && (
+                      <img src={r.propiedad_imagen} alt={r.propiedad_nombre} className="cp-reserva-img" />
+                    )}
+                    <div className="cp-reserva-body">
+                      <h3 className="cp-reserva-nombre">{r.propiedad_nombre}</h3>
+                      <p className="cp-reserva-ubicacion">📍 {r.propiedad_ubicacion}</p>
+                      <span className="cp-reserva-badge" style={{
+                        color: r.sub_estado === 'rechazado' ? '#e53935' : '#2e7d32',
+                        background: r.sub_estado === 'rechazado' ? '#ffebee' : '#e8f5e9'
+                      }}>
+                        {r.sub_estado === 'rechazado' ? '❌ Cancelada' : '🎉 Completada'}
+                      </span>
+                    </div>
+                    <FaChevronRight className="cp-reserva-chevron" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

@@ -26,11 +26,14 @@ html, body {
   flex-direction: column;
   flex: 1;
   max-width: 100%;
+  min-height: 100vh;
 }
 
 .content {
   flex: 1;
   max-width: 100%;
+  display: flex;
+  flex-direction: column;
   /* NO overflow-x:hidden — rompe position:fixed del navbar */
 }
 

@@ -164,23 +164,10 @@
   border-color: #fff;
 }
 
-/* Botón portal cliente — acento verde */
-.navbar-cliente-btn.solid {
-  border-color: rgba(46,199,154,0.5);
-  color: rgba(46,199,154,0.9);
-}
-.navbar-cliente-btn.solid:hover {
-  background: rgba(46,199,154,0.15);
-  color: #2ec99a;
-  border-color: #2ec99a;
-}
+/* Botón portal cliente — mismo estilo que acceso privado */
+.navbar-cliente-btn.solid,
 .navbar-cliente-btn.transparent {
-  border-color: rgba(46,199,154,0.5);
-  color: rgba(255,255,255,0.85);
-}
-.navbar-cliente-btn.transparent:hover {
-  background: rgba(46,199,154,0.2);
-  color: #fff;
+  /* hereda estilos de .navbar-acceso-btn */
 }
 .navbar-acceso-icon { font-size: 11px; }
 

@@ -1,4 +1,4 @@
-/* ── CLIENTE LAYOUT ── */
+/* ── CLIENTE LAYOUT — Paleta morada Guzmán ── */
 .cl-layout {
   display: flex;
   min-height: 100vh;
@@ -8,7 +8,7 @@
 /* Sidebar */
 .cl-sidebar {
   width: 240px;
-  background: linear-gradient(160deg, #0f6e56 0%, #1a9e7a 100%);
+  background: linear-gradient(160deg, #3f1b86 0%, #5529aa 100%);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -130,11 +130,11 @@
   display: none; background: none; border: none;
   font-size: 18px; cursor: pointer; color: #666;
 }
-.cl-topbar-title { flex: 1; font-weight: 700; color: #0f6e56; font-size: 16px; }
+.cl-topbar-title { flex: 1; font-weight: 700; color: #3f1b86; font-size: 16px; }
 .cl-topbar-avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
 .cl-topbar-avatar-placeholder {
   width: 34px; height: 34px; border-radius: 50%;
-  background: linear-gradient(135deg, #0f6e56, #2ec99a);
+  background: linear-gradient(135deg, #3f1b86, #8a60da);
   color: #fff; font-weight: 700; font-size: 14px;
   display: flex; align-items: center; justify-content: center;
 }

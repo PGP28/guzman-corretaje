@@ -23,16 +23,18 @@ function DetallesPropiedades() {
   }
 
   const handleReservar = () => {
+    // Guardar en sessionStorage y llevar al portal cliente directamente al detalle
     sessionStorage.setItem('guzman_reservar_propiedad', JSON.stringify({
       id: propiedad.id,
       nombre: propiedad.nombre,
-      ubicacion: propiedad.ubicacion,
-      precio: propiedad.precio,
-      unidad_medida: propiedad.unidad_medida,
-      imagen: propiedad.imagenes?.[0]?.url || propiedad.imagenes?.[0] || '',
-      corredor: propiedad.corredor_asignado,
     }));
-    navigate('/cliente/login');
+    // Si ya está logueado como cliente, va al detalle. Si no, al login
+    const cliente = localStorage.getItem('guzman_cliente');
+    if (cliente) {
+      navigate(`/cliente/propiedad/${propiedad.id}`, { state: { propiedad } });
+    } else {
+      navigate('/cliente/login');
+    }
   };
 
   const detalles = propiedad.detalles || propiedad.detalle || {};

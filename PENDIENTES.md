@@ -5,10 +5,23 @@
 
 ---
 
+## 🏗️ ARQUITECTURA DEFINIDA
+
+```
+Frontend  → Vercel (free)           guzmancorretaje.cl
+Backend   → cPanel (plan básico)   api.guzmancorretaje.cl
+Base de datos → MySQL en cPanel (incluido)
+Storage   → Google Drive (ya configurado)
+```
+
+**Costo estimado:** ~$3.000-5.000 CLP/mes + $12.000 CLP/año por dominio
+
+---
+
 ## 🔴 CRÍTICO — Bloqueadores para producción
 
 ### Backend / Base de datos
-- [ ] **Recuperar hosting cPanel** (se perdió porque no se pagó el plan)
+- [ ] **Recuperar/contratar hosting cPanel** (se perdió porque no se pagó el plan)
 - [ ] **Crear nueva base de datos de producción** con esquema completo
 - [ ] **Migrar columnas nuevas** a producción cuando se tenga la BD:
   - `propiedades.corredor_asignado` (VARCHAR 100)
@@ -16,6 +29,23 @@
   - `imagenes_propiedades.orden` (INT, default 0)
 - [ ] **Autenticación real con token Google** en backend (actualmente solo frontend)
 - [ ] **Proteger endpoints** con verificación de token y rol
+
+### Deploy inicial — Pasos en orden
+1. [ ] **Comprar dominio** `.cl` en NIC Chile (~$12.000 CLP/año)
+2. [ ] **Contratar plan cPanel** con soporte Python/Flask (HostingPlus, SolucionHost, BlueHost, etc.)
+3. [ ] **Configurar subdominio** `api.guzmancorretaje.cl` en cPanel apuntando al backend Flask
+4. [ ] **Crear BD MySQL** en cPanel con el esquema completo
+5. [ ] **Subir backend** via Git o FTP a cPanel
+6. [ ] **Configurar variables de entorno** en cPanel:
+   - `DATABASE_URL` con credenciales MySQL producción
+   - `GOOGLE_DRIVE_CREDENTIALS` (service account)
+   - `BACKEND_URL=https://api.guzmancorretaje.cl`
+   - `CORS_ORIGINS=https://guzmancorretaje.cl`
+7. [ ] **Desplegar frontend en Vercel**:
+   - Conectar repo de GitHub
+   - Configurar variable `REACT_APP_API_URL=https://api.guzmancorretaje.cl`
+   - Apuntar dominio `guzmancorretaje.cl` a Vercel
+8. [ ] **Probar flujo completo** en producción
 
 ---
 
@@ -71,11 +101,55 @@ Todo lo siguiente hoy funciona con **localStorage**. Cuando tengamos BD de produ
 
 ## 🟢 MEJORAS DE UX / FEATURES NUEVAS
 
-- [ ] **Filtros avanzados** en explorar propiedades del portal cliente
-- [ ] **Favoritos** del cliente (guardar propiedades que le interesan)
+### Propiedades
+- [ ] **Marca de agua** en cada imagen de propiedad al subirla (logo Guzmán sobrepuesto)
+- [ ] **Propiedades relacionadas** — similar a MercadoLibre, mostrar propiedades de la misma categoría/zona debajo del detalle
+- [ ] **Dirección oculta** — mostrar solo comuna/sector en el sitio público, dirección exacta solo al corredor/cliente con reserva confirmada
+- [ ] **Rango de metros cuadrados** en filtros del buscador (ej: 50m² a 120m²)
+- [ ] **Filtro por gastos comunes** — si tiene o no, y si viene incluido en el precio de arriendo
+
+### Integración UF / Precios
+- [ ] **Integración con CMF** para obtener el valor de la UF en tiempo real (API: `https://api.cmfchile.cl/api-sbifv3/recursos_api/uf`)
+- [ ] Mostrar precio en CLP y UF simultáneamente en tarjetas y detalle
+- [ ] Actualizar automáticamente el equivalente UF↔CLP al cargar la página
+
+### Análisis de mercado (solo admin/corredor o también público — por definir)
+- [ ] **Histórico de precios por comuna** — registrar precio/m² promedio por comuna con fecha
+- [ ] **Estudio de mercado** basado en propiedades de la BD:
+  - Precio mediana (recomendado sobre media, menos afectado por outliers) por comuna
+  - Rango de precio por comuna (mín, máximo, mediana)
+  - Evolución histórica del precio por m² en el tiempo
+- [ ] **Definir visibilidad:** público general, solo clientes logueados, o solo admin/corredor
+
+### Comunicaciones
+- [ ] **Envío de correos con Mailtrap** (o Mailgun/SendGrid en producción):
+  - Confirmación de reserva al cliente
+  - Notificación al corredor cuando llega nueva reserva
+  - Cambio de etapa en el flujo de reserva
+  - Confirmación de postulación laboral
+  - Respuesta a formulario de contacto
+
+### Infraestructura / Cloud
+- [ ] **Migrar imágenes a Amazon S3** (bucket privado con URLs firmadas) — alternativa a Google Drive cuando escale
+  - Instancia EC2 para el backend si cPanel no escala
+  - CloudFront como CDN para las imágenes
+  - Considerar cuando superen ~500 propiedades o el Drive empiece a ser lento
+
+### Inteligencia Artificial
+- [ ] **Chatbot alimentado por la BD** de propiedades:
+  - Responde preguntas sobre propiedades disponibles
+  - Filtra por criterios del usuario en lenguaje natural
+  - Puede derivar a WhatsApp o iniciar proceso de reserva
+  - Tecnología sugerida: RAG (Retrieval Augmented Generation) con embeddings de propiedades
+  - Posible stack: LangChain + OpenAI API + pgvector (si migran a Postgres) o implementación custom
+
+### UX futuras
+- [ ] **Favoritos** — cliente guarda propiedades que le interesan
 - [ ] **Valoración/Reviews** del cliente sobre el servicio al cierre de una reserva
-- [ ] **Mapa** en detalle de propiedad (Google Maps / OpenStreetMap)
+- [ ] **Mapa interactivo** en listados y detalle de propiedad (Google Maps o Leaflet/OpenStreetMap)
 - [ ] **Tour virtual 360°** en propiedades destacadas
+- [ ] **Filtros avanzados** en explorar propiedades del portal cliente
+- [ ] **Comparador de propiedades** (comparar hasta 3 propiedades lado a lado)
 
 ---
 

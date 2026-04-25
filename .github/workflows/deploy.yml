@@ -1,4 +1,4 @@
-name: 🚀 Deploy Frontend → Vercel
+name: 🚀 Deploy Frontend → cPanelHost
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploy a Vercel
+    name: Build y Deploy a cPanel
     runs-on: ubuntu-latest
 
     steps:
@@ -26,14 +26,60 @@ jobs:
       - name: 🔨 Build de producción
         run: npm run build
         env:
-          REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+          REACT_APP_API_URL: ${{ secrets.BACKEND_URL }}
           CI: false
 
-      - name: 🚀 Deploy a Vercel
-        uses: amondnet/vercel-action@v25
+      - name: 📄 Asegurar .htaccess en build
+        run: |
+          if [ ! -f build/.htaccess ]; then
+            echo "⚠️ .htaccess no está en build/ — copiando manualmente"
+            cp public/.htaccess build/.htaccess
+          else
+            echo "✅ .htaccess ya está en build/"
+          fi
+
+      - name: 📦 Comprimir build
+        run: |
+          cd build
+          zip -r ../build_deploy.zip .
+          cd ..
+          echo "✅ build_deploy.zip creado ($(du -sh build_deploy.zip | cut -f1))"
+
+      - name: 📤 Subir build al servidor vía SCP
+        uses: appleboy/scp-action@v0.1.7
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-          working-directory: ./
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "build_deploy.zip"
+          target: "/home/${{ secrets.SSH_USERNAME }}/deployments/"
+
+      - name: 🔄 Descomprimir y reemplazar public_html
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            set -e
+            DEPLOY_ZIP="/home/$USER/deployments/build_deploy.zip"
+            PUBLIC_HTML="/home/$USER/public_html"
+            BACKUP_DIR="/home/$USER/deployments/backup_$(date +%Y%m%d_%H%M%S)"
+
+            echo "📁 Creando backup..."
+            mkdir -p "$BACKUP_DIR"
+            find "$PUBLIC_HTML" -maxdepth 1 \( -name "*.html" -o -name "*.js" -o -name "*.css" -o -name ".htaccess" \) -exec cp {} "$BACKUP_DIR/" \; 2>/dev/null || true
+
+            echo "🗑️ Limpiando public_html (sin tocar api.corretajeguzman.cl)..."
+            find "$PUBLIC_HTML" -maxdepth 1 -not -name 'api.corretajeguzman.cl' -not -path "$PUBLIC_HTML" -delete 2>/dev/null || true
+
+            echo "📦 Descomprimiendo nuevo build..."
+            mkdir -p "$PUBLIC_HTML"
+            unzip -o "$DEPLOY_ZIP" -d "$PUBLIC_HTML"
+
+            echo "🗑️ Limpiando zip temporal..."
+            rm "$DEPLOY_ZIP"
+
+            echo "✅ Deploy completado en $PUBLIC_HTML"

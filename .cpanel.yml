@@ -2,9 +2,11 @@
 deployment:
   tasks:
     - export DEPLOY_PATH=/home/cco116437/public_html
+    - export NVM_DIR=$HOME/.nvm
+    - source $NVM_DIR/nvm.sh
+    - nvm use 18 || nvm install 18
     - cd /home/cco116437/repositories/guzman-corretaje
-    - /bin/bash npm install
-    - /bin/bash npm run build
-    - /bin/cp -r build/* $DEPLOY_PATH/
-    - echo "Deployment to $DEPLOY_PATH completed successfully."
-    
+    - npm ci
+    - REACT_APP_API_URL=https://api.corretajeguzman.cl CI=false npm run build
+    - cp -r build/* $DEPLOY_PATH/
+    - echo "✅ Deploy completado en $DEPLOY_PATH"

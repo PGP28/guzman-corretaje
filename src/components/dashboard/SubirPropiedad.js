@@ -102,7 +102,6 @@ const SubirPropiedad = () => {
   const [exito, setExito]                     = useState(false);
   const [error, setError]                     = useState(null);
   const [seccion, setSeccion]                 = useState('informacion');
-  const [formRef, setFormRef]                 = useState(null);
 
   // Sensores dnd-kit: mouse + táctil
   const sensors = useSensors(
@@ -159,13 +158,36 @@ const SubirPropiedad = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const validarCampos = (formEl) => {
+    const camposRequeridos = [
+      { name: 'categoria',   label: 'Categoría',  seccion: 'informacion' },
+      { name: 'nombre',      label: 'Nombre',      seccion: 'informacion' },
+      { name: 'descripcion', label: 'Descripción', seccion: 'informacion' },
+      { name: 'ubicacion',   label: 'Dirección',  seccion: 'ubicacion' },
+      { name: 'region',      label: 'Región',      seccion: 'ubicacion' },
+      { name: 'ciudad',      label: 'Ciudad',      seccion: 'ubicacion' },
+      { name: 'comuna',      label: 'Comuna',      seccion: 'ubicacion' },
+      { name: 'precio',      label: 'Precio',      seccion: 'precio' },
+    ];
+    for (const campo of camposRequeridos) {
+      const el = formEl.elements[campo.name];
+      if (!el || !el.value || el.value.trim() === '') {
+        setError(`El campo "${campo.label}" es obligatorio.`);
+        setSeccion(campo.seccion);
+        return false;
+      }
+    }
     if (imagenesOrdenadas.length === 0) {
       setError('Debes subir al menos una imagen.');
       setSeccion('imagenes');
-      return;
+      return false;
     }
+    return true;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!validarCampos(e.target)) return;
     setIsLoading(true);
     setError(null);
     const formData = new FormData(e.target);
@@ -216,7 +238,7 @@ const SubirPropiedad = () => {
       {exito && <div className="sd-exito"><FaCheckCircle /> Propiedad publicada exitosamente.</div>}
       {error && <div className="sd-error">⚠️ {error}</div>}
 
-      <Form onSubmit={handleSubmit} ref={el => setFormRef(el)}>
+      <Form onSubmit={handleSubmit} noValidate>
 
         {/* ── INFORMACIÓN ── */}
         <div className={`sd-card ${seccion === 'informacion' ? 'active' : ''}`}>

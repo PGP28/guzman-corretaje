@@ -252,9 +252,16 @@
   .detalles-precio { font-size: 14px; padding: 6px 12px; }
   .detalles-contacto-box { position: static; margin-top: 20px; padding: 18px 14px; }
   .detalles-seccion-titulo { font-size: 15px; }
-  .detalles-item { padding: 8px 10px; }
-  .detalles-item-icon { font-size: 17px; }
-  .detalles-item-valor { font-size: 13px; }
+  .detalles-item {
+    padding: 10px 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .detalles-item-icon { font-size: 20px; }
+  .detalles-item-label { font-size: 10px; }
+  .detalles-item-valor { font-size: 16px; font-weight: 700; }
+  .detalles-grid { gap: 8px; }
   .detalles-img-principal-wrapper { height: 240px; }
 
   /* En móvil: miniaturas debajo en fila horizontal con scroll */

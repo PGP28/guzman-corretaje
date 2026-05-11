@@ -71,6 +71,9 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
   const [exito, setExito]                     = useState('');
   const [error, setError]                     = useState('');
   const [confirmDelete, setConfirmDelete]     = useState(null);
+  const [ubicaciones, setUbicaciones]         = useState({});
+  const [cities, setCities]                   = useState([]);
+  const [communes, setCommunes]               = useState([]);
 
   const esCorrector = rol === 'corredor';
 
@@ -100,6 +103,40 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
   };
 
   useEffect(() => { cargarPropiedades(); }, []);
+
+  useEffect(() => {
+    fetch(`${API_URL}/ubicaciones`)
+      .then(r => r.json())
+      .then(data => setUbicaciones(data))
+      .catch(() => {});
+  }, []);
+
+  // Al abrir edición, inicializar cities y communes según la propiedad
+  useEffect(() => {
+    if (seleccionada?.region && ubicaciones[seleccionada.region]) {
+      setCities(Object.keys(ubicaciones[seleccionada.region]));
+      if (seleccionada.ciudad && ubicaciones[seleccionada.region][seleccionada.ciudad]) {
+        setCommunes(ubicaciones[seleccionada.region][seleccionada.ciudad]);
+      }
+    }
+  }, [seleccionada?.id, ubicaciones]);
+
+  const handleRegionChange = (e) => {
+    const region = e.target.value;
+    setSeleccionada(prev => ({ ...prev, region, ciudad: '', comuna: '' }));
+    setCities(Object.keys(ubicaciones[region] || {}));
+    setCommunes([]);
+  };
+
+  const handleCityChange = (e) => {
+    const ciudad = e.target.value;
+    setSeleccionada(prev => ({ ...prev, ciudad, comuna: '' }));
+    setCommunes(ubicaciones[seleccionada.region]?.[ciudad] || []);
+  };
+
+  const handleComunaChange = (e) => {
+    setSeleccionada(prev => ({ ...prev, comuna: e.target.value }));
+  };
 
   const cargarPropiedades = () => {
     setCargando(true);
@@ -423,30 +460,39 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
                 </div>
                 <div className="sd-card-body">
                   <Row>
-                    <Col md={6}>
+                    <Col md={12}>
                       <div className="sd-campo">
                         <label className="sd-label">Dirección</label>
-                        <Form.Control name="ubicacion" value={seleccionada.ubicacion || ''} onChange={handleChange} className="sd-input" />
-                      </div>
-                    </Col>
-                    <Col md={6}>
-                      <div className="sd-campo">
-                        <label className="sd-label">Región</label>
-                        <Form.Control name="region" value={seleccionada.region || ''} onChange={handleChange} className="sd-input" />
+                        <Form.Control name="ubicacion" value={seleccionada.ubicacion || ''} onChange={handleChange} className="sd-input" placeholder="Ej: Av. Cristóbal Colón 3206" />
                       </div>
                     </Col>
                   </Row>
                   <Row>
-                    <Col md={6}>
+                    <Col md={4}>
                       <div className="sd-campo">
-                        <label className="sd-label">Ciudad</label>
-                        <Form.Control name="ciudad" value={seleccionada.ciudad || ''} onChange={handleChange} className="sd-input" />
+                        <label className="sd-label">Región</label>
+                        <Form.Select name="region" value={seleccionada.region || ''} onChange={handleRegionChange} className="sd-input">
+                          <option value="">Seleccione región</option>
+                          {Object.keys(ubicaciones).map(r => <option key={r} value={r}>{r}</option>)}
+                        </Form.Select>
                       </div>
                     </Col>
-                    <Col md={6}>
+                    <Col md={4}>
+                      <div className="sd-campo">
+                        <label className="sd-label">Ciudad</label>
+                        <Form.Select name="ciudad" value={seleccionada.ciudad || ''} onChange={handleCityChange} className="sd-input" disabled={!seleccionada.region}>
+                          <option value="">Seleccione ciudad</option>
+                          {cities.map(c => <option key={c} value={c}>{c}</option>)}
+                        </Form.Select>
+                      </div>
+                    </Col>
+                    <Col md={4}>
                       <div className="sd-campo">
                         <label className="sd-label">Comuna</label>
-                        <Form.Control name="comuna" value={seleccionada.comuna || ''} onChange={handleChange} className="sd-input" />
+                        <Form.Select name="comuna" value={seleccionada.comuna || ''} onChange={handleComunaChange} className="sd-input" disabled={!seleccionada.ciudad}>
+                          <option value="">Seleccione comuna</option>
+                          {communes.map(c => <option key={c} value={c}>{c}</option>)}
+                        </Form.Select>
                       </div>
                     </Col>
                   </Row>

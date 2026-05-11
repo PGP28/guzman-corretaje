@@ -256,8 +256,10 @@ const SubirPropiedad = () => {
                 <option value="">Seleccione una categoría</option>
                 <option>Arriendo de Departamentos</option>
                 <option>Arriendo de Casas</option>
+                <option>Arriendo de Oficinas</option>
                 <option>Venta de Casas</option>
                 <option>Venta de Terrenos</option>
+                <option>Venta de Oficinas</option>
               </Form.Select>
             </div>
             <div className="sd-campo">

@@ -12,6 +12,7 @@ import Arriendo from './pages/Arriendo';
 import EnVenta from './pages/EnVenta';
 import Terrenos from './pages/Terrenos';
 import PageNotFound from './pages/PageNotFound';
+import Oficinas from './pages/Oficinas';
 import DetallesPropiedades from './components/DetallesPropiedades';
 import Login from './pages/Login';
 import DashboardLayout from './components/dashboard/DashboardLayout';
@@ -35,6 +36,7 @@ const AppContent = ({ user, onLoginCorredor, onLogout, cliente, onLoginCliente, 
           <Route path="/Arriendo" element={<Arriendo />} />
           <Route path="/EnVenta" element={<EnVenta />} />
           <Route path="/Terrenos" element={<Terrenos />} />
+          <Route path="/Oficinas" element={<Oficinas />} />
           <Route path="/QuieroVender" element={<QuieroVender />} />
           <Route path="/Contactanos" element={<Contactanos />} />
           <Route path="/Construccion" element={<Construccion />} />

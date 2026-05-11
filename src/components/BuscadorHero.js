@@ -45,13 +45,21 @@ const BuscadorHero = () => {
 
   const handleBuscar = () => {
     const params = new URLSearchParams();
-    if (filtros.operacion) params.set('operacion', filtros.operacion);
     if (filtros.tipoPropiedad) params.set('tipo', filtros.tipoPropiedad);
     if (filtros.region) params.set('region', filtros.region);
     if (filtros.comuna) params.set('comuna', filtros.comuna);
 
-    // Redirigir según operación
-    const destino = filtros.operacion === 'Arrendar' ? '/Arriendo' : '/EnVenta';
+    // Redirigir según operación y tipo
+    let destino;
+    if (filtros.tipoPropiedad === 'Terreno') {
+      destino = '/Terrenos';
+    } else if (filtros.tipoPropiedad === 'Oficina') {
+      destino = '/Oficinas';
+    } else if (filtros.operacion === 'Arrendar') {
+      destino = '/Arriendo';
+    } else {
+      destino = '/EnVenta';
+    }
     navigate(`${destino}?${params.toString()}`);
   };
 

@@ -27,6 +27,7 @@ const NavigationBar = () => {
     { href: '/Arriendo',     label: 'Arriendos' },
     { href: '/EnVenta',      label: 'En venta' },
     { href: '/Terrenos',     label: 'Terrenos' },
+    { href: '/Oficinas',     label: 'Oficinas' },
     { href: '/Construccion', label: 'Construcción' },
     { href: '/QuieroVender', label: '¡Quiero vender!' },
     { href: '/Contactanos',  label: 'Contáctanos' },

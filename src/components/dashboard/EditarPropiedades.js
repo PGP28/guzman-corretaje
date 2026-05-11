@@ -422,8 +422,10 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
                         <Form.Select name="categoria" value={seleccionada.categoria || ''} onChange={handleChange} className="sd-input">
                           <option>Arriendo de Departamentos</option>
                           <option>Arriendo de Casas</option>
+                          <option>Arriendo de Oficinas</option>
                           <option>Venta de Casas</option>
                           <option>Venta de Terrenos</option>
+                          <option>Venta de Oficinas</option>
                         </Form.Select>
                       </div>
                     </Col>

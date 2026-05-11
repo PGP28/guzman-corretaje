@@ -106,6 +106,12 @@ const Home = () => {
           <div className="spinner-border" style={{ color: '#5529aa' }} role="status" />
           <p className="mt-3 text-muted">Cargando propiedades...</p>
         </div>
+      ) : propiedadesFiltradas.length === 0 ? (
+        <div className="text-center py-5">
+          <p style={{ fontSize: '3rem' }}>🏠</p>
+          <h5 className="text-muted">Próximamente nuevas propiedades</h5>
+          <p className="text-muted">Estamos preparando las mejores alternativas para ti.</p>
+        </div>
       ) : (
         <TarjetasPropiedades propiedades={propiedadesFiltradas} />
       )}

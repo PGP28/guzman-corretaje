@@ -136,10 +136,11 @@
   .sd-btn-prev,
   .sd-btn-next,
   .sd-btn-publish {
-    flex: 1;
-    justify-content: center;
+    width: auto;
+    min-width: 120px;
     max-width: 160px;
-    padding: 10px 12px;
+    justify-content: center;
+    padding: 10px 16px;
     font-size: 13px;
   }
 }

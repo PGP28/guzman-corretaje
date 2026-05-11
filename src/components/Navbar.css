@@ -180,5 +180,7 @@ body {
   padding-top: 62px;
 }
 
-/* Home anula el padding-top con margin-top negativo en .home-container */
-/* Las demás páginas heredan el padding-top correctamente */
+/* Dashboard anula el padding-top del body */
+body:has(.dashboard-layout) {
+  padding-top: 0;
+}

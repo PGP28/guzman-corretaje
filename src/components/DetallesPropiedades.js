@@ -168,85 +168,103 @@ function DetallesPropiedades() {
             <span className="detalles-categoria"> · {propiedad.categoria}</span>
           </h4>
 
-          <Row className="detalles-grid mt-3">
+          <Row className="detalles-grid mt-3 g-2">
             {detalles.dormitorios != null && (
-              <Col xs={6} md={3} className="detalles-item">
-                <span className="detalles-item-icon">🛏</span>
-                <div>
-                  <div className="detalles-item-label">Dormitorios</div>
-                  <div className="detalles-item-valor">{detalles.dormitorios}</div>
+              <Col xs={6} md={3}>
+                <div className="detalles-item">
+                  <span className="detalles-item-icon">🛏</span>
+                  <div>
+                    <div className="detalles-item-label">Dormitorios</div>
+                    <div className="detalles-item-valor">{detalles.dormitorios}</div>
+                  </div>
                 </div>
               </Col>
             )}
             {detalles.banos != null && (
-              <Col xs={6} md={3} className="detalles-item">
-                <span className="detalles-item-icon">🚿</span>
-                <div>
-                  <div className="detalles-item-label">Baños</div>
-                  <div className="detalles-item-valor">{detalles.banos}</div>
+              <Col xs={6} md={3}>
+                <div className="detalles-item">
+                  <span className="detalles-item-icon">🚿</span>
+                  <div>
+                    <div className="detalles-item-label">Baños</div>
+                    <div className="detalles-item-valor">{detalles.banos}</div>
+                  </div>
                 </div>
               </Col>
             )}
             {detalles.metros_cuadrados != null && (
-              <Col xs={6} md={3} className="detalles-item">
-                <span className="detalles-item-icon">📐</span>
-                <div>
-                  <div className="detalles-item-label">Superficie útil</div>
-                  <div className="detalles-item-valor">{detalles.metros_cuadrados} m²</div>
+              <Col xs={6} md={3}>
+                <div className="detalles-item">
+                  <span className="detalles-item-icon">📐</span>
+                  <div>
+                    <div className="detalles-item-label">Superficie útil</div>
+                    <div className="detalles-item-valor">{detalles.metros_cuadrados} m²</div>
+                  </div>
                 </div>
               </Col>
             )}
             {detalles.superficie_total != null && (
-              <Col xs={6} md={3} className="detalles-item">
-                <span className="detalles-item-icon">📏</span>
-                <div>
-                  <div className="detalles-item-label">Superficie total</div>
-                  <div className="detalles-item-valor">{detalles.superficie_total} m²</div>
+              <Col xs={6} md={3}>
+                <div className="detalles-item">
+                  <span className="detalles-item-icon">📏</span>
+                  <div>
+                    <div className="detalles-item-label">Superficie total</div>
+                    <div className="detalles-item-valor">{detalles.superficie_total} m²</div>
+                  </div>
                 </div>
               </Col>
             )}
             {detalles.estacionamientos != null && (
-              <Col xs={6} md={3} className="detalles-item">
-                <span className="detalles-item-icon">🚗</span>
-                <div>
-                  <div className="detalles-item-label">Estacionamientos</div>
-                  <div className="detalles-item-valor">{detalles.estacionamientos}</div>
+              <Col xs={6} md={3}>
+                <div className="detalles-item">
+                  <span className="detalles-item-icon">🚗</span>
+                  <div>
+                    <div className="detalles-item-label">Estacionamientos</div>
+                    <div className="detalles-item-valor">{detalles.estacionamientos}</div>
+                  </div>
                 </div>
               </Col>
             )}
             {detalles.bodega != null && detalles.bodega > 0 && (
-              <Col xs={6} md={3} className="detalles-item">
-                <span className="detalles-item-icon">📦</span>
-                <div>
-                  <div className="detalles-item-label">Bodega</div>
-                  <div className="detalles-item-valor">{detalles.bodega}</div>
+              <Col xs={6} md={3}>
+                <div className="detalles-item">
+                  <span className="detalles-item-icon">📦</span>
+                  <div>
+                    <div className="detalles-item-label">Bodega</div>
+                    <div className="detalles-item-valor">{detalles.bodega}</div>
+                  </div>
                 </div>
               </Col>
             )}
             {detalles.gastos_comunes && (
-              <Col xs={6} md={3} className="detalles-item">
-                <span className="detalles-item-icon">💰</span>
-                <div>
-                  <div className="detalles-item-label">Gastos comunes</div>
-                  <div className="detalles-item-valor">{detalles.gastos_comunes}</div>
+              <Col xs={6} md={3}>
+                <div className="detalles-item">
+                  <span className="detalles-item-icon">💰</span>
+                  <div>
+                    <div className="detalles-item-label">Gastos comunes</div>
+                    <div className="detalles-item-valor">{detalles.gastos_comunes}</div>
+                  </div>
                 </div>
               </Col>
             )}
             {propiedad.constructora && (
-              <Col xs={6} md={3} className="detalles-item">
-                <span className="detalles-item-icon">🏗</span>
-                <div>
-                  <div className="detalles-item-label">Constructora</div>
-                  <div className="detalles-item-valor">{propiedad.constructora}</div>
+              <Col xs={6} md={3}>
+                <div className="detalles-item">
+                  <span className="detalles-item-icon">🏗</span>
+                  <div>
+                    <div className="detalles-item-label">Constructora</div>
+                    <div className="detalles-item-valor">{propiedad.constructora}</div>
+                  </div>
                 </div>
               </Col>
             )}
             {propiedad.fecha_entrega && (
-              <Col xs={6} md={3} className="detalles-item">
-                <span className="detalles-item-icon">📅</span>
-                <div>
-                  <div className="detalles-item-label">Fecha entrega</div>
-                  <div className="detalles-item-valor">{propiedad.fecha_entrega}</div>
+              <Col xs={6} md={3}>
+                <div className="detalles-item">
+                  <span className="detalles-item-icon">📅</span>
+                  <div>
+                    <div className="detalles-item-label">Fecha entrega</div>
+                    <div className="detalles-item-valor">{propiedad.fecha_entrega}</div>
+                  </div>
                 </div>
               </Col>
             )}

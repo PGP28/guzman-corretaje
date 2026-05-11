@@ -320,6 +320,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
+  box-shadow: 0 2px 8px rgba(63,27,134,0.08);
 }
 
 .dash-menu-btn {
@@ -390,4 +391,15 @@
   .dash-collapse-btn { display: none; }
 
   .dash-content { padding: 20px 16px; }
+
+  /* Ocultar navbar global en dashboard mobile */
+  .dashboard-layout ~ * .navbar-guzman,
+  body:has(.dashboard-layout) .navbar-guzman {
+    display: none;
+  }
+
+  /* Compensar sin navbar global */
+  .dashboard-layout {
+    padding-top: 0;
+  }
 }

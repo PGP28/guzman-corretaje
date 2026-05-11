@@ -198,8 +198,6 @@
 @media (max-width: 575px) {
   .footer-main { padding: 0; }
 
-  /* Acceso rápido (xs=6) y Síguenos (xs=6) van en la misma fila */
-  /* No centrar — quedan alineados a la izquierda cada uno en su mitad */
   .footer-titulo {
     font-size: 12px;
     margin-bottom: 8px;
@@ -209,12 +207,15 @@
   .footer-lista { gap: 6px; }
   .footer-link { font-size: 12px; }
 
-  /* Contacto ocupa fila completa — alineado a la izquierda */
+  /* Síguenos centrado en mobile */
+  .footer-social {
+    gap: 8px;
+    justify-content: center;
+  }
+  .footer-social-link { width: 32px; height: 32px; font-size: 15px; }
+
   .footer-contacto-item { gap: 6px; }
   .footer-icon { font-size: 13px; }
-
-  .footer-social { gap: 8px; }
-  .footer-social-link { width: 32px; height: 32px; font-size: 15px; }
 
   .footer-copyright { padding: 12px 0; }
   .footer-copyright-text {

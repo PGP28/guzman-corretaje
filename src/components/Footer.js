@@ -17,7 +17,7 @@ const Footer = () => (
           </Col>
 
           {/* Acceso Rápido — dividido en 2 subcolumnas */}
-          <Col xs={6} md={3} className="mb-3 mb-md-0">
+          <Col xs={12} md={3} className="mb-3 mb-md-0">
             <h6 className="footer-titulo">ACCESO RÁPIDO</h6>
             <div className="footer-acceso-grid">
               {/* Columna izquierda */}
@@ -47,8 +47,8 @@ const Footer = () => (
             </div>
           </Col>
 
-          {/* Síguenos — en móvil va junto a Acceso Rápido en la misma fila */}
-          <Col xs={6} md={3} className="mb-3 mb-md-0">
+          {/* Síguenos — en móvil va debajo de Acceso Rápido */}
+          <Col xs={12} md={3} className="mb-3 mb-md-0">
             <h6 className="footer-titulo">SÍGUENOS</h6>
             <div className="footer-social">
               <a href="https://www.tiktok.com/@corretaje_guzman" target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="TikTok">

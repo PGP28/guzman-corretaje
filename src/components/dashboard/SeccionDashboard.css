@@ -127,8 +127,21 @@
 @media (max-width: 767px) {
   .sd-card-header { padding: 18px 16px; }
   .sd-card-body { padding: 18px 16px; gap: 14px; }
-  .sd-card-footer { padding: 14px 16px; }
+  .sd-card-footer {
+    padding: 14px 16px;
+    justify-content: center;
+    gap: 8px;
+  }
   .sd-steps { display: none; }
+  .sd-btn-prev,
+  .sd-btn-next,
+  .sd-btn-publish {
+    flex: 1;
+    justify-content: center;
+    max-width: 160px;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
 }
 
 /* ============================================

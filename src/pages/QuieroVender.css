@@ -5,7 +5,7 @@
   background-image: url('../assets/images/ENCABEZADO-21.png');
   background-size: cover;
   background-position: center;
-  margin-top: -62px;
+  margin-top: 0;
   padding-top: 0;
 }
 .quiero-vender-hero-overlay { background-color: rgba(85,41,170,0.85); padding: 48px 32px; padding-top: calc(62px + 24px); }

@@ -107,7 +107,7 @@ const Home = () => {
           <p className="mt-3 text-muted">Cargando propiedades...</p>
         </div>
       ) : propiedadesFiltradas.length === 0 ? (
-        <div className="text-center py-5">
+        <div className="text-center py-5" style={{ maxWidth: 400, margin: '0 auto', padding: '40px 20px' }}>
           <p style={{ fontSize: '3rem' }}>🏠</p>
           <h5 className="text-muted">Próximamente nuevas propiedades</h5>
           <p className="text-muted">Estamos preparando las mejores alternativas para ti.</p>

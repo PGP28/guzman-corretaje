@@ -277,4 +277,14 @@
     aspect-ratio: 1;
   }
   .detalles-thumbs-grid::-webkit-scrollbar { height: 3px; width: 0; }
+
+  .detalles-mapa-wrapper iframe { height: 250px; }
+}
+
+/* Mapa de ubicación */
+.detalles-mapa-wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(63,27,134,0.1);
+  border: 1px solid #ede8fa;
 }

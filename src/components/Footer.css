@@ -210,7 +210,7 @@
   /* Síguenos centrado en mobile */
   .footer-social {
     gap: 8px;
-    justify-content: center;
+    justify-content: flex-start;
   }
   .footer-social-link { width: 32px; height: 32px; font-size: 15px; }
 

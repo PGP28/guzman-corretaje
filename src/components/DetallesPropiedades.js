@@ -170,7 +170,7 @@ function DetallesPropiedades() {
 
           <Row className="detalles-grid mt-3 g-2">
             {detalles.dormitorios != null && (
-              <Col xs={6} md={3}>
+              <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">🛏</span>
                   <div>
@@ -181,7 +181,7 @@ function DetallesPropiedades() {
               </Col>
             )}
             {detalles.banos != null && (
-              <Col xs={6} md={3}>
+              <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">🚿</span>
                   <div>
@@ -192,7 +192,7 @@ function DetallesPropiedades() {
               </Col>
             )}
             {detalles.metros_cuadrados != null && (
-              <Col xs={6} md={3}>
+              <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">📐</span>
                   <div>
@@ -203,7 +203,7 @@ function DetallesPropiedades() {
               </Col>
             )}
             {detalles.superficie_total != null && (
-              <Col xs={6} md={3}>
+              <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">📏</span>
                   <div>
@@ -214,7 +214,7 @@ function DetallesPropiedades() {
               </Col>
             )}
             {detalles.estacionamientos != null && (
-              <Col xs={6} md={3}>
+              <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">🚗</span>
                   <div>
@@ -225,7 +225,7 @@ function DetallesPropiedades() {
               </Col>
             )}
             {detalles.bodega != null && detalles.bodega > 0 && (
-              <Col xs={6} md={3}>
+              <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">📦</span>
                   <div>
@@ -236,7 +236,7 @@ function DetallesPropiedades() {
               </Col>
             )}
             {detalles.gastos_comunes && (
-              <Col xs={6} md={3}>
+              <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">💰</span>
                   <div>
@@ -247,7 +247,7 @@ function DetallesPropiedades() {
               </Col>
             )}
             {propiedad.constructora && (
-              <Col xs={6} md={3}>
+              <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">🏗</span>
                   <div>
@@ -258,7 +258,7 @@ function DetallesPropiedades() {
               </Col>
             )}
             {propiedad.fecha_entrega && (
-              <Col xs={6} md={3}>
+              <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">📅</span>
                   <div>

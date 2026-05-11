@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Form, Image } from 'react-bootstrap';
-import { FaSearch, FaEdit, FaTrash, FaSave, FaArrowLeft, FaStar } from 'react-icons/fa';
+import { FaSearch, FaEdit, FaTrash, FaSave, FaArrowLeft, FaStar, FaUpload } from 'react-icons/fa';
 import { useSearchParams } from 'react-router-dom';
 import {
   DndContext, closestCenter, PointerSensor, useSensor, useSensors
@@ -163,6 +163,11 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
     ['dormitorios','banos','metros_cuadrados','gastos_comunes','estacionamientos','bodega','descripcion','superficie_util','superficie_total']
       .forEach(d => { if (seleccionada.detalles?.[d] !== undefined) formData.append(d, seleccionada.detalles[d]); });
 
+    // Agregar nuevas imágenes si las hay
+    if (seleccionada._nuevasImagenes?.length > 0) {
+      seleccionada._nuevasImagenes.forEach(img => formData.append('imagenes', img.file));
+    }
+
     // Guardar orden de imágenes
     const idsConId = seleccionada.imagenes?.filter(img => img?.id).map(img => img.id);
     const guardarOrden = idsConId?.length > 0
@@ -293,18 +298,19 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
           {!esCorrector && (
             <>
               {/* Imágenes actuales */}
-              {seleccionada.imagenes?.length > 0 && (
-                <div className="sd-card active" style={{ marginTop: 16 }}>
-                  <div className="sd-card-header">
-                    <span className="sd-card-icon">🖼️</span>
-                    <div>
-                      <h3 className="sd-card-titulo">Imágenes actuales</h3>
-                      <p className="sd-card-subtitulo">
-                        {seleccionada.imagenes.length} fotos — arrastra para reordenar · ★ para portada · ✕ para eliminar
-                      </p>
-                    </div>
+              <div className="sd-card active" style={{ marginTop: 16 }}>
+                <div className="sd-card-header">
+                  <span className="sd-card-icon">🖼️</span>
+                  <div>
+                    <h3 className="sd-card-titulo">Imágenes</h3>
+                    <p className="sd-card-subtitulo">
+                      {seleccionada.imagenes?.length > 0
+                        ? `${seleccionada.imagenes.length} fotos — arrastra para reordenar · ★ para portada · ✕ para eliminar`
+                        : 'Sin imágenes — agrega fotos a continuación'}
+                    </p>
                   </div>
-                  <div className="sd-card-body">
+                </div>
+                <div className="sd-card-body">
                     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                       <SortableContext
                         items={seleccionada.imagenes.map((img, i) => img?.id?.toString() || i.toString())}
@@ -323,9 +329,41 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
                         </div>
                       </SortableContext>
                     </DndContext>
-                  </div>
+
+                    {/* Agregar nuevas imágenes */}
+                    <div style={{ marginTop: 16 }}>
+                      <label className="sd-label">Agregar más imágenes</label>
+                      <label className="sd-upload-zone" style={{ marginTop: 8 }}>
+                        <FaUpload className="sd-upload-icon" />
+                        <span className="sd-upload-text">Haz click para agregar imágenes</span>
+                        <span className="sd-upload-hint">JPG, PNG, WEBP — múltiples archivos</span>
+                        <input
+                          type="file" multiple accept="image/*"
+                          style={{ display: 'none' }}
+                          onChange={e => {
+                            const files = Array.from(e.target.files);
+                            const nuevas = files.map(f => ({ file: f, name: f.name, url: URL.createObjectURL(f), isNew: true }));
+                            setSeleccionada(prev => ({ ...prev, _nuevasImagenes: [...(prev._nuevasImagenes || []), ...nuevas] }));
+                            e.target.value = '';
+                          }}
+                        />
+                      </label>
+                      {seleccionada._nuevasImagenes?.length > 0 && (
+                        <div className="ep-imagenes-grid" style={{ marginTop: 12 }}>
+                          {seleccionada._nuevasImagenes.map((img, idx) => (
+                            <div key={idx} className="ep-imagen-item" style={{ border: '2px dashed #8a60da' }}>
+                              <img src={img.url} alt={img.name} className="ep-imagen-thumb" />
+                              <button type="button" className="ep-imagen-del"
+                                onClick={() => setSeleccionada(prev => ({ ...prev, _nuevasImagenes: prev._nuevasImagenes.filter((_, i) => i !== idx) }))}
+                              >✕</button>
+                              <span className="ep-imagen-num" style={{ background: 'rgba(85,41,170,0.7)' }}>NEW</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                 </div>
-              )}
+              </div>
 
               {/* Información */}
               <div className="sd-card active" style={{ marginTop: 16 }}>

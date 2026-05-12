@@ -59,7 +59,11 @@ const AppContent = ({ user, onLoginCorredor, onLogout, cliente, onLoginCliente, 
           <Route path="/dashboard/*" element={user ? <DashboardLayout user={user} onLogout={onLogout} /> : <Navigate to="/login" replace />} />
 
           {/* Portal cliente */}
-          <Route path="/cliente/*" element={cliente ? <ClienteLayout user={cliente} onLogout={onClienteLogout} /> : <Navigate to="/login" replace />} />
+          <Route path="/cliente/*" element={
+            cliente
+              ? <ClienteLayout user={cliente} onLogout={onClienteLogout} />
+              : <Navigate to={`/login?redirect=${encodeURIComponent(location.pathname)}`} replace />
+          } />
 
           <Route path="*" element={<PageNotFound />} />
         </Routes>

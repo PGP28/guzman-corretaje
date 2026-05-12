@@ -68,9 +68,7 @@ const ClienteExplorar = () => {
       </div>
 
       {cargando ? (
-        <div className="text-center py-5">
-          <div className="spinner-border" style={{ color: '#0f6e56' }} />
-        </div>
+        <div className="cp-loader"><div className="cp-loader-spinner" /></div>
       ) : filtered.length === 0 ? (
         <div className="cp-empty">
           <span>🔍</span>
@@ -90,7 +88,10 @@ const ClienteExplorar = () => {
                 <h4 className="cp-prop-nombre">{p.nombre}</h4>
                 <p className="cp-prop-ubicacion">📍 {p.ubicacion}</p>
                 <p className="cp-prop-precio">
-                  {p.unidad_medida === 'UF' ? `UF ${p.precio}` : `$ ${Number(p.precio).toLocaleString('es-CL')}`}
+                  {p.unidad_medida === 'UF'
+                    ? `UF ${p.precio}`
+                    : `$ ${parseFloat(String(p.precio).replace(/[$\s.]/g, '').replace(',', '.')).toLocaleString('es-CL')}`
+                  }
                 </p>
               </div>
             </div>

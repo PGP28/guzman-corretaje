@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { FaArrowLeft, FaUser, FaLock } from 'react-icons/fa';
 import logoNav from '../assets/images/LOGO_PNG-17_Modified.png';
 import "./Login.css";
@@ -15,6 +15,8 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
   const [tab, setTab] = useState('cliente'); // 'cliente' | 'corredor'
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const redirectUrl = new URLSearchParams(location.search).get('redirect') || '/cliente';
 
   const handleClienteSuccess = (credentialResponse) => {
     try {
@@ -29,7 +31,7 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
         picture: decoded.picture,
       }));
       onLoginCliente(decoded);
-      navigate('/cliente');
+      navigate(redirectUrl);
     } catch {
       setError("Error al procesar las credenciales.");
     }

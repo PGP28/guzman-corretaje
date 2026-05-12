@@ -9,6 +9,7 @@ import './ClientePages.css';
 const ClienteInicio = ({ user }) => {
   const navigate = useNavigate();
   const [propiedades, setPropiedades] = useState([]);
+  const [cargando, setCargando] = useState(true);
 
   const reservas = getReservasCliente(user?.email);
   const mensajes = JSON.parse(localStorage.getItem(`guzman_chat_${user?.email}`) || '[]');
@@ -18,7 +19,8 @@ const ClienteInicio = ({ user }) => {
   useEffect(() => {
     axios.get(`${API_BASE_URL}/api/properties`)
       .then(r => setPropiedades(r.data.filter(p => (p.estado || 'disponible') === 'disponible').slice(0, 6)))
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setCargando(false));
   }, []);
 
   return (
@@ -93,28 +95,32 @@ const ClienteInicio = ({ user }) => {
             <FaSearch className="me-2" /> Explorar todas
           </button>
         </div>
-        <div className="cp-props-grid">
-          {propiedades.slice(0, 3).map(p => (
-            <div key={p.id} className="cp-prop-card" onClick={() => navigate(`/cliente/propiedad/${p.id}`, { state: { propiedad: p } })}>
-              <img
-                src={p.imagenes?.[0]?.url || p.imagenes?.[0] || 'https://via.placeholder.com/300x160?text=Sin+imagen'}
-                alt={p.nombre}
-                className="cp-prop-img"
-              />
-              <div className="cp-prop-body">
-                <span className="cp-prop-cat">{p.categoria}</span>
-                <h4 className="cp-prop-nombre">{p.nombre}</h4>
-                <p className="cp-prop-ubicacion">📍 {p.ubicacion}</p>
-                <p className="cp-prop-precio">
-                  {p.unidad_medida === 'UF'
-                    ? `UF ${p.precio}`
-                    : `$ ${parseFloat(String(p.precio).replace(/[$\s.]/g, '').replace(',', '.')).toLocaleString('es-CL')}`
-                  }
-                </p>
+        {cargando ? (
+          <div className="cp-loader"><div className="cp-loader-spinner" /></div>
+        ) : (
+          <div className="cp-props-grid">
+            {propiedades.slice(0, 3).map(p => (
+              <div key={p.id} className="cp-prop-card" onClick={() => navigate(`/cliente/propiedad/${p.id}`, { state: { propiedad: p } })}>
+                <img
+                  src={p.imagenes?.[0]?.url || p.imagenes?.[0] || 'https://via.placeholder.com/300x160?text=Sin+imagen'}
+                  alt={p.nombre}
+                  className="cp-prop-img"
+                />
+                <div className="cp-prop-body">
+                  <span className="cp-prop-cat">{p.categoria}</span>
+                  <h4 className="cp-prop-nombre">{p.nombre}</h4>
+                  <p className="cp-prop-ubicacion">📍 {p.ubicacion}</p>
+                  <p className="cp-prop-precio">
+                    {p.unidad_medida === 'UF'
+                      ? `UF ${p.precio}`
+                      : `$ ${parseFloat(String(p.precio).replace(/[$\s.]/g, '').replace(',', '.')).toLocaleString('es-CL')}`
+                    }
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

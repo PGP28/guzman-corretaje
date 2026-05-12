@@ -63,6 +63,8 @@
   border-radius: 10px; padding: 8px 16px;
   font-size: 13px; font-weight: 600; cursor: pointer;
   transition: background 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .cp-btn-buscar:hover { background: #3f1b86; }
 
@@ -620,3 +622,29 @@
   .cp-reserva-header { flex-direction: column; text-align: center; }
   .cp-reserva-header-img { width: 100%; height: 180px; }
 }
+
+/* ── OVERRIDES / FIXES ── */
+
+/* Fix: estado vacío centrado con botón correcto */
+.cp-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.cp-empty span { display: block; margin-bottom: 4px; }
+.cp-empty p { margin: 0; }
+.cp-empty .cp-btn-primary { margin-top: 8px; width: auto; padding: 10px 28px; }
+
+/* Fix: loader del portal cliente */
+.cp-loader {
+  display: flex; align-items: center; justify-content: center;
+  padding: 60px 0;
+}
+.cp-loader-spinner {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 3px solid #ede8fa;
+  border-top-color: #5529aa;
+  animation: cp-spin 0.8s linear infinite;
+}
+@keyframes cp-spin { to { transform: rotate(360deg); } }

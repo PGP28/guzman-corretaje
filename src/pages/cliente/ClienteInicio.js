@@ -106,7 +106,10 @@ const ClienteInicio = ({ user }) => {
                 <h4 className="cp-prop-nombre">{p.nombre}</h4>
                 <p className="cp-prop-ubicacion">📍 {p.ubicacion}</p>
                 <p className="cp-prop-precio">
-                  {p.unidad_medida === 'UF' ? `UF ${p.precio}` : `$ ${Number(p.precio).toLocaleString('es-CL')}`}
+                  {p.unidad_medida === 'UF'
+                    ? `UF ${p.precio}`
+                    : `$ ${parseFloat(String(p.precio).replace(/[$\s.]/g, '').replace(',', '.')).toLocaleString('es-CL')}`
+                  }
                 </p>
               </div>
             </div>

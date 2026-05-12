@@ -117,11 +117,12 @@
 }
 .cl-layout.collapsed .cl-main { margin-left: 68px; }
 
-/* Topbar */
+/* Topbar — solo visible en móvil */
 .cl-topbar {
   height: 56px; background: #fff;
   border-bottom: 1px solid #e8e8e8;
-  display: flex; align-items: center;
+  display: none;
+  align-items: center;
   padding: 0 24px; gap: 16px;
   position: sticky; top: 0; z-index: 100;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
@@ -146,4 +147,6 @@
   .cl-sidebar.mobile-open { transform: translateX(0); }
   .cl-main { margin-left: 0 !important; }
   .cl-menu-btn { display: flex; }
+  .cl-topbar { display: flex; }
+  .cl-content { padding-top: 72px; }
 }

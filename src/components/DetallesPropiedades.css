@@ -163,13 +163,14 @@
 .detalles-categoria { color: #8a60da; font-weight: 400; font-size: 14px; }
 
 .detalles-item {
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; gap: 8px;
   padding: 10px 12px; background-color: #faf8ff;
   border-radius: 8px; border: 1px solid #ede8fa;
-  height: 100%;
+  height: 100%; overflow: hidden;
 }
 .detalles-item-icon { font-size: 20px; flex-shrink: 0; }
-.detalles-item-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+.detalles-item-info { min-width: 0; flex: 1; }
+.detalles-item-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
 .detalles-item-valor { font-size: 15px; font-weight: 600; color: #222; }
 .detalles-descripcion { color: #444; font-size: 14px; line-height: 1.7; }
 

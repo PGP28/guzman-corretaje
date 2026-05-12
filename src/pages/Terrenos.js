@@ -17,6 +17,16 @@ function Terrenos() {
   const [cargando, setCargando] = useState(true);
   const propiedadesPorPagina = 6;
 
+  const aplicarFiltrosURL = (lista, search) => {
+    const params = new URLSearchParams(search);
+    let resultado = [...lista];
+    const region = params.get('region');
+    const comuna = params.get('comuna');
+    if (region) resultado = resultado.filter((p) => p.region === region);
+    if (comuna) resultado = resultado.filter((p) => p.comuna === comuna);
+    return resultado;
+  };
+
   useEffect(() => {
     setCargando(true);
     axios.get(`${API_BASE}/properties`)
@@ -27,17 +37,7 @@ function Terrenos() {
       })
       .catch(() => {})
       .finally(() => setCargando(false));
-  }, []);
-
-  const aplicarFiltrosURL = (lista, search) => {
-    const params = new URLSearchParams(search);
-    let resultado = [...lista];
-    const region = params.get('region');
-    const comuna = params.get('comuna');
-    if (region) resultado = resultado.filter((p) => p.region === region);
-    if (comuna) resultado = resultado.filter((p) => p.comuna === comuna);
-    return resultado;
-  };
+  }, [location.search]);
 
   const handleFiltrar = (filtros) => {
     let resultado = [...todasPropiedades];

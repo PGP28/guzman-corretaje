@@ -37,7 +37,7 @@ const getNavItems = (rol) => {
 };
 
 const DashboardLayout = ({ user: userProp, onLogout }) => {
-  const [collapsed, setCollapsed]   = useState(false);
+  const [collapsed, setCollapsed]   = useState(window.innerWidth < 992);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [user, setUser]             = useState(userProp);
   const [previewCorredor, setPreviewCorredor] = useState(false);

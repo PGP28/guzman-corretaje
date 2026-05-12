@@ -27,7 +27,7 @@ function EnVenta() {
       })
       .catch(() => {})
       .finally(() => setCargando(false));
-  }, []);
+  }, [location.search]);
 
   const aplicarFiltrosURL = (lista, search) => {
     const params = new URLSearchParams(search);
@@ -35,7 +35,7 @@ function EnVenta() {
     const tipo = params.get('tipo');
     const region = params.get('region');
     const comuna = params.get('comuna');
-    if (tipo) resultado = resultado.filter((p) => p.nombre?.toLowerCase().includes(tipo.toLowerCase()));
+    if (tipo) resultado = resultado.filter((p) => p.categoria?.toLowerCase().includes(tipo.toLowerCase()));
     if (region) resultado = resultado.filter((p) => p.region === region);
     if (comuna) resultado = resultado.filter((p) => p.comuna === comuna);
     return resultado;
@@ -43,7 +43,7 @@ function EnVenta() {
 
   const handleFiltrar = (filtros) => {
     let resultado = [...todasPropiedades];
-    if (filtros.tipoPropiedad) resultado = resultado.filter((p) => p.nombre?.toLowerCase().includes(filtros.tipoPropiedad.toLowerCase()));
+    if (filtros.tipoPropiedad) resultado = resultado.filter((p) => p.categoria?.toLowerCase().includes(filtros.tipoPropiedad.toLowerCase()));
     if (filtros.region) resultado = resultado.filter((p) => p.region === filtros.region);
     if (filtros.comuna) resultado = resultado.filter((p) => p.comuna === filtros.comuna);
     if (filtros.precioDesde) resultado = resultado.filter((p) => parseFloat(p.precio) >= parseFloat(filtros.precioDesde));

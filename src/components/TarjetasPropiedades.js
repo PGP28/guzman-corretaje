@@ -27,8 +27,11 @@ function PropiedadCard({ propiedad }) {
   const detalles = propiedad.detalles || propiedad.detalle || {};
 
   const formatPrecio = (precio, unidad) => {
+    if (!precio) return '';
     if (unidad === 'UF') return `UF ${precio}`;
-    const num = parseFloat(precio);
+    // Limpiar el precio: quitar $, puntos de miles y espacios antes de parsear
+    const limpio = String(precio).replace(/[$\s.]/g, '').replace(',', '.');
+    const num = parseFloat(limpio);
     if (isNaN(num)) return `$ ${precio}`;
     return `$ ${num.toLocaleString('es-CL')}`;
   };

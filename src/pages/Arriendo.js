@@ -17,6 +17,18 @@ function Arriendo() {
   const [cargando, setCargando] = useState(true);
   const propiedadesPorPagina = 6;
 
+  const aplicarFiltrosURL = (lista, search) => {
+    const params = new URLSearchParams(search);
+    let resultado = [...lista];
+    const tipo = params.get('tipo');
+    const region = params.get('region');
+    const comuna = params.get('comuna');
+    if (tipo) resultado = resultado.filter((p) => p.categoria?.toLowerCase().includes(tipo.toLowerCase()));
+    if (region) resultado = resultado.filter((p) => p.region === region);
+    if (comuna) resultado = resultado.filter((p) => p.comuna === comuna);
+    return resultado;
+  };
+
   useEffect(() => {
     setCargando(true);
     axios.get(`${API_BASE}/properties`)
@@ -27,23 +39,11 @@ function Arriendo() {
       })
       .catch(() => {})
       .finally(() => setCargando(false));
-  }, []);
-
-  const aplicarFiltrosURL = (lista, search) => {
-    const params = new URLSearchParams(search);
-    let resultado = [...lista];
-    const tipo = params.get('tipo');
-    const region = params.get('region');
-    const comuna = params.get('comuna');
-    if (tipo) resultado = resultado.filter((p) => p.nombre?.toLowerCase().includes(tipo.toLowerCase()));
-    if (region) resultado = resultado.filter((p) => p.region === region);
-    if (comuna) resultado = resultado.filter((p) => p.comuna === comuna);
-    return resultado;
-  };
+  }, [location.search]);
 
   const handleFiltrar = (filtros) => {
     let resultado = [...todasPropiedades];
-    if (filtros.tipoPropiedad) resultado = resultado.filter((p) => p.nombre?.toLowerCase().includes(filtros.tipoPropiedad.toLowerCase()));
+    if (filtros.tipoPropiedad) resultado = resultado.filter((p) => p.categoria?.toLowerCase().includes(filtros.tipoPropiedad.toLowerCase()));
     if (filtros.region) resultado = resultado.filter((p) => p.region === filtros.region);
     if (filtros.comuna) resultado = resultado.filter((p) => p.comuna === filtros.comuna);
     if (filtros.precioDesde) resultado = resultado.filter((p) => parseFloat(p.precio) >= parseFloat(filtros.precioDesde));
@@ -60,12 +60,9 @@ function Arriendo() {
   return (
     <Container fluid className="px-4 mt-3">
       <Row>
-        {/* Buscador lateral */}
         <Col xs={12} md={4} lg={3} className="mb-4">
           <BuscadorLateral onFiltrar={handleFiltrar} />
         </Col>
-
-        {/* Listado */}
         <Col xs={12} md={8} lg={9}>
           <Row className="mb-3 align-items-center">
             <Col>
@@ -73,7 +70,6 @@ function Arriendo() {
               <p className="text-muted mb-0">{propiedadesFiltradas.length} propiedades encontradas</p>
             </Col>
           </Row>
-
           {cargando ? (
             <div className="text-center py-5">
               <div className="spinner-border" style={{ color: '#5529aa' }} role="status" />
@@ -86,7 +82,6 @@ function Arriendo() {
               <p className="text-muted">No hay propiedades disponibles con los filtros seleccionados.</p>
             </div>
           )}
-
           {totalPaginas > 1 && (
             <Row className="mt-3">
               <Col className="d-flex justify-content-between align-items-center">

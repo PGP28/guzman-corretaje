@@ -367,6 +367,7 @@
   .dashboard-layout.collapsed .dash-sidebar { width: 60px; min-width: 60px; }
   .dash-main { margin-left: 200px; }
   .dashboard-layout.collapsed .dash-main { margin-left: 60px; }
+  .dash-content { padding: 24px 16px; }
 }
 
 @media (max-width: 767px) {

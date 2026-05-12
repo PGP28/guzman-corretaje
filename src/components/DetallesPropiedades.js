@@ -40,8 +40,11 @@ function DetallesPropiedades() {
   const detalles = propiedad.detalles || propiedad.detalle || {};
 
   const formatPrecio = (precio, unidad) => {
+    if (!precio) return '';
     if (unidad === 'UF') return `UF ${precio}`;
-    const num = parseFloat(precio);
+    // Limpiar el precio: quitar $, puntos de miles y espacios antes de parsear
+    const limpio = String(precio).replace(/[$\s.]/g, '').replace(',', '.');
+    const num = parseFloat(limpio);
     if (isNaN(num)) return `$ ${precio}`;
     return `$ ${num.toLocaleString('es-CL')}`;
   };
@@ -173,8 +176,8 @@ function DetallesPropiedades() {
               <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">🛏</span>
-                  <div>
-                    <div className="detalles-item-label">Dormitorios</div>
+                  <div className="detalles-item-info">
+                    <span className="detalles-item-label">Dormitorios</span>
                     <div className="detalles-item-valor">{detalles.dormitorios}</div>
                   </div>
                 </div>
@@ -184,8 +187,8 @@ function DetallesPropiedades() {
               <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">🚿</span>
-                  <div>
-                    <div className="detalles-item-label">Baños</div>
+                  <div className="detalles-item-info">
+                    <span className="detalles-item-label">Baños</span>
                     <div className="detalles-item-valor">{detalles.banos}</div>
                   </div>
                 </div>
@@ -195,8 +198,8 @@ function DetallesPropiedades() {
               <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">📐</span>
-                  <div>
-                    <div className="detalles-item-label">Superficie útil</div>
+                  <div className="detalles-item-info">
+                    <span className="detalles-item-label">Sup. útil</span>
                     <div className="detalles-item-valor">{detalles.metros_cuadrados} m²</div>
                   </div>
                 </div>
@@ -206,8 +209,8 @@ function DetallesPropiedades() {
               <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">📏</span>
-                  <div>
-                    <div className="detalles-item-label">Superficie total</div>
+                  <div className="detalles-item-info">
+                    <span className="detalles-item-label">Sup. total</span>
                     <div className="detalles-item-valor">{detalles.superficie_total} m²</div>
                   </div>
                 </div>
@@ -217,8 +220,8 @@ function DetallesPropiedades() {
               <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">🚗</span>
-                  <div>
-                    <div className="detalles-item-label">Estacionamientos</div>
+                  <div className="detalles-item-info">
+                    <span className="detalles-item-label">Estacionam.</span>
                     <div className="detalles-item-valor">{detalles.estacionamientos}</div>
                   </div>
                 </div>
@@ -228,8 +231,8 @@ function DetallesPropiedades() {
               <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">📦</span>
-                  <div>
-                    <div className="detalles-item-label">Bodega</div>
+                  <div className="detalles-item-info">
+                    <span className="detalles-item-label">Bodega</span>
                     <div className="detalles-item-valor">{detalles.bodega}</div>
                   </div>
                 </div>
@@ -239,8 +242,8 @@ function DetallesPropiedades() {
               <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">💰</span>
-                  <div>
-                    <div className="detalles-item-label">Gastos comunes</div>
+                  <div className="detalles-item-info">
+                    <span className="detalles-item-label">Gs. comunes</span>
                     <div className="detalles-item-valor">{detalles.gastos_comunes}</div>
                   </div>
                 </div>
@@ -250,8 +253,8 @@ function DetallesPropiedades() {
               <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">🏗</span>
-                  <div>
-                    <div className="detalles-item-label">Constructora</div>
+                  <div className="detalles-item-info">
+                    <span className="detalles-item-label">Constructora</span>
                     <div className="detalles-item-valor">{propiedad.constructora}</div>
                   </div>
                 </div>
@@ -261,8 +264,8 @@ function DetallesPropiedades() {
               <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">📅</span>
-                  <div>
-                    <div className="detalles-item-label">Fecha entrega</div>
+                  <div className="detalles-item-info">
+                    <span className="detalles-item-label">Fecha entrega</span>
                     <div className="detalles-item-valor">{propiedad.fecha_entrega}</div>
                   </div>
                 </div>

@@ -12,7 +12,11 @@ const ClienteInicio = ({ user }) => {
   const [propiedades, setPropiedades] = useState([]);
   const [cargando, setCargando] = useState(true);
 
-  const reservas = getReservasCliente(user?.email);
+  const [reservas, setReservas] = useState([]);
+
+  useEffect(() => {
+    getReservasCliente(user?.email).then(setReservas).catch(() => {});
+  }, [user?.email]);
   const mensajes = JSON.parse(localStorage.getItem(`guzman_chat_${user?.email}`) || '[]');
   const sinLeer  = mensajes.filter(m => !m.leido && m.de !== 'cliente').length;
   const nombre   = user?.name?.split(' ')[0] || 'Cliente';

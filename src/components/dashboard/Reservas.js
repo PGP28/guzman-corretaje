@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FaChevronRight, FaCalendarAlt, FaCheckCircle, FaTimesCircle, FaDollarSign, FaFileSignature } from 'react-icons/fa';
+import API_BASE_URL from '../../config';
 import './SeccionDashboard.css';
+
+const API = `${API_BASE_URL}/api`;
 
 // Etapas (espejo del helper del cliente)
 const ETAPAS = {
@@ -35,35 +38,36 @@ const Reservas = ({ rol = 'admin', userName }) => {
 
   useEffect(() => { cargar(); }, []);
 
-  const cargar = () => {
-    const global = JSON.parse(localStorage.getItem('guzman_reservas_global') || '[]');
-    // Corredor solo ve las asignadas a él
-    if (esCorrector && userName) {
-      const primerNombre = userName.split(' ')[0].toLowerCase();
-      setReservas(global.filter(r => r.corredor?.toLowerCase().includes(primerNombre)));
-    } else {
-      setReservas(global);
+  const cargar = async () => {
+    try {
+      let url = `${API}/reservas`;
+      if (esCorrector && userName) {
+        const primerNombre = userName.split(' ')[0];
+        url += `?corredor=${encodeURIComponent(primerNombre)}`;
+      }
+      const res = await fetch(url);
+      const data = await res.json();
+      setReservas(data);
+    } catch {
+      setReservas([]);
     }
   };
 
-  const guardarReserva = (reservaActualizada) => {
-    // 1. Actualizar global
-    const global = JSON.parse(localStorage.getItem('guzman_reservas_global') || '[]');
-    const idx = global.findIndex(r => r.id === reservaActualizada.id);
-    if (idx >= 0) global[idx] = reservaActualizada;
-    localStorage.setItem('guzman_reservas_global', JSON.stringify(global));
-
-    // 2. Actualizar las del cliente dueño
-    const clienteKey = `guzman_reservas_${reservaActualizada.cliente_email}`;
-    const reservasCliente = JSON.parse(localStorage.getItem(clienteKey) || '[]');
-    const idxC = reservasCliente.findIndex(r => r.id === reservaActualizada.id);
-    if (idxC >= 0) reservasCliente[idxC] = reservaActualizada;
-    localStorage.setItem(clienteKey, JSON.stringify(reservasCliente));
-
-    setSeleccionada(reservaActualizada);
-    cargar();
-    setMsg('✅ Reserva actualizada');
-    setTimeout(() => setMsg(''), 2500);
+  const guardarReserva = async (reservaActualizada) => {
+    try {
+      const res = await fetch(`${API}/reservas/${reservaActualizada.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(reservaActualizada),
+      });
+      const data = await res.json();
+      setSeleccionada(data);
+      await cargar();
+      setMsg('✅ Reserva actualizada');
+      setTimeout(() => setMsg(''), 2500);
+    } catch {
+      setMsg('❌ Error al actualizar');
+    }
   };
 
   const agregarHist = (reserva, accion) => ({

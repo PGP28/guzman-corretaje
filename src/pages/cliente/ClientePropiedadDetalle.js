@@ -3,7 +3,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { FaArrowLeft, FaCheckCircle } from 'react-icons/fa';
 import axios from 'axios';
 import API_BASE_URL from '../../config';
-import { crearReserva, getReservasCliente, saveReservasCliente } from './reservaHelper';
+import { crearReserva, getReservasCliente } from './reservaHelper';
 import './ClientePages.css';
 
 const ClientePropiedadDetalle = ({ user }) => {
@@ -16,6 +16,12 @@ const ClientePropiedadDetalle = ({ user }) => {
   const [mensaje, setMensaje]     = useState('');
   const [modalReserva, setModalReserva] = useState(false);
   const [exito, setExito] = useState(false);
+  const [guardando, setGuardando] = useState(false);
+  const [reservasCliente, setReservasCliente] = useState([]);
+
+  useEffect(() => {
+    getReservasCliente(user?.email).then(setReservasCliente).catch(() => {});
+  }, [user?.email]);
 
   useEffect(() => {
     if (!propiedad) {
@@ -35,16 +41,19 @@ const ClientePropiedadDetalle = ({ user }) => {
   const imagenes = propiedad.imagenes || [];
   const imgActual = imagenes[imgIdx]?.url || imagenes[imgIdx] || '';
   const det = propiedad.detalles || {};
-  const estaReservada = getReservasCliente(user.email).some(r => r.propiedad_id === propiedad.id && !['rechazado', 'cancelada'].includes(r.sub_estado));
+  const estaReservada = reservasCliente.some(r => String(r.propiedad_id) === String(propiedad.id) && !['rechazado', 'cancelada'].includes(r.sub_estado));
 
-  const handleConfirmarReserva = () => {
-    const reservas = getReservasCliente(user.email);
-    const nueva = crearReserva(propiedad, user);
-    nueva.mensaje_inicial = mensaje;
-    reservas.unshift(nueva);
-    saveReservasCliente(user.email, reservas);
-    setExito(true);
-    setTimeout(() => { navigate(`/cliente/reserva/${nueva.id}`); }, 1500);
+  const handleConfirmarReserva = async () => {
+    setGuardando(true);
+    try {
+      const nueva = await crearReserva(propiedad, user, mensaje);
+      setExito(true);
+      setTimeout(() => { navigate(`/cliente/reserva/${nueva.id}`); }, 1500);
+    } catch {
+      alert('Error al crear la reserva. Intenta nuevamente.');
+    } finally {
+      setGuardando(false);
+    }
   };
 
   return (
@@ -184,8 +193,10 @@ const ClientePropiedadDetalle = ({ user }) => {
                   />
                 </div>
                 <div className="cp-modal-btns">
-                  <button className="cp-btn-secondary" onClick={() => setModalReserva(false)}>Cancelar</button>
-                  <button className="cp-btn-primary" onClick={handleConfirmarReserva}>Enviar solicitud</button>
+                  <button className="cp-btn-secondary" onClick={() => setModalReserva(false)} disabled={guardando}>Cancelar</button>
+                  <button className="cp-btn-primary" onClick={handleConfirmarReserva} disabled={guardando}>
+                    {guardando ? 'Enviando...' : 'Enviar solicitud'}
+                  </button>
                 </div>
               </>
             )}

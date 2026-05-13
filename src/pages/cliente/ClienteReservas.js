@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaChevronRight } from 'react-icons/fa';
 import { getReservasCliente, ETAPAS, SUB_ESTADOS, calcularProgreso } from './reservaHelper';
@@ -6,7 +6,14 @@ import './ClientePages.css';
 
 const ClienteReservas = ({ user }) => {
   const navigate = useNavigate();
-  const [reservas] = useState(() => getReservasCliente(user?.email));
+  const [reservas, setReservas] = useState([]);
+  const [cargando, setCargando] = useState(true);
+
+  useEffect(() => {
+    getReservasCliente(user?.email)
+      .then(data => setReservas(data))
+      .finally(() => setCargando(false));
+  }, [user?.email]);
 
   const activas  = reservas.filter(r => !['rechazado'].includes(r.sub_estado) && r.etapa_actual !== 'completada');
   const cerradas = reservas.filter(r => ['rechazado'].includes(r.sub_estado) || r.etapa_actual === 'completada');
@@ -23,7 +30,9 @@ const ClienteReservas = ({ user }) => {
         </button>
       </div>
 
-      {reservas.length === 0 ? (
+      {cargando ? (
+        <div className="cp-loader"><div className="cp-loader-spinner" /></div>
+      ) : reservas.length === 0 ? (
         <div className="cp-empty">
           <span>📋</span>
           <p>No tienes reservas aún</p>

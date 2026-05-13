@@ -136,6 +136,27 @@ const ClientePropiedadDetalle = ({ user }) => {
         </div>
       </div>
 
+      {/* Mapa de ubicación */}
+      {propiedad.ubicacion && (
+        <div className="cp-mapa">
+          <h3 className="cp-detalle-subtitle">📍 Ubicación en el mapa</h3>
+          <div className="cp-mapa-wrapper">
+            <iframe
+              title="Ubicación de la propiedad"
+              width="100%"
+              height="320"
+              frameBorder="0"
+              style={{ border: 0, borderRadius: 12 }}
+              referrerPolicy="no-referrer-when-downgrade"
+              src={`https://www.google.com/maps?q=${encodeURIComponent(
+                `${propiedad.ubicacion}${propiedad.comuna ? ', ' + propiedad.comuna : ''}${propiedad.region ? ', ' + propiedad.region : ''}, Chile`
+              )}&output=embed`}
+              allowFullScreen
+            />
+          </div>
+        </div>
+      )}
+
       {/* Modal de reserva */}
       {modalReserva && (
         <div className="cp-modal-overlay" onClick={() => !exito && setModalReserva(false)}>

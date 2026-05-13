@@ -140,13 +140,13 @@
   display: flex; align-items: center; justify-content: center;
 }
 
-.cl-content { flex: 1; padding: 28px; }
+.cl-content { flex: 1; padding: 24px 28px 28px; }
 
 @media (max-width: 991px) {
   .cl-sidebar { transform: translateX(-100%); width: 240px !important; }
   .cl-sidebar.mobile-open { transform: translateX(0); }
-  .cl-main { margin-left: 0 !important; }
+  .cl-main { margin-left: 0 !important; overflow-x: hidden; }
   .cl-menu-btn { display: flex; }
-  .cl-topbar { display: flex; }
-  .cl-content { padding-top: 72px; }
+  .cl-topbar { display: flex; position: fixed; top: 0; left: 0; right: 0; z-index: 150; }
+  .cl-content { padding: 72px 16px 24px; overflow-x: hidden; }
 }

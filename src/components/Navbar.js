@@ -15,9 +15,9 @@ const NavigationBar = () => {
 
   useEffect(() => {
     if (!isHome) { setScrolled(true); return; }
-    setScrolled(false);
-    const handleScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener('scroll', handleScroll);
+    setScrolled(window.scrollY > 30);
+    const handleScroll = () => setScrolled(window.scrollY > 30);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isHome, location.pathname]);
 

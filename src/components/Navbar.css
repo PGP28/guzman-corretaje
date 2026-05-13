@@ -7,12 +7,19 @@
   padding-top: 10px;
   padding-bottom: 10px;
   z-index: 1050;
-  background-color: #3f1b86 !important; /* fallback — evita fondo blanco de Bootstrap */
+  background-color: #3f1b86 !important;
 }
 
 .navbar-transparent {
   background-color: transparent !important;
   box-shadow: none;
+}
+
+/* En mobile, el navbar siempre sólido aunque sea home */
+@media (max-width: 991px) {
+  .navbar-transparent {
+    background-color: #3f1b86 !important;
+  }
 }
 
 .navbar-solid {
@@ -180,7 +187,8 @@ body {
   padding-top: 62px;
 }
 
-/* Dashboard anula el padding-top del body */
-body:has(.dashboard-layout) {
+/* Dashboard y portal cliente anulan el padding-top del body */
+body:has(.dashboard-layout),
+body:has(.cl-layout) {
   padding-top: 0;
 }

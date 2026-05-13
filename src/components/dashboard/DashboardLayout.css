@@ -352,6 +352,8 @@
 .dash-content {
   flex: 1;
   padding: 32px;
+  overflow-x: hidden;
+  min-width: 0;
 }
 
 /* ── OVERLAY MÓVIL ── */
@@ -369,15 +371,28 @@
 @media (max-width: 991px) {
   .dash-sidebar { width: 200px; min-width: 200px; }
   .dashboard-layout.collapsed .dash-sidebar { width: 60px; min-width: 60px; }
-  .dash-main { margin-left: 200px; }
-  .dashboard-layout.collapsed .dash-main { margin-left: 60px; }
-  .dash-content { padding: 24px 16px; }
+  .dash-main { margin-left: 200px; overflow-x: hidden; }
+  .dashboard-layout.collapsed .dash-main { margin-left: 60px; overflow-x: hidden; }
+  .dash-content { padding: 24px 16px; overflow-x: hidden; box-sizing: border-box; }
 
   /* En tablet collapsed tambien centra iconos */
   .dashboard-layout.collapsed .dash-nav-item {
     justify-content: center;
     padding: 11px 0;
   }
+
+  /* ep-item en tablet: grid para que el boton no se corte */
+  .ep-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  .ep-item-img { width: 80px; height: 80px; }
+  .ep-item-info { min-width: 0; overflow: hidden; }
+  .ep-item-acciones { flex-shrink: 0; }
 }
 
 /* Mobile <768px: sidebar oculto, topbar con hamburguesa */
@@ -390,13 +405,11 @@
     margin-left: 0;
   }
 
-  /* En mobile nunca colapsar el sidebar */
   .dashboard-layout.collapsed .dash-sidebar {
     width: 260px !important;
     min-width: 260px !important;
   }
 
-  /* Collapsed en mobile NO centra los nav-items */
   .dashboard-layout.collapsed .dash-nav-item {
     justify-content: flex-start;
     padding: 11px 12px;
@@ -406,13 +419,24 @@
 
   .sidebar-overlay { display: block; }
 
-  .dash-main { margin-left: 0 !important; }
+  .dash-main {
+    margin-left: 0 !important;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
   .dashboard-layout.collapsed .dash-main { margin-left: 0 !important; }
 
   .dash-topbar { display: flex; }
   .dash-collapse-btn { display: none; }
-  .dash-content { padding: 20px 16px; }
+  .dash-content {
+    padding: 20px 16px;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
 
   body:has(.dashboard-layout) .navbar-guzman { display: none; }
-  .dashboard-layout { padding-top: 0; }
+  .dashboard-layout { padding-top: 0; overflow-x: hidden; }
 }

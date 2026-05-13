@@ -71,7 +71,7 @@
 .sk-ep-item {
   background: #fff; border: 1px solid #ede8fa; border-radius: 12px;
   padding: 16px; display: flex; gap: 16px; align-items: center;
-  min-width: 0; width: 100%; box-sizing: border-box;
+  min-width: 0; width: 100%; box-sizing: border-box; overflow: hidden;
 }
 .sk-ep-img   { width: 80px; height: 80px; flex-shrink: 0; border-radius: 10px; }
 .sk-ep-info  { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }

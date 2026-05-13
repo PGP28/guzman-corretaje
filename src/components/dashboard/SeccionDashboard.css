@@ -2,7 +2,7 @@
    SECCIONES DASHBOARD — CSS compartido
    ============================================ */
 
-.sd-page { display: flex; flex-direction: column; gap: 24px; }
+.sd-page { display: flex; flex-direction: column; gap: 24px; overflow-x: hidden; width: 100%; }
 
 /* Header */
 .sd-header {
@@ -156,12 +156,13 @@
 .ep-search-icon { color: #8a60da; font-size: 16px; flex-shrink: 0; }
 .ep-search-input { border: none; outline: none; flex: 1; font-size: 14px; background: transparent; color: #333; }
 
-.ep-lista { display: flex; flex-direction: column; gap: 12px; }
+.ep-lista { display: flex; flex-direction: column; gap: 12px; width: 100%; overflow-x: hidden; }
 
 .ep-item {
   background: #fff; border: 1px solid #ede8fa; border-radius: 14px;
   padding: 16px; display: flex; align-items: center; gap: 16px;
   transition: box-shadow 0.2s;
+  width: 100%; box-sizing: border-box; overflow: hidden;
 }
 .ep-item:hover { box-shadow: 0 4px 16px rgba(63,27,134,0.1); }
 
@@ -328,8 +329,8 @@
 }
 .ep-empty span { font-size: 40px; display: block; margin-bottom: 12px; }
 
-.ep-filtros { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
-.ep-buscador { flex: 1; min-width: 200px; }
+.ep-filtros { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; overflow-x: hidden; width: 100%; }
+.ep-buscador { flex: 1; min-width: 0; }
 .ep-filtro-estado { display: flex; gap: 6px; flex-wrap: wrap; }
 .ep-filtro-divider {
   display: inline-block;
@@ -465,6 +466,79 @@
   .gc-fila { flex-wrap: wrap; gap: 10px; }
   .gc-badges { width: 100%; }
   .gc-acciones { width: 100%; }
-  .ep-item { flex-wrap: wrap; }
-  .ep-item-acciones { width: 100%; justify-content: flex-end; }
+
+  /* Editar propiedades mobile */
+  .ep-filtros {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  .ep-buscador { width: 100%; }
+  .ep-filtro-estado {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    width: 100%;
+  }
+  .ep-filtro-divider { display: none; }
+  .ep-filtro-btn { flex-shrink: 0; }
+  .ep-lista { gap: 10px; overflow-x: hidden; }
+
+  .ep-item {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas: "img info" "acc acc";
+    gap: 10px 12px;
+    padding: 12px;
+    overflow: hidden;
+    box-sizing: border-box;
+    width: 100%;
+  }
+  .ep-item-img {
+    grid-area: img;
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    align-self: start;
+  }
+  .ep-item-info {
+    grid-area: info;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .ep-item-acciones {
+    grid-area: acc;
+    width: 100%;
+    justify-content: flex-end;
+    border-top: 1px solid #f0ebff;
+    padding-top: 8px;
+  }
+  .ep-item-cat { font-size: 10px; }
+  .ep-item-nombre {
+    font-size: 13px;
+    white-space: normal;
+    word-break: break-word;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .ep-item-estado { white-space: nowrap; max-width: 100px; overflow: hidden; text-overflow: ellipsis; }
+  .ep-btn-edit { font-size: 12px; padding: 7px 12px; }
+  .ep-btn-del  { padding: 7px 10px; }
+
+  /* Skeleton ep mobile */
+  .sk-ep-item {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    grid-template-areas: "img info";
+    gap: 10px;
+    padding: 12px;
+  }
+  .sk-ep-img  { grid-area: img; width: 60px; height: 60px; }
+  .sk-ep-info { grid-area: info; }
+  .sk-ep-btn  { display: none; }
 }

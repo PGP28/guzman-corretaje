@@ -4,6 +4,7 @@ import { FaWhatsapp } from 'react-icons/fa';
 import './Home.css';
 import houseIcon from '../assets/images/LOGOCASA.png';
 import TarjetasPropiedades from '../components/TarjetasPropiedades';
+import { SkTarjetaCard } from '../components/Skeleton';
 import backgroundImage from '../assets/images/ENCABEZADO-21.png';
 import Testimonios from '../components/Testimonios';
 import VenderPropiedad from '../components/VenderPropiedad';
@@ -102,10 +103,19 @@ const Home = () => {
 
       {/* Tarjetas */}
       {cargando ? (
-        <div className="text-center py-5">
-          <div className="spinner-border" style={{ color: '#5529aa' }} role="status" />
-          <p className="mt-3 text-muted">Cargando propiedades...</p>
-        </div>
+        <Container fluid>
+          <Row className="justify-content-center">
+            <Col md={11}>
+              <Row className="justify-content-center">
+                {Array(6).fill(0).map((_, i) => (
+                  <Col xs={12} sm={6} md={4} key={i} className="mb-4">
+                    <SkTarjetaCard />
+                  </Col>
+                ))}
+              </Row>
+            </Col>
+          </Row>
+        </Container>
       ) : propiedadesFiltradas.length === 0 ? (
         <div className="text-center py-5" style={{ maxWidth: 400, margin: '0 auto', padding: '40px 20px' }}>
           <p style={{ fontSize: '3rem' }}>🏠</p>

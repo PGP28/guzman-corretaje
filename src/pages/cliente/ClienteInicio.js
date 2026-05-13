@@ -4,6 +4,7 @@ import { FaCalendarCheck, FaComments, FaCreditCard, FaSearch } from 'react-icons
 import axios from 'axios';
 import API_BASE_URL from '../../config';
 import { getReservasCliente, ETAPAS } from './reservaHelper';
+import { SkPropCard } from '../../components/Skeleton';
 import './ClientePages.css';
 
 const ClienteInicio = ({ user }) => {
@@ -96,7 +97,9 @@ const ClienteInicio = ({ user }) => {
           </button>
         </div>
         {cargando ? (
-          <div className="cp-loader"><div className="cp-loader-spinner" /></div>
+          <div className="cp-props-grid">
+            {Array(3).fill(0).map((_, i) => <SkPropCard key={i} />)}
+          </div>
         ) : (
           <div className="cp-props-grid">
             {propiedades.slice(0, 3).map(p => (

@@ -3,6 +3,7 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid,
   Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
+import { Sk } from '../Skeleton';
 import './GraficoMetricas.css';
 
 // Genera datos mensuales simulados basados en las propiedades reales
@@ -56,10 +57,28 @@ const TooltipCustom = ({ active, payload, label }) => {
   );
 };
 
-const GraficoMetricas = ({ propiedades = [] }) => {
+const GraficoMetricas = ({ propiedades = [], cargando = false }) => {
   const [activas, setActivas] = useState(
     LINEAS.reduce((acc, l) => ({ ...acc, [l.key]: l.activo }), {})
   );
+
+  // Skeleton mientras carga
+  if (cargando) {
+    return (
+      <div className="sk-grafico-card">
+        <div>
+          <Sk className="sk-rect sk-grafico-titulo" />
+          <Sk className="sk-rect sk-grafico-sub" />
+        </div>
+        <div className="sk-grafico-leyenda">
+          {Array(5).fill(0).map((_, i) => <Sk key={i} className="sk-rect sk-grafico-pill" />)}
+        </div>
+        <Sk className="sk-rect sk-grafico-area" />
+      </div>
+    );
+  }
+
+  const isMobile = window.innerWidth < 768;
 
   const datos = generarDatos(propiedades);
 
@@ -91,20 +110,21 @@ const GraficoMetricas = ({ propiedades = [] }) => {
       </div>
 
       <div className="gm-chart">
-        <ResponsiveContainer width="100%" height={280}>
-          <LineChart data={datos} margin={{ top: 10, right: 20, left: -10, bottom: 0 }}>
+        <ResponsiveContainer width="100%" height={isMobile ? 220 : 280}>
+          <LineChart data={datos} margin={{ top: 10, right: isMobile ? 8 : 20, left: isMobile ? -10 : -10, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0ebff" />
             <XAxis
               dataKey="mes"
-              tick={{ fill: '#888', fontSize: 12 }}
+              tick={{ fill: '#888', fontSize: isMobile ? 10 : 12 }}
               axisLine={{ stroke: '#ede8fa' }}
               tickLine={false}
             />
             <YAxis
-              tick={{ fill: '#888', fontSize: 12 }}
+              tick={{ fill: '#888', fontSize: isMobile ? 10 : 12 }}
               axisLine={false}
               tickLine={false}
               allowDecimals={false}
+              width={isMobile ? 28 : 40}
             />
             <Tooltip content={<TooltipCustom />} />
             {LINEAS.map(l => activas[l.key] && (

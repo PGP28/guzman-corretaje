@@ -37,12 +37,16 @@ const getNavItems = (rol) => {
 };
 
 const DashboardLayout = ({ user: userProp, onLogout }) => {
-  const [collapsed, setCollapsed]   = useState(window.innerWidth < 992);
+  const [collapsed, setCollapsed]   = useState(window.innerWidth < 768);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [user, setUser]             = useState(userProp);
   const [previewCorredor, setPreviewCorredor] = useState(false);
   const navigate  = useNavigate();
   const location  = useLocation();
+
+  // En mobile el sidebar siempre se muestra expandido al abrirse
+  const isMobile = window.innerWidth < 768;
+  const showExpanded = !collapsed || isMobile;
 
   // Determinar rol (con override de preview)
   const rolReal = getRolUsuario(user?.email) || 'admin';
@@ -81,7 +85,7 @@ const DashboardLayout = ({ user: userProp, onLogout }) => {
       <aside className={`dash-sidebar ${mobileOpen ? 'mobile-open' : ''}`}>
 
         <div className="dash-sidebar-header">
-          {!collapsed && (
+          {showExpanded && (
             <div className="dash-sidebar-brand">
               <span className="dash-brand-icon">G</span>
               <div>
@@ -96,7 +100,7 @@ const DashboardLayout = ({ user: userProp, onLogout }) => {
         </div>
 
         {/* Usuario */}
-        {!collapsed && user && (
+        {showExpanded && user && (
           <div className="dash-user-card">
             {fotoMostrar
               ? <img src={fotoMostrar} alt={user.name} className="dash-user-avatar" />
@@ -116,18 +120,18 @@ const DashboardLayout = ({ user: userProp, onLogout }) => {
               key={item.id}
               className={`dash-nav-item ${isActive(item.path) ? 'active' : ''}`}
               onClick={() => handleNav(item.path)}
-              title={collapsed ? item.label : ''}
+              title={!showExpanded ? item.label : ''}
             >
               <span className="dash-nav-icon">{item.icon}</span>
-              {!collapsed && <span className="dash-nav-label">{item.label}</span>}
-              {!collapsed && isActive(item.path) && <span className="dash-nav-dot" />}
+              {showExpanded && <span className="dash-nav-label">{item.label}</span>}
+              {showExpanded && isActive(item.path) && <span className="dash-nav-dot" />}
             </button>
           ))}
         </nav>
 
         <button className="dash-logout-btn" onClick={onLogout}>
           <FaSignOutAlt />
-          {!collapsed && <span>Cerrar sesión</span>}
+          {showExpanded && <span>Cerrar sesión</span>}
         </button>
 
         {/* Botón preview corredor — solo visible para admin */}
@@ -138,9 +142,9 @@ const DashboardLayout = ({ user: userProp, onLogout }) => {
             title={previewCorredor ? 'Volver a vista Admin' : 'Ver como Corredor'}
           >
             {previewCorredor ? (
-              <><FaUsers />{!collapsed && <span>Vista Admin</span>}</>
+              <><FaUsers />{showExpanded && <span>Vista Admin</span>}</>
             ) : (
-              <><FaUser />{!collapsed && <span>Ver como Corredor</span>}</>
+              <><FaUser />{showExpanded && <span>Ver como Corredor</span>}</>
             )}
           </button>
         )}

@@ -207,10 +207,12 @@
   flex-shrink: 0;
 }
 
-/* Collapsed: centrar íconos */
-.dashboard-layout.collapsed .dash-nav-item {
-  justify-content: center;
-  padding: 11px 0;
+/* Collapsed: centrar íconos — SOLO en desktop */
+@media (min-width: 768px) {
+  .dashboard-layout.collapsed .dash-nav-item {
+    justify-content: center;
+    padding: 11px 0;
+  }
 }
 
 /* Logout */
@@ -362,44 +364,55 @@
 }
 
 /* ── RESPONSIVE ── */
+
+/* Tablet 768-991px: sidebar visible completo */
 @media (max-width: 991px) {
   .dash-sidebar { width: 200px; min-width: 200px; }
   .dashboard-layout.collapsed .dash-sidebar { width: 60px; min-width: 60px; }
   .dash-main { margin-left: 200px; }
   .dashboard-layout.collapsed .dash-main { margin-left: 60px; }
   .dash-content { padding: 24px 16px; }
+
+  /* En tablet collapsed tambien centra iconos */
+  .dashboard-layout.collapsed .dash-nav-item {
+    justify-content: center;
+    padding: 11px 0;
+  }
 }
 
+/* Mobile <768px: sidebar oculto, topbar con hamburguesa */
 @media (max-width: 767px) {
   .dash-sidebar {
     width: 260px !important;
     min-width: 260px !important;
     transform: translateX(-100%);
     transition: transform 0.25s ease;
+    margin-left: 0;
   }
 
-  .dash-sidebar.mobile-open {
-    transform: translateX(0);
+  /* En mobile nunca colapsar el sidebar */
+  .dashboard-layout.collapsed .dash-sidebar {
+    width: 260px !important;
+    min-width: 260px !important;
   }
+
+  /* Collapsed en mobile NO centra los nav-items */
+  .dashboard-layout.collapsed .dash-nav-item {
+    justify-content: flex-start;
+    padding: 11px 12px;
+  }
+
+  .dash-sidebar.mobile-open { transform: translateX(0); }
 
   .sidebar-overlay { display: block; }
 
   .dash-main { margin-left: 0 !important; }
+  .dashboard-layout.collapsed .dash-main { margin-left: 0 !important; }
 
   .dash-topbar { display: flex; }
-
   .dash-collapse-btn { display: none; }
-
   .dash-content { padding: 20px 16px; }
 
-  /* Ocultar navbar global en dashboard mobile */
-  .dashboard-layout ~ * .navbar-guzman,
-  body:has(.dashboard-layout) .navbar-guzman {
-    display: none;
-  }
-
-  /* Compensar sin navbar global */
-  .dashboard-layout {
-    padding-top: 0;
-  }
+  body:has(.dashboard-layout) .navbar-guzman { display: none; }
+  .dashboard-layout { padding-top: 0; }
 }

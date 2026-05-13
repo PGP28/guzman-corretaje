@@ -145,7 +145,10 @@
 @media (max-width: 991px) {
   .cl-sidebar { transform: translateX(-100%); width: 240px !important; }
   .cl-sidebar.mobile-open { transform: translateX(0); }
+  /* En mobile: nunca colapsar el sidebar — siempre expandido */
+  .cl-layout.collapsed .cl-sidebar { width: 240px !important; min-width: 240px !important; }
   .cl-main { margin-left: 0 !important; overflow-x: hidden; }
+  .cl-layout.collapsed .cl-main { margin-left: 0 !important; }
   .cl-menu-btn { display: flex; }
   .cl-topbar { display: flex; position: fixed; top: 0; left: 0; right: 0; z-index: 150; }
   .cl-content { padding: 72px 16px 24px; overflow-x: hidden; }

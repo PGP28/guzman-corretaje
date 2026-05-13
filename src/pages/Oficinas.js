@@ -3,6 +3,7 @@ import { Container, Row, Col, Pagination } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import BuscadorLateral from '../components/BuscadorLateral';
 import TarjetasPropiedades from '../components/TarjetasPropiedades';
+import { SkTarjetaCard } from '../components/Skeleton';
 import axios from 'axios';
 
 import API_BASE_URL from '../config';
@@ -68,10 +69,13 @@ function Oficinas() {
             </Col>
           </Row>
           {cargando ? (
-            <div className="text-center py-5">
-              <div className="spinner-border" style={{ color: '#5529aa' }} role="status" />
-              <p className="mt-3 text-muted">Cargando propiedades...</p>
-            </div>
+            <Row className="justify-content-center">
+              {Array(6).fill(0).map((_, i) => (
+                <Col xs={12} sm={6} md={4} key={i} className="mb-4">
+                  <SkTarjetaCard />
+                </Col>
+              ))}
+            </Row>
           ) : propiedadesPagina.length > 0 ? (
             <TarjetasPropiedades propiedades={propiedadesPagina} />
           ) : (

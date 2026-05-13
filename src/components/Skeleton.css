@@ -1,0 +1,102 @@
+/* ── SKELETON — Animación de carga ── */
+
+@keyframes sk-shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.sk {
+  background: linear-gradient(90deg, #e8e0f7 25%, #f4f0ff 50%, #e8e0f7 75%);
+  background-size: 600px 100%;
+  animation: sk-shimmer 1.4s ease-in-out infinite;
+  border-radius: 6px;
+  display: block;
+}
+
+/* Variantes de forma */
+.sk-text   { height: 14px; border-radius: 4px; }
+.sk-title  { height: 20px; border-radius: 4px; }
+.sk-circle { border-radius: 50%; }
+.sk-rect   { border-radius: 8px; }
+
+/* DASHBOARD - Stat card */
+.sk-stat-card {
+  background: #fff; border: 1px solid #ede8fa; border-radius: 14px;
+  padding: 20px; display: flex; align-items: center; gap: 14px;
+  min-width: 0; width: 100%; box-sizing: border-box;
+}
+.sk-stat-icon  { width: 48px; height: 48px; flex-shrink: 0; border-radius: 12px; }
+.sk-stat-info  { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.sk-stat-valor { height: 26px; width: 50px; }
+.sk-stat-label { height: 12px; width: 80%; max-width: 100px; }
+
+/* DASHBOARD - Estado card */
+.sk-estado-card {
+  background: #fff; border: 1px solid #ede8fa; border-radius: 12px;
+  padding: 16px; display: flex; align-items: center; gap: 10px;
+  min-width: 0; width: 100%; box-sizing: border-box;
+}
+.sk-estado-dot  { width: 12px; height: 12px; flex-shrink: 0; }
+.sk-estado-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.sk-estado-val  { height: 20px; width: 40px; }
+.sk-estado-lbl  { height: 11px; width: 70%; max-width: 80px; }
+
+/* PORTAL CLIENTE - Prop card */
+.sk-prop-card {
+  background: #fff; border: 1px solid #ede8fa; border-radius: 12px;
+  overflow: hidden; min-width: 0; width: 100%;
+}
+.sk-prop-img   { width: 100%; height: 130px; border-radius: 0; }
+.sk-prop-body  { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.sk-prop-cat   { height: 10px; width: 55%; }
+.sk-prop-name  { height: 14px; width: 90%; }
+.sk-prop-loc   { height: 11px; width: 70%; }
+.sk-prop-price { height: 16px; width: 40%; }
+
+/* PAGINAS PUBLICAS - Tarjeta propiedad */
+.sk-tarjeta-card {
+  background: #fff; border-radius: 12px; overflow: hidden;
+  box-shadow: 0 2px 8px rgba(63,27,134,0.06); min-width: 0; width: 100%;
+}
+.sk-tarjeta-img   { width: 100%; height: 207px; border-radius: 0; }
+.sk-tarjeta-body  { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.sk-tarjeta-cat   { height: 11px; width: 50%; }
+.sk-tarjeta-name  { height: 16px; width: 90%; }
+.sk-tarjeta-loc   { height: 12px; width: 65%; }
+.sk-tarjeta-price { height: 18px; width: 40%; }
+.sk-tarjeta-specs { display: flex; gap: 12px; }
+.sk-tarjeta-spec  { height: 12px; width: 40px; }
+
+/* DASHBOARD - Editar propiedades */
+.sk-ep-item {
+  background: #fff; border: 1px solid #ede8fa; border-radius: 12px;
+  padding: 16px; display: flex; gap: 16px; align-items: center;
+  min-width: 0; width: 100%; box-sizing: border-box;
+}
+.sk-ep-img   { width: 80px; height: 80px; flex-shrink: 0; border-radius: 10px; }
+.sk-ep-info  { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.sk-ep-cat   { height: 11px; width: 35%; }
+.sk-ep-name  { height: 16px; width: 80%; }
+.sk-ep-loc   { height: 12px; width: 55%; }
+.sk-ep-price { height: 14px; width: 30%; }
+.sk-ep-btn   { width: 72px; height: 36px; border-radius: 8px; flex-shrink: 0; }
+
+/* RESPONSIVE */
+@media (max-width: 767px) {
+  .sk-stat-card  { padding: 14px; gap: 10px; }
+  .sk-stat-icon  { width: 38px; height: 38px; }
+  .sk-stat-valor { height: 22px; width: 40px; }
+  .sk-estado-card { padding: 10px 8px; gap: 8px; }
+  .sk-estado-dot  { width: 8px; height: 8px; }
+  .sk-estado-val  { height: 18px; width: 30px; }
+  .sk-estado-lbl  { height: 10px; }
+  .sk-ep-btn  { display: none; }
+  .sk-ep-img  { width: 60px; height: 60px; }
+  .sk-ep-item { padding: 12px; gap: 10px; }
+  .sk-tarjeta-img { height: 160px; }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .sk-stat-card   { padding: 16px; }
+  .sk-stat-icon   { width: 42px; height: 42px; }
+  .sk-estado-card { padding: 12px; }
+}

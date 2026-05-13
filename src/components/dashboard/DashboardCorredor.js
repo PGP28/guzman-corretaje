@@ -4,6 +4,7 @@ import { FaHome, FaKey, FaBuilding, FaEnvelope, FaArrowUp } from 'react-icons/fa
 import axios from 'axios';
 import API_BASE_URL from '../../config';
 import GraficoMetricas from './GraficoMetricas';
+import { SkStatCard } from '../Skeleton';
 import './DashboardInicio.css';
 
 const DashboardCorreedor = ({ user }) => {
@@ -59,11 +60,13 @@ const DashboardCorreedor = ({ user }) => {
 
       {/* Stats */}
       <div className="di-stats">
-        {tarjetas.map((t, i) => (
+        {cargando
+          ? Array(4).fill(0).map((_, i) => <SkStatCard key={i} />)
+          : tarjetas.map((t, i) => (
           <div key={i} className={`di-stat-card di-stat-card--${t.color}`}>
             <div className="di-stat-icon">{t.icon}</div>
             <div className="di-stat-info">
-              <span className="di-stat-valor">{cargando ? '—' : t.valor}</span>
+              <span className="di-stat-valor">{t.valor}</span>
               <span className="di-stat-label">{t.label}</span>
             </div>
             {i === 3 && solicitudesNuevas > 0 && (
@@ -74,7 +77,7 @@ const DashboardCorreedor = ({ user }) => {
       </div>
 
       {/* Gráfico */}
-      <GraficoMetricas propiedades={propiedades} />
+      <GraficoMetricas propiedades={propiedades} cargando={cargando} />
 
       {/* Accesos rápidos */}
       <div className="di-accesos">

@@ -12,6 +12,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import API_BASE_URL from '../../config';
 import { getCorredoresActivos } from './corredoresHelper';
+import { SkEpItem } from '../Skeleton';
 import './SeccionDashboard.css';
 
 const API_URL = `${API_BASE_URL}/api`;
@@ -609,9 +610,8 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
 
       {/* Lista */}
       {cargando ? (
-        <div className="text-center py-5">
-          <div className="spinner-border" style={{ color: '#5529aa' }} />
-          <p className="mt-3 text-muted">Cargando propiedades...</p>
+        <div className="ep-lista">
+          {Array(6).fill(0).map((_, i) => <SkEpItem key={i} />)}
         </div>
       ) : propiedadesFiltradas.length === 0 ? (
         <div className="ep-empty">

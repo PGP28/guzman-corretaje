@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaSearch, FaArrowLeft } from 'react-icons/fa';
 import axios from 'axios';
 import API_BASE_URL from '../../config';
+import { SkPropCard } from '../../components/Skeleton';
 import './ClientePages.css';
 
 const ClienteExplorar = () => {
@@ -68,7 +69,9 @@ const ClienteExplorar = () => {
       </div>
 
       {cargando ? (
-        <div className="cp-loader"><div className="cp-loader-spinner" /></div>
+        <div className="cp-props-grid">
+          {Array(6).fill(0).map((_, i) => <SkPropCard key={i} variant="explorar" />)}
+        </div>
       ) : filtered.length === 0 ? (
         <div className="cp-empty">
           <span>🔍</span>

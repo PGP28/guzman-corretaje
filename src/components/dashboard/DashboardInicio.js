@@ -4,6 +4,7 @@ import { FaHome, FaKey, FaMountain, FaBuilding, FaArrowUp } from 'react-icons/fa
 import axios from 'axios';
 import API_BASE_URL from '../../config';
 import GraficoMetricas from './GraficoMetricas';
+import { SkStatCard, SkEstadoCard } from '../Skeleton';
 import './DashboardInicio.css';
 
 const DashboardInicio = ({ user }) => {
@@ -63,13 +64,13 @@ const DashboardInicio = ({ user }) => {
 
       {/* Stats — categorías */}
       <div className="di-stats">
-        {tarjetas.map((t, i) => (
+        {cargando
+          ? Array(4).fill(0).map((_, i) => <SkStatCard key={i} />)
+          : tarjetas.map((t, i) => (
           <div key={i} className={`di-stat-card di-stat-card--${t.color}`}>
             <div className="di-stat-icon">{t.icon}</div>
             <div className="di-stat-info">
-              <span className="di-stat-valor">
-                {cargando ? '—' : t.valor}
-              </span>
+              <span className="di-stat-valor">{t.valor}</span>
               <span className="di-stat-label">{t.label}</span>
             </div>
             <FaArrowUp className="di-stat-trend" />
@@ -79,45 +80,49 @@ const DashboardInicio = ({ user }) => {
 
       {/* Stats — estados */}
       <div className="di-stats-estados">
-        <div className="di-estado-card di-estado-card--disponible" onClick={() => navigate('/dashboard/editar?estado=disponible')} style={{cursor:'pointer'}}>
-          <span className="di-estado-dot" />
-          <div>
-            <span className="di-estado-valor">{cargando ? '—' : stats?.disponible}</span>
-            <span className="di-estado-label">Disponibles</span>
+        {cargando
+          ? Array(5).fill(0).map((_, i) => <SkEstadoCard key={i} />)
+          : (<>
+          <div className="di-estado-card di-estado-card--disponible" onClick={() => navigate('/dashboard/editar?estado=disponible')} style={{cursor:'pointer'}}>
+            <span className="di-estado-dot" />
+            <div>
+              <span className="di-estado-valor">{stats?.disponible}</span>
+              <span className="di-estado-label">Disponibles</span>
+            </div>
           </div>
-        </div>
-        <div className="di-estado-card di-estado-card--arrendada" onClick={() => navigate('/dashboard/editar?estado=arrendada')} style={{cursor:'pointer'}}>
-          <span className="di-estado-dot" />
-          <div>
-            <span className="di-estado-valor">{cargando ? '—' : stats?.arrendada}</span>
-            <span className="di-estado-label">Arrendadas</span>
+          <div className="di-estado-card di-estado-card--arrendada" onClick={() => navigate('/dashboard/editar?estado=arrendada')} style={{cursor:'pointer'}}>
+            <span className="di-estado-dot" />
+            <div>
+              <span className="di-estado-valor">{stats?.arrendada}</span>
+              <span className="di-estado-label">Arrendadas</span>
+            </div>
           </div>
-        </div>
-        <div className="di-estado-card di-estado-card--vendida" onClick={() => navigate('/dashboard/editar?estado=vendida')} style={{cursor:'pointer'}}>
-          <span className="di-estado-dot" />
-          <div>
-            <span className="di-estado-valor">{cargando ? '—' : stats?.vendida}</span>
-            <span className="di-estado-label">Vendidas</span>
+          <div className="di-estado-card di-estado-card--vendida" onClick={() => navigate('/dashboard/editar?estado=vendida')} style={{cursor:'pointer'}}>
+            <span className="di-estado-dot" />
+            <div>
+              <span className="di-estado-valor">{stats?.vendida}</span>
+              <span className="di-estado-label">Vendidas</span>
+            </div>
           </div>
-        </div>
-        <div className="di-estado-card di-estado-card--corredor" onClick={() => navigate('/dashboard/editar?corredor=con')} style={{cursor:'pointer'}}>
-          <span className="di-estado-dot" />
-          <div>
-            <span className="di-estado-valor">{cargando ? '—' : stats?.con_corredor}</span>
-            <span className="di-estado-label">Con corredor</span>
+          <div className="di-estado-card di-estado-card--corredor" onClick={() => navigate('/dashboard/editar?corredor=con')} style={{cursor:'pointer'}}>
+            <span className="di-estado-dot" />
+            <div>
+              <span className="di-estado-valor">{stats?.con_corredor}</span>
+              <span className="di-estado-label">Con corredor</span>
+            </div>
           </div>
-        </div>
-        <div className="di-estado-card di-estado-card--sin-corredor" onClick={() => navigate('/dashboard/editar?corredor=sin')} style={{cursor:'pointer'}}>
-          <span className="di-estado-dot" />
-          <div>
-            <span className="di-estado-valor">{cargando ? '—' : stats?.sin_corredor}</span>
-            <span className="di-estado-label">Sin corredor</span>
+          <div className="di-estado-card di-estado-card--sin-corredor" onClick={() => navigate('/dashboard/editar?corredor=sin')} style={{cursor:'pointer'}}>
+            <span className="di-estado-dot" />
+            <div>
+              <span className="di-estado-valor">{stats?.sin_corredor}</span>
+              <span className="di-estado-label">Sin corredor</span>
+            </div>
           </div>
-        </div>
+        </>)}
       </div>
 
       {/* Gráfico métricas */}
-      <GraficoMetricas propiedades={propiedades} />
+      <GraficoMetricas propiedades={propiedades} cargando={cargando} />
 
       {/* Accesos rápidos */}
       <div className="di-accesos">

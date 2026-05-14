@@ -86,7 +86,6 @@ function Terrenos() {
               <option value="desc">Precio: mayor a menor ↓</option>
             </select>
           </div>
-
           {cargando ? (
             <Row>{Array(9).fill(0).map((_, i) => <Col xs={12} sm={6} md={4} key={i} className="mb-4"><SkTarjetaCard /></Col>)}</Row>
           ) : pagItems.length > 0 ? (
@@ -94,14 +93,12 @@ function Terrenos() {
           ) : (
             <div className="text-center py-5"><p className="text-muted">No hay terrenos con los filtros seleccionados.</p></div>
           )}
-
           {totalPags > 1 && (
             <div className="paginador">
               <button className="pag-btn" onClick={() => setPagina(1)} disabled={pagina === 1}>«</button>
               <button className="pag-btn" onClick={() => setPagina(p => p - 1)} disabled={pagina === 1}>‹</button>
               {calcPaginas(totalPags, pagina).map((p, i) =>
-                p === '...'
-                  ? <span key={i} className="pag-ellipsis">…</span>
+                p === '...' ? <span key={i} className="pag-ellipsis">…</span>
                   : <button key={i} className={`pag-btn ${pagina === p ? 'active' : ''}`} onClick={() => setPagina(p)}>{p}</button>
               )}
               <button className="pag-btn" onClick={() => setPagina(p => p + 1)} disabled={pagina === totalPags}>›</button>

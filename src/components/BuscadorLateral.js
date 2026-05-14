@@ -20,25 +20,18 @@ const BuscadorLateral = ({ onFiltrar, contexto = {}, propiedades = [] }) => {
     estacionamiento: false,
   });
 
-  // Extraer regiones únicas desde las propiedades disponibles
-  const regiones = useMemo(() => {
-    const unicas = [...new Set(
-      propiedades.map(p => p.region).filter(Boolean)
-    )].sort();
-    return unicas;
-  }, [propiedades]);
+  const regiones = useMemo(() => (
+    [...new Set(propiedades.map(p => p.region).filter(Boolean))].sort()
+  ), [propiedades]);
 
-  // Cuando cambia la región seleccionada, extraer comunas de esa región
   useEffect(() => {
     if (!filtros.region) { setComunas([]); return; }
-    const unicas = [...new Set(
-      propiedades
-        .filter(p => p.region === filtros.region)
-        .map(p => p.comuna)
-        .filter(Boolean)
-    )].sort();
-    setComunas(unicas);
-  }, [filtros.region, propiedades]);
+    let base = propiedades.filter(p => p.region === filtros.region);
+    if (operacionFija === 'Arriendo') base = base.filter(p => p.categoria?.toLowerCase().includes('arriendo'));
+    if (operacionFija === 'Venta')    base = base.filter(p => p.categoria?.toLowerCase().includes('venta'));
+    if (filtros.tipoPropiedad) base = base.filter(p => p.categoria?.toLowerCase().includes(filtros.tipoPropiedad.toLowerCase()));
+    setComunas([...new Set(base.map(p => p.comuna).filter(Boolean))].sort());
+  }, [filtros.region, filtros.tipoPropiedad, operacionFija, propiedades]);
 
   const handleRegionChange = (e) => {
     setFiltros(prev => ({ ...prev, region: e.target.value, comuna: '' }));
@@ -46,22 +39,14 @@ const BuscadorLateral = ({ onFiltrar, contexto = {}, propiedades = [] }) => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFiltros(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    const extra = name === 'tipoPropiedad' ? { comuna: '' } : {};
+    setFiltros(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value, ...extra }));
   };
 
   const handleBuscar = () => { if (onFiltrar) onFiltrar(filtros); };
 
   const handleLimpiar = () => {
-    setFiltros({
-      operacion:       operacionFija,
-      tipoPropiedad:   tipoFijo,
-      region:          '',
-      comuna:          '',
-      precioDesde:     '',
-      precioHasta:     '',
-      moneda:          'CLP',
-      estacionamiento: false,
-    });
+    setFiltros({ operacion: operacionFija, tipoPropiedad: tipoFijo, region: '', comuna: '', precioDesde: '', precioHasta: '', moneda: 'CLP', estacionamiento: false });
     setComunas([]);
     if (onFiltrar) onFiltrar({});
   };
@@ -70,7 +55,6 @@ const BuscadorLateral = ({ onFiltrar, contexto = {}, propiedades = [] }) => {
     <div className="buscador-lateral">
       <h5 className="buscador-lateral__titulo">Buscador</h5>
 
-      {/* Operación — oculto si la página ya define la operación */}
       {!operacionFija && (
         <div className="buscador-lateral__campo">
           <select name="operacion" value={filtros.operacion} onChange={handleChange} className="buscador-lateral__select">
@@ -81,7 +65,6 @@ const BuscadorLateral = ({ onFiltrar, contexto = {}, propiedades = [] }) => {
         </div>
       )}
 
-      {/* Tipo propiedad — oculto si la página ya define el tipo */}
       {!tipoFijo && (
         <div className="buscador-lateral__campo">
           <select name="tipoPropiedad" value={filtros.tipoPropiedad} onChange={handleChange} className="buscador-lateral__select">
@@ -94,39 +77,21 @@ const BuscadorLateral = ({ onFiltrar, contexto = {}, propiedades = [] }) => {
         </div>
       )}
 
-      {/* Región — solo muestra regiones con propiedades */}
       <div className="buscador-lateral__campo">
-        <select
-          name="region"
-          value={filtros.region}
-          onChange={handleRegionChange}
-          className="buscador-lateral__select"
-          disabled={regiones.length === 0}
-        >
+        <select name="region" value={filtros.region} onChange={handleRegionChange} className="buscador-lateral__select" disabled={regiones.length === 0}>
           <option value="">Región</option>
           {regiones.map(r => <option key={r} value={r}>{r}</option>)}
         </select>
       </div>
 
-      {/* Comunas — solo muestra comunas con propiedades en la región elegida */}
       <div className="buscador-lateral__campo">
-        <select
-          name="comuna"
-          value={filtros.comuna}
-          onChange={handleChange}
-          disabled={!filtros.region || comunas.length === 0}
-          className="buscador-lateral__select"
-        >
+        <select name="comuna" value={filtros.comuna} onChange={handleChange} disabled={!filtros.region || comunas.length === 0} className="buscador-lateral__select">
           <option value="">Comunas</option>
           {comunas.map(c => <option key={c} value={c}>{c}</option>)}
         </select>
       </div>
 
-      {/* Búsqueda Avanzada toggle */}
-      <button
-        className="buscador-lateral__avanzado-toggle"
-        onClick={() => setAvanzadoAbierto(v => !v)}
-      >
+      <button className="buscador-lateral__avanzado-toggle" onClick={() => setAvanzadoAbierto(v => !v)}>
         <span>Búsqueda Avanzada</span>
         <FaChevronDown className={`buscador-lateral__chevron ${avanzadoAbierto ? 'open' : ''}`} />
       </button>
@@ -136,13 +101,11 @@ const BuscadorLateral = ({ onFiltrar, contexto = {}, propiedades = [] }) => {
           <p className="buscador-lateral__label">
             Precio &nbsp;
             <label className="buscador-lateral__radio-label">
-              <input type="radio" name="moneda" value="CLP" checked={filtros.moneda === 'CLP'} onChange={handleChange} />
-              &nbsp;$ Pesos
+              <input type="radio" name="moneda" value="CLP" checked={filtros.moneda === 'CLP'} onChange={handleChange} />&nbsp;$ Pesos
             </label>
             &nbsp;
             <label className="buscador-lateral__radio-label">
-              <input type="radio" name="moneda" value="UF" checked={filtros.moneda === 'UF'} onChange={handleChange} />
-              &nbsp;UF
+              <input type="radio" name="moneda" value="UF" checked={filtros.moneda === 'UF'} onChange={handleChange} />&nbsp;UF
             </label>
           </p>
           <div className="buscador-lateral__precio-row">

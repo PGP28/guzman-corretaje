@@ -38,8 +38,10 @@ function EnVenta() {
         setTodas(ventas);
         const params = new URLSearchParams(location.search);
         let r = [...ventas];
+        const tipo   = params.get('tipo');
         const region = params.get('region');
         const comuna = params.get('comuna');
+        if (tipo)   r = r.filter(p => p.categoria?.toLowerCase().includes(tipo.toLowerCase()));
         if (region) r = r.filter(p => p.region === region);
         if (comuna) r = r.filter(p => p.comuna === comuna);
         setFiltradas(r);
@@ -87,7 +89,6 @@ function EnVenta() {
               <option value="desc">Precio: mayor a menor ↓</option>
             </select>
           </div>
-
           {cargando ? (
             <Row>{Array(9).fill(0).map((_, i) => <Col xs={12} sm={6} md={4} key={i} className="mb-4"><SkTarjetaCard /></Col>)}</Row>
           ) : pagItems.length > 0 ? (
@@ -95,14 +96,12 @@ function EnVenta() {
           ) : (
             <div className="text-center py-5"><p className="text-muted">No hay propiedades con los filtros seleccionados.</p></div>
           )}
-
           {totalPags > 1 && (
             <div className="paginador">
               <button className="pag-btn" onClick={() => setPagina(1)} disabled={pagina === 1}>«</button>
               <button className="pag-btn" onClick={() => setPagina(p => p - 1)} disabled={pagina === 1}>‹</button>
               {calcPaginas(totalPags, pagina).map((p, i) =>
-                p === '...'
-                  ? <span key={i} className="pag-ellipsis">…</span>
+                p === '...' ? <span key={i} className="pag-ellipsis">…</span>
                   : <button key={i} className={`pag-btn ${pagina === p ? 'active' : ''}`} onClick={() => setPagina(p)}>{p}</button>
               )}
               <button className="pag-btn" onClick={() => setPagina(p => p + 1)} disabled={pagina === totalPags}>›</button>

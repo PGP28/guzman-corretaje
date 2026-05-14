@@ -24,11 +24,11 @@ const limpiarPrecio = p => parseFloat(String(p).replace(/[$\s.]/g, '').replace('
 
 function Arriendo() {
   const location = useLocation();
-  const [todas, setTodas]           = useState([]);
-  const [filtradas, setFiltradas]   = useState([]);
-  const [pagina, setPagina]         = useState(1);
-  const [cargando, setCargando]     = useState(true);
-  const [orden, setOrden]           = useState('');
+  const [todas, setTodas]         = useState([]);
+  const [filtradas, setFiltradas] = useState([]);
+  const [pagina, setPagina]       = useState(1);
+  const [cargando, setCargando]   = useState(true);
+  const [orden, setOrden]         = useState('');
 
   useEffect(() => {
     setCargando(true);
@@ -38,8 +38,10 @@ function Arriendo() {
         setTodas(arr);
         const params = new URLSearchParams(location.search);
         let r = [...arr];
+        const tipo   = params.get('tipo');
         const region = params.get('region');
         const comuna = params.get('comuna');
+        if (tipo)   r = r.filter(p => p.categoria?.toLowerCase().includes(tipo.toLowerCase()));
         if (region) r = r.filter(p => p.region === region);
         if (comuna) r = r.filter(p => p.comuna === comuna);
         setFiltradas(r);
@@ -50,7 +52,6 @@ function Arriendo() {
 
   const handleFiltrar = (f) => {
     let r = [...todas];
-    // tipoPropiedad busca dentro de la categoria (ej: 'Departamento' dentro de 'Venta de Departamentos')
     if (f.tipoPropiedad)   r = r.filter(p => p.categoria?.toLowerCase().includes(f.tipoPropiedad.toLowerCase()));
     if (f.region)          r = r.filter(p => p.region === f.region);
     if (f.comuna)          r = r.filter(p => p.comuna === f.comuna);
@@ -88,7 +89,6 @@ function Arriendo() {
               <option value="desc">Precio: mayor a menor ↓</option>
             </select>
           </div>
-
           {cargando ? (
             <Row>{Array(9).fill(0).map((_, i) => <Col xs={12} sm={6} md={4} key={i} className="mb-4"><SkTarjetaCard /></Col>)}</Row>
           ) : pagItems.length > 0 ? (
@@ -96,14 +96,12 @@ function Arriendo() {
           ) : (
             <div className="text-center py-5"><p className="text-muted">No hay propiedades con los filtros seleccionados.</p></div>
           )}
-
           {totalPags > 1 && (
             <div className="paginador">
               <button className="pag-btn" onClick={() => setPagina(1)} disabled={pagina === 1}>«</button>
               <button className="pag-btn" onClick={() => setPagina(p => p - 1)} disabled={pagina === 1}>‹</button>
               {calcPaginas(totalPags, pagina).map((p, i) =>
-                p === '...'
-                  ? <span key={i} className="pag-ellipsis">…</span>
+                p === '...' ? <span key={i} className="pag-ellipsis">…</span>
                   : <button key={i} className={`pag-btn ${pagina === p ? 'active' : ''}`} onClick={() => setPagina(p)}>{p}</button>
               )}
               <button className="pag-btn" onClick={() => setPagina(p => p + 1)} disabled={pagina === totalPags}>›</button>

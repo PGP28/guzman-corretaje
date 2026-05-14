@@ -1,72 +1,65 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import './BuscadorLateral.css';
 
-import API_BASE_URL from '../config';
+const BuscadorLateral = ({ onFiltrar, contexto = {}, propiedades = [] }) => {
+  const operacionFija = contexto.operacion || '';
+  const tipoFijo      = contexto.tipoFijo  || '';
 
-const API_URL = `${API_BASE_URL}/api`;
-
-const BuscadorLateral = ({ onFiltrar }) => {
-  const [ubicaciones, setUbicaciones] = useState({});
-  const [regiones, setRegiones] = useState([]);
-  const [comunas, setComunas] = useState([]);
+  const [comunas, setComunas]           = useState([]);
   const [avanzadoAbierto, setAvanzadoAbierto] = useState(false);
 
   const [filtros, setFiltros] = useState({
-    operacion: '',
-    tipoPropiedad: '',
-    region: '',
-    comuna: '',
-    precioDesde: '',
-    precioHasta: '',
-    moneda: 'CLP',
-    codigo: '',
-    amoblado: false,
-    piscina: false,
+    operacion:       operacionFija,
+    tipoPropiedad:   tipoFijo,
+    region:          '',
+    comuna:          '',
+    precioDesde:     '',
+    precioHasta:     '',
+    moneda:          'CLP',
     estacionamiento: false,
   });
 
+  // Extraer regiones únicas desde las propiedades disponibles
+  const regiones = useMemo(() => {
+    const unicas = [...new Set(
+      propiedades.map(p => p.region).filter(Boolean)
+    )].sort();
+    return unicas;
+  }, [propiedades]);
+
+  // Cuando cambia la región seleccionada, extraer comunas de esa región
   useEffect(() => {
-    fetch(`${API_URL}/ubicaciones`)
-      .then((r) => r.json())
-      .then((data) => {
-        setUbicaciones(data);
-        setRegiones(Object.keys(data));
-      })
-      .catch(() => {});
-  }, []);
+    if (!filtros.region) { setComunas([]); return; }
+    const unicas = [...new Set(
+      propiedades
+        .filter(p => p.region === filtros.region)
+        .map(p => p.comuna)
+        .filter(Boolean)
+    )].sort();
+    setComunas(unicas);
+  }, [filtros.region, propiedades]);
 
   const handleRegionChange = (e) => {
-    const region = e.target.value;
-    setFiltros((prev) => ({ ...prev, region, comuna: '' }));
-    const ciudades = ubicaciones[region] || {};
-    setComunas(Object.values(ciudades).flat());
+    setFiltros(prev => ({ ...prev, region: e.target.value, comuna: '' }));
   };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFiltros((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
+    setFiltros(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
 
-  const handleBuscar = () => {
-    if (onFiltrar) onFiltrar(filtros);
-  };
+  const handleBuscar = () => { if (onFiltrar) onFiltrar(filtros); };
 
   const handleLimpiar = () => {
     setFiltros({
-      operacion: '',
-      tipoPropiedad: '',
-      region: '',
-      comuna: '',
-      precioDesde: '',
-      precioHasta: '',
-      moneda: 'CLP',
-      codigo: '',
-      amoblado: false,
-      piscina: false,
+      operacion:       operacionFija,
+      tipoPropiedad:   tipoFijo,
+      region:          '',
+      comuna:          '',
+      precioDesde:     '',
+      precioHasta:     '',
+      moneda:          'CLP',
       estacionamiento: false,
     });
     setComunas([]);
@@ -77,50 +70,62 @@ const BuscadorLateral = ({ onFiltrar }) => {
     <div className="buscador-lateral">
       <h5 className="buscador-lateral__titulo">Buscador</h5>
 
-      {/* Operación */}
-      <div className="buscador-lateral__campo">
-        <select name="operacion" value={filtros.operacion} onChange={handleChange} className="buscador-lateral__select">
-          <option value="">Venta / Arriendo</option>
-          <option value="Venta">Venta</option>
-          <option value="Arriendo">Arriendo</option>
-        </select>
-      </div>
+      {/* Operación — oculto si la página ya define la operación */}
+      {!operacionFija && (
+        <div className="buscador-lateral__campo">
+          <select name="operacion" value={filtros.operacion} onChange={handleChange} className="buscador-lateral__select">
+            <option value="">Venta / Arriendo</option>
+            <option value="Venta">Venta</option>
+            <option value="Arriendo">Arriendo</option>
+          </select>
+        </div>
+      )}
 
-      {/* Tipo propiedad */}
-      <div className="buscador-lateral__campo">
-        <select name="tipoPropiedad" value={filtros.tipoPropiedad} onChange={handleChange} className="buscador-lateral__select">
-          <option value="">Tipo Propiedad</option>
-          <option value="Casa">Casa</option>
-          <option value="Departamento">Departamento</option>
-          <option value="Terreno">Terreno</option>
-          <option value="Oficina">Oficina</option>
-        </select>
-      </div>
+      {/* Tipo propiedad — oculto si la página ya define el tipo */}
+      {!tipoFijo && (
+        <div className="buscador-lateral__campo">
+          <select name="tipoPropiedad" value={filtros.tipoPropiedad} onChange={handleChange} className="buscador-lateral__select">
+            <option value="">Tipo Propiedad</option>
+            <option value="Casa">Casa</option>
+            <option value="Departamento">Departamento</option>
+            <option value="Terreno">Terreno</option>
+            <option value="Oficina">Oficina</option>
+          </select>
+        </div>
+      )}
 
-      {/* Región */}
+      {/* Región — solo muestra regiones con propiedades */}
       <div className="buscador-lateral__campo">
-        <select name="region" value={filtros.region} onChange={handleRegionChange} className="buscador-lateral__select">
+        <select
+          name="region"
+          value={filtros.region}
+          onChange={handleRegionChange}
+          className="buscador-lateral__select"
+          disabled={regiones.length === 0}
+        >
           <option value="">Región</option>
-          {regiones.map((r) => (
-            <option key={r} value={r}>{r}</option>
-          ))}
+          {regiones.map(r => <option key={r} value={r}>{r}</option>)}
         </select>
       </div>
 
-      {/* Comunas */}
+      {/* Comunas — solo muestra comunas con propiedades en la región elegida */}
       <div className="buscador-lateral__campo">
-        <select name="comuna" value={filtros.comuna} onChange={handleChange} disabled={!filtros.region} className="buscador-lateral__select">
+        <select
+          name="comuna"
+          value={filtros.comuna}
+          onChange={handleChange}
+          disabled={!filtros.region || comunas.length === 0}
+          className="buscador-lateral__select"
+        >
           <option value="">Comunas</option>
-          {comunas.map((c) => (
-            <option key={c} value={c}>{c}</option>
-          ))}
+          {comunas.map(c => <option key={c} value={c}>{c}</option>)}
         </select>
       </div>
 
       {/* Búsqueda Avanzada toggle */}
       <button
         className="buscador-lateral__avanzado-toggle"
-        onClick={() => setAvanzadoAbierto((v) => !v)}
+        onClick={() => setAvanzadoAbierto(v => !v)}
       >
         <span>Búsqueda Avanzada</span>
         <FaChevronDown className={`buscador-lateral__chevron ${avanzadoAbierto ? 'open' : ''}`} />
@@ -128,7 +133,6 @@ const BuscadorLateral = ({ onFiltrar }) => {
 
       {avanzadoAbierto && (
         <div className="buscador-lateral__avanzado">
-          {/* Precio */}
           <p className="buscador-lateral__label">
             Precio &nbsp;
             <label className="buscador-lateral__radio-label">
@@ -142,46 +146,9 @@ const BuscadorLateral = ({ onFiltrar }) => {
             </label>
           </p>
           <div className="buscador-lateral__precio-row">
-            <input
-              type="number"
-              name="precioDesde"
-              value={filtros.precioDesde}
-              onChange={handleChange}
-              placeholder="Desde"
-              className="buscador-lateral__input"
-            />
-            <input
-              type="number"
-              name="precioHasta"
-              value={filtros.precioHasta}
-              onChange={handleChange}
-              placeholder="Hasta"
-              className="buscador-lateral__input"
-            />
+            <input type="number" name="precioDesde" value={filtros.precioDesde} onChange={handleChange} placeholder="Desde" className="buscador-lateral__input" />
+            <input type="number" name="precioHasta" value={filtros.precioHasta} onChange={handleChange} placeholder="Hasta" className="buscador-lateral__input" />
           </div>
-
-          {/* Código */}
-          <p className="buscador-lateral__label">Buscar por código</p>
-          <div className="buscador-lateral__campo">
-            <input
-              type="text"
-              name="codigo"
-              value={filtros.codigo}
-              onChange={handleChange}
-              placeholder="Código"
-              className="buscador-lateral__input buscador-lateral__input--full"
-            />
-          </div>
-
-          {/* Checkboxes */}
-          <label className="buscador-lateral__check-label">
-            <input type="checkbox" name="amoblado" checked={filtros.amoblado} onChange={handleChange} />
-            &nbsp; Amoblado
-          </label>
-          <label className="buscador-lateral__check-label">
-            <input type="checkbox" name="piscina" checked={filtros.piscina} onChange={handleChange} />
-            &nbsp; Piscina
-          </label>
           <label className="buscador-lateral__check-label">
             <input type="checkbox" name="estacionamiento" checked={filtros.estacionamiento} onChange={handleChange} />
             &nbsp; Estacionamiento
@@ -189,13 +156,8 @@ const BuscadorLateral = ({ onFiltrar }) => {
         </div>
       )}
 
-      {/* Botones */}
-      <button className="buscador-lateral__btn-buscar" onClick={handleBuscar}>
-        Buscar
-      </button>
-      <button className="buscador-lateral__btn-limpiar" onClick={handleLimpiar}>
-        Limpiar filtros
-      </button>
+      <button className="buscador-lateral__btn-buscar" onClick={handleBuscar}>Buscar</button>
+      <button className="buscador-lateral__btn-limpiar" onClick={handleLimpiar}>Limpiar filtros</button>
     </div>
   );
 };

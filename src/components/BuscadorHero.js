@@ -1,97 +1,85 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './BuscadorHero.css';
-
+import axios from 'axios';
 import API_BASE_URL from '../config';
-
-const API_URL = `${API_BASE_URL}/api`;
+import './BuscadorHero.css';
 
 const BuscadorHero = () => {
   const navigate = useNavigate();
-  const [ubicaciones, setUbicaciones] = useState({});
-  const [regiones, setRegiones] = useState([]);
-  const [comunas, setComunas] = useState([]);
+  const [propiedades, setPropiedades] = useState([]);
+  const [comunas, setComunas]         = useState([]);
 
   const [filtros, setFiltros] = useState({
-    operacion: '',       // Comprar / Arrendar
-    tipoPropiedad: '',   // Casa, Departamento, Terreno
-    region: '',
-    comuna: '',
+    operacion:     '',
+    tipoPropiedad: '',
+    region:        '',
+    comuna:        '',
   });
 
+  // Cargar todas las propiedades para extraer regiones/comunas reales
   useEffect(() => {
-    fetch(`${API_URL}/ubicaciones`)
-      .then((r) => r.json())
-      .then((data) => {
-        setUbicaciones(data);
-        setRegiones(Object.keys(data));
-      })
+    axios.get(`${API_BASE_URL}/api/properties`)
+      .then(res => setPropiedades(res.data))
       .catch(() => {});
   }, []);
 
-  const handleRegionChange = (e) => {
-    const region = e.target.value;
-    setFiltros((prev) => ({ ...prev, region, comuna: '' }));
+  // Regiones únicas con propiedades
+  const regiones = useMemo(() => (
+    [...new Set(propiedades.map(p => p.region).filter(Boolean))].sort()
+  ), [propiedades]);
 
-    // Aplanar todas las comunas de todas las ciudades de esa región
-    const ciudades = ubicaciones[region] || {};
-    const todasComunas = Object.values(ciudades).flat();
-    setComunas(todasComunas);
-  };
+  // Comunas según región seleccionada
+  useEffect(() => {
+    if (!filtros.region) { setComunas([]); return; }
+    const unicas = [...new Set(
+      propiedades.filter(p => p.region === filtros.region).map(p => p.comuna).filter(Boolean)
+    )].sort();
+    setComunas(unicas);
+  }, [filtros.region, propiedades]);
 
   const handleChange = (e) => {
-    setFiltros((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setFiltros(prev => ({
+      ...prev,
+      [name]: value,
+      ...(name === 'region' ? { comuna: '' } : {}),
+    }));
   };
 
   const handleBuscar = () => {
     const params = new URLSearchParams();
-    if (filtros.tipoPropiedad) params.set('tipo', filtros.tipoPropiedad);
-    if (filtros.region) params.set('region', filtros.region);
-    if (filtros.comuna) params.set('comuna', filtros.comuna);
+    if (filtros.tipoPropiedad) params.set('tipo',   filtros.tipoPropiedad);
+    if (filtros.region)        params.set('region', filtros.region);
+    if (filtros.comuna)        params.set('comuna', filtros.comuna);
 
-    // Redirigir según operación y tipo
     let destino;
-    if (filtros.tipoPropiedad === 'Terreno') {
-      destino = '/Terrenos';
-    } else if (filtros.tipoPropiedad === 'Oficina') {
-      destino = '/Oficinas';
-    } else if (filtros.operacion === 'Arrendar') {
-      destino = '/Arriendo';
-    } else {
-      destino = '/EnVenta';
-    }
+    if (filtros.tipoPropiedad === 'Terreno')       destino = '/Terrenos';
+    else if (filtros.tipoPropiedad === 'Oficina')  destino = '/Oficinas';
+    else if (filtros.operacion === 'Arrendar')     destino = '/Arriendo';
+    else                                           destino = '/EnVenta';
+
     navigate(`${destino}?${params.toString()}`);
   };
 
   return (
     <div className="buscador-hero">
-      {/* Fila de pills — Comprar/Arrendar | Tipo | Región */}
+      {/* Comprar / Arrendar */}
       <div className="buscador-hero__pills">
         <button
           className={`buscador-pill ${filtros.operacion === 'Comprar' ? 'buscador-pill--active' : ''}`}
-          onClick={() => setFiltros((prev) => ({ ...prev, operacion: 'Comprar' }))}
-        >
-          Comprar
-        </button>
+          onClick={() => setFiltros(prev => ({ ...prev, operacion: 'Comprar' }))}
+        >Comprar</button>
         <span className="buscador-pill-sep">|</span>
         <button
           className={`buscador-pill ${filtros.operacion === 'Arrendar' ? 'buscador-pill--active' : ''}`}
-          onClick={() => setFiltros((prev) => ({ ...prev, operacion: 'Arrendar' }))}
-        >
-          Arrendar
-        </button>
+          onClick={() => setFiltros(prev => ({ ...prev, operacion: 'Arrendar' }))}
+        >Arrendar</button>
       </div>
 
-      {/* Barra de búsqueda principal */}
+      {/* Barra de búsqueda */}
       <div className="buscador-hero__bar">
-        {/* Tipo propiedad */}
         <div className="buscador-hero__campo">
-          <select
-            name="tipoPropiedad"
-            value={filtros.tipoPropiedad}
-            onChange={handleChange}
-            className="buscador-hero__select"
-          >
+          <select name="tipoPropiedad" value={filtros.tipoPropiedad} onChange={handleChange} className="buscador-hero__select">
             <option value="">Tipo propiedad</option>
             <option value="Casa">Casa</option>
             <option value="Departamento">Departamento</option>
@@ -102,43 +90,23 @@ const BuscadorHero = () => {
 
         <div className="buscador-hero__divider" />
 
-        {/* Región */}
         <div className="buscador-hero__campo">
-          <select
-            name="region"
-            value={filtros.region}
-            onChange={handleRegionChange}
-            className="buscador-hero__select"
-          >
+          <select name="region" value={filtros.region} onChange={handleChange} className="buscador-hero__select">
             <option value="">Región</option>
-            {regiones.map((r) => (
-              <option key={r} value={r}>{r}</option>
-            ))}
+            {regiones.map(r => <option key={r} value={r}>{r}</option>)}
           </select>
         </div>
 
         <div className="buscador-hero__divider" />
 
-        {/* Comuna */}
         <div className="buscador-hero__campo">
-          <select
-            name="comuna"
-            value={filtros.comuna}
-            onChange={handleChange}
-            disabled={!filtros.region}
-            className="buscador-hero__select"
-          >
+          <select name="comuna" value={filtros.comuna} onChange={handleChange} disabled={!filtros.region} className="buscador-hero__select">
             <option value="">Comuna</option>
-            {comunas.map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
+            {comunas.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
 
-        {/* Botón buscar */}
-        <button className="buscador-hero__btn" onClick={handleBuscar}>
-          BUSCAR
-        </button>
+        <button className="buscador-hero__btn" onClick={handleBuscar}>BUSCAR</button>
       </div>
     </div>
   );

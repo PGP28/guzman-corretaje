@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { FaEnvelope, FaWhatsapp, FaUserCheck, FaClock, FaCheck, FaInbox } from 'react-icons/fa';
+import API_BASE_URL from '../../config';
 import './SeccionDashboard.css';
 import './Solicitudes.css';
 
-const STORAGE_KEY = 'guzman_solicitudes';
-
-// Lee solicitudes del localStorage (las escribe el formulario de Contactanos)
-const leerSolicitudes = () => {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-  } catch { return []; }
-};
+const API = `${API_BASE_URL}/api`;
 
 const ESTADOS_SOL = {
   nueva:       { label: 'Nueva',        color: '#1565c0', bg: '#e3f2fd', icon: <FaInbox /> },
@@ -25,49 +19,52 @@ const Solicitudes = ({ rol = 'admin', userName }) => {
   const [seleccionada, setSeleccionada] = useState(null);
   const [corredor, setCorredor]         = useState('');
 
-  useEffect(() => {
-    const todas = leerSolicitudes();
-    // Corredor solo ve sus solicitudes asignadas
-    if (esCorrector && userName) {
-      const primerNombre = userName.split(' ')[0].toLowerCase();
-      setSolicitudes(todas.filter(s => s.corredor?.toLowerCase().includes(primerNombre)));
-    } else {
-      setSolicitudes(todas);
-    }
-    const onStorage = () => {
-      const todas2 = leerSolicitudes();
+  const cargar = async () => {
+    try {
+      const res = await fetch(`${API}/solicitudes`);
+      const data = await res.json();
       if (esCorrector && userName) {
-        const primerNombre = userName.split(' ')[0].toLowerCase();
-        setSolicitudes(todas2.filter(s => s.corredor?.toLowerCase().includes(primerNombre)));
+        const nombre = userName.split(' ')[0].toLowerCase();
+        setSolicitudes(data.filter(s => s.corredor?.toLowerCase().includes(nombre)));
       } else {
-        setSolicitudes(todas2);
+        setSolicitudes(data);
       }
-    };
-    window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
-  }, []);
-
-  const guardar = (lista) => {
-    setSolicitudes(lista);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
+    } catch { setSolicitudes([]); }
   };
 
-  const handleCambiarEstado = (id, nuevoEstado) => {
-    guardar(solicitudes.map(s => s.id === id ? { ...s, estado: nuevoEstado } : s));
+  useEffect(() => { cargar(); }, []);
+
+  const handleCambiarEstado = async (id, nuevoEstado) => {
+    try {
+      await fetch(`${API}/solicitudes/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ estado: nuevoEstado }),
+      });
+      await cargar();
+    } catch {}
   };
 
-  const handleAsignar = (id) => {
+  const handleAsignar = async (id) => {
     if (!corredor.trim()) return;
-    guardar(solicitudes.map(s =>
-      s.id === id ? { ...s, corredor: corredor.trim(), estado: 'en_atencion' } : s
-    ));
-    setCorredor('');
-    setSeleccionada(null);
+    try {
+      await fetch(`${API}/solicitudes/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ corredor: corredor.trim(), estado: 'en_atencion' }),
+      });
+      setCorredor('');
+      setSeleccionada(null);
+      await cargar();
+    } catch {}
   };
 
-  const handleEliminar = (id) => {
-    guardar(solicitudes.filter(s => s.id !== id));
-    if (seleccionada?.id === id) setSeleccionada(null);
+  const handleEliminar = async (id) => {
+    try {
+      await fetch(`${API}/solicitudes/${id}`, { method: 'DELETE' });
+      if (seleccionada?.id === id) setSeleccionada(null);
+      await cargar();
+    } catch {}
   };
 
   const filtradas = filtro === 'todas'
@@ -233,8 +230,7 @@ const Solicitudes = ({ rol = 'admin', userName }) => {
       )}
 
       <div className="gc-nota" style={{ marginTop: 16 }}>
-        💡 Las solicitudes se reciben desde el formulario de <strong>Contáctanos</strong> y <strong>DetallesPropiedades</strong> del sitio web.
-        En fase 2 se conectarán con la base de datos.
+        💡 Las solicitudes se reciben desde los formularios de <strong>Contáctanos</strong> y <strong>¡Quiero vender!</strong> del sitio web.
       </div>
     </div>
   );

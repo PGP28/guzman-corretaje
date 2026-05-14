@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Form } from 'react-bootstrap';
 import { FaHome, FaHandshake, FaChartLine, FaClock } from 'react-icons/fa';
 import logoVender from '../assets/images/LOGO_PNG-16.png';
+import API_BASE_URL from '../config';
 import './QuieroVender.css';
+
+const API = `${API_BASE_URL}/api`;
 
 const beneficios = [
   { icono: <FaHome />, titulo: 'Valoración gratuita', texto: 'Tasamos tu propiedad sin costo con agentes expertos en el mercado chileno.' },
@@ -19,11 +22,25 @@ function QuieroVender() {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const msg = encodeURIComponent(
       `Hola, soy ${formData.nombre}. Quiero vender mi propiedad (${formData.tipoPropiedad}). ${formData.mensaje} Mi contacto: ${formData.email} / ${formData.telefono}`
     );
+    try {
+      await fetch(`${API}/solicitudes`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre:         formData.nombre,
+          email:          formData.email,
+          telefono:       formData.telefono,
+          mensaje:        formData.mensaje,
+          tipo_propiedad: formData.tipoPropiedad,
+          origen:         'Quiero Vender',
+        }),
+      });
+    } catch { /* continuar aunque falle el guardado */ }
     window.open(`https://wa.me/+56952389494?text=${msg}`, '_blank');
     setEnviado(true);
   };

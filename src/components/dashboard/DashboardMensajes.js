@@ -192,7 +192,10 @@ const DashboardMensajes = ({ userName }) => {
                     </div>
                     <div className="dm-conv-bottom">
                       <span className="dm-conv-preview">
-                        {conv.ultimo_mensaje || 'Sin mensajes aún'}
+                        {conv.ultimo_de === 'corredor'
+                          ? <><span className="dm-conv-yo">{conv.ultimo_autor || 'Corredor'}:</span> {conv.ultimo_mensaje}</>
+                          : conv.ultimo_mensaje || 'Sin mensajes aún'
+                        }
                       </span>
                       {conv.sin_leer > 0 && (
                         <span className="dm-conv-badge">{conv.sin_leer}</span>

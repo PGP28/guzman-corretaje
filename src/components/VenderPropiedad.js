@@ -25,7 +25,7 @@ const VenderPropiedad = () => {
           {/* Botón CTA */}
           <Col xs={12} md={4} lg={3} className="text-center text-md-end d-flex align-items-center justify-content-center justify-content-md-end">
             <a
-              href="https://wa.me/+56952389494?text=Hola,%20quiero%20vender%20mi%20propiedad%20y%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n."
+              href="https://wa.me/+56946433583?text=Hola,%20quiero%20vender%20mi%20propiedad%20y%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n."
               target="_blank"
               rel="noopener noreferrer"
               className="vender-btn"

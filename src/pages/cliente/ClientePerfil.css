@@ -1,0 +1,78 @@
+/* ══════════════════════════════════════════════
+   CLIENTE PERFIL — Paleta morada Guzmán
+══════════════════════════════════════════════ */
+.cpf-page { display: flex; flex-direction: column; gap: 20px; max-width: 680px; }
+
+.cpf-header { display: flex; align-items: center; gap: 20px; background: linear-gradient(135deg, #3f1b86, #5529aa); border-radius: 16px; padding: 24px 28px; color: #fff; }
+.cpf-avatar-wrap { position: relative; flex-shrink: 0; }
+.cpf-avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,0.4); }
+.cpf-avatar-placeholder { width: 72px; height: 72px; border-radius: 50%; background: rgba(255,255,255,0.25); color: #fff; font-weight: 800; font-size: 28px; display: flex; align-items: center; justify-content: center; border: 3px solid rgba(255,255,255,0.3); }
+.cpf-avatar-badge { position: absolute; bottom: 2px; right: 2px; width: 20px; height: 20px; border-radius: 50%; background: #2e7d32; color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; }
+.cpf-nombre { color: #fff; font-weight: 800; font-size: 22px; margin: 0 0 2px; }
+.cpf-username { color: rgba(255,255,255,0.75); font-size: 14px; margin: 0 0 4px; font-weight: 500; }
+.cpf-rol { background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.9); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; display: inline-block; }
+
+.cpf-banner { display: flex; align-items: flex-start; gap: 14px; background: #fff8e8; border: 1px solid #ffe49a; border-radius: 14px; padding: 16px 20px; }
+.cpf-banner-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+.cpf-banner strong { display: block; font-size: 14px; font-weight: 700; color: #b45309; margin-bottom: 4px; }
+.cpf-banner p { font-size: 13px; color: #855a15; margin: 0; line-height: 1.5; }
+.cpf-banner-btn { flex-shrink: 0; background: #b45309; color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; align-self: center; transition: background 0.2s; }
+.cpf-banner-btn:hover { background: #92400e; }
+
+.cpf-card { background: #fff; border: 1px solid #ede8fa; border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(63,27,134,0.05); }
+.cpf-card--info { background: #faf8ff; }
+.cpf-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.cpf-card-titulo { font-size: 16px; font-weight: 700; color: #3f1b86; margin: 0; }
+
+.cpf-btn-editar { display: flex; align-items: center; gap: 6px; background: #f4f0ff; border: 1.5px solid #d5c8ff; border-radius: 8px; color: #5529aa; font-size: 13px; font-weight: 600; padding: 6px 14px; cursor: pointer; transition: all 0.2s; }
+.cpf-btn-editar:hover { background: #ede8fa; border-color: #8a60da; }
+.cpf-btn-cerrar { background: none; border: none; color: #aaa; font-size: 18px; cursor: pointer; padding: 4px; transition: color 0.2s; }
+.cpf-btn-cerrar:hover { color: #e53935; }
+
+.cpf-info-grid { display: flex; flex-direction: column; gap: 4px; }
+.cpf-info-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 10px; background: #faf8ff; border: 1px solid #f0ebff; position: relative; }
+.cpf-info-item--vacio { background: #fff9f0; border-color: #fde8c0; }
+.cpf-info-icon { width: 36px; height: 36px; border-radius: 50%; background: #ede8fa; color: #5529aa; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+.cpf-info-icon--google { background: #fce8e8; color: #db4437; }
+.cpf-info-item > div { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.cpf-info-label { font-size: 11px; color: #999; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+.cpf-info-valor { font-size: 14px; font-weight: 600; color: #2d1060; word-break: break-all; }
+.cpf-sin-dato { color: #bbb; font-style: italic; font-weight: 400; font-size: 13px; }
+.cpf-info-check { color: #2e7d32; font-size: 16px; flex-shrink: 0; }
+
+.cpf-form { display: flex; flex-direction: column; gap: 16px; }
+.cpf-campo { display: flex; flex-direction: column; gap: 6px; }
+.cpf-campo label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: #4a3080; }
+.cpf-label-icon { font-size: 13px; color: #8a60da; }
+.cpf-label-icon--google { color: #db4437; }
+.cpf-input { border: 1.5px solid #d5c8ff; border-radius: 10px; padding: 11px 14px; font-size: 14px; color: #2d1060; outline: none; transition: border-color 0.2s, box-shadow 0.2s; background: #faf8ff; width: 100%; box-sizing: border-box; }
+.cpf-input:focus { border-color: #8a60da; box-shadow: 0 0 0 3px rgba(138,96,218,0.12); background: #fff; }
+.cpf-gmail-row { display: flex; gap: 8px; align-items: stretch; }
+.cpf-input--gmail { flex: 1; }
+.cpf-btn-google { display: flex; align-items: center; gap: 6px; background: #fff; border: 1.5px solid #db4437; color: #db4437; border-radius: 10px; padding: 10px 14px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: all 0.2s; flex-shrink: 0; }
+.cpf-btn-google:hover { background: #db4437; color: #fff; }
+.cpf-campo-hint { font-size: 11px; color: #aaa; line-height: 1.4; }
+.cpf-mensaje { border-radius: 10px; padding: 11px 14px; font-size: 13px; }
+.cpf-exito { background: #f0fff4; border: 1px solid #a3e6b8; color: #1a7a3a; border-radius: 10px; padding: 11px 14px; font-size: 13px; }
+.cpf-form-btns { display: flex; gap: 10px; justify-content: flex-end; margin-top: 4px; }
+.cpf-btn-cancelar { background: #fff; border: 1.5px solid #d5d5d5; color: #666; border-radius: 10px; padding: 10px 20px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.cpf-btn-cancelar:hover { border-color: #aaa; background: #f9f9f9; }
+.cpf-btn-guardar { display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #3f1b86, #5529aa); color: #fff; border: none; border-radius: 10px; padding: 10px 22px; font-size: 14px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; }
+.cpf-btn-guardar:hover:not(:disabled) { opacity: 0.9; }
+.cpf-btn-guardar:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.cpf-beneficios { display: flex; flex-direction: column; gap: 16px; margin-top: 12px; }
+.cpf-beneficio { display: flex; align-items: flex-start; gap: 14px; }
+.cpf-beneficio-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+.cpf-beneficio strong { display: block; font-size: 14px; font-weight: 700; color: #3f1b86; margin-bottom: 4px; }
+.cpf-beneficio p { font-size: 13px; color: #666; margin: 0; line-height: 1.5; }
+
+@media (max-width: 767px) {
+  .cpf-header { flex-direction: column; text-align: center; padding: 20px; }
+  .cpf-banner { flex-direction: column; gap: 10px; }
+  .cpf-banner-btn { align-self: flex-start; }
+  .cpf-gmail-row { flex-direction: column; }
+  .cpf-btn-google { width: 100%; justify-content: center; }
+  .cpf-form-btns { flex-direction: column-reverse; }
+  .cpf-btn-cancelar, .cpf-btn-guardar { width: 100%; justify-content: center; }
+}

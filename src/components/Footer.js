@@ -69,8 +69,8 @@ const Footer = () => (
             <ul className="footer-lista">
               <li className="footer-contacto-item">
                 <FaWhatsapp className="footer-icon" />
-                <a href="https://wa.me/+56952389494" target="_blank" rel="noopener noreferrer" className="footer-link">
-                  +56 9 5238 9494
+                <a href="https://wa.me/+56946433583" target="_blank" rel="noopener noreferrer" className="footer-link">
+                  +56 9 4643 3583
                 </a>
               </li>
               <li className="footer-contacto-item">

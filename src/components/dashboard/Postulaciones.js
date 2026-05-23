@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaDownload, FaEye, FaTrash, FaEnvelope, FaPhone, FaFilePdf, FaImage, FaFileAlt, FaExternalLinkAlt, FaTimes } from 'react-icons/fa';
+import { FaDownload, FaEye, FaTrash, FaEnvelope, FaPhone, FaFilePdf, FaImage, FaFileAlt, FaTimes } from 'react-icons/fa';
 import API_BASE_URL from '../../config';
 import './SeccionDashboard.css';
 
@@ -19,7 +19,13 @@ const Postulaciones = () => {
   const [confirmDel,    setConfirmDel]    = useState(null);
   const [cargando,      setCargando]      = useState(true);
   const [msg,           setMsg]           = useState('');
-  const [modalFoto,     setModalFoto]     = useState(null); // URL de foto a mostrar en modal
+  const [modalFoto,       setModalFoto]       = useState(null);
+  const [mensajeExpandido, setMensajeExpandido] = useState(false);
+
+  const handleSeleccionar = (p) => {
+    setSeleccionada(p);
+    setMensajeExpandido(false);
+  };
 
   useEffect(() => { cargar(); }, []);
 
@@ -62,9 +68,9 @@ const Postulaciones = () => {
 
   const formatFecha = (iso) => {
     if (!iso) return '—';
-    return new Date(iso).toLocaleDateString('es-CL', {
+    return new Date(iso).toLocaleString('es-CL', {
       day: '2-digit', month: '2-digit', year: 'numeric',
-      hour: '2-digit', minute: '2-digit'
+      hour: '2-digit', minute: '2-digit', hour12: false
     });
   };
 
@@ -101,25 +107,46 @@ const Postulaciones = () => {
             </div>
           </div>
           <div className="sd-card-body">
-            <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', justifyContent: 'center' }}>
               {seleccionada.foto_url && (
                 <img
                   src={seleccionada.foto_url}
                   alt={seleccionada.nombre}
                   onClick={() => setModalFoto(seleccionada.foto_url)}
-                  style={{ width: 120, height: 120, borderRadius: '50%', objectFit: 'cover', flexShrink: 0, border: '3px solid #e0d4ff', cursor: 'pointer' }}
+                  style={{ width: 120, height: 120, borderRadius: '50%', objectFit: 'cover', flexShrink: 0, border: '3px solid #e0d4ff', cursor: 'pointer', alignSelf: 'flex-start' }}
                   onError={e => e.target.style.display = 'none'}
                 />
               )}
-              <div style={{ flex: 1, minWidth: 260 }}>
-                <p><strong>📧 Email:</strong> <a href={`mailto:${seleccionada.email}`}>{seleccionada.email}</a></p>
-                <p><strong>📱 Teléfono:</strong> <a href={`tel:${seleccionada.telefono}`}>{seleccionada.telefono}</a></p>
+              <div style={{ flex: 1, minWidth: 220 }}>
+                <p><strong>📧 Email:</strong><br /><a href={`mailto:${seleccionada.email}`}>{seleccionada.email}</a></p>
+                <p><strong>📱 Teléfono:</strong><br /><a href={`tel:${seleccionada.telefono}`}>{seleccionada.telefono}</a></p>
                 <p><strong>Estado:</strong> <span style={{ background: est.bg, color: est.color, padding: '3px 10px', borderRadius: 20, fontWeight: 700 }}>{est.label}</span></p>
-                <p><strong>📅 Fecha de postulación:</strong> {formatFecha(seleccionada.created_at)}</p>
+                <p><strong>📅 Fecha de postulación:</strong><br />{formatFecha(seleccionada.created_at)}</p>
                 {seleccionada.mensaje && (
                   <div style={{ marginTop: 12, background: '#f4f0ff', padding: 12, borderRadius: 8, borderLeft: '3px solid #5529aa' }}>
                     <strong>Mensaje del postulante:</strong>
-                    <p style={{ margin: '6px 0 0', fontStyle: 'italic' }}>{seleccionada.mensaje}</p>
+                    <p
+                      style={{
+                        margin: '6px 0 0',
+                        fontStyle: 'italic',
+                        overflow: 'hidden',
+                        display: '-webkit-box',
+                        WebkitLineClamp: mensajeExpandido ? 'unset' : 3,
+                        WebkitBoxOrient: 'vertical',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => setMensajeExpandido(v => !v)}
+                    >
+                      {seleccionada.mensaje}
+                    </p>
+                    {seleccionada.mensaje.length > 120 && (
+                      <button
+                        onClick={() => setMensajeExpandido(v => !v)}
+                        style={{ background: 'none', border: 'none', color: '#5529aa', fontWeight: 700, fontSize: 12, cursor: 'pointer', padding: '4px 0 0', display: 'block' }}
+                      >
+                        {mensajeExpandido ? '↑ Ver menos' : '↓ Ver más'}
+                      </button>
+                    )}
                   </div>
                 )}
               </div>
@@ -136,46 +163,42 @@ const Postulaciones = () => {
           <div className="sd-card-body">
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {seleccionada.cv_url && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 12, background: '#faf7ff', borderRadius: 10, border: '1px solid #ede8fa' }}>
-                  <FaFilePdf style={{ color: '#e53935', fontSize: 24 }} />
-                  <div style={{ flex: 1 }}>
-                    <strong>CV:</strong> {seleccionada.cv_nombre}
+                <div className="post-doc-item">
+                  <div className="post-doc-left">
+                    <FaFilePdf style={{ color: '#e53935', fontSize: 24, flexShrink: 0 }} />
+                    <div><strong>CV:</strong> {seleccionada.cv_nombre}</div>
                   </div>
-                  <a href={seleccionada.cv_url} target="_blank" rel="noopener noreferrer" className="sd-btn-prev" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <FaExternalLinkAlt /> Ver
-                  </a>
-                  <a href={seleccionada.cv_url} download={seleccionada.cv_nombre} className="sd-btn-prev" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <FaDownload /> Descargar
-                  </a>
+                  <div className="post-doc-btns">
+                    <a href={seleccionada.cv_url} download={seleccionada.cv_nombre} className="sd-btn-prev post-doc-btn" style={{ textDecoration: 'none' }}>
+                      <FaDownload /> Descargar
+                    </a>
+                  </div>
                 </div>
               )}
               {seleccionada.foto_url && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 12, background: '#faf7ff', borderRadius: 10, border: '1px solid #ede8fa' }}>
-                  <FaImage style={{ color: '#5529aa', fontSize: 24 }} />
-                  <div style={{ flex: 1 }}>
-                    <strong>Foto:</strong> {seleccionada.foto_nombre}
+                <div className="post-doc-item">
+                  <div className="post-doc-left">
+                    <FaImage style={{ color: '#5529aa', fontSize: 24, flexShrink: 0 }} />
+                    <div><strong>Foto:</strong> {seleccionada.foto_nombre}</div>
                   </div>
-                  <button
-                    className="sd-btn-prev"
-                    onClick={() => setModalFoto(seleccionada.foto_url)}
-                    style={{ display: 'flex', alignItems: 'center', gap: 6 }}
-                  >
-                    <FaEye /> Ver
-                  </button>
+                  <div className="post-doc-btns">
+                    <button className="sd-btn-prev post-doc-btn" onClick={() => setModalFoto(seleccionada.foto_url)}>
+                      <FaEye /> Ver
+                    </button>
+                  </div>
                 </div>
               )}
               {seleccionada.carta_url && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 12, background: '#faf7ff', borderRadius: 10, border: '1px solid #ede8fa' }}>
-                  <FaFileAlt style={{ color: '#1565c0', fontSize: 24 }} />
-                  <div style={{ flex: 1 }}>
-                    <strong>Carta:</strong> {seleccionada.carta_nombre}
+                <div className="post-doc-item">
+                  <div className="post-doc-left">
+                    <FaFileAlt style={{ color: '#1565c0', fontSize: 24, flexShrink: 0 }} />
+                    <div><strong>Carta:</strong> {seleccionada.carta_nombre}</div>
                   </div>
-                  <a href={seleccionada.carta_url} target="_blank" rel="noopener noreferrer" className="sd-btn-prev" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <FaExternalLinkAlt /> Ver
-                  </a>
-                  <a href={seleccionada.carta_url} download={seleccionada.carta_nombre} className="sd-btn-prev" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <FaDownload /> Descargar
-                  </a>
+                  <div className="post-doc-btns">
+                    <a href={seleccionada.carta_url} download={seleccionada.carta_nombre} className="sd-btn-prev post-doc-btn" style={{ textDecoration: 'none' }}>
+                      <FaDownload /> Descargar
+                    </a>
+                  </div>
                 </div>
               )}
             </div>
@@ -287,7 +310,7 @@ const Postulaciones = () => {
           {filtradas.map(p => {
             const est = ESTADOS[p.estado] || ESTADOS.nueva;
             return (
-              <div key={p.id} className="ep-item ep-postulacion-item" onClick={() => setSeleccionada(p)}>
+              <div key={p.id} className="ep-item ep-postulacion-item" onClick={() => handleSeleccionar(p)}>
                 <div className="ep-item-img" style={{ background: '#f0ebff' }}>
                   {p.foto_url
                     ? <img src={p.foto_url} alt={p.nombre} className="ep-img" onError={e => { e.target.onerror=null; e.target.style.display='none'; e.target.parentElement.innerHTML='<div class="ep-img-placeholder">👤</div>'; }} />

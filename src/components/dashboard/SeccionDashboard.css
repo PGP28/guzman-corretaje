@@ -465,9 +465,64 @@
   .gc-form-row { grid-template-columns: 1fr; }
   .gc-fila { flex-wrap: wrap; gap: 10px; }
   .gc-badges { width: 100%; }
-  .gc-acciones { width: 100%; }
+}
 
-  /* Postulaciones mobile */
+/* Documentos postulación */
+.post-doc-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  background: #faf7ff;
+  border-radius: 10px;
+  border: 1px solid #ede8fa;
+  flex-wrap: wrap;
+}
+.post-doc-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+}
+.post-doc-left div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+}
+.post-doc-btns {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.post-doc-btn {
+  display: flex !important;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none !important;
+  font-size: 13px;
+}
+
+@media (max-width: 575px) {
+  .post-doc-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .post-doc-btns {
+    width: 100%;
+    border-top: 1px solid #ede8fa;
+    padding-top: 8px;
+  }
+  .post-doc-btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* Postulaciones mobile */
+@media (max-width: 767px) {
   .ep-item.ep-postulacion-item {
     display: flex;
     flex-direction: column;
@@ -482,12 +537,8 @@
     border-radius: 50%;
     margin: 0 auto;
   }
-  .ep-item.ep-postulacion-item .ep-item-info {
-    width: 100%;
-  }
-  .ep-item.ep-postulacion-item .ep-item-top {
-    justify-content: center;
-  }
+  .ep-item.ep-postulacion-item .ep-item-info { width: 100%; }
+  .ep-item.ep-postulacion-item .ep-item-top { justify-content: center; }
   .ep-item.ep-postulacion-item .ep-item-acciones {
     width: 100%;
     border-top: 1px solid #f0ebff;
@@ -501,20 +552,9 @@
   }
 
   /* Editar propiedades mobile */
-  .ep-filtros {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-    width: 100%;
-    overflow-x: hidden;
-  }
+  .ep-filtros { flex-direction: column; align-items: stretch; gap: 8px; width: 100%; overflow-x: hidden; }
   .ep-buscador { width: 100%; }
-  .ep-filtro-estado {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    width: 100%;
-  }
+  .ep-filtro-estado { display: flex; flex-wrap: wrap; gap: 6px; width: 100%; }
   .ep-filtro-divider { display: none; }
   .ep-filtro-btn { flex-shrink: 0; }
   .ep-lista { gap: 10px; overflow-x: hidden; }
@@ -530,47 +570,17 @@
     box-sizing: border-box;
     width: 100%;
   }
-  .ep-item-img {
-    grid-area: img;
-    width: 64px;
-    height: 64px;
-    flex-shrink: 0;
-    align-self: start;
-  }
-  .ep-item-info {
-    grid-area: info;
-    min-width: 0;
-    overflow: hidden;
-  }
-  .ep-item-acciones {
-    grid-area: acc;
-    width: 100%;
-    justify-content: flex-end;
-    border-top: 1px solid #f0ebff;
-    padding-top: 8px;
-  }
-  .ep-item-cat { font-size: 10px; }
-  .ep-item-nombre {
-    font-size: 13px;
-    white-space: normal;
-    word-break: break-word;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
+  .ep-item-img    { grid-area: img; width: 64px; height: 64px; flex-shrink: 0; align-self: start; }
+  .ep-item-info   { grid-area: info; min-width: 0; overflow: hidden; }
+  .ep-item-acciones { grid-area: acc; width: 100%; justify-content: flex-end; border-top: 1px solid #f0ebff; padding-top: 8px; }
+  .ep-item-cat    { font-size: 10px; }
+  .ep-item-nombre { font-size: 13px; white-space: normal; word-break: break-word; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
   .ep-item-estado { white-space: nowrap; max-width: 100px; overflow: hidden; text-overflow: ellipsis; }
-  .ep-btn-edit { font-size: 12px; padding: 7px 12px; }
-  .ep-btn-del  { padding: 7px 10px; }
+  .ep-btn-edit    { font-size: 12px; padding: 7px 12px; }
+  .ep-btn-del     { padding: 7px 10px; }
 
   /* Skeleton ep mobile */
-  .sk-ep-item {
-    display: grid;
-    grid-template-columns: 60px 1fr;
-    grid-template-areas: "img info";
-    gap: 10px;
-    padding: 12px;
-  }
+  .sk-ep-item { display: grid; grid-template-columns: 60px 1fr; grid-template-areas: "img info"; gap: 10px; padding: 12px; }
   .sk-ep-img  { grid-area: img; width: 60px; height: 60px; }
   .sk-ep-info { grid-area: info; }
   .sk-ep-btn  { display: none; }

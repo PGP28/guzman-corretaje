@@ -1,50 +1,110 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FaPaperPlane } from 'react-icons/fa';
+import API_BASE_URL from '../../config';
 import './ClientePages.css';
 
+const API = `${API_BASE_URL}/api`;
+const POLL_INTERVAL = 8000; // 8 segundos
+
 const ClienteMensajes = ({ user }) => {
-  const key = `guzman_chat_${user?.email}`;
-  const [mensajes, setMensajes] = useState(() => JSON.parse(localStorage.getItem(key) || '[]'));
-  const [texto, setTexto] = useState('');
-  const bottomRef = useRef(null);
+  const [mensajes,  setMensajes]  = useState([]);
+  const [texto,     setTexto]     = useState('');
+  const [cargando,  setCargando]  = useState(true);
+  const [enviando,  setEnviando]  = useState(false);
+  const bottomRef  = useRef(null);
+  const pollRef    = useRef(null);
 
-  // Marcar como leídos al entrar
+  /* ── Identificador del cliente ── */
+  const identificador = () => {
+    if (user?.id)       return `cliente_id=${user.id}`;
+    if (user?.username) return `cliente_username=${encodeURIComponent(user.username)}`;
+    if (user?.email)    return `cliente_email=${encodeURIComponent(user.email)}`;
+    return null;
+  };
+
+  /* ── Cargar mensajes ── */
+  const cargarMensajes = async (silencioso = false) => {
+    const id = identificador();
+    if (!id) return;
+    if (!silencioso) setCargando(true);
+    try {
+      const res  = await fetch(`${API}/mensajes?${id}`);
+      const data = await res.json();
+      if (Array.isArray(data)) setMensajes(data);
+
+      // Marcar mensajes del corredor como leídos
+      await fetch(`${API}/mensajes/leer`, {
+        method:  'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+          ...(user?.id       ? { cliente_id:       user.id }       : {}),
+          ...(user?.username ? { cliente_username: user.username } : {}),
+          de: 'corredor',
+        }),
+      });
+    } catch { /* silencioso */ }
+    finally { if (!silencioso) setCargando(false); }
+  };
+
+  /* ── Polling ── */
   useEffect(() => {
-    const actualizados = mensajes.map(m => ({ ...m, leido: true }));
-    localStorage.setItem(key, JSON.stringify(actualizados));
-    setMensajes(actualizados);
-  }, []);
+    cargarMensajes();
+    pollRef.current = setInterval(() => cargarMensajes(true), POLL_INTERVAL);
+    return () => clearInterval(pollRef.current);
+  }, [user?.id, user?.username]);
 
+  /* ── Scroll al último mensaje ── */
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [mensajes]);
 
-  const handleEnviar = (e) => {
+  /* ── Enviar mensaje ── */
+  const handleEnviar = async (e) => {
     e.preventDefault();
-    if (!texto.trim()) return;
-    const nuevo = {
-      id: Date.now(),
-      de: 'cliente',
-      texto: texto.trim(),
-      hora: new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' }),
-      fecha: new Date().toLocaleDateString('es-CL'),
-      leido: false,
+    if (!texto.trim() || enviando) return;
+    setEnviando(true);
+
+    const nuevoLocal = {
+      id:         Date.now(),
+      de:         'cliente',
+      texto:      texto.trim(),
+      created_at: new Date().toISOString(),
+      leido:      false,
+      _pendiente: true,
     };
-    const updated = [...mensajes, nuevo];
-    setMensajes(updated);
-    localStorage.setItem(key, JSON.stringify(updated));
-
-    // También guardar en el registro global para que corredor/admin lo vea
-    const globalKey = `guzman_chat_global_${user?.email}`;
-    const global = JSON.parse(localStorage.getItem(globalKey) || '[]');
-    global.push({ ...nuevo, cliente_email: user?.email, cliente_nombre: user?.name });
-    localStorage.setItem(globalKey, JSON.stringify(global));
-
+    setMensajes(prev => [...prev, nuevoLocal]);
     setTexto('');
+
+    try {
+      await fetch(`${API}/mensajes`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+          cliente_id:       user?.id       || null,
+          cliente_username: user?.username || null,
+          cliente_nombre:   user?.name     || 'Cliente',
+          de:               'cliente',
+          texto:            nuevoLocal.texto,
+        }),
+      });
+      // Recargar para obtener el id real de la BD
+      await cargarMensajes(true);
+    } catch {
+      // Dejar el mensaje local como fallback
+    } finally {
+      setEnviando(false);
+    }
   };
 
-  const reservas = JSON.parse(localStorage.getItem(`guzman_reservas_${user?.email}`) || '[]');
-  const corredor = reservas.find(r => r.corredor)?.corredor || null;
+  /* ── Formatear hora ── */
+  const formatHora = (iso) => {
+    if (!iso) return '';
+    try {
+      return new Date(iso).toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
+    } catch { return ''; }
+  };
+
+  const sinLeer = mensajes.filter(m => m.de === 'corredor' && !m.leido).length;
 
   return (
     <div className="cp-page cp-chat-page">
@@ -52,35 +112,40 @@ const ClienteMensajes = ({ user }) => {
         <div>
           <h1 className="cp-titulo">Mensajes</h1>
           <p className="cp-subtitulo">
-            {corredor ? `Conversación con ${corredor}` : 'Chat con el equipo Guzmán Corretaje'}
+            Chat con el equipo Guzmán Corretaje
+            {sinLeer > 0 && <span className="cp-badge-nuevo"> · {sinLeer} nuevo{sinLeer > 1 ? 's' : ''}</span>}
           </p>
         </div>
       </div>
 
       <div className="cp-chat-wrapper">
-        {/* Burbuja de bienvenida si no hay mensajes */}
-        {mensajes.length === 0 && (
+        {cargando ? (
+          <div className="cp-loader"><div className="cp-loader-spinner" /></div>
+        ) : mensajes.length === 0 ? (
           <div className="cp-chat-empty">
             <span>💬</span>
             <p>Aún no hay mensajes</p>
             <small>Escribe tu consulta y te responderemos a la brevedad</small>
           </div>
-        )}
-
-        <div className="cp-chat-mensajes">
-          {mensajes.map(m => (
-            <div key={m.id} className={`cp-mensaje ${m.de === 'cliente' ? 'enviado' : 'recibido'}`}>
-              <div className="cp-mensaje-burbuja">
-                <p className="cp-mensaje-texto">{m.texto}</p>
-                <span className="cp-mensaje-hora">{m.hora}</span>
+        ) : (
+          <div className="cp-chat-mensajes">
+            {mensajes.map(m => (
+              <div key={m.id} className={`cp-mensaje ${m.de === 'cliente' ? 'enviado' : 'recibido'}`}>
+                <div className={`cp-mensaje-burbuja ${m._pendiente ? 'cp-mensaje-pendiente' : ''}`}>
+                  <p className="cp-mensaje-texto">{m.texto}</p>
+                  <span className="cp-mensaje-hora">
+                    {formatHora(m.created_at)}
+                    {m._pendiente && ' · enviando…'}
+                  </span>
+                </div>
+                {m.de !== 'cliente' && (
+                  <span className="cp-mensaje-autor">{m.autor || 'Corredor Guzmán'}</span>
+                )}
               </div>
-              {m.de !== 'cliente' && (
-                <span className="cp-mensaje-autor">{m.autor || corredor || 'Corredor'}</span>
-              )}
-            </div>
-          ))}
-          <div ref={bottomRef} />
-        </div>
+            ))}
+            <div ref={bottomRef} />
+          </div>
+        )}
 
         <form className="cp-chat-input" onSubmit={handleEnviar}>
           <input
@@ -89,8 +154,9 @@ const ClienteMensajes = ({ user }) => {
             onChange={e => setTexto(e.target.value)}
             placeholder="Escribe tu mensaje..."
             className="cp-chat-field"
+            disabled={enviando}
           />
-          <button type="submit" className="cp-chat-send" disabled={!texto.trim()}>
+          <button type="submit" className="cp-chat-send" disabled={!texto.trim() || enviando}>
             <FaPaperPlane />
           </button>
         </form>

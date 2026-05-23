@@ -45,10 +45,18 @@ export const SUB_ESTADOS = {
 
 // ── API calls ────────────────────────────────────────────────────────────────
 
-// Obtener reservas de un cliente
-export const getReservasCliente = async (email) => {
+// Obtener reservas de un cliente — por id, username o email
+export const getReservasCliente = async (identificador) => {
   try {
-    const res = await fetch(`${API}/reservas?email=${encodeURIComponent(email)}`);
+    // identificador puede ser { id, username, email }
+    let query = '';
+    if (identificador?.id)       query = `cliente_id=${identificador.id}`;
+    else if (identificador?.username) query = `cliente_username=${encodeURIComponent(identificador.username)}`;
+    else if (identificador?.email)    query = `email=${encodeURIComponent(identificador.email)}`;
+    else if (typeof identificador === 'string') query = `email=${encodeURIComponent(identificador)}`;
+    else return [];
+
+    const res = await fetch(`${API}/reservas?${query}`);
     if (!res.ok) return [];
     return await res.json();
   } catch {
@@ -59,7 +67,9 @@ export const getReservasCliente = async (email) => {
 // Crear nueva reserva en la BD
 export const crearReserva = async (propiedad, cliente, mensajeInicial = '') => {
   const body = {
-    cliente_email:       cliente.email,
+    cliente_id:          cliente.id       || null,
+    cliente_username:    cliente.username || null,
+    cliente_email:       cliente.email    || null,
     cliente_nombre:      cliente.name,
     propiedad_id:        propiedad.id,
     propiedad_nombre:    propiedad.nombre,

@@ -10,10 +10,10 @@ const ClienteReservas = ({ user }) => {
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    getReservasCliente(user?.email)
+    getReservasCliente(user)
       .then(data => setReservas(data))
       .finally(() => setCargando(false));
-  }, [user?.email]);
+  }, [user?.id]);
 
   const activas  = reservas.filter(r => !['rechazado'].includes(r.sub_estado) && r.etapa_actual !== 'completada');
   const cerradas = reservas.filter(r => ['rechazado'].includes(r.sub_estado) || r.etapa_actual === 'completada');

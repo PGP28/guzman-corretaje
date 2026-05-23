@@ -15,10 +15,18 @@ const ClienteInicio = ({ user }) => {
   const [reservas, setReservas] = useState([]);
 
   useEffect(() => {
-    getReservasCliente(user?.email).then(setReservas).catch(() => {});
-  }, [user?.email]);
-  const mensajes = JSON.parse(localStorage.getItem(`guzman_chat_${user?.email}`) || '[]');
-  const sinLeer  = mensajes.filter(m => !m.leido && m.de !== 'cliente').length;
+    getReservasCliente(user).then(setReservas).catch(() => {});
+  }, [user?.id]);
+  const [mensajesSinLeer, setMensajesSinLeer] = useState(0);
+
+  useEffect(() => {
+    const id = user?.id ? `cliente_id=${user.id}` : user?.username ? `cliente_username=${user.username}` : null;
+    if (!id) return;
+    fetch(`${API_BASE_URL}/api/mensajes?${id}`)
+      .then(r => r.json())
+      .then(data => setMensajesSinLeer(Array.isArray(data) ? data.filter(m => m.de === 'corredor' && !m.leido).length : 0))
+      .catch(() => {});
+  }, [user?.id]);
   const nombre   = user?.name?.split(' ')[0] || 'Cliente';
 
   useEffect(() => {
@@ -54,10 +62,10 @@ const ClienteInicio = ({ user }) => {
         <div className="cp-stat" onClick={() => navigate('/cliente/mensajes')}>
           <FaComments className="cp-stat-icon" style={{ color: '#1565c0' }} />
           <div>
-            <span className="cp-stat-valor">{sinLeer > 0 ? sinLeer : mensajes.length}</span>
-            <span className="cp-stat-label">{sinLeer > 0 ? 'Sin leer' : 'Mensajes'}</span>
+            <span className="cp-stat-valor">{mensajesSinLeer}</span>
+            <span className="cp-stat-label">{mensajesSinLeer > 0 ? 'Sin leer' : 'Mensajes'}</span>
           </div>
-          {sinLeer > 0 && <span className="cp-stat-badge">{sinLeer}</span>}
+          {mensajesSinLeer > 0 && <span className="cp-stat-badge">{mensajesSinLeer}</span>}
         </div>
         <div className="cp-stat" onClick={() => navigate('/cliente/pagos')}>
           <FaCreditCard className="cp-stat-icon" style={{ color: '#b45309' }} />

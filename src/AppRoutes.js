@@ -83,7 +83,16 @@ const AppRoutes = () => {
   const handleLoginCorredor = (data) => setUser(data);
   const handleLogout        = () => { setUser(null); window.location.href = '/login'; };
 
-  const handleLoginCliente = (data) => setCliente(data);
+  const handleLoginCliente = (data) => {
+    // Normalizar: el backend devuelve 'nombre', el frontend espera 'name'
+    const normalizado = {
+      ...data,
+      name: data.name || data.nombre || 'Cliente',
+    };
+    setCliente(normalizado);
+    // Actualizar localStorage con el objeto normalizado
+    localStorage.setItem('guzman_cliente', JSON.stringify(normalizado));
+  };
   const handleClienteLogout = () => {
     localStorage.removeItem('guzman_cliente');
     setCliente(null);

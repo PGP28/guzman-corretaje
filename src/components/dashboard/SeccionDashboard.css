@@ -467,6 +467,39 @@
   .gc-badges { width: 100%; }
   .gc-acciones { width: 100%; }
 
+  /* Postulaciones mobile */
+  .ep-item.ep-postulacion-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    padding: 20px 16px 14px;
+  }
+  .ep-item.ep-postulacion-item .ep-item-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto;
+  }
+  .ep-item.ep-postulacion-item .ep-item-info {
+    width: 100%;
+  }
+  .ep-item.ep-postulacion-item .ep-item-top {
+    justify-content: center;
+  }
+  .ep-item.ep-postulacion-item .ep-item-acciones {
+    width: 100%;
+    border-top: 1px solid #f0ebff;
+    padding-top: 12px;
+  }
+  .ep-item.ep-postulacion-item .ep-btn-edit {
+    width: 100%;
+    justify-content: center;
+    padding: 10px;
+    font-size: 14px;
+  }
+
   /* Editar propiedades mobile */
   .ep-filtros {
     flex-direction: column;

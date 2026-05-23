@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaDownload, FaEye, FaTrash, FaEnvelope, FaPhone, FaFilePdf, FaImage, FaFileAlt, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaDownload, FaEye, FaTrash, FaEnvelope, FaPhone, FaFilePdf, FaImage, FaFileAlt, FaExternalLinkAlt, FaTimes } from 'react-icons/fa';
 import API_BASE_URL from '../../config';
 import './SeccionDashboard.css';
 
@@ -19,6 +19,7 @@ const Postulaciones = () => {
   const [confirmDel,    setConfirmDel]    = useState(null);
   const [cargando,      setCargando]      = useState(true);
   const [msg,           setMsg]           = useState('');
+  const [modalFoto,     setModalFoto]     = useState(null); // URL de foto a mostrar en modal
 
   useEffect(() => { cargar(); }, []);
 
@@ -61,7 +62,10 @@ const Postulaciones = () => {
 
   const formatFecha = (iso) => {
     if (!iso) return '—';
-    return new Date(iso).toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    return new Date(iso).toLocaleDateString('es-CL', {
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    });
   };
 
   const filtradas = filtroEstado === 'todas'
@@ -102,7 +106,8 @@ const Postulaciones = () => {
                 <img
                   src={seleccionada.foto_url}
                   alt={seleccionada.nombre}
-                  style={{ width: 120, height: 120, borderRadius: '50%', objectFit: 'cover', flexShrink: 0, border: '3px solid #e0d4ff' }}
+                  onClick={() => setModalFoto(seleccionada.foto_url)}
+                  style={{ width: 120, height: 120, borderRadius: '50%', objectFit: 'cover', flexShrink: 0, border: '3px solid #e0d4ff', cursor: 'pointer' }}
                   onError={e => e.target.style.display = 'none'}
                 />
               )}
@@ -110,6 +115,7 @@ const Postulaciones = () => {
                 <p><strong>📧 Email:</strong> <a href={`mailto:${seleccionada.email}`}>{seleccionada.email}</a></p>
                 <p><strong>📱 Teléfono:</strong> <a href={`tel:${seleccionada.telefono}`}>{seleccionada.telefono}</a></p>
                 <p><strong>Estado:</strong> <span style={{ background: est.bg, color: est.color, padding: '3px 10px', borderRadius: 20, fontWeight: 700 }}>{est.label}</span></p>
+                <p><strong>📅 Fecha de postulación:</strong> {formatFecha(seleccionada.created_at)}</p>
                 {seleccionada.mensaje && (
                   <div style={{ marginTop: 12, background: '#f4f0ff', padding: 12, borderRadius: 8, borderLeft: '3px solid #5529aa' }}>
                     <strong>Mensaje del postulante:</strong>
@@ -149,9 +155,13 @@ const Postulaciones = () => {
                   <div style={{ flex: 1 }}>
                     <strong>Foto:</strong> {seleccionada.foto_nombre}
                   </div>
-                  <a href={seleccionada.foto_url} target="_blank" rel="noopener noreferrer" className="sd-btn-prev" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <FaExternalLinkAlt /> Ver
-                  </a>
+                  <button
+                    className="sd-btn-prev"
+                    onClick={() => setModalFoto(seleccionada.foto_url)}
+                    style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+                  >
+                    <FaEye /> Ver
+                  </button>
                 </div>
               )}
               {seleccionada.carta_url && (
@@ -217,6 +227,24 @@ const Postulaciones = () => {
             </div>
           </div>
         )}
+
+        {/* Modal foto */}
+        {modalFoto && (
+          <div
+            style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            onClick={() => setModalFoto(null)}
+          >
+            <div style={{ position: 'relative', maxWidth: '90vw', maxHeight: '90vh' }} onClick={e => e.stopPropagation()}>
+              <button
+                onClick={() => setModalFoto(null)}
+                style={{ position: 'absolute', top: -16, right: -16, background: '#fff', border: 'none', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}
+              >
+                <FaTimes />
+              </button>
+              <img src={modalFoto} alt="Foto postulante" style={{ maxWidth: '80vw', maxHeight: '80vh', borderRadius: 12, display: 'block' }} />
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -259,10 +287,10 @@ const Postulaciones = () => {
           {filtradas.map(p => {
             const est = ESTADOS[p.estado] || ESTADOS.nueva;
             return (
-              <div key={p.id} className="ep-item" onClick={() => setSeleccionada(p)}>
+              <div key={p.id} className="ep-item ep-postulacion-item" onClick={() => setSeleccionada(p)}>
                 <div className="ep-item-img" style={{ background: '#f0ebff' }}>
                   {p.foto_url
-                    ? <img src={p.foto_url} alt={p.nombre} className="ep-img" onError={e => e.target.style.display='none'} />
+                    ? <img src={p.foto_url} alt={p.nombre} className="ep-img" onError={e => { e.target.onerror=null; e.target.style.display='none'; e.target.parentElement.innerHTML='<div class="ep-img-placeholder">👤</div>'; }} />
                     : <div className="ep-img-placeholder">👤</div>}
                 </div>
                 <div className="ep-item-info">

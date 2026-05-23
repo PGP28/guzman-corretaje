@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FaPaperPlane, FaUser, FaSearch, FaCircle } from 'react-icons/fa';
+import { FaPaperPlane, FaUser, FaSearch, FaCircle, FaPaperclip, FaTimes, FaFileAlt } from 'react-icons/fa';
 import API_BASE_URL from '../../config';
 import './DashboardMensajes.css';
 
@@ -13,9 +13,13 @@ const DashboardMensajes = ({ userName }) => {
   const [texto,          setTexto]          = useState('');
   const [cargando,       setCargando]       = useState(true);
   const [enviando,       setEnviando]       = useState(false);
+  const [subiendo,       setSubiendo]       = useState(false);
+  const [archivo,        setArchivo]        = useState(null);
+  const [errorMsg,       setErrorMsg]       = useState(null);
   const [busqueda,       setBusqueda]       = useState('');
   const bottomRef = useRef(null);
   const pollRef   = useRef(null);
+  const fileRef   = useRef(null);
 
   /* ── Cargar lista de conversaciones (clientes únicos con mensajes) ── */
   const cargarConversaciones = async () => {
@@ -82,27 +86,45 @@ const DashboardMensajes = ({ userName }) => {
     cargarMensajes(conv);
   };
 
+  /* ── Subir archivo ── */
+  const handleArchivo = async (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    setErrorMsg(null);
+    setSubiendo(true);
+    try {
+      const form = new FormData();
+      form.append('archivo', f);
+      const res  = await fetch(`${API}/mensajes/upload`, { method: 'POST', body: form });
+      const data = await res.json();
+      if (!res.ok) return setErrorMsg(data.error || 'Error al subir');
+      setArchivo(data);
+    } catch { setErrorMsg('Error de conexión.'); }
+    finally { setSubiendo(false); if (fileRef.current) fileRef.current.value = ''; }
+  };
+
   /* ── Enviar respuesta ── */
   const handleEnviar = async (e) => {
     e.preventDefault();
-    if (!texto.trim() || !seleccionada || enviando) return;
+    if ((!texto.trim() && !archivo) || !seleccionada || enviando) return;
     setEnviando(true);
 
     const nuevoLocal = {
-      id:         Date.now(),
-      de:         'corredor',
-      texto:      texto.trim(),
-      created_at: new Date().toISOString(),
-      autor:      userName || 'Corredor',
+      id: Date.now(), de: 'corredor',
+      texto: texto.trim(), created_at: new Date().toISOString(),
+      autor: userName || 'Corredor',
+      archivo_url:    archivo?.url,
+      archivo_nombre: archivo?.nombre,
+      archivo_tipo:   archivo?.tipo,
       _pendiente: true,
     };
     setMensajes(prev => [...prev, nuevoLocal]);
     setTexto('');
+    setArchivo(null);
 
     try {
       await fetch(`${API}/mensajes`, {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           cliente_id:       seleccionada.cliente_id       || null,
           cliente_username: seleccionada.cliente_username || null,
@@ -110,6 +132,9 @@ const DashboardMensajes = ({ userName }) => {
           de:               'corredor',
           texto:            nuevoLocal.texto,
           autor:            userName || 'Corredor',
+          archivo_url:      nuevoLocal.archivo_url    || null,
+          archivo_nombre:   nuevoLocal.archivo_nombre || null,
+          archivo_tipo:     nuevoLocal.archivo_tipo   || null,
         }),
       });
       await cargarMensajes(seleccionada, true);
@@ -125,7 +150,7 @@ const DashboardMensajes = ({ userName }) => {
       const hoy = new Date();
       const esHoy = d.toDateString() === hoy.toDateString();
       return esHoy
-        ? d.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' })
+        ? d.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', hour12: false })
         : d.toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit' });
     } catch { return ''; }
   };
@@ -243,17 +268,24 @@ const DashboardMensajes = ({ userName }) => {
             {/* Mensajes */}
             <div className="dm-mensajes">
               {mensajes.length === 0 ? (
-                <div className="dm-mensajes-empty">
-                  <p>No hay mensajes en esta conversación</p>
-                </div>
+                <div className="dm-mensajes-empty"><p>No hay mensajes en esta conversación</p></div>
               ) : (
                 mensajes.map(m => (
                   <div key={m.id} className={`dm-mensaje ${m.de === 'corredor' ? 'enviado' : 'recibido'}`}>
                     <div className={`dm-burbuja ${m._pendiente ? 'dm-pendiente' : ''}`}>
-                      <p>{m.texto}</p>
+                      {m.texto && <p>{m.texto}</p>}
+                      {m.archivo_url && m.archivo_tipo === 'imagen' && (
+                        <a href={m.archivo_url} target="_blank" rel="noopener noreferrer">
+                          <img src={m.archivo_url} alt={m.archivo_nombre} className="dm-msg-img" />
+                        </a>
+                      )}
+                      {m.archivo_url && m.archivo_tipo === 'documento' && (
+                        <a href={m.archivo_url} target="_blank" rel="noopener noreferrer" className="dm-msg-doc">
+                          <FaFileAlt /> {m.archivo_nombre}
+                        </a>
+                      )}
                       <span className="dm-hora">
-                        {formatHora(m.created_at)}
-                        {m._pendiente && ' · enviando…'}
+                        {formatHora(m.created_at)}{m._pendiente && ' · enviando…'}
                       </span>
                     </div>
                     {m.de === 'corredor' && (
@@ -265,17 +297,34 @@ const DashboardMensajes = ({ userName }) => {
               <div ref={bottomRef} />
             </div>
 
+            {/* Preview archivo */}
+            {archivo && (
+              <div className="dm-archivo-preview">
+                {archivo.tipo === 'imagen'
+                  ? <img src={archivo.url} alt={archivo.nombre} className="dm-archivo-thumb" />
+                  : <span className="dm-archivo-doc"><FaFileAlt /> {archivo.nombre}</span>
+                }
+                <button className="dm-archivo-quitar" onClick={() => setArchivo(null)}><FaTimes /></button>
+              </div>
+            )}
+            {errorMsg && <div className="dm-error-msg">⚠️ {errorMsg}</div>}
+
             {/* Input */}
             <form className="dm-input-bar" onSubmit={handleEnviar}>
+              <button type="button" className="dm-btn-clip" onClick={() => fileRef.current?.click()} disabled={subiendo}>
+                {subiendo ? '⏳' : <FaPaperclip />}
+              </button>
+              <input ref={fileRef} type="file" hidden
+                accept="image/jpeg,image/png,image/gif,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                onChange={handleArchivo}
+              />
               <input
-                type="text"
-                value={texto}
+                type="text" value={texto}
                 onChange={e => setTexto(e.target.value)}
                 placeholder={`Responder a ${seleccionada.cliente_nombre || seleccionada.cliente_username}...`}
-                className="dm-input"
-                disabled={enviando}
+                className="dm-input" disabled={enviando}
               />
-              <button type="submit" className="dm-btn-enviar" disabled={!texto.trim() || enviando}>
+              <button type="submit" className="dm-btn-enviar" disabled={(!texto.trim() && !archivo) || enviando || subiendo}>
                 <FaPaperPlane />
               </button>
             </form>

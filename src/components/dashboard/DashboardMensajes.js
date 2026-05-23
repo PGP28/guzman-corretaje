@@ -276,13 +276,22 @@ const DashboardMensajes = ({ userName }) => {
                       {m.texto && <p>{m.texto}</p>}
                       {m.archivo_url && m.archivo_tipo === 'imagen' && (
                         <a href={m.archivo_url} target="_blank" rel="noopener noreferrer">
-                          <img src={m.archivo_url} alt={m.archivo_nombre} className="dm-msg-img" />
+                          <img
+                            src={m.archivo_url}
+                            alt={m.archivo_nombre}
+                            className="dm-msg-img"
+                            onError={e => { e.target.onerror = null; e.target.style.display = 'none'; }}
+                          />
                         </a>
                       )}
                       {m.archivo_url && m.archivo_tipo === 'documento' && (
-                        <a href={m.archivo_url} target="_blank" rel="noopener noreferrer" className="dm-msg-doc">
-                          <FaFileAlt /> {m.archivo_nombre}
-                        </a>
+                        <div className="dm-msg-doc-card">
+                          <FaFileAlt className="dm-msg-doc-icon" />
+                          <span className="dm-msg-doc-nombre">{m.archivo_nombre}</span>
+                          <a href={m.archivo_url} download={m.archivo_nombre} className="dm-msg-doc-btn" title="Descargar">
+                            ⬇
+                          </a>
+                        </div>
                       )}
                       <span className="dm-hora">
                         {formatHora(m.created_at)}{m._pendiente && ' · enviando…'}

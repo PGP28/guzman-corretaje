@@ -170,13 +170,22 @@ const ClienteMensajes = ({ user }) => {
                   {/* Adjunto */}
                   {m.archivo_url && m.archivo_tipo === 'imagen' && (
                     <a href={m.archivo_url} target="_blank" rel="noopener noreferrer">
-                      <img src={m.archivo_url} alt={m.archivo_nombre} className="cp-msg-img" />
+                      <img
+                        src={m.archivo_url}
+                        alt={m.archivo_nombre}
+                        className="cp-msg-img"
+                        onError={e => { e.target.onerror = null; e.target.style.display = 'none'; }}
+                      />
                     </a>
                   )}
                   {m.archivo_url && m.archivo_tipo === 'documento' && (
-                    <a href={m.archivo_url} target="_blank" rel="noopener noreferrer" className="cp-msg-doc">
-                      <FaFileAlt /> {m.archivo_nombre}
-                    </a>
+                    <div className="cp-msg-doc-card">
+                      <FaFileAlt className="cp-msg-doc-icon" />
+                      <span className="cp-msg-doc-nombre">{m.archivo_nombre}</span>
+                      <a href={m.archivo_url} download={m.archivo_nombre} className="cp-msg-doc-btn" title="Descargar">
+                        ⬇
+                      </a>
+                    </div>
                   )}
                   <span className="cp-mensaje-hora">
                     {formatHora(m.created_at)}{m._pendiente && ' · enviando…'}

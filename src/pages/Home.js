@@ -80,7 +80,7 @@ const Home = () => {
             </div>
             <div className="boton-contactar">
               <a
-                href="https://wa.me/+56946433583?text=Hola,%20vengo%20de%20la%20pagina%20web%20y%20me%20interesa%20saber%20m%C3%A1s%20sobre%20sus%20propiedades."
+                href="https://wa.me/+56952389494?text=Hola,%20vengo%20de%20la%20pagina%20web%20y%20me%20interesa%20saber%20m%C3%A1s%20sobre%20sus%20propiedades."
                 target="_blank"
                 rel="noopener noreferrer"
               >

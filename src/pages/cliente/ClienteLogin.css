@@ -1,8 +1,4 @@
-/* ══════════════════════════════════════════════
-   CLIENTE LOGIN — Paleta morada Guzmán
-   ══════════════════════════════════════════════ */
-
-/* ── Layout base ── */
+/* ── CLIENTE LOGIN — Paleta morada Guzmán ── */
 .cl-page {
   min-height: 100vh;
   display: flex;
@@ -10,18 +6,15 @@
   margin-top: -62px;
 }
 
-/* ═══════════════════════════════
-   PANEL IZQUIERDO (decorativo)
-═══════════════════════════════ */
 .cl-left {
   flex: 1;
-  background: linear-gradient(150deg, #3f1b86 0%, #5529aa 55%, #8a60da 100%);
+  background: linear-gradient(150deg, #3f1b86 0%, #5529aa 50%, #8a60da 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
-  padding: 80px 48px 60px;
+  padding: 60px 48px;
   min-height: 100vh;
 }
 
@@ -31,8 +24,8 @@
   opacity: 0.12;
   background: #fff;
 }
-.cl-circle--1 { width: 420px; height: 420px; top: -120px; right: -130px; }
-.cl-circle--2 { width: 300px; height: 300px; bottom: -90px; left: -70px; }
+.cl-circle--1 { width: 400px; height: 400px; top: -100px; right: -120px; }
+.cl-circle--2 { width: 280px; height: 280px; bottom: -80px; left: -60px; }
 
 .cl-left-content {
   position: relative;
@@ -87,19 +80,7 @@
   font-weight: 600;
 }
 
-.cl-privacidad {
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.18);
-  border-radius: 10px;
-  padding: 10px 14px;
-  color: rgba(255,255,255,0.8);
-  font-size: 12px;
-  margin-top: 4px;
-}
-
-/* ═══════════════════════════════
-   PANEL DERECHO (formulario)
-═══════════════════════════════ */
+/* Lado derecho */
 .cl-right {
   flex: 1;
   display: flex;
@@ -108,240 +89,68 @@
   padding: 60px 48px;
   background: #fff;
   min-height: 100vh;
-  overflow-y: auto;
 }
 
 .cl-card {
   width: 100%;
-  max-width: 420px;
+  max-width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* ═══════════════════════════════
-   TABS (Iniciar sesión / Crear cuenta)
-═══════════════════════════════ */
-.cl-tabs {
-  display: flex;
-  width: 100%;
-  border-radius: 12px;
-  background: #f3eeff;
-  padding: 4px;
-  gap: 4px;
-  margin-bottom: 24px;
-}
-
-.cl-tab {
-  flex: 1;
-  padding: 10px 0;
-  border: none;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.22s;
-  background: transparent;
-  color: #8a60da;
-}
-.cl-tab.active {
-  background: #5529aa;
-  color: #fff;
-  box-shadow: 0 2px 10px rgba(85,41,170,0.25);
-}
-.cl-tab:not(.active):hover { background: rgba(85,41,170,0.1); }
-
-/* ═══════════════════════════════
-   FORMULARIOS
-═══════════════════════════════ */
-.cl-form-hint {
-  color: #888;
-  font-size: 13px;
-  text-align: center;
-  margin-bottom: 20px;
-  line-height: 1.5;
-}
-
-.cl-form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-/* Campo con ícono */
-.cl-field {
-  display: flex;
-  align-items: center;
-  border: 1.5px solid #e0d4ff;
-  border-radius: 10px;
-  padding: 0 12px;
-  background: #faf8ff;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-.cl-field:focus-within {
-  border-color: #8a60da;
-  box-shadow: 0 0 0 3px rgba(138,96,218,0.12);
-  background: #fff;
-}
-
-.cl-field-icon {
-  color: #8a60da;
-  font-size: 15px;
-  flex-shrink: 0;
-  margin-right: 10px;
-}
-.cl-field-icon--at {
-  font-size: 16px;
-  font-weight: 700;
-  color: #8a60da;
-}
-
-.cl-input {
-  flex: 1;
-  border: none;
-  background: transparent;
-  padding: 13px 0;
-  font-size: 14px;
-  color: #2d1060;
-  outline: none;
-}
-.cl-input::placeholder { color: #bbb; }
-
-.cl-field-toggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #aaa;
-  padding: 0;
-  font-size: 15px;
-  display: flex;
-  align-items: center;
-  transition: color 0.2s;
-}
-.cl-field-toggle:hover { color: #5529aa; }
-
-/* Hint pequeño debajo de campo */
-.cl-campo-hint {
-  font-size: 11px;
-  color: #bbb;
-  margin: -6px 0 2px 4px;
-}
-
-/* Sección opcionales */
-.cl-opcionales-titulo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 8px 0 4px;
-  font-size: 12px;
-  color: #aaa;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-.cl-opcionales-titulo::before,
-.cl-opcionales-titulo::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: #ede8ff;
-}
-
-/* Botón principal */
-.cl-btn-submit {
-  width: 100%;
-  padding: 13px;
+.cl-icon-wrapper {
+  width: 72px; height: 72px;
   background: linear-gradient(135deg, #3f1b86, #8a60da);
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: opacity 0.2s, transform 0.15s;
-  margin-top: 4px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
+  font-size: 30px;
+  box-shadow: 0 8px 24px rgba(63, 27, 134, 0.3);
 }
-.cl-btn-submit:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
-.cl-btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 
-/* ═══════════════════════════════
-   DIVISOR GOOGLE
-═══════════════════════════════ */
-.cl-divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  margin: 20px 0 16px;
-  color: #ccc;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.cl-card-titulo {
+  color: #3f1b86;
+  font-weight: 700;
+  font-size: 26px;
+  text-align: center;
+  margin-bottom: 8px;
 }
-.cl-divider::before,
-.cl-divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: #eee;
+
+.cl-card-subtitulo {
+  color: #888;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 32px;
 }
 
 .cl-google-btn {
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
-/* ═══════════════════════════════
-   MENSAJES
-═══════════════════════════════ */
 .cl-error {
   background: #fff5f5;
   border: 1px solid #ffc0c0;
   color: #cc0000;
   border-radius: 10px;
-  padding: 11px 14px;
+  padding: 12px 16px;
   font-size: 13px;
   text-align: center;
   width: 100%;
+  margin-bottom: 16px;
 }
 
-.cl-exito {
-  background: #f0fff4;
-  border: 1px solid #a3e6b8;
-  color: #1a7a3a;
-  border-radius: 10px;
-  padding: 11px 14px;
-  font-size: 13px;
+.cl-info {
+  color: #bbb;
+  font-size: 11px;
   text-align: center;
-  width: 100%;
+  margin: 8px 0 0;
+  line-height: 1.6;
+  max-width: 280px;
 }
-
-/* ═══════════════════════════════
-   LINKS Y PIE
-═══════════════════════════════ */
-.cl-switch-hint {
-  font-size: 13px;
-  color: #999;
-  text-align: center;
-  margin-bottom: 4px;
-}
-
-.cl-link {
-  background: none;
-  border: none;
-  color: #5529aa;
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-  padding: 0;
-  text-decoration: underline;
-  transition: color 0.2s;
-}
-.cl-link:hover { color: #3f1b86; }
 
 .cl-btn-home {
   display: flex;
@@ -362,21 +171,9 @@
 }
 .cl-btn-home:hover { background: #f0ebff; border-color: #8a60da; color: #3f1b86; }
 
-/* ═══════════════════════════════
-   RESPONSIVE
-═══════════════════════════════ */
 @media (max-width: 767px) {
   .cl-page { flex-direction: column; }
-  .cl-left {
-    min-height: auto;
-    padding: 90px 24px 40px;
-    flex: none;
-  }
-  .cl-right {
-    min-height: auto;
-    padding: 36px 20px 60px;
-    flex: none;
-  }
+  .cl-left { min-height: auto; padding: 80px 24px 40px; flex: none; }
+  .cl-right { min-height: auto; padding: 40px 24px 60px; flex: none; }
   .cl-features { grid-template-columns: repeat(2, 1fr); }
-  .cl-card { max-width: 100%; }
 }

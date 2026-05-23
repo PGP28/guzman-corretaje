@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FaPlus, FaHardHat, FaEnvelope, FaBuilding, FaChevronDown,
          FaChevronUp, FaEdit, FaTrash, FaCheck, FaClock, FaTools } from 'react-icons/fa';
-import API_BASE_URL from '../../config';
 import './Construccion.css';
 
-const API = `${API_BASE_URL}/api`;
-
-// ── Storage localStorage (solo para proyectos internos) ───────────────────────
-const leerProyectos    = () => JSON.parse(localStorage.getItem('guzman_proyectos_construccion') || '[]');
+// ── Storage localStorage ──────────────────────────────────────
+const leerProyectos   = () => JSON.parse(localStorage.getItem('guzman_proyectos_construccion') || '[]');
 const guardarProyectos = (l) => localStorage.setItem('guzman_proyectos_construccion', JSON.stringify(l));
+const leerSolicitudesConstruccion = () => JSON.parse(localStorage.getItem('guzman_solicitudes_construccion') || '[]');
 
 const ESTADOS_PROYECTO = [
   { value: 'planificacion', label: '📋 Planificación', color: '#1565c0', bg: '#e3f2fd' },
@@ -120,7 +118,7 @@ const TarjetaProyecto = ({ proyecto, onEditar, onEliminar }) => {
 // ── Componente principal ──────────────────────────────────────
 const Construccion = () => {
   const [proyectos, setProyectos]       = useState(leerProyectos);
-  const [solicitudes, setSolicitudes]   = useState([]);
+  const [solicitudes]                   = useState(leerSolicitudesConstruccion);
   const [vista, setVista]               = useState('proyectos'); // proyectos | solicitudes
   const [showForm, setShowForm]         = useState(false);
   const [editando, setEditando]         = useState(null);
@@ -140,17 +138,6 @@ const Construccion = () => {
     gestor: '', notas: '',
     etapas: ETAPAS_DEFAULT.map(n => ({ nombre: n, completada: false })),
   });
-
-  // Cargar solicitudes desde API
-  const cargarSolicitudes = async () => {
-    try {
-      const res = await fetch(`${API}/solicitudes-construccion`);
-      const data = await res.json();
-      setSolicitudes(data);
-    } catch { setSolicitudes([]); }
-  };
-
-  useEffect(() => { cargarSolicitudes(); }, []);
 
   const ok = (msg) => { setExito(msg); setTimeout(() => setExito(''), 3000); };
 
@@ -360,30 +347,8 @@ const Construccion = () => {
                   {s.email    && <span>📧 {s.email}</span>}
                   {s.telefono && <span>📞 {s.telefono}</span>}
                   {s.fecha    && <span>🗓 {s.fecha}</span>}
-                  {s.servicio && <span>🔧 {s.servicio}</span>}
                 </div>
-                {s.descripcion && <p className="cp-sol-mensaje">"{s.descripcion}"</p>}
-                <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-                  {['nueva', 'en_atencion', 'atendida'].map(est => (
-                    <button
-                      key={est}
-                      className={`ep-filtro-btn ${s.estado === est ? 'active' : ''}`}
-                      style={{ fontSize: 11, padding: '4px 10px' }}
-                      onClick={async () => {
-                        try {
-                          await fetch(`${API}/solicitudes-construccion/${s.id}`, {
-                            method: 'PATCH',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ estado: est }),
-                          });
-                          cargarSolicitudes();
-                        } catch {}
-                      }}
-                    >
-                      {est === 'nueva' ? 'Nueva' : est === 'en_atencion' ? 'En atención' : 'Atendida'}
-                    </button>
-                  ))}
-                </div>
+                {s.mensaje && <p className="cp-sol-mensaje">"{s.mensaje}"</p>}
               </div>
             ))
           )}

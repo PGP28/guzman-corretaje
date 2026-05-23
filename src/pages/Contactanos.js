@@ -32,7 +32,7 @@ function Contactanos() {
         }),
       });
     } catch { /* continuar aunque falle el guardado */ }
-    window.open(`https://wa.me/+56946433583?text=${msg}`, '_blank');
+    window.open(`https://wa.me/+56952389494?text=${msg}`, '_blank');
     setEnviado(true);
   };
 
@@ -100,8 +100,8 @@ function Contactanos() {
                     <div className="contactanos-info-icon"><FaWhatsapp /></div>
                     <div>
                       <div className="contactanos-info-label">WhatsApp</div>
-                      <a href="https://wa.me/+56946433583" target="_blank" rel="noopener noreferrer" className="contactanos-info-valor">
-                        +56 9 4643 3583
+                      <a href="https://wa.me/+56952389494" target="_blank" rel="noopener noreferrer" className="contactanos-info-valor">
+                        +56 9 5238 9494
                       </a>
                     </div>
                   </li>
@@ -143,7 +143,7 @@ function Contactanos() {
 
                 {/* Botón WhatsApp directo */}
                 <a
-                  href="https://wa.me/+56946433583?text=Hola,%20vengo%20de%20la%20p%C3%A1gina%20web%20y%20quisiera%20m%C3%A1s%20informaci%C3%B3n."
+                  href="https://wa.me/+56952389494?text=Hola,%20vengo%20de%20la%20p%C3%A1gina%20web%20y%20quisiera%20m%C3%A1s%20informaci%C3%B3n."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="contactanos-btn-wa"

@@ -41,7 +41,7 @@ function QuieroVender() {
         }),
       });
     } catch { /* continuar aunque falle el guardado */ }
-    window.open(`https://wa.me/+56946433583?text=${msg}`, '_blank');
+    window.open(`https://wa.me/+56952389494?text=${msg}`, '_blank');
     setEnviado(true);
   };
 

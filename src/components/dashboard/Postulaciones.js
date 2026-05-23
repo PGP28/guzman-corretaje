@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { FaDownload, FaEye, FaTrash, FaEnvelope, FaPhone, FaCheck, FaTimes, FaFilePdf, FaImage, FaFileAlt } from 'react-icons/fa';
+import { FaDownload, FaEye, FaTrash, FaEnvelope, FaPhone, FaFilePdf, FaImage, FaFileAlt, FaExternalLinkAlt } from 'react-icons/fa';
+import API_BASE_URL from '../../config';
 import './SeccionDashboard.css';
+
+const API = `${API_BASE_URL}/api`;
 
 const ESTADOS = {
   nueva:       { label: '🆕 Nueva',       color: '#5529aa', bg: '#f4f0ff' },
@@ -11,47 +14,54 @@ const ESTADOS = {
 
 const Postulaciones = () => {
   const [postulaciones, setPostulaciones] = useState([]);
-  const [filtroEstado, setFiltroEstado]   = useState('todas');
-  const [seleccionada, setSeleccionada]   = useState(null);
-  const [confirmDel, setConfirmDel]       = useState(null);
-  const [msg, setMsg]                     = useState('');
+  const [filtroEstado,  setFiltroEstado]  = useState('todas');
+  const [seleccionada,  setSeleccionada]  = useState(null);
+  const [confirmDel,    setConfirmDel]    = useState(null);
+  const [cargando,      setCargando]      = useState(true);
+  const [msg,           setMsg]           = useState('');
 
   useEffect(() => { cargar(); }, []);
 
-  const cargar = () => {
-    const data = JSON.parse(localStorage.getItem('guzman_postulaciones') || '[]');
-    setPostulaciones(data);
+  const cargar = async () => {
+    setCargando(true);
+    try {
+      const res  = await fetch(`${API}/postulaciones`);
+      const data = await res.json();
+      if (Array.isArray(data)) setPostulaciones(data);
+    } catch { }
+    finally { setCargando(false); }
   };
 
-  const guardar = (lista) => {
-    setPostulaciones(lista);
-    localStorage.setItem('guzman_postulaciones', JSON.stringify(lista));
+  const cambiarEstado = async (id, nuevoEstado) => {
+    try {
+      const res  = await fetch(`${API}/postulaciones/${id}`, {
+        method:  'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ estado: nuevoEstado }),
+      });
+      const data = await res.json();
+      if (!res.ok) return;
+      setPostulaciones(prev => prev.map(p => p.id === id ? data : p));
+      if (seleccionada?.id === id) setSeleccionada(data);
+      setMsg(`✅ Estado actualizado a ${ESTADOS[nuevoEstado].label}`);
+      setTimeout(() => setMsg(''), 2500);
+    } catch { }
   };
 
-  const cambiarEstado = (id, nuevoEstado) => {
-    const actualizadas = postulaciones.map(p =>
-      p.id === id ? { ...p, estado: nuevoEstado } : p
-    );
-    guardar(actualizadas);
-    if (seleccionada?.id === id) setSeleccionada({ ...seleccionada, estado: nuevoEstado });
-    setMsg(`✅ Estado actualizado a ${ESTADOS[nuevoEstado].label}`);
-    setTimeout(() => setMsg(''), 2500);
+  const eliminar = async (id) => {
+    try {
+      await fetch(`${API}/postulaciones/${id}`, { method: 'DELETE' });
+      setPostulaciones(prev => prev.filter(p => p.id !== id));
+      setConfirmDel(null);
+      if (seleccionada?.id === id) setSeleccionada(null);
+      setMsg('✅ Postulación eliminada');
+      setTimeout(() => setMsg(''), 2500);
+    } catch { }
   };
 
-  const eliminar = (id) => {
-    guardar(postulaciones.filter(p => p.id !== id));
-    setConfirmDel(null);
-    if (seleccionada?.id === id) setSeleccionada(null);
-    setMsg('✅ Postulación eliminada');
-    setTimeout(() => setMsg(''), 2500);
-  };
-
-  const descargarArchivo = (archivo) => {
-    if (!archivo?.data) return;
-    const link = document.createElement('a');
-    link.href = archivo.data;
-    link.download = archivo.nombre;
-    link.click();
+  const formatFecha = (iso) => {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit', year: 'numeric' });
   };
 
   const filtradas = filtroEstado === 'todas'
@@ -59,11 +69,10 @@ const Postulaciones = () => {
     : postulaciones.filter(p => p.estado === filtroEstado);
 
   const contEstados = Object.keys(ESTADOS).reduce((acc, e) => ({
-    ...acc,
-    [e]: postulaciones.filter(p => p.estado === e).length,
+    ...acc, [e]: postulaciones.filter(p => p.estado === e).length,
   }), {});
 
-  // Vista detalle
+  /* ── Vista detalle ── */
   if (seleccionada) {
     const est = ESTADOS[seleccionada.estado] || ESTADOS.nueva;
     return (
@@ -71,13 +80,14 @@ const Postulaciones = () => {
         <div className="sd-header">
           <div>
             <h1 className="sd-titulo">Postulación de {seleccionada.nombre}</h1>
-            <p className="sd-subtitulo">Recibida el {seleccionada.fecha}</p>
+            <p className="sd-subtitulo">Recibida el {formatFecha(seleccionada.created_at)}</p>
           </div>
           <button className="sd-btn-prev" onClick={() => setSeleccionada(null)}>← Volver</button>
         </div>
 
         {msg && <div className="sd-exito">{msg}</div>}
 
+        {/* Info del postulante */}
         <div className="sd-card active">
           <div className="sd-card-header">
             <span className="sd-card-icon">👤</span>
@@ -88,11 +98,12 @@ const Postulaciones = () => {
           </div>
           <div className="sd-card-body">
             <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
-              {seleccionada.foto?.data && (
+              {seleccionada.foto_url && (
                 <img
-                  src={seleccionada.foto.data}
+                  src={seleccionada.foto_url}
                   alt={seleccionada.nombre}
                   style={{ width: 120, height: 120, borderRadius: '50%', objectFit: 'cover', flexShrink: 0, border: '3px solid #e0d4ff' }}
+                  onError={e => e.target.style.display = 'none'}
                 />
               )}
               <div style={{ flex: 1, minWidth: 260 }}>
@@ -110,6 +121,7 @@ const Postulaciones = () => {
           </div>
         </div>
 
+        {/* Documentos */}
         <div className="sd-card active" style={{ marginTop: 16 }}>
           <div className="sd-card-header">
             <span className="sd-card-icon">📎</span>
@@ -117,37 +129,43 @@ const Postulaciones = () => {
           </div>
           <div className="sd-card-body">
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {seleccionada.cv && (
+              {seleccionada.cv_url && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 12, background: '#faf7ff', borderRadius: 10, border: '1px solid #ede8fa' }}>
                   <FaFilePdf style={{ color: '#e53935', fontSize: 24 }} />
                   <div style={{ flex: 1 }}>
-                    <strong>CV: {seleccionada.cv.nombre}</strong>
+                    <strong>CV:</strong> {seleccionada.cv_nombre}
                   </div>
-                  <button className="sd-btn-prev" onClick={() => descargarArchivo(seleccionada.cv)}>
-                    <FaDownload className="me-2" /> Descargar
-                  </button>
+                  <a href={seleccionada.cv_url} target="_blank" rel="noopener noreferrer" className="sd-btn-prev" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <FaExternalLinkAlt /> Ver
+                  </a>
+                  <a href={seleccionada.cv_url} download={seleccionada.cv_nombre} className="sd-btn-prev" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <FaDownload /> Descargar
+                  </a>
                 </div>
               )}
-              {seleccionada.foto && (
+              {seleccionada.foto_url && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 12, background: '#faf7ff', borderRadius: 10, border: '1px solid #ede8fa' }}>
                   <FaImage style={{ color: '#5529aa', fontSize: 24 }} />
                   <div style={{ flex: 1 }}>
-                    <strong>Foto: {seleccionada.foto.nombre}</strong>
+                    <strong>Foto:</strong> {seleccionada.foto_nombre}
                   </div>
-                  <button className="sd-btn-prev" onClick={() => descargarArchivo(seleccionada.foto)}>
-                    <FaDownload className="me-2" /> Descargar
-                  </button>
+                  <a href={seleccionada.foto_url} target="_blank" rel="noopener noreferrer" className="sd-btn-prev" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <FaExternalLinkAlt /> Ver
+                  </a>
                 </div>
               )}
-              {seleccionada.carta && (
+              {seleccionada.carta_url && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 12, background: '#faf7ff', borderRadius: 10, border: '1px solid #ede8fa' }}>
                   <FaFileAlt style={{ color: '#1565c0', fontSize: 24 }} />
                   <div style={{ flex: 1 }}>
-                    <strong>Carta: {seleccionada.carta.nombre}</strong>
+                    <strong>Carta:</strong> {seleccionada.carta_nombre}
                   </div>
-                  <button className="sd-btn-prev" onClick={() => descargarArchivo(seleccionada.carta)}>
-                    <FaDownload className="me-2" /> Descargar
-                  </button>
+                  <a href={seleccionada.carta_url} target="_blank" rel="noopener noreferrer" className="sd-btn-prev" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <FaExternalLinkAlt /> Ver
+                  </a>
+                  <a href={seleccionada.carta_url} download={seleccionada.carta_nombre} className="sd-btn-prev" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <FaDownload /> Descargar
+                  </a>
                 </div>
               )}
             </div>
@@ -166,9 +184,7 @@ const Postulaciones = () => {
                 <button
                   key={k}
                   className="ep-filtro-btn"
-                  style={seleccionada.estado === k ? {
-                    background: e.bg, color: e.color, borderColor: e.color
-                  } : {}}
+                  style={seleccionada.estado === k ? { background: e.bg, color: e.color, borderColor: e.color } : {}}
                   onClick={() => cambiarEstado(seleccionada.id, k)}
                 >
                   {e.label}
@@ -193,7 +209,7 @@ const Postulaciones = () => {
           <div className="sd-confirm-overlay">
             <div className="sd-confirm-modal">
               <h4>⚠️ Confirmar eliminación</h4>
-              <p>¿Eliminar esta postulación? No podrás recuperarla.</p>
+              <p>¿Eliminar esta postulación? Se eliminará también de Google Drive.</p>
               <div className="sd-confirm-btns">
                 <button className="sd-btn-prev" onClick={() => setConfirmDel(null)}>Cancelar</button>
                 <button className="sd-btn-danger" onClick={() => eliminar(confirmDel)}>Sí, eliminar</button>
@@ -205,7 +221,7 @@ const Postulaciones = () => {
     );
   }
 
-  // Listado
+  /* ── Listado ── */
   return (
     <div className="sd-page">
       <div className="sd-header">
@@ -215,6 +231,7 @@ const Postulaciones = () => {
             {postulaciones.length} postulación{postulaciones.length !== 1 ? 'es' : ''} recibida{postulaciones.length !== 1 ? 's' : ''}
           </p>
         </div>
+        <button className="sd-btn-prev" onClick={cargar}>↻ Actualizar</button>
       </div>
 
       {msg && <div className="sd-exito">{msg}</div>}
@@ -230,7 +247,9 @@ const Postulaciones = () => {
         ))}
       </div>
 
-      {filtradas.length === 0 ? (
+      {cargando ? (
+        <div className="ep-empty"><span>⏳</span><p>Cargando postulaciones...</p></div>
+      ) : filtradas.length === 0 ? (
         <div className="ep-empty">
           <span>📋</span>
           <p>No hay postulaciones {filtroEstado !== 'todas' ? 'con este estado' : 'aún'}</p>
@@ -242,26 +261,22 @@ const Postulaciones = () => {
             return (
               <div key={p.id} className="ep-item" onClick={() => setSeleccionada(p)}>
                 <div className="ep-item-img" style={{ background: '#f0ebff' }}>
-                  {p.foto?.data
-                    ? <img src={p.foto.data} alt={p.nombre} className="ep-img" />
+                  {p.foto_url
+                    ? <img src={p.foto_url} alt={p.nombre} className="ep-img" onError={e => e.target.style.display='none'} />
                     : <div className="ep-img-placeholder">👤</div>}
                 </div>
                 <div className="ep-item-info">
                   <div className="ep-item-top">
                     <span className="ep-item-cat">POSTULANTE · {p.cargo}</span>
-                    <span className="ep-item-estado" style={{ color: est.color, background: est.bg }}>
-                      {est.label}
-                    </span>
+                    <span className="ep-item-estado" style={{ color: est.color, background: est.bg }}>{est.label}</span>
                   </div>
                   <h4 className="ep-item-nombre">{p.nombre}</h4>
                   <p className="ep-item-ubicacion">📧 {p.email}</p>
                   <p className="ep-item-precio" style={{ fontSize: 13 }}>📱 {p.telefono}</p>
-                  <span style={{ fontSize: 11, color: '#888' }}>📅 Recibida: {p.fecha}</span>
+                  <span style={{ fontSize: 11, color: '#888' }}>📅 {formatFecha(p.created_at)}</span>
                 </div>
                 <div className="ep-item-acciones">
-                  <button className="ep-btn-edit">
-                    <FaEye className="me-2" /> Ver
-                  </button>
+                  <button className="ep-btn-edit"><FaEye className="me-2" /> Ver</button>
                 </div>
               </div>
             );

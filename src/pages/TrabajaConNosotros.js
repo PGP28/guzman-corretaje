@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form } from 'react-bootstrap';
 import { FaBriefcase, FaUserTie, FaCheckCircle, FaFilePdf, FaImage, FaFileAlt } from 'react-icons/fa';
+import API_BASE_URL from '../config';
 import './TrabajaConNosotros.css';
 
 const TrabajaConNosotros = () => {
@@ -32,13 +33,6 @@ const TrabajaConNosotros = () => {
     setter(f);
   };
 
-  const fileToBase64 = (file) => new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-  });
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!cv || !foto || !carta) {
@@ -49,35 +43,30 @@ const TrabajaConNosotros = () => {
     setError('');
 
     try {
-      // Convertir archivos a base64 para guardar en localStorage
-      const [cvB64, fotoB64, cartaB64] = await Promise.all([
-        fileToBase64(cv),
-        fileToBase64(foto),
-        fileToBase64(carta),
-      ]);
+      const body = new FormData();
+      body.append('nombre',   formData.nombre);
+      body.append('email',    formData.email);
+      body.append('telefono', formData.telefono);
+      body.append('cargo',    'Corredor');
+      body.append('mensaje',  formData.mensaje);
+      body.append('cv',       cv);
+      body.append('foto',     foto);
+      body.append('carta',    carta);
 
-      const postulacion = {
-        id: Date.now(),
-        nombre: formData.nombre,
-        email: formData.email,
-        telefono: formData.telefono,
-        cargo: 'Corredor',
-        mensaje: formData.mensaje,
-        cv: { nombre: cv.name, tipo: cv.type, data: cvB64 },
-        foto: { nombre: foto.name, tipo: foto.type, data: fotoB64 },
-        carta: { nombre: carta.name, tipo: carta.type, data: cartaB64 },
-        estado: 'nueva',  // nueva | revisada | contactada | descartada
-        fecha: new Date().toLocaleDateString('es-CL'),
-        fecha_iso: new Date().toISOString(),
-      };
+      const res = await fetch(`${API_BASE_URL}/api/postulaciones`, {
+        method: 'POST',
+        body,
+      });
 
-      const existentes = JSON.parse(localStorage.getItem('guzman_postulaciones') || '[]');
-      existentes.unshift(postulacion);
-      localStorage.setItem('guzman_postulaciones', JSON.stringify(existentes));
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || 'Error al enviar la postulación. Intenta de nuevo.');
+        return;
+      }
 
       setEnviado(true);
-    } catch (err) {
-      setError('Error al procesar los archivos. Intenta con archivos más pequeños.');
+    } catch {
+      setError('Error de conexión. Verifica tu internet e intenta de nuevo.');
     } finally {
       setEnviando(false);
     }

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form } from 'react-bootstrap';
 import { FaHammer, FaHome, FaWrench, FaPaintRoller, FaRuler, FaCheckCircle } from 'react-icons/fa';
+import API_BASE_URL from '../config';
 import './Construccion.css';
+
+const API = `${API_BASE_URL}/api`;
 
 const SERVICIOS = [
   { icon: <FaHammer />,       titulo: 'Construcción nueva',     desc: 'Diseño y construcción de casas y edificios desde cero.' },
@@ -18,24 +21,24 @@ function Construccion() {
 
   const handleChange = (e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const msg = encodeURIComponent(
       `Hola, soy ${formData.nombre}. Solicito información sobre: ${formData.servicio}. ${formData.descripcion} Contacto: ${formData.email} / ${formData.telefono}`
     );
-    // Guardar en localStorage para el dashboard de construcción
-    const solicitudes = JSON.parse(localStorage.getItem('guzman_solicitudes_construccion') || '[]');
-    solicitudes.unshift({
-      id: Date.now(),
-      nombre:   formData.nombre,
-      email:    formData.email,
-      telefono: formData.telefono,
-      mensaje:  `${formData.servicio}: ${formData.descripcion}`,
-      estado:   'nueva',
-      fecha:    new Date().toLocaleDateString('es-CL'),
-      origen:   'Construcción',
-    });
-    localStorage.setItem('guzman_solicitudes_construccion', JSON.stringify(solicitudes));
+    try {
+      await fetch(`${API}/solicitudes-construccion`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre:      formData.nombre,
+          email:       formData.email,
+          telefono:    formData.telefono,
+          servicio:    formData.servicio,
+          descripcion: formData.descripcion,
+        }),
+      });
+    } catch { /* continuar aunque falle el guardado */ }
     window.open(`https://wa.me/+56952389494?text=${msg}`, '_blank');
     setEnviado(true);
   };

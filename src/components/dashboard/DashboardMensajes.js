@@ -6,12 +6,31 @@ import './DashboardMensajes.css';
 const API = `${API_BASE_URL}/api`;
 const POLL_INTERVAL = 6000;
 
+/* ── Skeleton mensajes ── */
+const SkMensajesDash = () => (
+  <div className="dm-mensajes" style={{ gap: 14 }}>
+    {[1, 2, 3, 4, 5].map(i => (
+      <div key={i} className={`dm-mensaje ${i % 2 === 0 ? 'recibido' : 'enviado'}`}>
+        <div style={{
+          width: `${40 + (i * 11) % 35}%`,
+          height: 48,
+          borderRadius: 14,
+          background: 'linear-gradient(90deg,#ede8fa 25%,#f4f0ff 50%,#ede8fa 75%)',
+          backgroundSize: '200% 100%',
+          animation: 'skShimmer 1.4s infinite',
+        }} />
+      </div>
+    ))}
+  </div>
+);
+
 const DashboardMensajes = ({ userName }) => {
   const [conversaciones, setConversaciones] = useState([]);
   const [seleccionada,   setSeleccionada]   = useState(null);
   const [mensajes,       setMensajes]       = useState([]);
   const [texto,          setTexto]          = useState('');
   const [cargando,       setCargando]       = useState(true);
+  const [cargandoMensajes, setCargandoMensajes] = useState(false);
   const [enviando,       setEnviando]       = useState(false);
   const [subiendo,       setSubiendo]       = useState(false);
   const [archivo,        setArchivo]        = useState(null);
@@ -34,6 +53,7 @@ const DashboardMensajes = ({ userName }) => {
   /* ── Cargar mensajes de una conversación ── */
   const cargarMensajes = async (conv, silencioso = false) => {
     if (!conv) return;
+    if (!silencioso) setCargandoMensajes(true);
     try {
       const id  = conv.cliente_id
         ? `cliente_id=${conv.cliente_id}`
@@ -62,6 +82,7 @@ const DashboardMensajes = ({ userName }) => {
         ));
       }
     } catch { }
+    finally { if (!silencioso) setCargandoMensajes(false); }
   };
 
   /* ── Polling ── */
@@ -266,45 +287,47 @@ const DashboardMensajes = ({ userName }) => {
             </div>
 
             {/* Mensajes */}
-            <div className="dm-mensajes">
-              {mensajes.length === 0 ? (
-                <div className="dm-mensajes-empty"><p>No hay mensajes en esta conversación</p></div>
-              ) : (
-                mensajes.map(m => (
-                  <div key={m.id} className={`dm-mensaje ${m.de === 'corredor' ? 'enviado' : 'recibido'}`}>
-                    <div className={`dm-burbuja ${m._pendiente ? 'dm-pendiente' : ''}`}>
-                      {m.texto && <p>{m.texto}</p>}
-                      {m.archivo_url && m.archivo_tipo === 'imagen' && (
-                        <a href={m.archivo_url} target="_blank" rel="noopener noreferrer">
-                          <img
-                            src={m.archivo_url}
-                            alt={m.archivo_nombre}
-                            className="dm-msg-img"
-                            onError={e => { e.target.onerror = null; e.target.style.display = 'none'; }}
-                          />
-                        </a>
-                      )}
-                      {m.archivo_url && m.archivo_tipo === 'documento' && (
-                        <div className="dm-msg-doc-card">
-                          <FaFileAlt className="dm-msg-doc-icon" />
-                          <span className="dm-msg-doc-nombre">{m.archivo_nombre}</span>
-                          <a href={m.archivo_url} download={m.archivo_nombre} className="dm-msg-doc-btn" title="Descargar">
-                            ⬇
+            {cargandoMensajes ? <SkMensajesDash /> : (
+              <div className="dm-mensajes">
+                {mensajes.length === 0 ? (
+                  <div className="dm-mensajes-empty"><p>No hay mensajes en esta conversación</p></div>
+                ) : (
+                  mensajes.map(m => (
+                    <div key={m.id} className={`dm-mensaje ${m.de === 'corredor' ? 'enviado' : 'recibido'}`}>
+                      <div className={`dm-burbuja ${m._pendiente ? 'dm-pendiente' : ''}`}>
+                        {m.texto && <p>{m.texto}</p>}
+                        {m.archivo_url && m.archivo_tipo === 'imagen' && (
+                          <a href={m.archivo_url} target="_blank" rel="noopener noreferrer">
+                            <img
+                              src={m.archivo_url}
+                              alt={m.archivo_nombre}
+                              className="dm-msg-img"
+                              onError={e => { e.target.onerror = null; e.target.style.display = 'none'; }}
+                            />
                           </a>
-                        </div>
+                        )}
+                        {m.archivo_url && m.archivo_tipo === 'documento' && (
+                          <div className="dm-msg-doc-card">
+                            <FaFileAlt className="dm-msg-doc-icon" />
+                            <span className="dm-msg-doc-nombre">{m.archivo_nombre}</span>
+                            <a href={m.archivo_url} download={m.archivo_nombre} className="dm-msg-doc-btn" title="Descargar">
+                              ⬇
+                            </a>
+                          </div>
+                        )}
+                        <span className="dm-hora">
+                          {formatHora(m.created_at)}{m._pendiente && ' · enviando…'}
+                        </span>
+                      </div>
+                      {m.de === 'corredor' && (
+                        <span className="dm-autor">{m.autor || userName || 'Corredor'}</span>
                       )}
-                      <span className="dm-hora">
-                        {formatHora(m.created_at)}{m._pendiente && ' · enviando…'}
-                      </span>
                     </div>
-                    {m.de === 'corredor' && (
-                      <span className="dm-autor">{m.autor || userName || 'Corredor'}</span>
-                    )}
-                  </div>
-                ))
-              )}
-              <div ref={bottomRef} />
-            </div>
+                  ))
+                )}
+                <div ref={bottomRef} />
+              </div>
+            )}
 
             {/* Preview archivo */}
             {archivo && (

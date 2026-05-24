@@ -1,17 +1,70 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Image, Button, Form } from 'react-bootstrap';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useUF } from '../hooks/useUF';
+import API_BASE_URL from '../config';
 import './DetallesPropiedades.css';
 
 function DetallesPropiedades() {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { propiedad } = location.state || {};
+  const navigate  = useNavigate();
+  const { id }    = useParams();
 
+  // Usar state si viene de navegación interna, si no cargar desde API por ID
+  const [propiedad, setPropiedad]   = useState(location.state?.propiedad || null);
+  const [cargando,  setCargando]    = useState(!location.state?.propiedad && !!id);
   const [imagenIndex, setImagenIndex] = useState(0);
   const imagenPrincipal = propiedad?.imagenes?.[imagenIndex]?.url || propiedad?.imagenes?.[imagenIndex] || '';
   const [formData, setFormData] = useState({ email: '', telefono: '', mensaje: '' });
   const [enviado, setEnviado] = useState(false);
+  const { ufACLP, formatUF } = useUF();
+  const [similares, setSimilares] = useState([]);
+
+  // Cargar por ID si no hay state (URL compartida o recarga)
+  useEffect(() => {
+    if (!propiedad && id) {
+      setCargando(true);
+      fetch(`${API_BASE_URL}/api/properties`)
+        .then(r => r.json())
+        .then(data => {
+          const found = Array.isArray(data) ? data.find(p => String(p.id) === String(id)) : null;
+          setPropiedad(found || null);
+        })
+        .catch(() => {})
+        .finally(() => setCargando(false));
+    }
+  }, [id]);
+
+  // Actualizar URL a formato amigable si se llegó por /DetallesPropiedades
+  useEffect(() => {
+    if (propiedad && !id) {
+      // Reemplazar la URL sin recargar el componente
+      window.history.replaceState(null, '', `/propiedad/${propiedad.id}`);
+    }
+  }, [propiedad, id]);
+
+  // Cargar propiedades similares
+  useEffect(() => {
+    if (!propiedad) return;
+    fetch(`${API_BASE_URL}/api/properties?categoria=${encodeURIComponent(propiedad.categoria)}`)
+      .then(r => r.json())
+      .then(data => {
+        const filtradas = (Array.isArray(data) ? data : [])
+          .filter(p => p.id !== propiedad.id && (p.estado || 'disponible') === 'disponible')
+          .slice(0, 3);
+        setSimilares(filtradas);
+      })
+      .catch(() => {});
+  }, [propiedad?.id]);
+
+  if (cargando) {
+    return (
+      <Container className="text-center py-5">
+        <div className="spinner-border" style={{ color: '#3f1b86' }} />
+        <p className="mt-3 text-muted">Cargando propiedad...</p>
+      </Container>
+    );
+  }
 
   if (!propiedad) {
     return (
@@ -95,11 +148,22 @@ function DetallesPropiedades() {
             )}
           </div>
           <p className="detalles-ubicacion">📍 {propiedad.ubicacion}</p>
+          {propiedad.codigo && (
+            <span className="detalles-codigo">Ref: {propiedad.codigo}</span>
+          )}
         </Col>
         <Col xs="auto">
-          <span className="detalles-precio">
-            {formatPrecio(propiedad.precio, propiedad.unidad_medida)}
-          </span>
+          <div className="detalles-precio-wrapper">
+            <span className="detalles-precio">
+              {formatPrecio(propiedad.precio, propiedad.unidad_medida)}
+            </span>
+            {propiedad.unidad_medida === 'UF' && ufACLP(propiedad.precio) && (
+              <span className="detalles-precio-clp">
+                ≈ {ufACLP(propiedad.precio)} CLP
+                <span className="detalles-uf-valor">UF {formatUF()}</span>
+              </span>
+            )}
+          </div>
         </Col>
       </Row>
 
@@ -280,6 +344,58 @@ function DetallesPropiedades() {
               <p className="detalles-descripcion">{detalles.descripcion}</p>
             </>
           )}
+
+          {/* Otras Características */}
+          {(detalles.bodega > 0 || detalles.gastos_comunes || propiedad.constructora || propiedad.fecha_entrega ||
+            detalles.superficie_util || detalles.superficie_total) && (
+            <>
+              <h5 className="detalles-seccion-titulo mt-4">Otras características</h5>
+              <div className="detalles-otras-grid">
+                {detalles.superficie_util > 0 && (
+                  <div className="detalles-otra-item">
+                    <span className="detalles-otra-label">📍 Superficie útil</span>
+                    <span className="detalles-otra-valor">{detalles.superficie_util} m²</span>
+                  </div>
+                )}
+                {detalles.superficie_total > 0 && (
+                  <div className="detalles-otra-item">
+                    <span className="detalles-otra-label">📍 Superficie total</span>
+                    <span className="detalles-otra-valor">{detalles.superficie_total} m²</span>
+                  </div>
+                )}
+                {detalles.bodega > 0 && (
+                  <div className="detalles-otra-item">
+                    <span className="detalles-otra-label">📦 Bodega</span>
+                    <span className="detalles-otra-valor">{detalles.bodega}</span>
+                  </div>
+                )}
+                {detalles.gastos_comunes && (
+                  <div className="detalles-otra-item">
+                    <span className="detalles-otra-label">💰 Gastos comunes</span>
+                    <span className="detalles-otra-valor">{detalles.gastos_comunes}</span>
+                  </div>
+                )}
+                {propiedad.constructora && (
+                  <div className="detalles-otra-item">
+                    <span className="detalles-otra-label">🏗 Constructora</span>
+                    <span className="detalles-otra-valor">{propiedad.constructora}</span>
+                  </div>
+                )}
+                {propiedad.fecha_entrega && (
+                  <div className="detalles-otra-item">
+                    <span className="detalles-otra-label">📅 Fecha entrega</span>
+                    <span className="detalles-otra-valor">{propiedad.fecha_entrega}</span>
+                  </div>
+                )}
+                {propiedad.corredor_asignado && (
+                  <div className="detalles-otra-item">
+                    <span className="detalles-otra-label">👤 Corredor</span>
+                    <span className="detalles-otra-valor">{propiedad.corredor_asignado}</span>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
         </Col>
 
         {/* Formulario de contacto */}
@@ -352,7 +468,44 @@ function DetallesPropiedades() {
 
       <hr className="mt-5" />
 
-      {/* Mapa de ubicación */}
+      {/* Propiedades similares */}
+      {similares.length > 0 && (
+        <Row className="mt-4 mb-2">
+          <Col>
+            <h5 className="detalles-seccion-titulo mb-3">🏠 Propiedades similares</h5>
+            <Row className="g-3">
+              {similares.map(sim => {
+                const imgSim = sim.imagenes?.[0]?.url || sim.imagenes?.[0] || '';
+                return (
+                  <Col xs={12} sm={6} md={4} key={sim.id}>
+                    <div
+                      className="detalles-similar-card"
+                      onClick={() => { navigate('/DetallesPropiedades', { state: { propiedad: sim } }); window.scrollTo(0,0); }}
+                    >
+                      <div className="detalles-similar-img-wrap">
+                        <img src={imgSim || 'https://via.placeholder.com/300x160?text=Sin+imagen'} alt={sim.nombre} />
+                        <span className="detalles-similar-badge">{sim.categoria}</span>
+                      </div>
+                      <div className="detalles-similar-body">
+                        <p className="detalles-similar-nombre">{sim.nombre}</p>
+                        <p className="detalles-similar-ubicacion">📍 {sim.ubicacion}</p>
+                        <p className="detalles-similar-precio">
+                          {formatPrecio(sim.precio, sim.unidad_medida)}
+                          {sim.unidad_medida === 'UF' && ufACLP(sim.precio) && (
+                            <span className="detalles-similar-clp">≈ {ufACLP(sim.precio)}</span>
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  </Col>
+                );
+              })}
+            </Row>
+          </Col>
+        </Row>
+      )}
+
+      <hr />
       {propiedad.ubicacion && (
         <Row className="mt-4 mb-5">
           <Col>

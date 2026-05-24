@@ -42,6 +42,7 @@ const AppContent = ({ user, onLoginCorredor, onLogout, cliente, onLoginCliente, 
           <Route path="/Construccion" element={<Construccion />} />
           <Route path="/TrabajaConNosotros" element={<TrabajaConNosotros />} />
           <Route path="/DetallesPropiedades" element={<DetallesPropiedades />} />
+          <Route path="/propiedad/:id" element={<DetallesPropiedades />} />
 
           {/* Login unificado */}
           <Route

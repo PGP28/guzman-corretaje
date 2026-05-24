@@ -115,7 +115,7 @@ const ClienteInicio = ({ user }) => {
         ) : (
           <div className="cp-props-grid">
             {propiedades.slice(0, 3).map(p => (
-              <div key={p.id} className="cp-prop-card" onClick={() => navigate(`/cliente/propiedad/${p.id}`, { state: { propiedad: p } })}>
+              <div key={p.id} className="cp-prop-card" onClick={() => navigate(`/propiedad/${p.id}`, { state: { propiedad: p } })}>
                 <img
                   src={p.imagenes?.[0]?.url || p.imagenes?.[0] || 'https://via.placeholder.com/300x160?text=Sin+imagen'}
                   alt={p.nombre}

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { useUF } from '../hooks/useUF';
 import './TarjetasPropiedades.css';
 
 function PropiedadCard({ propiedad }) {
   const [imagenIndex, setImagenIndex] = useState(0);
   const navigate = useNavigate();
+  const { ufACLP } = useUF();
 
   const imagenes = (propiedad.imagenes || []).map(i => i?.url || i);
 
@@ -20,7 +22,7 @@ function PropiedadCard({ propiedad }) {
   };
 
   const handleClick = () => {
-    navigate('/DetallesPropiedades', { state: { propiedad } });
+    navigate(`/propiedad/${propiedad.id}`, { state: { propiedad } });
   };
 
   // Compatibilidad con estructura del backend (detalles) y datos estáticos (detalle)
@@ -68,6 +70,11 @@ function PropiedadCard({ propiedad }) {
           <span className="tarjeta-badge">{propiedad.categoria}</span>
         )}
 
+        {/* Código de referencia */}
+        {propiedad.codigo && (
+          <span className="tarjeta-codigo">{propiedad.codigo}</span>
+        )}
+
         {/* Badge de estado */}
         {propiedad.estado && propiedad.estado !== 'disponible' && (
           <span className={`tarjeta-badge-estado tarjeta-badge-estado--${propiedad.estado}`}>
@@ -103,6 +110,9 @@ function PropiedadCard({ propiedad }) {
         {/* Precio */}
         <p className="tarjeta-precio">
           {formatPrecio(propiedad.precio, propiedad.unidad_medida)}
+          {propiedad.unidad_medida === 'UF' && ufACLP(propiedad.precio) && (
+            <span className="tarjeta-precio-clp">≈ {ufACLP(propiedad.precio)}</span>
+          )}
         </p>
 
         {/* Detalles */}

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import './BuscadorLateral.css';
 
-const BuscadorLateral = ({ onFiltrar, contexto = {}, propiedades = [] }) => {
+const BuscadorLateral = ({ onFiltrar, contexto = {}, propiedades = [], filtrosIniciales = {} }) => {
   const operacionFija = contexto.operacion || '';
   const tipoFijo      = contexto.tipoFijo  || '';
 
@@ -11,9 +11,9 @@ const BuscadorLateral = ({ onFiltrar, contexto = {}, propiedades = [] }) => {
 
   const [filtros, setFiltros] = useState({
     operacion:       operacionFija,
-    tipoPropiedad:   tipoFijo,
-    region:          '',
-    comuna:          '',
+    tipoPropiedad:   filtrosIniciales.tipo   || tipoFijo,
+    region:          filtrosIniciales.region || '',
+    comuna:          filtrosIniciales.comuna || '',
     precioDesde:     '',
     precioHasta:     '',
     moneda:          'CLP',

@@ -75,7 +75,16 @@ function EnVenta() {
     <Container fluid className="px-4 mt-3">
       <Row>
         <Col xs={12} md={4} lg={3} className="mb-4">
-          <BuscadorLateral onFiltrar={handleFiltrar} contexto={{ operacion: 'Venta' }} propiedades={todas} />
+          <BuscadorLateral
+            onFiltrar={handleFiltrar}
+            contexto={{ operacion: 'Venta' }}
+            propiedades={todas}
+            filtrosIniciales={{
+              tipo:   new URLSearchParams(location.search).get('tipo')   || '',
+              region: new URLSearchParams(location.search).get('region') || '',
+              comuna: new URLSearchParams(location.search).get('comuna') || '',
+            }}
+          />
         </Col>
         <Col xs={12} md={8} lg={9}>
           <div className="pag-header">

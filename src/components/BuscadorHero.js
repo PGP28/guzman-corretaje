@@ -8,6 +8,7 @@ const BuscadorHero = () => {
   const navigate = useNavigate();
   const [propiedades, setPropiedades] = useState([]);
   const [comunas, setComunas]         = useState([]);
+  const [errorOperacion, setErrorOperacion] = useState(false);
 
   const [filtros, setFiltros] = useState({
     operacion:     '',
@@ -43,8 +44,10 @@ const BuscadorHero = () => {
   };
 
   const handleBuscar = () => {
-    if (!filtros.operacion && !filtros.tipoPropiedad && !filtros.region) {
-      alert('Por favor selecciona al menos una opción de búsqueda.');
+    // Operación es obligatoria
+    if (!filtros.operacion) {
+      setErrorOperacion(true);
+      setTimeout(() => setErrorOperacion(false), 1000);
       return;
     }
 
@@ -64,12 +67,18 @@ const BuscadorHero = () => {
 
   return (
     <div className="buscador-hero">
-      <div className="buscador-hero__pills">
+      {/* Mensaje de error arriba de los pills */}
+      {errorOperacion && (
+        <div className="buscador-error-msg">
+          ⚠️ Selecciona Comprar o Arrendar para continuar
+        </div>
+      )}
+      <div className={`buscador-hero__pills ${errorOperacion ? 'buscador-pills--error' : ''}`}>
         <button className={`buscador-pill ${filtros.operacion === 'Comprar' ? 'buscador-pill--active' : ''}`}
-          onClick={() => setFiltros(prev => ({ ...prev, operacion: 'Comprar', comuna: '' }))}>Comprar</button>
+          onClick={() => { setFiltros(prev => ({ ...prev, operacion: 'Comprar', comuna: '' })); setErrorOperacion(false); }}>Comprar</button>
         <span className="buscador-pill-sep">|</span>
         <button className={`buscador-pill ${filtros.operacion === 'Arrendar' ? 'buscador-pill--active' : ''}`}
-          onClick={() => setFiltros(prev => ({ ...prev, operacion: 'Arrendar', comuna: '' }))}>Arrendar</button>
+          onClick={() => { setFiltros(prev => ({ ...prev, operacion: 'Arrendar', comuna: '' })); setErrorOperacion(false); }}>Arrendar</button>
       </div>
 
       <div className="buscador-hero__bar">

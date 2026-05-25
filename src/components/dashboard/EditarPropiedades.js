@@ -262,7 +262,10 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
         <div className="sd-header">
           <div>
             <h1 className="sd-titulo">Editando propiedad</h1>
-            <p className="sd-subtitulo">{seleccionada.nombre}</p>
+            <p className="sd-subtitulo">
+              {seleccionada.nombre}
+              {seleccionada.codigo && <span className="ep-item-codigo" style={{marginLeft:10}}>{seleccionada.codigo}</span>}
+            </p>
           </div>
           <button className="sd-btn-prev" onClick={() => { setEditando(false); setSeleccionada(null); }}>
             <FaArrowLeft className="me-2" />Volver
@@ -634,6 +637,7 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
                   </div>
                   <h4 className="ep-item-nombre">{p.nombre}</h4>
                   <p className="ep-item-ubicacion">📍 {p.ubicacion}</p>
+                  {p.codigo && <span className="ep-item-codigo">{p.codigo}</span>}
                   <p className="ep-item-precio">
                     {p.unidad_medida === 'UF'
                       ? `UF ${p.precio}`

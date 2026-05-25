@@ -468,9 +468,32 @@ function DetallesPropiedades() {
 
       <hr className="mt-5" />
 
+      {/* Mapa de ubicación */}
+      {propiedad.ubicacion && (
+        <Row className="mt-4 mb-2">
+          <Col>
+            <h5 className="detalles-seccion-titulo mb-3">📍 Ubicación en el mapa</h5>
+            <div className="detalles-mapa-wrapper">
+              <iframe
+                title="Ubicación de la propiedad"
+                width="100%"
+                height="400"
+                frameBorder="0"
+                style={{ border: 0, borderRadius: 12 }}
+                referrerPolicy="no-referrer-when-downgrade"
+                src={`https://www.google.com/maps?q=${encodeURIComponent(
+                  `${propiedad.ubicacion}${propiedad.comuna ? ', ' + propiedad.comuna : ''}${propiedad.region ? ', ' + propiedad.region : ''}, Chile`
+                )}&output=embed`}
+                allowFullScreen
+              />
+            </div>
+          </Col>
+        </Row>
+      )}
+
       {/* Propiedades similares */}
       {similares.length > 0 && (
-        <Row className="mt-4 mb-2">
+        <Row className="mt-4 mb-5">
           <Col>
             <h5 className="detalles-seccion-titulo mb-3">🏠 Propiedades similares</h5>
             <Row className="g-3">
@@ -480,7 +503,7 @@ function DetallesPropiedades() {
                   <Col xs={12} sm={6} md={4} key={sim.id}>
                     <div
                       className="detalles-similar-card"
-                      onClick={() => { navigate('/DetallesPropiedades', { state: { propiedad: sim } }); window.scrollTo(0,0); }}
+                      onClick={() => { navigate(`/propiedad/${sim.id}`, { state: { propiedad: sim } }); window.scrollTo(0,0); }}
                     >
                       <div className="detalles-similar-img-wrap">
                         <img src={imgSim || 'https://via.placeholder.com/300x160?text=Sin+imagen'} alt={sim.nombre} />
@@ -501,29 +524,6 @@ function DetallesPropiedades() {
                 );
               })}
             </Row>
-          </Col>
-        </Row>
-      )}
-
-      <hr />
-      {propiedad.ubicacion && (
-        <Row className="mt-4 mb-5">
-          <Col>
-            <h5 className="detalles-seccion-titulo mb-3">📍 Ubicación en el mapa</h5>
-            <div className="detalles-mapa-wrapper">
-              <iframe
-                title="Ubicación de la propiedad"
-                width="100%"
-                height="400"
-                frameBorder="0"
-                style={{ border: 0, borderRadius: 12 }}
-                referrerPolicy="no-referrer-when-downgrade"
-                src={`https://www.google.com/maps?q=${encodeURIComponent(
-                  `${propiedad.ubicacion}${propiedad.comuna ? ', ' + propiedad.comuna : ''}${propiedad.region ? ', ' + propiedad.region : ''}, Chile`
-                )}&output=embed`}
-                allowFullScreen
-              />
-            </div>
           </Col>
         </Row>
       )}

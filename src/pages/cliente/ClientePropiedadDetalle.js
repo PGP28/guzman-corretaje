@@ -104,6 +104,9 @@ const ClientePropiedadDetalle = ({ user }) => {
           <span className="cp-prop-cat">{propiedad.categoria}</span>
           <h1 className="cp-detalle-titulo">{propiedad.nombre}</h1>
           <p className="cp-detalle-ubicacion">📍 {propiedad.ubicacion}</p>
+          {propiedad.codigo && (
+            <span className="cp-prop-codigo">Ref: {propiedad.codigo}</span>
+          )}
           <p className="cp-detalle-precio">
             {propiedad.unidad_medida === 'UF'
               ? `UF ${propiedad.precio}`

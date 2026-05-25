@@ -199,6 +199,18 @@
   margin-top: 2px;
 }
 
+.ep-item-codigo {
+  display: inline-block;
+  background: #f0ebff;
+  color: #5529aa;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+  margin-top: 3px;
+}
+
 .ep-corredor-row {
   display: flex;
   align-items: center;

@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
+import API_BASE_URL from '../config';
 
-/**
- * Hook que obtiene el valor actual de la UF desde la API del CMF (Chile).
- * Cachea el valor en sessionStorage para evitar requests repetidos.
- */
 const CACHE_KEY = 'guzman_uf_valor';
-const CACHE_TTL = 60 * 60 * 1000; // 1 hora en ms
+const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 horas en ms
 
 export const useUF = () => {
   const [uf, setUf] = useState(null);
@@ -25,15 +22,16 @@ export const useUF = () => {
       }
     } catch { }
 
-    // Obtener de la API del CMF
-    fetch('https://api.cmfchile.cl/api-sbifv3/recursos/sv/series/UF/dias/hoy?apikey=6016a0bb33b5adf12c2e3a88c3b78dcaf8f4aafc&formato=json')
+    // Obtener desde proxy del backend (evita CORS)
+    fetch(`${API_BASE_URL}/api/uf`)
       .then(r => r.json())
       .then(data => {
-        const valorStr = data?.UFs?.[0]?.Valor || '';
-        const valor = parseFloat(valorStr.replace(/\./g, '').replace(',', '.'));
-        if (valor > 0) {
-          setUf(valor);
-          sessionStorage.setItem(CACHE_KEY, JSON.stringify({ valor, timestamp: Date.now() }));
+        if (data.valor && data.valor > 0) {
+          setUf(data.valor);
+          sessionStorage.setItem(CACHE_KEY, JSON.stringify({
+            valor: data.valor,
+            timestamp: Date.now()
+          }));
         }
       })
       .catch(() => { })

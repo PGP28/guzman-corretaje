@@ -403,6 +403,18 @@
   word-break: break-word;
 }
 .cp-detalle-ubicacion { color: #666; font-size: 14px; margin: 0; }
+.cp-prop-codigo {
+  display: inline-block;
+  background: #f0ebff;
+  color: #5529aa;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
 .cp-detalle-precio {
   color: #3f1b86; font-weight: 800; font-size: 28px; margin: 8px 0;
 }

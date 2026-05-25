@@ -134,7 +134,7 @@ function DetallesPropiedades() {
     <Container fluid className="detalles-container">
 
       {/* Cabecera */}
-      <Row className="my-4 align-items-center">
+      <Row className="my-4">
         <Col>
           <button className="detalles-back" onClick={() => navigate(-1)}>
             ← Volver
@@ -151,16 +151,16 @@ function DetallesPropiedades() {
           {propiedad.codigo && (
             <span className="detalles-codigo">Ref: {propiedad.codigo}</span>
           )}
-        </Col>
-        <Col xs="auto">
-          <div className="detalles-precio-wrapper">
+
+          {/* Precio debajo del título */}
+          <div className="detalles-precio-wrapper mt-3">
             <span className="detalles-precio">
               {formatPrecio(propiedad.precio, propiedad.unidad_medida)}
             </span>
             {propiedad.unidad_medida === 'UF' && ufACLP(propiedad.precio) && (
               <span className="detalles-precio-clp">
                 ≈ {ufACLP(propiedad.precio)} CLP
-                <span className="detalles-uf-valor">UF {formatUF()}</span>
+                <span className="detalles-uf-valor">UF hoy: {formatUF()}</span>
               </span>
             )}
           </div>

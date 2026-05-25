@@ -66,23 +66,23 @@
 
 .detalles-precio-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .detalles-precio-clp {
-  font-size: 12px;
-  color: #666;
+  font-size: 13px;
+  color: #555;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
   gap: 1px;
 }
 
 .detalles-uf-valor {
   font-size: 11px;
-  color: #aaa;
+  color: #999;
 }
 
 /* Imagen principal */

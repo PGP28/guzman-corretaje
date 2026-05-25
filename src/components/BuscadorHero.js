@@ -23,7 +23,14 @@ const BuscadorHero = () => {
       .catch(() => {});
   }, []);
 
-  const regiones = [...new Set(propiedades.map(p => p.region).filter(Boolean))].sort();
+  // Regiones filtradas según operación y tipo seleccionado
+  const regiones = React.useMemo(() => {
+    let base = [...propiedades];
+    if (filtros.operacion === 'Comprar')  base = base.filter(p => p.categoria?.toLowerCase().includes('venta'));
+    if (filtros.operacion === 'Arrendar') base = base.filter(p => p.categoria?.toLowerCase().includes('arriendo'));
+    if (filtros.tipoPropiedad) base = base.filter(p => p.categoria?.toLowerCase().includes(filtros.tipoPropiedad.toLowerCase()));
+    return [...new Set(base.map(p => p.region).filter(Boolean))].sort();
+  }, [propiedades, filtros.operacion, filtros.tipoPropiedad]);
 
   useEffect(() => {
     if (!filtros.region) { setComunas([]); return; }
@@ -39,7 +46,10 @@ const BuscadorHero = () => {
     setFiltros(prev => ({
       ...prev,
       [name]: value,
+      // Limpiar comuna siempre que cambie algo relevante
       ...(name === 'region' || name === 'operacion' || name === 'tipoPropiedad' ? { comuna: '' } : {}),
+      // Limpiar región si cambia operación o tipo (puede que ya no aplique)
+      ...(name === 'operacion' || name === 'tipoPropiedad' ? { region: '' } : {}),
     }));
   };
 
@@ -75,16 +85,22 @@ const BuscadorHero = () => {
       )}
       <div className={`buscador-hero__pills ${errorOperacion ? 'buscador-pills--error' : ''}`}>
         <button className={`buscador-pill ${filtros.operacion === 'Comprar' ? 'buscador-pill--active' : ''}`}
-          onClick={() => { setFiltros(prev => ({ ...prev, operacion: 'Comprar', comuna: '' })); setErrorOperacion(false); }}>Comprar</button>
+          onClick={() => { setFiltros(prev => ({ ...prev, operacion: 'Comprar', region: '', comuna: '' })); setErrorOperacion(false); }}>Comprar</button>
         <span className="buscador-pill-sep">|</span>
         <button className={`buscador-pill ${filtros.operacion === 'Arrendar' ? 'buscador-pill--active' : ''}`}
-          onClick={() => { setFiltros(prev => ({ ...prev, operacion: 'Arrendar', comuna: '' })); setErrorOperacion(false); }}>Arrendar</button>
+          onClick={() => { setFiltros(prev => ({ ...prev, operacion: 'Arrendar', region: '', comuna: '' })); setErrorOperacion(false); }}>Arrendar</button>
       </div>
 
       <div className="buscador-hero__bar">
         <div className="buscador-hero__campo">
-          <select name="tipoPropiedad" value={filtros.tipoPropiedad} onChange={handleChange} className="buscador-hero__select">
-            <option value="">Tipo propiedad</option>
+          <select
+            name="tipoPropiedad"
+            value={filtros.tipoPropiedad}
+            onChange={handleChange}
+            disabled={!filtros.operacion}
+            className={`buscador-hero__select ${!filtros.operacion ? 'buscador-hero__select--disabled' : ''}`}
+          >
+            <option value="">{!filtros.operacion ? 'Selecciona operación' : 'Tipo propiedad'}</option>
             <option value="Casa">Casa</option>
             <option value="Departamento">Departamento</option>
             <option value="Terreno">Terreno</option>
@@ -93,14 +109,26 @@ const BuscadorHero = () => {
         </div>
         <div className="buscador-hero__divider" />
         <div className="buscador-hero__campo">
-          <select name="region" value={filtros.region} onChange={handleChange} className="buscador-hero__select">
-            <option value="">Región</option>
+          <select
+            name="region"
+            value={filtros.region}
+            onChange={handleChange}
+            disabled={!filtros.tipoPropiedad}
+            className={`buscador-hero__select ${!filtros.tipoPropiedad ? 'buscador-hero__select--disabled' : ''}`}
+          >
+            <option value="">{!filtros.tipoPropiedad ? 'Selecciona tipo' : 'Región'}</option>
             {regiones.map(r => <option key={r} value={r}>{r}</option>)}
           </select>
         </div>
         <div className="buscador-hero__divider" />
         <div className="buscador-hero__campo">
-          <select name="comuna" value={filtros.comuna} onChange={handleChange} disabled={!filtros.region} className="buscador-hero__select">
+          <select
+            name="comuna"
+            value={filtros.comuna}
+            onChange={handleChange}
+            disabled={!filtros.region}
+            className="buscador-hero__select"
+          >
             <option value="">Comuna</option>
             {comunas.map(c => <option key={c} value={c}>{c}</option>)}
           </select>

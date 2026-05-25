@@ -118,6 +118,16 @@
   margin: 8px 0;
 }
 
+.buscador-hero__select--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.buscador-hero__select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .buscador-hero__btn {
   background-color: #5529aa;
   color: #ececec;

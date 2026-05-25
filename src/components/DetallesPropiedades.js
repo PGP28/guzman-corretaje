@@ -3,6 +3,7 @@ import { Container, Row, Col, Image, Button, Form } from 'react-bootstrap';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useUF } from '../hooks/useUF';
 import API_BASE_URL from '../config';
+import ProgramarVisita from './ProgramarVisita';
 import './DetallesPropiedades.css';
 
 function DetallesPropiedades() {
@@ -91,6 +92,7 @@ function DetallesPropiedades() {
   };
 
   const detalles = propiedad.detalles || propiedad.detalle || {};
+  const cliente   = JSON.parse(localStorage.getItem('guzman_cliente') || 'null');
 
   const formatPrecio = (precio, unidad) => {
     if (!precio) return '';
@@ -398,71 +400,9 @@ function DetallesPropiedades() {
           )}
         </Col>
 
-        {/* Formulario de contacto */}
+        {/* Widget programar visita */}
         <Col md={4}>
-          <div className="detalles-contacto-box">
-            <h5 className="detalles-contacto-titulo">
-              👋 ¿Te interesa esta propiedad?
-            </h5>
-            <p className="detalles-contacto-subtitulo">
-              Déjanos tus datos y te contactamos a la brevedad.
-            </p>
-
-            {/* Botón reservar */}
-            {(propiedad.estado || 'disponible') === 'disponible' && (
-              <button
-                className="detalles-btn-reservar"
-                onClick={handleReservar}
-              >
-                🗓 Reservar esta propiedad
-              </button>
-            )}
-
-            {enviado ? (
-              <div className="detalles-contacto-enviado">
-                ✅ ¡Mensaje enviado! Te responderemos pronto por WhatsApp.
-              </div>
-            ) : (
-              <Form onSubmit={handleFormSubmit}>
-                <Form.Group className="mb-3">
-                  <Form.Control
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleFormChange}
-                    placeholder="Tu correo electrónico *"
-                    required
-                    className="detalles-input"
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Control
-                    type="tel"
-                    name="telefono"
-                    value={formData.telefono}
-                    onChange={handleFormChange}
-                    placeholder="+56 9 XXXX XXXX *"
-                    required
-                    className="detalles-input"
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Control
-                    as="textarea"
-                    rows={3}
-                    name="mensaje"
-                    value={formData.mensaje}
-                    onChange={handleFormChange}
-                    placeholder={`Hola, me interesa "${propiedad.nombre}"...`}
-                    className="detalles-input"
-                  />
-                </Form.Group>
-                <Button type="submit" className="detalles-btn-contacto w-100">
-                  Contactar por WhatsApp
-                </Button>
-              </Form>
-            )}
-          </div>
+          <ProgramarVisita propiedad={propiedad} cliente={cliente} />
         </Col>
       </Row>
 

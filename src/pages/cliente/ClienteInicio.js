@@ -4,6 +4,7 @@ import { FaCalendarCheck, FaComments, FaCreditCard, FaSearch } from 'react-icons
 import axios from 'axios';
 import API_BASE_URL from '../../config';
 import { getReservasCliente, ETAPAS } from './reservaHelper';
+import { useUF } from '../../hooks/useUF';
 import { SkPropCard } from '../../components/Skeleton';
 import './ClientePages.css';
 
@@ -28,6 +29,7 @@ const ClienteInicio = ({ user }) => {
       .catch(() => {});
   }, [user?.id]);
   const nombre   = user?.name?.split(' ')[0] || 'Cliente';
+  const { ufACLP } = useUF();
 
   useEffect(() => {
     axios.get(`${API_BASE_URL}/api/properties`)
@@ -115,7 +117,7 @@ const ClienteInicio = ({ user }) => {
         ) : (
           <div className="cp-props-grid">
             {propiedades.slice(0, 3).map(p => (
-              <div key={p.id} className="cp-prop-card" onClick={() => navigate(`/propiedad/${p.id}`, { state: { propiedad: p } })}>
+              <div key={p.id} className="cp-prop-card" onClick={() => navigate(`/cliente/propiedad/${p.id}`, { state: { propiedad: p } })}>
                 <img
                   src={p.imagenes?.[0]?.url || p.imagenes?.[0] || 'https://via.placeholder.com/300x160?text=Sin+imagen'}
                   alt={p.nombre}
@@ -131,6 +133,9 @@ const ClienteInicio = ({ user }) => {
                       : `$ ${parseFloat(String(p.precio).replace(/[$\s.]/g, '').replace(',', '.')).toLocaleString('es-CL')}`
                     }
                   </p>
+                  {p.unidad_medida === 'UF' && ufACLP(p.precio) && (
+                    <p className="cp-prop-clp">≈ {ufACLP(p.precio)}</p>
+                  )}
                 </div>
               </div>
             ))}

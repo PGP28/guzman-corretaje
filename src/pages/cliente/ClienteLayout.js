@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { FaHome, FaCalendarCheck, FaComments, FaCreditCard, FaSignOutAlt, FaChevronLeft, FaBars, FaTimes, FaSearch, FaUserCircle } from 'react-icons/fa';
+import { FaHome, FaCalendarCheck, FaComments, FaCreditCard, FaSignOutAlt, FaChevronLeft, FaBars, FaTimes, FaSearch, FaUserCircle, FaCalendarAlt } from 'react-icons/fa';
 import ClienteInicio from './ClienteInicio';
 import ClienteReservas from './ClienteReservas';
 import ClienteMensajes from './ClienteMensajes';
@@ -8,16 +8,18 @@ import ClientePagos from './ClientePagos';
 import ClienteExplorar from './ClienteExplorar';
 import ClientePropiedadDetalle from './ClientePropiedadDetalle';
 import ClienteReservaDetalle from './ClienteReservaDetalle';
+import ClienteVisitas from './ClienteVisitas';
 import ClientePerfil from './ClientePerfil';
 import './ClienteLayout.css';
 
 const NAV_ITEMS = [
   { id: 'inicio',   label: 'Inicio',    icon: <FaHome />,          path: '/cliente' },
-  { id: 'explorar', label: 'Explorar',  icon: <FaSearch />,        path: '/cliente/explorar' },
-  { id: 'reservas', label: 'Reservas',  icon: <FaCalendarCheck />, path: '/cliente/reservas' },
-  { id: 'mensajes', label: 'Mensajes',  icon: <FaComments />,      path: '/cliente/mensajes' },
-  { id: 'pagos',    label: 'Pagos',     icon: <FaCreditCard />,    path: '/cliente/pagos' },
-  { id: 'perfil',   label: 'Mi perfil', icon: <FaUserCircle />,    path: '/cliente/perfil' },
+  { id: 'explorar', label: 'Explorar',    icon: <FaSearch />,        path: '/cliente/explorar' },
+  { id: 'visitas',  label: 'Mis visitas', icon: <FaCalendarAlt />,   path: '/cliente/visitas' },
+  { id: 'reservas', label: 'Reservas',    icon: <FaCalendarCheck />, path: '/cliente/reservas' },
+  { id: 'mensajes', label: 'Mensajes',    icon: <FaComments />,      path: '/cliente/mensajes' },
+  { id: 'pagos',    label: 'Pagos',       icon: <FaCreditCard />,    path: '/cliente/pagos' },
+  { id: 'perfil',   label: 'Mi perfil',   icon: <FaUserCircle />,    path: '/cliente/perfil' },
 ];
 
 const ClienteLayout = ({ user, onLogout }) => {
@@ -124,6 +126,7 @@ const ClienteLayout = ({ user, onLogout }) => {
             <Route path="/reserva/:id"   element={<ClienteReservaDetalle user={user} />} />
             <Route path="/mensajes"      element={<ClienteMensajes user={user} />} />
             <Route path="/pagos"         element={<ClientePagos user={user} />} />
+            <Route path="/visitas"       element={<ClienteVisitas user={user} />} />
             <Route path="/perfil"        element={<ClientePerfil user={user} />} />
             <Route path="*"              element={<Navigate to="/cliente" replace />} />
           </Routes>

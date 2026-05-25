@@ -15,13 +15,34 @@ const NavigationBar = () => {
 
   useEffect(() => {
     if (!isHome) { setScrolled(true); return; }
-    setScrolled(window.scrollY > 30);
-    const handleScroll = () => setScrolled(window.scrollY > 30);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    // Usar IntersectionObserver para detectar cuando el hero sale del viewport
+    const heroEl = document.querySelector('.home-container');
+    if (heroEl) {
+      const observer = new IntersectionObserver(
+        ([entry]) => setScrolled(!entry.isIntersecting),
+        { threshold: 0, rootMargin: '-62px 0px 0px 0px' }
+      );
+      observer.observe(heroEl);
+      return () => observer.disconnect();
+    }
+
+    // Fallback: escuchar scroll en body y window
+    const checkScroll = () => {
+      const sy = document.body.scrollTop || window.scrollY || 0;
+      setScrolled(sy > 10);
+    };
+    checkScroll();
+    document.body.addEventListener('scroll', checkScroll, { passive: true });
+    window.addEventListener('scroll', checkScroll, { passive: true });
+    return () => {
+      document.body.removeEventListener('scroll', checkScroll);
+      window.removeEventListener('scroll', checkScroll);
+    };
   }, [isHome, location.pathname]);
 
   const isSolid = !isHome || scrolled || expanded;
+  const bgColor = isSolid ? '#3f1b86' : 'transparent';
 
   const links = [
     { href: '/Arriendo',     label: 'Arriendos' },
@@ -40,6 +61,7 @@ const NavigationBar = () => {
       expanded={expanded}
       onToggle={(val) => setExpanded(val)}
       className={`navbar-guzman ${isSolid ? 'navbar-solid' : 'navbar-transparent'}`}
+      style={{ backgroundColor: bgColor, transition: 'background-color 0.35s ease' }}
     >
       <Container fluid className="px-4">
 

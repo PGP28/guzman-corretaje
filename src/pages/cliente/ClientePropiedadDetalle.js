@@ -67,13 +67,15 @@ const ClientePropiedadDetalle = ({ user }) => {
         <FaArrowLeft className="me-2" /> Volver
       </button>
 
-      {/* Título y precio */}
+      {/* Título y precio — lado a lado en desktop */}
       <div className="cp-detalle-header">
-        <span className="cp-prop-cat">{propiedad.categoria}</span>
-        <h1 className="cp-detalle-titulo">{propiedad.nombre}</h1>
-        <p className="cp-detalle-ubicacion">📍 {propiedad.ubicacion}</p>
-        {propiedad.codigo && <span className="cp-prop-codigo">Ref: {propiedad.codigo}</span>}
-        <div className="cp-detalle-precio-row mt-2">
+        <div className="cp-detalle-header-left">
+          <span className="cp-prop-cat">{propiedad.categoria}</span>
+          <h1 className="cp-detalle-titulo">{propiedad.nombre}</h1>
+          <p className="cp-detalle-ubicacion">📍 {propiedad.ubicacion}</p>
+          {propiedad.codigo && <span className="cp-prop-codigo">Ref: {propiedad.codigo}</span>}
+        </div>
+        <div className="cp-detalle-header-right">
           <span className="cp-detalle-precio">{formatPrecio(propiedad.precio, propiedad.unidad_medida)}</span>
           {propiedad.unidad_medida === 'UF' && ufACLP(propiedad.precio) && (
             <span className="cp-detalle-clp">

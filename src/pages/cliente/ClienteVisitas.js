@@ -70,19 +70,26 @@ const ClienteVisitas = ({ user }) => {
         </div>
       ) : (
         <>
-          {/* Activas */}
           {activas.length > 0 && (
             <div className="cv-seccion">
               <h4 className="cv-seccion-titulo">Próximas visitas</h4>
-              {activas.map(v => <VisitaCard key={v.id} visita={v} onCancelar={cancelar} formatFecha={formatFecha} />)}
+              {activas.map(v => (
+                <VisitaCard
+                  key={v.id}
+                  visita={v}
+                  onCancelar={cancelar}
+                  formatFecha={formatFecha}
+                  onRespuesta={(id, texto) => setVisitas(prev => prev.map(x => x.id === id ? { ...x, respuesta_cliente: texto } : x))}
+                />
+              ))}
             </div>
           )}
-
-          {/* Pasadas */}
           {pasadas.length > 0 && (
             <div className="cv-seccion">
               <h4 className="cv-seccion-titulo" style={{ color: '#aaa' }}>Historial</h4>
-              {pasadas.map(v => <VisitaCard key={v.id} visita={v} onCancelar={null} formatFecha={formatFecha} />)}
+              {pasadas.map(v => (
+                <VisitaCard key={v.id} visita={v} onCancelar={null} formatFecha={formatFecha} onRespuesta={null} />
+              ))}
             </div>
           )}
         </>
@@ -91,13 +98,37 @@ const ClienteVisitas = ({ user }) => {
   );
 };
 
-const VisitaCard = ({ visita, onCancelar, formatFecha }) => {
+/* ── Tarjeta de visita individual ── */
+const VisitaCard = ({ visita, onCancelar, formatFecha, onRespuesta }) => {
   const est = ESTADOS[visita.estado] || ESTADOS.pendiente;
+  const [respondiendo, setRespondiendo] = useState(false);
+  const [respuesta,    setRespuesta]    = useState('');
+  const [enviando,     setEnviando]     = useState(false);
+  const [enviado,      setEnviado]      = useState(!!visita.respuesta_cliente);
+
+  const enviarRespuesta = async () => {
+    if (!respuesta.trim()) return;
+    setEnviando(true);
+    try {
+      const res = await fetch(`${API}/visitas/${visita.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ respuesta_cliente: respuesta.trim() }),
+      });
+      if (res.ok) {
+        setEnviado(true);
+        setRespondiendo(false);
+        onRespuesta?.(visita.id, respuesta.trim());
+      }
+    } catch { }
+    finally { setEnviando(false); }
+  };
+
   return (
     <div className="cv-card">
-      {/* Imagen */}
       {visita.propiedad_imagen && (
-        <img src={visita.propiedad_imagen} alt={visita.propiedad_nombre} className="cv-img" onError={e => e.target.style.display='none'} />
+        <img src={visita.propiedad_imagen} alt={visita.propiedad_nombre} className="cv-img"
+          onError={e => e.target.style.display='none'} />
       )}
       <div className="cv-body">
         <div className="cv-top">
@@ -114,6 +145,7 @@ const VisitaCard = ({ visita, onCancelar, formatFecha }) => {
           <span className="cv-hora">🕐 {visita.hora}</span>
         </div>
 
+        {/* Nota del corredor */}
         {visita.nota_corredor && (
           <div className="cv-nota">
             <strong>Nota del corredor:</strong> {visita.nota_corredor}
@@ -124,8 +156,37 @@ const VisitaCard = ({ visita, onCancelar, formatFecha }) => {
           <p className="cv-mensaje-cliente">💬 {visita.mensaje}</p>
         )}
 
+        {/* Respuesta del cliente cuando reagendan */}
+        {visita.estado === 'reagendada' && (
+          <div className="cv-respuesta-box">
+            {enviado || visita.respuesta_cliente ? (
+              <p className="cv-enviado">✅ Tu respuesta: <em>{visita.respuesta_cliente || respuesta}</em></p>
+            ) : !respondiendo ? (
+              <button className="cv-btn-responder" onClick={() => setRespondiendo(true)}>
+                💬 Responder al corredor
+              </button>
+            ) : (
+              <>
+                <textarea
+                  className="cv-respuesta-input"
+                  placeholder="Escribe tu respuesta (ej: no puedo en ese horario, prefiero las 15:00)..."
+                  value={respuesta}
+                  onChange={e => setRespuesta(e.target.value)}
+                  rows={2}
+                />
+                <div className="cv-respuesta-btns">
+                  <button className="cv-btn-cancelar" onClick={() => setRespondiendo(false)}>Cancelar</button>
+                  <button className="cv-btn-confirmar" onClick={enviarRespuesta} disabled={!respuesta.trim() || enviando}>
+                    {enviando ? 'Enviando...' : 'Enviar respuesta'}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
         {onCancelar && visita.estado === 'pendiente' && (
-          <button className="cv-btn-cancelar" onClick={() => onCancelar(visita.id)}>
+          <button className="cv-btn-cancelar mt-2" onClick={() => onCancelar(visita.id)}>
             Cancelar visita
           </button>
         )}

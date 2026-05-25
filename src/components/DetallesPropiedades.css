@@ -368,4 +368,5 @@
   overflow: hidden;
   box-shadow: 0 2px 16px rgba(63,27,134,0.1);
   border: 1px solid #ede8fa;
+  width: 100%;
 }

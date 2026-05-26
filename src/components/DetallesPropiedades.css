@@ -66,10 +66,21 @@
 
 .detalles-precio-wrapper {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  padding-top: 28px;
+}
+
+/* Desktop: precio a la derecha, ocultar mobile */
+.detalles-precio-desktop { display: block; }
+.detalles-precio-mobile  { display: none; }
+
+@media (max-width: 767px) {
+  /* Mobile: precio abajo del título, ocultar desktop */
+  .detalles-precio-desktop { display: none !important; }
+  .detalles-precio-mobile  { display: flex; flex-direction: column; gap: 4px; margin-top: 12px; }
+  .detalles-precio-mobile .detalles-precio { font-size: 20px; }
 }
 
 .detalles-precio-clp {

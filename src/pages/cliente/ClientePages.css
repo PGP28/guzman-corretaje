@@ -799,15 +799,55 @@
 .cp-detalle-header-left { flex: 1; min-width: 0; }
 .cp-detalle-header-right { display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0; padding-top: 24px; }
 
-.cp-detalle-precio-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
-.cp-galeria-nueva { display: grid; grid-template-columns: 1fr 160px; gap: 12px; margin-bottom: 28px; }
-.cp-galeria-main-wrap { position: relative; border-radius: 12px; overflow: hidden; background: #f0ebff; max-height: 500px; }
-.cp-galeria-main-img { width: 100%; height: 100%; max-height: 500px; object-fit: cover; display: block; }
-.cp-galeria-thumbs-col { display: flex; flex-direction: column; gap: 6px; overflow-y: auto; max-height: 500px; scrollbar-width: thin; }
-.cp-galeria-thumb-item { position: relative; border-radius: 8px; overflow: hidden; cursor: pointer; border: 2px solid transparent; flex-shrink: 0; height: 80px; transition: border-color 0.2s; }
+/* Galería portal cliente — idéntica al sitio público */
+.cp-galeria-nueva {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+  align-items: start;
+}
+.cp-galeria-main-wrap {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f0ebff;
+}
+.cp-galeria-main-img {
+  width: 100%;
+  height: 460px;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
+}
+.cp-galeria-thumbs-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px;
+  max-height: 460px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  align-content: start;
+}
+.cp-galeria-thumb-item {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
+  aspect-ratio: 1/1;
+}
 .cp-galeria-thumb-item.active { border-color: #3f1b86; }
-.cp-galeria-thumb-item img { width: 100%; height: 100%; object-fit: cover; }
-.cp-galeria-thumb-num { position: absolute; bottom: 4px; right: 6px; background: rgba(0,0,0,0.55); color: #fff; font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 4px; }
+.cp-galeria-thumb-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cp-galeria-thumb-num {
+  position: absolute;
+  bottom: 3px; right: 4px;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  font-size: 9px; font-weight: 700;
+  padding: 1px 4px; border-radius: 3px;
+}
 .cp-detalle-body { display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start; }
 .cp-detalle-left { min-width: 0; }
 .cp-detalle-right { position: sticky; top: 80px; }
@@ -867,11 +907,32 @@
   .cp-detalle-header { flex-direction: column; }
   .cp-detalle-header-right { align-items: flex-start; padding-top: 0; }
   .cp-galeria-nueva { grid-template-columns: 1fr; }
-  .cp-galeria-thumbs-col { flex-direction: row; max-height: none; overflow-x: auto; overflow-y: hidden; }
-  .cp-galeria-thumb-item { width: 80px; height: 60px; }
+  .cp-galeria-main-img { height: 260px; }
+  .cp-galeria-thumbs-col { grid-template-columns: repeat(5, 1fr); max-height: none; overflow-x: auto; overflow-y: hidden; }
   .cp-detalle-body { grid-template-columns: 1fr; }
   .cp-detalle-right { position: static; }
   .cp-similares-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* Flechas navegación galería principal portal cliente */
+.cp-galeria-nav {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  background: rgba(0,0,0,0.45);
+  border: none; border-radius: 50%;
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 2;
+  transition: background 0.2s;
+}
+.cp-galeria-nav:hover { background: rgba(0,0,0,0.7); }
+.cp-galeria-nav--left  { left: 12px; }
+.cp-galeria-nav--right { right: 12px; }
+.cp-galeria-contador {
+  position: absolute; bottom: 10px; right: 14px;
+  background: rgba(0,0,0,0.55); color: #fff;
+  font-size: 12px; font-weight: 600;
+  padding: 3px 10px; border-radius: 20px;
 }
 @media (max-width: 575px) {
   .cp-similares-grid { grid-template-columns: 1fr; }

@@ -202,7 +202,7 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
                     <div className="login-divider">
                       <div className="login-divider-line" /><span className="login-divider-text">o continúa con</span><div className="login-divider-line" />
                     </div>
-                    <div className="login-google-btn">
+                    <div className="login-google-btn" style={cargando ? {pointerEvents:'none', opacity:0.5} : {}}>
                       <GoogleLogin onSuccess={handleGoogleCliente} onError={() => setError('Error al iniciar sesión con Google.')}
                         theme="outline" size="large" width="300" text="signin_with" locale="es" />
                     </div>
@@ -274,7 +274,7 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
                     <div className="login-divider">
                       <div className="login-divider-line" /><span className="login-divider-text">o regístrate con</span><div className="login-divider-line" />
                     </div>
-                    <div className="login-google-btn">
+                    <div className="login-google-btn" style={cargando ? {pointerEvents:'none', opacity:0.5} : {}}>
                       <GoogleLogin onSuccess={handleGoogleCliente} onError={() => setError('Error al conectar con Google.')}
                         theme="outline" size="large" width="300" text="signup_with" locale="es" />
                     </div>

@@ -171,11 +171,11 @@ const ClientePropiedadDetalle = ({ user }) => {
           {propiedad.ubicacion && (
             <div className="cp-mapa mt-4">
               <h5 className="cp-detalle-subtitle">📍 Ubicación en el mapa</h5>
-              <div className="cp-mapa-wrapper">
+              <div className="cp-mapa-wrapper" style={{ width: '100%', overflow: 'hidden' }}>
                 <iframe
                   title="Ubicación"
                   width="100%" height="300" frameBorder="0"
-                  style={{ border: 0, borderRadius: 12 }}
+                  style={{ border: 0, borderRadius: 12, display: 'block', maxWidth: '100%' }}
                   referrerPolicy="no-referrer-when-downgrade"
                   src={`https://www.google.com/maps?q=${encodeURIComponent(
                     `${propiedad.ubicacion}${propiedad.comuna ? ', ' + propiedad.comuna : ''}, Chile`

@@ -848,9 +848,9 @@
   font-size: 9px; font-weight: 700;
   padding: 1px 4px; border-radius: 3px;
 }
-.cp-detalle-body { display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start; }
-.cp-detalle-left { min-width: 0; }
-.cp-detalle-right { position: sticky; top: 80px; }
+.cp-detalle-body { display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start; max-width: 100%; }
+.cp-detalle-left { min-width: 0; overflow: hidden; }
+.cp-detalle-right { position: sticky; top: 80px; min-width: 0; }
 .cp-detalle-specs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin: 16px 0; }
 .cp-spec-item { display: flex; flex-direction: column; align-items: center; background: #faf8ff; border: 1px solid #ede8fa; border-radius: 10px; padding: 12px 8px; text-align: center; gap: 4px; }
 .cp-spec-item span { font-size: 22px; }
@@ -863,7 +863,14 @@
 
 /* Similares — imagen ancho completo, carrusel con flechas en card */
 .cp-similares-section { margin-top: 32px; margin-bottom: 16px; }
-.cp-similares-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.cp-similares-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
 .cp-similares-nav { display: flex; align-items: center; gap: 8px; }
 .cp-similares-btn {
   background: #fff; border: 1.5px solid #e0d4ff; color: #5529aa;
@@ -912,6 +919,26 @@
   .cp-detalle-body { grid-template-columns: 1fr; }
   .cp-detalle-right { position: static; }
   .cp-similares-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 767px) {
+  .cp-galeria-nueva { grid-template-columns: 1fr; }
+  .cp-galeria-main-img { height: 220px; }
+  .cp-detalle-body { grid-template-columns: 1fr; gap: 16px; }
+  .cp-detalle-right { position: static; width: 100%; max-width: 100%; }
+  .pv-tipo-row { gap: 6px; }
+  .pv-dias { gap: 4px; }
+  .pv-dia-btn { min-width: 44px; padding: 6px 8px; }
+  .pv-horas { gap: 4px; }
+  .pv-hora-btn { padding: 5px 8px; font-size: 12px; }
+}
+
+@media (max-width: 575px) {
+  .cp-similares-grid { grid-template-columns: 1fr; }
+  .cp-similares-header { flex-wrap: wrap; gap: 8px; }
+  .cp-similares-section { overflow-x: hidden; }
+  .cp-mapa-wrapper iframe { width: 100% !important; max-width: 100%; }
+  .cp-detalle-left { overflow-x: hidden; max-width: 100%; }
 }
 
 /* Flechas navegación galería principal portal cliente */

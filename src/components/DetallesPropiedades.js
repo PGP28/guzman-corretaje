@@ -4,6 +4,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useUF } from '../hooks/useUF';
 import API_BASE_URL from '../config';
 import ProgramarVisita from './ProgramarVisita';
+import PropiedadSimilaresCarrusel from './PropiedadSimilaresCarrusel';
 import './DetallesPropiedades.css';
 
 function DetallesPropiedades() {
@@ -20,6 +21,7 @@ function DetallesPropiedades() {
   const [enviado, setEnviado] = useState(false);
   const { ufACLP, formatUF } = useUF();
   const [similares, setSimilares] = useState([]);
+  const [cargandoSimilares, setCargandoSimilares] = useState(true);
 
   // Cargar por ID si no hay state (URL compartida o recarga)
   useEffect(() => {
@@ -55,7 +57,8 @@ function DetallesPropiedades() {
           .slice(0, 3);
         setSimilares(filtradas);
       })
-      .catch(() => {});
+      .catch(() => {})
+            .finally(() => setCargandoSimilares(false));
   }, [propiedad?.id]);
 
   if (cargando) {
@@ -431,42 +434,15 @@ function DetallesPropiedades() {
         </Row>
       )}
 
-      {/* Propiedades similares */}
-      {similares.length > 0 && (
-        <Row className="mt-4 mb-5">
-          <Col>
-            <h5 className="detalles-seccion-titulo mb-3">🏠 Propiedades similares</h5>
-            <Row className="g-3">
-              {similares.map(sim => {
-                const imgSim = sim.imagenes?.[0]?.url || sim.imagenes?.[0] || '';
-                return (
-                  <Col xs={12} sm={6} md={4} key={sim.id}>
-                    <div
-                      className="detalles-similar-card"
-                      onClick={() => { navigate(`/propiedad/${sim.id}`, { state: { propiedad: sim } }); window.scrollTo(0,0); }}
-                    >
-                      <div className="detalles-similar-img-wrap">
-                        <img src={imgSim || 'https://via.placeholder.com/300x160?text=Sin+imagen'} alt={sim.nombre} />
-                        <span className="detalles-similar-badge">{sim.categoria}</span>
-                      </div>
-                      <div className="detalles-similar-body">
-                        <p className="detalles-similar-nombre">{sim.nombre}</p>
-                        <p className="detalles-similar-ubicacion">📍 {sim.ubicacion}</p>
-                        <p className="detalles-similar-precio">
-                          {formatPrecio(sim.precio, sim.unidad_medida)}
-                          {sim.unidad_medida === 'UF' && ufACLP(sim.precio) && (
-                            <span className="detalles-similar-clp">≈ {ufACLP(sim.precio)}</span>
-                          )}
-                        </p>
-                      </div>
-                    </div>
-                  </Col>
-                );
-              })}
-            </Row>
-          </Col>
-        </Row>
-      )}
+      {/* Propiedades similares — componente compartido */}
+      <PropiedadSimilaresCarrusel
+        similares={similares}
+        cargando={cargandoSimilares}
+        rutaBase="/propiedad"
+        formatPrecio={formatPrecio}
+        ufACLP={ufACLP}
+        cssPrefix="detalles"
+      />
 
     </Container>
   );

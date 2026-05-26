@@ -5,6 +5,7 @@ import axios from 'axios';
 import API_BASE_URL from '../../config';
 import { useUF } from '../../hooks/useUF';
 import ProgramarVisita from '../../components/ProgramarVisita';
+import PropiedadSimilaresCarrusel from '../../components/PropiedadSimilaresCarrusel';
 import './ClientePages.css';
 
 const ClientePropiedadDetalle = ({ user }) => {
@@ -16,6 +17,7 @@ const ClientePropiedadDetalle = ({ user }) => {
   const [cargando,  setCargando]  = useState(!location.state?.propiedad);
   const { ufACLP, formatUF }      = useUF();
   const [similares, setSimilares] = useState([]);
+  const [cargandoSimilares, setCargandoSimilares] = useState(true);
 
   useEffect(() => {
     if (!propiedad) {
@@ -38,7 +40,8 @@ const ClientePropiedadDetalle = ({ user }) => {
           .slice(0, 6);
         setSimilares(filtradas);
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setCargandoSimilares(false));
   }, [propiedad?.id]);
 
   if (cargando) return (
@@ -190,64 +193,15 @@ const ClientePropiedadDetalle = ({ user }) => {
         </div>
       </div>
 
-      {/* Propiedades similares — fuera del grid, ancho completo con carrusel */}
-      {similares.length > 0 && (
-        <SimilaresCarrusel
-          similares={similares}
-          navigate={navigate}
-          formatPrecio={formatPrecio}
-          ufACLP={ufACLP}
-        />
-      )}
-    </div>
-  );
-};
-
-/* ── Carrusel propiedades similares ── */
-const SimilaresCarrusel = ({ similares, navigate, formatPrecio, ufACLP }) => {
-  const [idx, setIdx] = React.useState(0);
-  const visibles = 3;
-  const total    = similares.length;
-  const canPrev  = idx > 0;
-  const canNext  = idx + visibles < total;
-
-  return (
-    <div className="cp-similares-section">
-      <div className="cp-similares-header">
-        <h5 className="cp-detalle-subtitle mb-0">🏠 Propiedades similares</h5>
-        {total > visibles && (
-          <div className="cp-similares-nav">
-            <button className="cp-similares-btn" onClick={() => setIdx(i => i - 1)} disabled={!canPrev}>←</button>
-            <span className="cp-similares-count">{idx + 1}–{Math.min(idx + visibles, total)} de {total}</span>
-            <button className="cp-similares-btn" onClick={() => setIdx(i => i + 1)} disabled={!canNext}>→</button>
-          </div>
-        )}
-      </div>
-      <div className="cp-similares-grid">
-        {similares.slice(idx, idx + visibles).map(sim => {
-          const imgSim = sim.imagenes?.[0]?.url || sim.imagenes?.[0] || '';
-          return (
-            <div
-              key={sim.id}
-              className="cp-similar-card"
-              onClick={() => { navigate(`/cliente/propiedad/${sim.id}`, { state: { propiedad: sim } }); window.scrollTo(0,0); }}
-            >
-              <div className="cp-similar-img-wrap">
-                <img src={imgSim || 'https://via.placeholder.com/300x160?text=Sin+imagen'} alt={sim.nombre} />
-                <span className="cp-similar-badge">{sim.categoria}</span>
-              </div>
-              <div className="cp-similar-body">
-                <p className="cp-similar-nombre">{sim.nombre}</p>
-                <p className="cp-similar-ubicacion">📍 {sim.ubicacion}</p>
-                <p className="cp-similar-precio">{formatPrecio(sim.precio, sim.unidad_medida)}</p>
-                {sim.unidad_medida === 'UF' && ufACLP(sim.precio) && (
-                  <p className="cp-prop-clp">≈ {ufACLP(sim.precio)}</p>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      {/* Propiedades similares — componente compartido */}
+      <PropiedadSimilaresCarrusel
+        similares={similares}
+        cargando={cargandoSimilares}
+        rutaBase="/cliente/propiedad"
+        formatPrecio={formatPrecio}
+        ufACLP={ufACLP}
+        cssPrefix="cp"
+      />
     </div>
   );
 };

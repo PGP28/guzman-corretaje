@@ -13,8 +13,33 @@ const ESTADOS = {
   completada:  { label: '🏁 Completada', color: '#555',    bg: '#f5f5f5' },
 };
 
-const DIAS_ES   = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-const MESES_ES  = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const DIAS_ES  = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+const MESES_ES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+/* ── Skeleton de visitas ── */
+const SkVisitas = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+    {[1, 2].map(i => (
+      <div key={i} className="cv-card" style={{ gap: 12 }}>
+        {/* imagen */}
+        <div style={{
+          width: 90, height: 70, borderRadius: 8, flexShrink: 0,
+          background: 'linear-gradient(90deg,#ede8fa 25%,#f4f0ff 50%,#ede8fa 75%)',
+          backgroundSize: '200% 100%', animation: 'skShimmer 1.4s infinite',
+        }} />
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div style={{ height: 12, width: '40%', borderRadius: 6, background: '#ede8fa' }} />
+          <div style={{ height: 16, width: '80%', borderRadius: 6, background: '#e0d4ff' }} />
+          <div style={{ height: 11, width: '60%', borderRadius: 6, background: '#f4f0ff' }} />
+          <div style={{ display: 'flex', gap: 12 }}>
+            <div style={{ height: 11, width: '35%', borderRadius: 6, background: '#ede8fa' }} />
+            <div style={{ height: 11, width: '20%', borderRadius: 6, background: '#ede8fa' }} />
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+);
 
 const ClienteVisitas = ({ user }) => {
   const navigate   = useNavigate();
@@ -44,8 +69,8 @@ const ClienteVisitas = ({ user }) => {
     return `${DIAS_ES[d.getDay()]} ${d.getDate()} de ${MESES_ES[d.getMonth()]}`;
   };
 
-  const activas  = visitas.filter(v => !['cancelada','completada'].includes(v.estado));
-  const pasadas  = visitas.filter(v =>  ['cancelada','completada'].includes(v.estado));
+  const activas = visitas.filter(v => !['cancelada','completada'].includes(v.estado));
+  const pasadas = visitas.filter(v =>  ['cancelada','completada'].includes(v.estado));
 
   return (
     <div className="cp-page">
@@ -60,13 +85,15 @@ const ClienteVisitas = ({ user }) => {
       </div>
 
       {cargando ? (
-        <div className="cp-loader"><div className="cp-loader-spinner" /></div>
+        <SkVisitas />
       ) : visitas.length === 0 ? (
         <div className="cp-empty">
           <span>📅</span>
           <p>No tienes visitas programadas</p>
           <small>Busca una propiedad y agenda una visita en persona o videollamada</small>
-          <button className="cp-btn-nueva mt-3" onClick={() => navigate('/cliente/explorar')}>Buscar propiedades</button>
+          <button className="cp-btn-nueva mt-3" onClick={() => navigate('/cliente/explorar')}>
+            Buscar propiedades
+          </button>
         </div>
       ) : (
         <>
@@ -74,13 +101,8 @@ const ClienteVisitas = ({ user }) => {
             <div className="cv-seccion">
               <h4 className="cv-seccion-titulo">Próximas visitas</h4>
               {activas.map(v => (
-                <VisitaCard
-                  key={v.id}
-                  visita={v}
-                  onCancelar={cancelar}
-                  formatFecha={formatFecha}
-                  onRespuesta={(id, texto) => setVisitas(prev => prev.map(x => x.id === id ? { ...x, respuesta_cliente: texto } : x))}
-                />
+                <VisitaCard key={v.id} visita={v} onCancelar={cancelar} formatFecha={formatFecha}
+                  onRespuesta={(id, texto) => setVisitas(prev => prev.map(x => x.id === id ? { ...x, respuesta_cliente: texto } : x))} />
               ))}
             </div>
           )}
@@ -98,7 +120,7 @@ const ClienteVisitas = ({ user }) => {
   );
 };
 
-/* ── Tarjeta de visita individual ── */
+/* ── Tarjeta individual ── */
 const VisitaCard = ({ visita, onCancelar, formatFecha, onRespuesta }) => {
   const est = ESTADOS[visita.estado] || ESTADOS.pendiente;
   const [respondiendo, setRespondiendo] = useState(false);
@@ -115,11 +137,7 @@ const VisitaCard = ({ visita, onCancelar, formatFecha, onRespuesta }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ respuesta_cliente: respuesta.trim() }),
       });
-      if (res.ok) {
-        setEnviado(true);
-        setRespondiendo(false);
-        onRespuesta?.(visita.id, respuesta.trim());
-      }
+      if (res.ok) { setEnviado(true); setRespondiendo(false); onRespuesta?.(visita.id, respuesta.trim()); }
     } catch { }
     finally { setEnviando(false); }
   };
@@ -127,12 +145,13 @@ const VisitaCard = ({ visita, onCancelar, formatFecha, onRespuesta }) => {
   return (
     <div className="cv-card">
       {visita.propiedad_imagen && (
-        <img src={visita.propiedad_imagen} alt={visita.propiedad_nombre} className="cv-img"
-          onError={e => e.target.style.display='none'} />
+        <img src={visita.propiedad_imagen} alt={visita.propiedad_nombre}
+          className="cv-img" onError={e => e.target.style.display='none'} />
       )}
       <div className="cv-body">
+        {/* Top: info + estado */}
         <div className="cv-top">
-          <div>
+          <div className="cv-info">
             <span className="cv-tipo">{visita.tipo === 'videollamada' ? '📹 Videollamada' : '🏠 En persona'}</span>
             <h4 className="cv-nombre">{visita.propiedad_nombre || 'Propiedad'}</h4>
             {visita.propiedad_ubicacion && <p className="cv-ubicacion">📍 {visita.propiedad_ubicacion}</p>}
@@ -140,6 +159,7 @@ const VisitaCard = ({ visita, onCancelar, formatFecha, onRespuesta }) => {
           <span className="cv-estado" style={{ color: est.color, background: est.bg }}>{est.label}</span>
         </div>
 
+        {/* Fecha y hora */}
         <div className="cv-fecha-row">
           <span className="cv-fecha">📅 {formatFecha(visita.fecha)}</span>
           <span className="cv-hora">🕐 {visita.hora}</span>
@@ -156,7 +176,7 @@ const VisitaCard = ({ visita, onCancelar, formatFecha, onRespuesta }) => {
           <p className="cv-mensaje-cliente">💬 {visita.mensaje}</p>
         )}
 
-        {/* Respuesta del cliente cuando reagendan */}
+        {/* Respuesta cuando reagendan */}
         {visita.estado === 'reagendada' && (
           <div className="cv-respuesta-box">
             {enviado || visita.respuesta_cliente ? (
@@ -167,13 +187,9 @@ const VisitaCard = ({ visita, onCancelar, formatFecha, onRespuesta }) => {
               </button>
             ) : (
               <>
-                <textarea
-                  className="cv-respuesta-input"
-                  placeholder="Escribe tu respuesta (ej: no puedo en ese horario, prefiero las 15:00)..."
-                  value={respuesta}
-                  onChange={e => setRespuesta(e.target.value)}
-                  rows={2}
-                />
+                <textarea className="cv-respuesta-input"
+                  placeholder="Escribe tu respuesta..."
+                  value={respuesta} onChange={e => setRespuesta(e.target.value)} rows={2} />
                 <div className="cv-respuesta-btns">
                   <button className="cv-btn-cancelar" onClick={() => setRespondiendo(false)}>Cancelar</button>
                   <button className="cv-btn-confirmar" onClick={enviarRespuesta} disabled={!respuesta.trim() || enviando}>

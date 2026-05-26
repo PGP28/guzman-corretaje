@@ -179,13 +179,13 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
                         <FaUser className="login-field-icon" />
                         <input type="text" placeholder="Nombre de usuario" value={loginData.username}
                           onChange={e => setLoginData(p => ({ ...p, username: e.target.value }))}
-                          className="login-input" autoComplete="username" />
+                          className="login-input" autoComplete="username" disabled={cargando} />
                       </div>
                       <div className="login-field">
                         <FaLock className="login-field-icon" />
                         <input type={verPwd ? 'text' : 'password'} placeholder="Contraseña" value={loginData.password}
                           onChange={e => setLoginData(p => ({ ...p, password: e.target.value }))}
-                          className="login-input" autoComplete="current-password" />
+                          className="login-input" autoComplete="current-password" disabled={cargando} />
                         <button type="button" className="login-field-toggle" onClick={() => setVerPwd(v => !v)} tabIndex={-1}>
                           {verPwd ? <FaEyeSlash /> : <FaEye />}
                         </button>

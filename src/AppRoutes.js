@@ -17,6 +17,7 @@ import DetallesPropiedades from './components/DetallesPropiedades';
 import Login from './pages/Login';
 import DashboardLayout from './components/dashboard/DashboardLayout';
 import ClienteLayout from './pages/cliente/ClienteLayout';
+import VerificarEmail from './pages/VerificarEmail';
 
 const AppContent = ({ user, onLoginCorredor, onLogout, cliente, onLoginCliente, onClienteLogout }) => {
   const location = useLocation();
@@ -43,6 +44,9 @@ const AppContent = ({ user, onLoginCorredor, onLogout, cliente, onLoginCliente, 
           <Route path="/TrabajaConNosotros" element={<TrabajaConNosotros />} />
           <Route path="/DetallesPropiedades" element={<DetallesPropiedades />} />
           <Route path="/propiedad/:id" element={<DetallesPropiedades />} />
+
+          {/* Verificación de email */}
+          <Route path="/verificar-email" element={<VerificarEmail />} />
 
           {/* Login unificado */}
           <Route

@@ -36,6 +36,8 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
 
   const [loginData, setLoginData] = useState({ username: '', password: '' });
   const [regData,   setRegData]   = useState({ username: '', nombre: '', password: '', confirmar: '', email: '', telefono: '' });
+  const [recuperarEmail, setRecuperarEmail] = useState('');
+  const [recuperarMsg,   setRecuperarMsg]   = useState(null);
   const [verPwd,    setVerPwd]    = useState(false);
   const [verPwd2,   setVerPwd2]   = useState(false);
 
@@ -86,6 +88,22 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
       if (!res.ok) return setError(data.error || 'Error al crear la cuenta');
       guardarCliente(data.token, data.cliente, onLoginCliente);
       navigate(redirectUrl);
+    } catch { setError('Error de conexión. Intenta de nuevo.'); }
+    finally { setCargando(false); }
+  };
+
+  /* ── Recuperar contraseña ── */
+  const handleRecuperar = async (e) => {
+    e.preventDefault(); limpiar();
+    if (!recuperarEmail.trim()) return setError('Ingresa tu correo electrónico');
+    setCargando(true);
+    try {
+      const res  = await fetch(`${API}/auth/forgot-password`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: recuperarEmail.trim().toLowerCase() }),
+      });
+      const data = await res.json();
+      setRecuperarMsg(data.message || 'Revisa tu correo.');
     } catch { setError('Error de conexión. Intenta de nuevo.'); }
     finally { setCargando(false); }
   };
@@ -194,6 +212,10 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
                         ¿No tienes cuenta?{' '}
                         <button type="button" className="login-link" onClick={() => cambiarSubTab('registro')}>Créala aquí</button>
                       </p>
+                      <p className="login-switch-hint">
+                        ¿Olvidaste tu contraseña?{' '}
+                        <button type="button" className="login-link" onClick={() => cambiarSubTab('recuperar')}>Recupérala aquí</button>
+                      </p>
                       {error && <div className="login-error">⚠️ {error}</div>}
                       <button type="submit" className="login-btn-submit" disabled={cargando}>
                         {cargando ? 'Ingresando…' : 'Iniciar sesión'}
@@ -280,6 +302,47 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
                     </div>
                   </>
                 )}
+                {/* RECUPERAR */}
+                {subTab === 'recuperar' && (
+                  <>
+                    {!recuperarMsg ? (
+                      <form onSubmit={handleRecuperar} className="login-form" noValidate>
+                        <div className="login-recuperar-header">
+                          <span className="login-recuperar-icon">🔑</span>
+                          <h3 className="login-recuperar-titulo">Recuperar contraseña</h3>
+                          <p className="login-recuperar-desc">
+                            Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.
+                          </p>
+                        </div>
+                        <div className="login-field">
+                          <FaEnvelope className="login-field-icon" />
+                          <input type="email" placeholder="Tu correo electrónico" value={recuperarEmail}
+                            onChange={e => setRecuperarEmail(e.target.value)}
+                            className="login-input" autoComplete="email" disabled={cargando} />
+                        </div>
+                        {error && <div className="login-error">⚠️ {error}</div>}
+                        <button type="submit" className="login-btn-submit" disabled={cargando}>
+                          {cargando ? 'Enviando...' : 'Enviar enlace'}
+                        </button>
+                        <p className="login-switch-hint" style={{textAlign:'center', marginTop:'12px'}}>
+                          <button type="button" className="login-link" onClick={() => cambiarSubTab('login')}>
+                            ← Volver al inicio de sesión
+                          </button>
+                        </p>
+                      </form>
+                    ) : (
+                      <div className="login-recuperar-ok">
+                        <span className="login-recuperar-ok-icon">✉️</span>
+                        <h3>Revisa tu correo</h3>
+                        <p>{recuperarMsg}</p>
+                        <button className="login-btn-submit" onClick={() => { setRecuperarMsg(null); cambiarSubTab('login'); }}>
+                          Volver al inicio de sesión
+                        </button>
+                      </div>
+                    )}
+                  </>
+                )}
+
               </>
             )}
 

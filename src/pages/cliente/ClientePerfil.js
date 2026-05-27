@@ -16,6 +16,8 @@ const PerfilForm = ({ user, onActualizar }) => {
   const [guardando, setGuardando] = useState(false);
   const [error,     setError]     = useState(null);
   const [exito,     setExito]     = useState(null);
+  const [reenvioEnviado, setReenvioEnviado] = useState(false);
+  const [googleVerified, setGoogleVerified] = useState(false);
 
   useEffect(() => {
     const token = getToken();
@@ -44,6 +46,8 @@ const PerfilForm = ({ user, onActualizar }) => {
         setForm(prev => ({ ...prev, email: info.email }));
         setEditando(true);
         setExito(`Gmail ${info.email} detectado. Guarda los cambios para confirmar.`);
+        // Marcar como verificado por Google para saltarse la verificación manual
+        setGoogleVerified(true);
       } catch { setError('No se pudo obtener el Gmail de Google.'); }
     },
     onError: () => setError('Error al conectar con Google.'),
@@ -58,6 +62,7 @@ const PerfilForm = ({ user, onActualizar }) => {
       const body = {};
       if (form.telefono !== (perfil?.telefono || '')) body.telefono = form.telefono;
       if (form.email    !== (perfil?.email    || '')) body.email    = form.email;
+      if (body.email && googleVerified) body.google_verified = true;
       if (Object.keys(body).length === 0) { setEditando(false); return; }
 
       const res  = await fetch(`${API}/auth/perfil`, {
@@ -68,29 +73,47 @@ const PerfilForm = ({ user, onActualizar }) => {
       const data = await res.json();
       if (!res.ok) return setError(data.error || 'Error al guardar.');
 
-      setPerfil(data);
-      setForm({ telefono: data.telefono || '', email: data.email || '' });
+      // Refrescar perfil completo desde la API para obtener email_pendiente
+      const meRes  = await fetch(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } });
+      const meData = await meRes.json();
+      setPerfil(meData);
+      setForm({ telefono: meData.telefono || '', email: meData.email || '' });
       setEditando(false);
-      setExito('¡Perfil actualizado correctamente!');
+      setExito(meData.email_pendiente ? 'Revisa tu correo para verificar tu email.' : '¡Perfil actualizado correctamente!');
       const clienteLocal = JSON.parse(localStorage.getItem('guzman_cliente') || '{}');
-      localStorage.setItem('guzman_cliente', JSON.stringify({ ...clienteLocal, email: data.email || clienteLocal.email }));
-      onActualizar?.(data);
-      setTimeout(() => setExito(null), 4000);
+      localStorage.setItem('guzman_cliente', JSON.stringify({ ...clienteLocal, email: meData.email || clienteLocal.email }));
+      onActualizar?.(meData);
+      setTimeout(() => setExito(null), 5000);
     } catch { setError('Error de conexión. Intenta de nuevo.'); }
     finally { setGuardando(false); }
   };
 
   const cancelar = () => {
     setForm({ telefono: perfil?.telefono || '', email: perfil?.email || '' });
-    setEditando(false); setError(null); setExito(null);
+    setEditando(false); setError(null); setExito(null); setGoogleVerified(false);
   };
 
   if (cargando) return <div className="cp-loader"><div className="cp-loader-spinner" /></div>;
 
+  const reenviarVerificacion = async () => {
+    if (!perfil?.email_pendiente) return;
+    const token = getToken();
+    try {
+      await fetch(`${API}/auth/perfil`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ email: perfil.email_pendiente }),
+      });
+      setReenvioEnviado(true);
+      setTimeout(() => setReenvioEnviado(false), 30000);
+    } catch { setError('No se pudo reenviar el correo.'); }
+  };
+
   const inicial    = perfil?.nombre?.charAt(0).toUpperCase() || user?.name?.charAt(0).toUpperCase() || '?';
   const foto       = perfil?.foto_url || user?.picture || null;
-  const tieneGmail = !!perfil?.email;
-  const tieneTel   = !!perfil?.telefono;
+  const tieneGmail    = !!perfil?.email;
+  const tieneTel      = !!perfil?.telefono;
+  const emailPendiente = perfil?.email_pendiente || null;
 
   return (
     <div className="cpf-page">
@@ -107,6 +130,20 @@ const PerfilForm = ({ user, onActualizar }) => {
           <span className="cpf-rol">Cliente · Guzmán Corretaje</span>
         </div>
       </div>
+
+      {/* Banner verificación email pendiente */}
+      {emailPendiente && !editando && (
+        <div className="cpf-banner cpf-banner--verificar">
+          <span className="cpf-banner-icon">📧</span>
+          <div style={{flex:1}}>
+            <strong>Verifica tu correo electrónico</strong>
+            <p>Enviamos un enlace a <strong style={{color:'#1a6fa8'}}>{emailPendiente}</strong> — revisa tu bandeja de entrada y haz clic para confirmar.</p>
+          </div>
+          <button className="cpf-banner-btn cpf-banner-btn--reenviar" onClick={reenviarVerificacion} disabled={reenvioEnviado}>
+            {reenvioEnviado ? '✓ Enviado' : 'Reenviar'}
+          </button>
+        </div>
+      )}
 
       {/* Banner completar perfil */}
       {(!tieneGmail || !tieneTel) && !editando && (

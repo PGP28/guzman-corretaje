@@ -134,3 +134,55 @@
     font-size: 20px;
   }
 }
+
+/* ── Reset Password form fields ── */
+.rp-field {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #e0d4ff;
+  border-radius: 10px;
+  padding: 0 12px;
+  background: #faf8ff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  margin-top: 12px;
+  width: 100%;
+}
+
+.rp-field:focus-within {
+  border-color: #8a60da;
+  box-shadow: 0 0 0 3px rgba(138,96,218,0.12);
+  background: #fff;
+}
+
+.rp-icon {
+  color: #8a60da;
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+
+.rp-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 12px 0;
+  font-size: 14px;
+  color: #2d1060;
+  outline: none;
+}
+
+.rp-input::placeholder { color: #bbb; }
+
+.rp-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #aaa;
+  padding: 0;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.rp-toggle:hover { color: #5529aa; }

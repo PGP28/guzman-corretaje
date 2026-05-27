@@ -18,6 +18,7 @@ import Login from './pages/Login';
 import DashboardLayout from './components/dashboard/DashboardLayout';
 import ClienteLayout from './pages/cliente/ClienteLayout';
 import VerificarEmail from './pages/VerificarEmail';
+import ResetPassword from './pages/ResetPassword';
 
 const AppContent = ({ user, onLoginCorredor, onLogout, cliente, onLoginCliente, onClienteLogout }) => {
   const location = useLocation();
@@ -47,6 +48,9 @@ const AppContent = ({ user, onLoginCorredor, onLogout, cliente, onLoginCliente, 
 
           {/* Verificación de email */}
           <Route path="/verificar-email" element={<VerificarEmail />} />
+
+          {/* Reset de contraseña */}
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* Login unificado */}
           <Route

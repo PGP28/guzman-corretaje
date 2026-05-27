@@ -1,7 +1,7 @@
 /* ══════════════════════════════════════════════
    CLIENTE PERFIL — Paleta morada Guzmán
 ══════════════════════════════════════════════ */
-.cpf-page { display: flex; flex-direction: column; gap: 20px; max-width: 680px; }
+.cpf-page { display: flex; flex-direction: column; gap: 20px; max-width: 860px; width: 100%; }
 
 .cpf-header { display: flex; align-items: center; gap: 20px; background: linear-gradient(135deg, #3f1b86, #5529aa); border-radius: 16px; padding: 24px 28px; color: #fff; }
 .cpf-avatar-wrap { position: relative; flex-shrink: 0; }
@@ -12,11 +12,33 @@
 .cpf-username { color: rgba(255,255,255,0.75); font-size: 14px; margin: 0 0 4px; font-weight: 500; }
 .cpf-rol { background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.9); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; display: inline-block; }
 
-.cpf-banner { display: flex; align-items: flex-start; gap: 14px; background: #fff8e8; border: 1px solid #ffe49a; border-radius: 14px; padding: 16px 20px; }
+.cpf-banner { display: flex; align-items: center; gap: 14px; background: #fff8e8; border: 1px solid #ffe49a; border-radius: 14px; padding: 16px 20px; }
 .cpf-banner-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
 .cpf-banner strong { display: block; font-size: 14px; font-weight: 700; color: #b45309; margin-bottom: 4px; }
 .cpf-banner p { font-size: 13px; color: #855a15; margin: 0; line-height: 1.5; }
-.cpf-banner-btn { flex-shrink: 0; background: #b45309; color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; align-self: center; transition: background 0.2s; }
+.cpf-banner--verificar {
+  background: #e8f4fd;
+  border-color: #3498db;
+  align-items: center;
+}
+
+.cpf-banner--verificar strong { color: #1a6fa8; }
+.cpf-banner--verificar p { color: #555; margin: 4px 0 0; font-size: 13px; line-height: 1.5; }
+.cpf-banner--verificar p::before { content: none; }
+.cpf-banner--verificar p strong { display: inline; color: #1a6fa8; font-size: 13px; }
+
+.cpf-banner-btn--reenviar {
+  background: #3498db;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.cpf-banner-btn--reenviar:disabled {
+  background: #27ae60;
+  cursor: default;
+}
+
+.cpf-banner-btn { flex-shrink: 0; background: #b45309; color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; align-self: center; margin-left: auto; transition: background 0.2s; }
 .cpf-banner-btn:hover { background: #92400e; }
 
 .cpf-card { background: #fff; border: 1px solid #ede8fa; border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(63,27,134,0.05); }
@@ -69,8 +91,9 @@
 
 @media (max-width: 767px) {
   .cpf-header { flex-direction: column; text-align: center; padding: 20px; }
-  .cpf-banner { flex-direction: column; gap: 10px; }
-  .cpf-banner-btn { align-self: flex-start; }
+  .cpf-banner { flex-direction: column; gap: 10px; align-items: center; text-align: center; }
+  .cpf-banner-btn { align-self: center; margin-left: 0; width: 100%; }
+  .cpf-banner-icon { margin-top: 0; }
   .cpf-gmail-row { flex-direction: column; }
   .cpf-btn-google { width: 100%; justify-content: center; }
   .cpf-form-btns { flex-direction: column-reverse; }

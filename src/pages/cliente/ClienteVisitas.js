@@ -135,7 +135,7 @@ const VisitaCard = ({ visita, onCancelar, formatFecha, onRespuesta }) => {
       const res = await fetch(`${API}/visitas/${visita.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ respuesta_cliente: respuesta.trim() }),
+        body: JSON.stringify({ respuesta_cliente: respuesta.trim(), origen: 'cliente' }),
       });
       if (res.ok) { setEnviado(true); setRespondiendo(false); onRespuesta?.(visita.id, respuesta.trim()); }
     } catch { }

@@ -126,14 +126,34 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
   };
 
   /* ── Google corredor ── */
-  const handleGoogleCorredor = (credentialResponse) => {
+  const handleGoogleCorredor = async (credentialResponse) => {
+    limpiar(); setCargando(true);
     try {
       const decoded = JSON.parse(atob(credentialResponse.credential.split('.')[1]));
-      if (!ALLOWED_EMAILS.includes(decoded.email)) return setError('No tienes permisos para acceder al panel de corredores.');
-      if (decoded.picture) localStorage.setItem(`guzman_perfil_usuario_foto_${decoded.email}`, decoded.picture);
-      onLoginCorredor(decoded);
+      const email   = decoded.email?.toLowerCase();
+
+      // Validar email contra tabla corredores en BD
+      const res  = await fetch(`${API}/corredores/validate?email=${encodeURIComponent(email)}`);
+      const data = await res.json();
+
+      if (!res.ok || !data.autorizado) {
+        return setError('No tienes permisos para acceder al panel de corredores.');
+      }
+
+      // Guardar foto si existe
+      if (decoded.picture) {
+        localStorage.setItem(`guzman_perfil_usuario_foto_${email}`, decoded.picture);
+      }
+
+      // Login con datos de BD enriquecidos con foto de Google
+      const corredor = { ...data.corredor, picture: decoded.picture };
+      onLoginCorredor(corredor);
       navigate('/dashboard');
-    } catch { setError('Error al procesar las credenciales.'); }
+    } catch {
+      setError('Error al procesar las credenciales.');
+    } finally {
+      setCargando(false);
+    }
   };
 
   const isCliente = tab === 'cliente';

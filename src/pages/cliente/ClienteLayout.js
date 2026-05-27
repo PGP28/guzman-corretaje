@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { FaHome, FaCalendarCheck, FaComments, FaCreditCard, FaSignOutAlt, FaChevronLeft, FaBars, FaTimes, FaSearch, FaUserCircle, FaCalendarAlt } from 'react-icons/fa';
+import API_BASE_URL from '../../config';
 import ClienteInicio from './ClienteInicio';
 import ClienteReservas from './ClienteReservas';
 import ClienteMensajes from './ClienteMensajes';
@@ -38,9 +39,17 @@ const ClienteLayout = ({ user, onLogout }) => {
 
   const handleNav = (path) => { navigate(path); setMobileOpen(false); };
 
-  // Contar mensajes sin leer
-  const mensajes = JSON.parse(localStorage.getItem(`guzman_chat_${user?.email}`) || '[]');
-  const sinLeer  = mensajes.filter(m => !m.leido && m.de !== 'cliente').length;
+  // Contar mensajes sin leer — desde API en vez de localStorage
+  const [sinLeer, setSinLeer] = useState(0);
+
+  useEffect(() => {
+    const id = user?.id ? `cliente_id=${user.id}` : user?.username ? `cliente_username=${user.username}` : null;
+    if (!id) return;
+    fetch(`${API_BASE_URL}/api/mensajes?${id}`)
+      .then(r => r.json())
+      .then(data => setSinLeer(Array.isArray(data) ? data.filter(m => m.de === 'corredor' && !m.leido).length : 0))
+      .catch(() => {});
+  }, [user?.id, user?.username]);
 
   return (
     <div className={`cl-layout ${collapsed ? 'collapsed' : ''}`}>

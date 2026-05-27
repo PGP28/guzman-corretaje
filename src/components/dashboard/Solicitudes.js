@@ -14,12 +14,14 @@ const ESTADOS_SOL = {
 
 const Solicitudes = ({ rol = 'admin', userName }) => {
   const [solicitudes, setSolicitudes]   = useState([]);
+  const [cargando,    setCargando]      = useState(true);
   const esCorrector = rol === 'corredor';
   const [filtro, setFiltro]             = useState('todas');
   const [seleccionada, setSeleccionada] = useState(null);
   const [corredor, setCorredor]         = useState('');
 
   const cargar = async () => {
+    setCargando(true);
     try {
       const res = await fetch(`${API}/solicitudes`);
       const data = await res.json();
@@ -30,6 +32,7 @@ const Solicitudes = ({ rol = 'admin', userName }) => {
         setSolicitudes(data);
       }
     } catch { setSolicitudes([]); }
+    finally { setCargando(false); }
   };
 
   useEffect(() => { cargar(); }, []);
@@ -115,7 +118,9 @@ const Solicitudes = ({ rol = 'admin', userName }) => {
       </div>
 
       {/* Lista */}
-      {filtradas.length === 0 ? (
+      {cargando ? (
+        <div className="ep-empty"><span>⏳</span><p>Cargando solicitudes...</p></div>
+      ) : filtradas.length === 0 ? (
         <div className="ep-empty">
           <span>📭</span>
           <p>No hay solicitudes {filtro !== 'todas' ? `con estado "${ESTADOS_SOL[filtro]?.label}"` : ''}</p>

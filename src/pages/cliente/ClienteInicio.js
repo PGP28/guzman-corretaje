@@ -31,7 +31,7 @@ const ClienteInicio = ({ user }) => {
 
   useEffect(() => {
     getReservasCliente(user).then(setReservas).catch(() => {});
-  }, [user?.id]);
+  }, [user?.id, user?.username]);
   const [mensajesSinLeer, setMensajesSinLeer] = useState(0);
 
   useEffect(() => {
@@ -155,7 +155,7 @@ const ClienteInicio = ({ user }) => {
             {propiedades.slice(0, 3).map(p => (
               <div key={p.id} className="cp-prop-card" onClick={() => navigate(`/cliente/propiedad/${p.id}`, { state: { propiedad: p } })}>
                 <img
-                  src={p.imagenes?.[0]?.url || p.imagenes?.[0] || 'https://via.placeholder.com/300x160?text=Sin+imagen'}
+                  src={p.imagenes?.[0]?.url || p.imagenes?.[0] || '/images/LOGO_PNG-16.png'}
                   alt={p.nombre}
                   className="cp-prop-img"
                 />

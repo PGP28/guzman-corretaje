@@ -272,10 +272,16 @@ const PerfilForm = ({ user, onActualizar }) => {
           <h4 className="cpf-card-titulo cpf-danger-titulo">¿Eliminar tu cuenta?</h4>
           {!eliminacionSolicitada ? (
             <>
-              <p className="cpf-danger-desc">
-                Te enviaremos un email a <strong>{perfil?.email}</strong> con un enlace de confirmación.
-                Tu cuenta solo se eliminará si haces clic en ese enlace.
-              </p>
+              {perfil?.email ? (
+                <p className="cpf-danger-desc">
+                  Te enviaremos un email a <strong>{perfil.email}</strong> con un enlace de confirmación.
+                  Tu cuenta solo se eliminará si haces clic en ese enlace.
+                </p>
+              ) : (
+                <p className="cpf-danger-desc">
+                  Para eliminar tu cuenta necesitas tener un email verificado.
+                </p>
+              )}
               {!perfil?.email && (
                 <p className="cpf-danger-warn">
                   ⚠️ No tienes un email verificado. Agrega uno desde tu perfil para poder eliminar tu cuenta.

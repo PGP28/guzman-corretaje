@@ -16,7 +16,8 @@ const beneficios = [
 
 function QuieroVender() {
   const [formData, setFormData] = useState({ nombre: '', email: '', telefono: '', tipoPropiedad: '', mensaje: '' });
-  const [enviado, setEnviado] = useState(false);
+  const [enviado,  setEnviado]  = useState(false);
+  const [enviando, setEnviando] = useState(false);
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -24,6 +25,7 @@ function QuieroVender() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setEnviando(true);
     const msg = encodeURIComponent(
       `Hola, soy ${formData.nombre}. Quiero vender mi propiedad (${formData.tipoPropiedad}). ${formData.mensaje} Mi contacto: ${formData.email} / ${formData.telefono}`
     );
@@ -41,6 +43,7 @@ function QuieroVender() {
         }),
       });
     } catch { /* continuar aunque falle el guardado */ }
+    finally { setEnviando(false); }
     window.open(`https://wa.me/+56946433583?text=${msg}`, '_blank');
     setEnviado(true);
   };
@@ -125,8 +128,8 @@ function QuieroVender() {
                     <Form.Group className="mb-4">
                       <Form.Control as="textarea" rows={3} name="mensaje" value={formData.mensaje} onChange={handleChange} placeholder="Cuéntanos sobre tu propiedad..." className="qv-input" />
                     </Form.Group>
-                    <button type="submit" className="qv-btn-submit w-100">
-                      Enviar por WhatsApp
+                    <button type="submit" className="qv-btn-submit w-100" disabled={enviando}>
+                      {enviando ? 'Enviando...' : 'Enviar por WhatsApp'}
                     </button>
                   </Form>
                 )}

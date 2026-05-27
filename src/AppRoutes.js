@@ -87,14 +87,24 @@ const AppContent = ({ user, onLoginCorredor, onLogout, cliente, onLoginCliente, 
 };
 
 const AppRoutes = () => {
-  const [user, setUser]       = useState(null);
+  const [user, setUser]       = useState(() => {
+    const g = localStorage.getItem('guzman_corredor');
+    return g ? JSON.parse(g) : null;
+  });
   const [cliente, setCliente] = useState(() => {
     const g = localStorage.getItem('guzman_cliente');
     return g ? JSON.parse(g) : null;
   });
 
-  const handleLoginCorredor = (data) => setUser(data);
-  const handleLogout        = () => { setUser(null); window.location.href = '/login'; };
+  const handleLoginCorredor = (data) => {
+    setUser(data);
+    localStorage.setItem('guzman_corredor', JSON.stringify(data));
+  };
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('guzman_corredor');
+    window.location.href = '/login';
+  };
 
   const handleLoginCliente = (data) => {
     // Normalizar: el backend devuelve 'nombre', el frontend espera 'name'

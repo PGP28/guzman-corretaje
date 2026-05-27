@@ -8,7 +8,8 @@ const API = `${API_BASE_URL}/api`;
 
 function Contactanos() {
   const [formData, setFormData] = useState({ nombre: '', email: '', telefono: '', mensaje: '' });
-  const [enviado, setEnviado] = useState(false);
+  const [enviado,  setEnviado]  = useState(false);
+  const [enviando, setEnviando] = useState(false);
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -16,6 +17,7 @@ function Contactanos() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setEnviando(true);
     const msg = encodeURIComponent(
       `Hola, soy ${formData.nombre}. ${formData.mensaje} Mi contacto: ${formData.email} / ${formData.telefono}`
     );
@@ -32,6 +34,7 @@ function Contactanos() {
         }),
       });
     } catch { /* continuar aunque falle el guardado */ }
+    finally { setEnviando(false); }
     window.open(`https://wa.me/+56946433583?text=${msg}`, '_blank');
     setEnviado(true);
   };
@@ -82,8 +85,8 @@ function Contactanos() {
                     <Form.Group className="mb-4">
                       <Form.Control as="textarea" rows={4} name="mensaje" value={formData.mensaje} onChange={handleChange} placeholder="¿En qué podemos ayudarte?" required className="contactanos-input" />
                     </Form.Group>
-                    <button type="submit" className="contactanos-btn-submit w-100">
-                      Enviar mensaje por WhatsApp
+                    <button type="submit" className="contactanos-btn-submit w-100" disabled={enviando}>
+                      {enviando ? 'Enviando...' : 'Enviar mensaje por WhatsApp'}
                     </button>
                   </Form>
                 )}

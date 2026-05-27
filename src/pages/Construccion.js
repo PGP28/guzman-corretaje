@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form } from 'react-bootstrap';
 import { FaHammer, FaHome, FaWrench, FaPaintRoller, FaRuler, FaCheckCircle } from 'react-icons/fa';
+import API_BASE_URL from '../config';
 import './Construccion.css';
+
+const API = `${API_BASE_URL}/api`;
 
 const SERVICIOS = [
   { icon: <FaHammer />,       titulo: 'Construcción nueva',     desc: 'Diseño y construcción de casas y edificios desde cero.' },
@@ -14,28 +17,32 @@ const SERVICIOS = [
 
 function Construccion() {
   const [formData, setFormData] = useState({ nombre: '', telefono: '', email: '', servicio: '', descripcion: '' });
-  const [enviado, setEnviado] = useState(false);
+  const [enviado,   setEnviado]   = useState(false);
+  const [enviando,  setEnviando]  = useState(false);
 
   const handleChange = (e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setEnviando(true);
     const msg = encodeURIComponent(
       `Hola, soy ${formData.nombre}. Solicito información sobre: ${formData.servicio}. ${formData.descripcion} Contacto: ${formData.email} / ${formData.telefono}`
     );
-    // Guardar en localStorage para el dashboard de construcción
-    const solicitudes = JSON.parse(localStorage.getItem('guzman_solicitudes_construccion') || '[]');
-    solicitudes.unshift({
-      id: Date.now(),
-      nombre:   formData.nombre,
-      email:    formData.email,
-      telefono: formData.telefono,
-      mensaje:  `${formData.servicio}: ${formData.descripcion}`,
-      estado:   'nueva',
-      fecha:    new Date().toLocaleDateString('es-CL'),
-      origen:   'Construcción',
-    });
-    localStorage.setItem('guzman_solicitudes_construccion', JSON.stringify(solicitudes));
+    try {
+      await fetch(`${API}/solicitudes-construccion`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre:      formData.nombre,
+          email:       formData.email,
+          telefono:    formData.telefono,
+          servicio:    formData.servicio,
+          descripcion: formData.descripcion,
+          origen:      'Construcción',
+        }),
+      });
+    } catch { /* continuar aunque falle el guardado */ }
+    finally { setEnviando(false); }
     window.open(`https://wa.me/+56952389494?text=${msg}`, '_blank');
     setEnviado(true);
   };
@@ -135,8 +142,8 @@ function Construccion() {
                         placeholder="Describe tu proyecto o necesidad..." className="const-input"
                       />
                     </Form.Group>
-                    <button type="submit" className="const-btn-submit w-100">
-                      Enviar solicitud por WhatsApp
+                    <button type="submit" className="const-btn-submit w-100" disabled={enviando}>
+                      {enviando ? 'Enviando...' : 'Enviar solicitud por WhatsApp'}
                     </button>
                   </Form>
                 )}

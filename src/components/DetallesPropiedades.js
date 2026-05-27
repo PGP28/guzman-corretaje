@@ -36,7 +36,7 @@ function DetallesPropiedades() {
         .catch(() => {})
         .finally(() => setCargando(false));
     }
-  }, [id]);
+  }, [id, propiedad]);
 
   // Actualizar URL a formato amigable si se llegó por /DetallesPropiedades
   useEffect(() => {
@@ -90,7 +90,7 @@ function DetallesPropiedades() {
     if (cliente) {
       navigate(`/cliente/propiedad/${propiedad.id}`, { state: { propiedad } });
     } else {
-      navigate('/cliente/login');
+      navigate(`/login?redirect=${encodeURIComponent(`/cliente/propiedad/${propiedad.id}`)}`);
     }
   };
 
@@ -111,26 +111,28 @@ function DetallesPropiedades() {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     const msg = encodeURIComponent(
       `Hola, me interesa la propiedad "${propiedad.nombre}" ubicada en ${propiedad.ubicacion}. ${formData.mensaje}`
     );
-    // Guardar solicitud en localStorage para el dashboard
-    const solicitudes = JSON.parse(localStorage.getItem('guzman_solicitudes') || '[]');
-    solicitudes.unshift({
-      id: Date.now(),
-      nombre:   'Cliente interesado',
-      email:    formData.email,
-      telefono: formData.telefono,
-      mensaje:  `Propiedad: ${propiedad.nombre} (${propiedad.ubicacion}). ${formData.mensaje}`,
-      estado:   'nueva',
-      corredor: null,
-      fecha:    new Date().toLocaleDateString('es-CL'),
-      origen:   'Detalle propiedad',
-      propiedad_id: propiedad.id,
-    });
-    localStorage.setItem('guzman_solicitudes', JSON.stringify(solicitudes));
+    // Guardar solicitud en Supabase via API
+    try {
+      await fetch(`${API_BASE_URL}/api/solicitudes`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre:       'Cliente interesado',
+          email:        formData.email,
+          telefono:     formData.telefono,
+          mensaje:      `Propiedad: ${propiedad.nombre} (${propiedad.ubicacion}). ${formData.mensaje}`,
+          propiedad_id: propiedad.id,
+          origen:       'Detalle propiedad',
+        }),
+      });
+    } catch (err) {
+      console.error('Error al guardar solicitud:', err);
+    }
     window.open(`https://wa.me/+56946433583?text=${msg}`, '_blank');
     setEnviado(true);
   };
@@ -191,7 +193,7 @@ function DetallesPropiedades() {
         <Col md={8}>
           <div className="detalles-img-principal-wrapper">
             <Image
-              src={imagenPrincipal || 'https://via.placeholder.com/800x500?text=Sin+imagen'}
+              src={imagenPrincipal || '/images/LOGO_PNG-16.png'}
               alt="Imagen principal"
               className="detalles-img-principal"
             />

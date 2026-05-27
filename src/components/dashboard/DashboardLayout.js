@@ -44,11 +44,16 @@ const DashboardLayout = ({ user: userProp, onLogout }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [user, setUser]             = useState(userProp);
   const [previewCorredor, setPreviewCorredor] = useState(false);
+  const [isMobile, setIsMobile]     = useState(window.innerWidth < 768);
   const navigate  = useNavigate();
   const location  = useLocation();
 
-  // En mobile el sidebar siempre se muestra expandido al abrirse
-  const isMobile = window.innerWidth < 768;
+  // Detectar resize para actualizar isMobile
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   const showExpanded = !collapsed || isMobile;
 
   // Determinar rol (con override de preview)

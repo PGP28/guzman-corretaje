@@ -20,8 +20,8 @@ const guardarCliente = (token, cliente, onLoginCliente) => {
     id:       cliente.id,
     username: cliente.username,
     name:     cliente.nombre,
-    email:    cliente.email    || '',
-    picture:  cliente.foto_url || '',
+    email:    cliente.email         || cliente.email_pendiente || '',
+    picture:  cliente.foto_url      || '',
   }));
   onLoginCliente(cliente);
 };
@@ -113,10 +113,9 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
   const handleGoogleCliente = async (credentialResponse) => {
     limpiar(); setCargando(true);
     try {
-      const decoded = JSON.parse(atob(credentialResponse.credential.split('.')[1]));
       const res = await fetch(`${API}/auth/google`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sub: decoded.sub, email: decoded.email, name: decoded.name, picture: decoded.picture }),
+        body: JSON.stringify({ credential: credentialResponse.credential }),
       });
       const data = await res.json();
       if (!res.ok) return setError(data.error || 'Error con Google');

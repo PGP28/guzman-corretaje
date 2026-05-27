@@ -16,8 +16,9 @@ const ResetPassword = () => {
   const [verPwd,      setVerPwd]      = useState(false);
   const [verPwd2,     setVerPwd2]     = useState(false);
   const [cargando,    setCargando]    = useState(false);
-  const [error,       setError]       = useState(null);
+  const [error,       setError]       = useState(token ? null : 'Token inválido. Solicita un nuevo enlace de recuperación.');
   const [exito,       setExito]       = useState(false);
+  const tokenInvalido = !token;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -118,7 +119,7 @@ const ResetPassword = () => {
                 type="submit"
                 className="ve-btn ve-btn--ok"
                 style={{ width: '100%', marginTop: '20px' }}
-                disabled={cargando}
+                disabled={cargando || tokenInvalido}
               >
                 {cargando ? 'Guardando...' : 'Restablecer contraseña'}
               </button>

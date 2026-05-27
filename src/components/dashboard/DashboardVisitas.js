@@ -47,7 +47,7 @@ const DashboardVisitas = ({ userName }) => {
       const res  = await fetch(`${API}/visitas/${id}`, {
         method:  'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ estado, corredor: userName, ...extras }),
+        body:    JSON.stringify({ estado, corredor: userName, origen: 'corredor', ...extras }),
       });
       const data = await res.json();
       if (!res.ok) return;

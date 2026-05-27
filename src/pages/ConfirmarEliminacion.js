@@ -40,7 +40,7 @@ const ConfirmarEliminacion = ({ onClienteLogout }) => {
     };
 
     confirmar();
-  }, [token]);
+  }, [token, onClienteLogout]);
 
   return (
     <div className="ve-page">

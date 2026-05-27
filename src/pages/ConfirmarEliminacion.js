@@ -3,12 +3,12 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import API_BASE_URL from '../config';
 import './VerificarEmail.css';
 
-const VerificarEmail = () => {
+const ConfirmarEliminacion = ({ onClienteLogout }) => {
   const [searchParams] = useSearchParams();
   const navigate       = useNavigate();
   const token          = searchParams.get('token');
 
-  const [estado, setEstado] = useState('cargando'); // cargando | ok | error
+  const [estado,  setEstado]  = useState('cargando'); // cargando | ok | error
   const [mensaje, setMensaje] = useState('');
 
   useEffect(() => {
@@ -18,13 +18,17 @@ const VerificarEmail = () => {
       return;
     }
 
-    const verificar = async () => {
+    const confirmar = async () => {
       try {
-        const res  = await fetch(`${API_BASE_URL}/api/auth/verify-email?token=${token}`);
+        const res  = await fetch(`${API_BASE_URL}/api/auth/confirmar-eliminacion?token=${token}`);
         const data = await res.json();
         if (res.ok) {
           setEstado('ok');
-          setMensaje(data.message || 'Email verificado correctamente.');
+          setMensaje(data.message || 'Tu cuenta ha sido eliminada correctamente.');
+          // Cerrar sesión local
+          localStorage.removeItem('guzman_cliente_token');
+          localStorage.removeItem('guzman_cliente');
+          onClienteLogout?.();
         } else {
           setEstado('error');
           setMensaje(data.error || 'El enlace ha expirado o es inválido.');
@@ -35,61 +39,38 @@ const VerificarEmail = () => {
       }
     };
 
-    verificar();
+    confirmar();
   }, [token]);
-
-  // Detectar si tiene sesión activa
-  const tieneSession = !!localStorage.getItem('guzman_cliente_token');
-
-  const handleContinuar = () => {
-    if (tieneSession) {
-      navigate('/cliente/perfil');
-    } else {
-      // Sin sesión → llevar al login con mensaje de éxito y redirect al perfil
-      navigate('/login?redirect=/cliente/perfil&verified=true');
-    }
-  };
 
   return (
     <div className="ve-page">
       <div className="ve-card">
 
-        {/* Logo */}
+        {/* Ícono */}
         <div className="ve-logo-wrap">
-          <div className="ve-logo-circle">
+          <div className="ve-logo-circle"
+            style={estado === 'ok' ? { background: 'linear-gradient(135deg, #c0392b, #e74c3c)' } : {}}>
             {estado === 'cargando' && <span className="ve-spinner" />}
             {estado === 'ok'       && <span className="ve-icon">✓</span>}
             {estado === 'error'    && <span className="ve-icon ve-icon--error">✕</span>}
           </div>
         </div>
 
-        {/* Contenido */}
         {estado === 'cargando' && (
           <>
-            <h2 className="ve-titulo">Verificando tu correo…</h2>
-            <p className="ve-subtitulo">Un momento, estamos confirmando tu dirección de email.</p>
+            <h2 className="ve-titulo">Procesando solicitud…</h2>
+            <p className="ve-subtitulo">Un momento, estamos eliminando tu cuenta.</p>
           </>
         )}
 
         {estado === 'ok' && (
           <>
-            <h2 className="ve-titulo ve-titulo--ok">¡Email verificado!</h2>
+            <h2 className="ve-titulo" style={{ color: '#c0392b' }}>Cuenta eliminada</h2>
             <p className="ve-subtitulo">{mensaje}</p>
-            <p className="ve-subtitulo">Tu correo ha sido asociado correctamente a tu cuenta.</p>
-            {tieneSession ? (
-              <button className="ve-btn ve-btn--ok" onClick={handleContinuar}>
-                Ir a mi perfil
-              </button>
-            ) : (
-              <>
-                <p className="ve-subtitulo ve-hint">
-                  Inicia sesión para acceder a tu portal.
-                </p>
-                <button className="ve-btn ve-btn--ok" onClick={handleContinuar}>
-                  Iniciar sesión
-                </button>
-              </>
-            )}
+            <p className="ve-subtitulo">Lamentamos verte partir. Si cambias de opinión, puedes crear una nueva cuenta en cualquier momento.</p>
+            <button className="ve-btn ve-btn--secondary" onClick={() => navigate('/')}>
+              Volver al inicio
+            </button>
           </>
         )}
 
@@ -98,13 +79,13 @@ const VerificarEmail = () => {
             <h2 className="ve-titulo ve-titulo--error">Enlace inválido</h2>
             <p className="ve-subtitulo">{mensaje}</p>
             <p className="ve-subtitulo ve-hint">
-              Si el enlace expiró, puedes solicitar uno nuevo desde tu perfil en el portal cliente.
+              Si el enlace expiró, puedes solicitar uno nuevo desde tu perfil.
             </p>
             <div className="ve-btns">
               <button className="ve-btn ve-btn--secondary" onClick={() => navigate('/')}>
                 Volver al inicio
               </button>
-              {tieneSession && (
+              {!!localStorage.getItem('guzman_cliente_token') && (
                 <button className="ve-btn ve-btn--ok" onClick={() => navigate('/cliente/perfil')}>
                   Ir a mi perfil
                 </button>
@@ -118,4 +99,4 @@ const VerificarEmail = () => {
   );
 };
 
-export default VerificarEmail;
+export default ConfirmarEliminacion;

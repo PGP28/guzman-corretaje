@@ -30,6 +30,7 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
   const navigate    = useNavigate();
   const location    = useLocation();
   const redirectUrl = new URLSearchParams(location.search).get('redirect') || '/cliente';
+  const emailVerificado = new URLSearchParams(location.search).get('verified') === 'true';
 
   const [tab,    setTab]    = useState('cliente');
   const [subTab, setSubTab] = useState('login');
@@ -192,6 +193,16 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
                 {/* LOGIN */}
                 {subTab === 'login' && (
                   <>
+                    {emailVerificado && (
+                      <div style={{
+                        background: '#e8f5e9', border: '1px solid #a3e6b8',
+                        color: '#1a7a3a', borderRadius: '10px',
+                        padding: '12px 16px', fontSize: '13px',
+                        textAlign: 'center', marginBottom: '8px', lineHeight: '1.5'
+                      }}>
+                        ✅ ¡Tu correo fue verificado correctamente! Inicia sesión para continuar.
+                      </div>
+                    )}
                     <form onSubmit={handleClienteLogin} className="login-form" noValidate>
                       <div className="login-field">
                         <FaUser className="login-field-icon" />

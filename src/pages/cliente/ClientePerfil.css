@@ -89,6 +89,17 @@
 .cpf-beneficio strong { display: block; font-size: 14px; font-weight: 700; color: #3f1b86; margin-bottom: 4px; }
 .cpf-beneficio p { font-size: 13px; color: #666; margin: 0; line-height: 1.5; }
 
+/* Zona peligrosa */
+.cpf-danger-zone { border-color: #ffd0d0 !important; background: #fff9f9; }
+.cpf-danger-titulo { color: #c0392b !important; }
+.cpf-danger-desc { font-size: 13px; color: #666; margin: 0 0 16px; line-height: 1.6; }
+.cpf-danger-warn { font-size: 13px; color: #b45309; background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px; padding: 10px 14px; margin: 0 0 16px; }
+.cpf-btn-eliminar { background: none; border: 1.5px solid #e53935; color: #e53935; border-radius: 8px; padding: 8px 18px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.cpf-btn-eliminar:hover { background: #e53935; color: #fff; }
+.cpf-btn-eliminar-confirm { background: #c0392b; color: #fff; border: none; border-radius: 10px; padding: 10px 22px; font-size: 14px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; }
+.cpf-btn-eliminar-confirm:hover:not(:disabled) { opacity: 0.9; }
+.cpf-btn-eliminar-confirm:disabled { opacity: 0.55; cursor: not-allowed; }
+
 @media (max-width: 767px) {
   .cpf-header { flex-direction: column; text-align: center; padding: 20px; }
   .cpf-banner { flex-direction: column; gap: 10px; align-items: center; text-align: center; }

@@ -19,6 +19,7 @@ import DashboardLayout from './components/dashboard/DashboardLayout';
 import ClienteLayout from './pages/cliente/ClienteLayout';
 import VerificarEmail from './pages/VerificarEmail';
 import ResetPassword from './pages/ResetPassword';
+import ConfirmarEliminacion from './pages/ConfirmarEliminacion';
 
 const AppContent = ({ user, onLoginCorredor, onLogout, cliente, onLoginCliente, onClienteLogout }) => {
   const location = useLocation();
@@ -51,6 +52,9 @@ const AppContent = ({ user, onLoginCorredor, onLogout, cliente, onLoginCliente, 
 
           {/* Reset de contraseña */}
           <Route path="/reset-password" element={<ResetPassword />} />
+
+          {/* Confirmar eliminación de cuenta */}
+          <Route path="/confirmar-eliminacion" element={<ConfirmarEliminacion onClienteLogout={onClienteLogout} />} />
 
           {/* Login unificado */}
           <Route

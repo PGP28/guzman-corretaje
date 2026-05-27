@@ -18,7 +18,11 @@ const PerfilForm = ({ user, onActualizar }) => {
   const [exito,     setExito]     = useState(null);
   const [reenvioEnviado,  setReenvioEnviado]  = useState(false);
   const [reenviando,      setRenviando]        = useState(false);
-  const [googleVerified, setGoogleVerified] = useState(false);
+  const [googleVerified,   setGoogleVerified]   = useState(false);
+  const [modalEliminar,    setModalEliminar]    = useState(false);
+  const [eliminando,       setEliminando]       = useState(false);
+  const [eliminacionError, setEliminacionError] = useState(null);
+  const [eliminacionSolicitada, setEliminacionSolicitada] = useState(false);
 
   useEffect(() => {
     const token = getToken();
@@ -95,6 +99,21 @@ const PerfilForm = ({ user, onActualizar }) => {
   };
 
   if (cargando) return <div className="cp-loader"><div className="cp-loader-spinner" /></div>;
+
+  const solicitarEliminacion = async () => {
+    setEliminando(true); setEliminacionError(null);
+    const token = getToken();
+    try {
+      const res  = await fetch(`${API}/auth/solicitar-eliminacion`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (!res.ok) return setEliminacionError(data.error || 'Error al procesar la solicitud.');
+      setEliminacionSolicitada(true);
+    } catch { setEliminacionError('Error de conexión. Intenta de nuevo.'); }
+    finally { setEliminando(false); }
+  };
 
   const reenviarVerificacion = async () => {
     if (!perfil?.email_pendiente) return;
@@ -235,6 +254,54 @@ const PerfilForm = ({ user, onActualizar }) => {
           <div className="cpf-beneficio"><span className="cpf-beneficio-icon">🔒</span><div><strong>Privacidad garantizada</strong><p>Tu información solo es visible para tu corredor asignado. Nunca se comparte con terceros.</p></div></div>
         </div>
       </div>
+
+      {/* Zona peligrosa */}
+      {!modalEliminar && (
+        <div className="cpf-card cpf-danger-zone">
+          <h4 className="cpf-card-titulo cpf-danger-titulo">⚠️ Zona de peligro</h4>
+          <p className="cpf-danger-desc">Al eliminar tu cuenta, perderás acceso al portal. Esta acción requiere confirmación por email.</p>
+          <button className="cpf-btn-eliminar" onClick={() => setModalEliminar(true)}>
+            Eliminar mi cuenta
+          </button>
+        </div>
+      )}
+
+      {/* Modal confirmación eliminación */}
+      {modalEliminar && (
+        <div className="cpf-card cpf-danger-zone">
+          <h4 className="cpf-card-titulo cpf-danger-titulo">¿Eliminar tu cuenta?</h4>
+          {!eliminacionSolicitada ? (
+            <>
+              <p className="cpf-danger-desc">
+                Te enviaremos un email a <strong>{perfil?.email}</strong> con un enlace de confirmación.
+                Tu cuenta solo se eliminará si haces clic en ese enlace.
+              </p>
+              {!perfil?.email && (
+                <p className="cpf-danger-warn">
+                  ⚠️ No tienes un email verificado. Agrega uno desde tu perfil para poder eliminar tu cuenta.
+                </p>
+              )}
+              {eliminacionError && <div className="cp-error-card cpf-mensaje">{eliminacionError}</div>}
+              <div className="cpf-form-btns">
+                <button className="cpf-btn-cancelar" onClick={() => { setModalEliminar(false); setEliminacionError(null); }}>
+                  Cancelar
+                </button>
+                <button className="cpf-btn-eliminar-confirm" onClick={solicitarEliminacion} disabled={eliminando || !perfil?.email}>
+                  {eliminando ? 'Enviando...' : 'Sí, enviar email'}
+                </button>
+              </div>
+            </>
+          ) : (
+            <div style={{textAlign:'center', padding:'12px 0'}}>
+              <span style={{fontSize:'40px'}}>📧</span>
+              <p style={{marginTop:'12px', color:'#555'}}>Enviamos el email de confirmación a <strong>{perfil?.email}</strong>. Revisa tu bandeja y haz clic en el enlace para confirmar.</p>
+              <button className="cpf-btn-cancelar" style={{marginTop:'12px'}} onClick={() => { setModalEliminar(false); setEliminacionSolicitada(false); }}>
+                Cerrar
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

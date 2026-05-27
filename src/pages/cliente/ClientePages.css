@@ -991,3 +991,26 @@
   .cp-similares-grid { grid-template-columns: 1fr; }
   .cp-mapa-wrapper iframe { height: 220px; }
 }
+
+/* Banners inicio portal */
+.cp-banner {
+  display: flex; align-items: center; gap: 14px;
+  border-radius: 14px; padding: 14px 20px;
+  cursor: pointer; transition: box-shadow 0.2s;
+  border: 1px solid;
+}
+.cp-banner:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+.cp-banner > span:first-child { font-size: 22px; flex-shrink: 0; }
+.cp-banner > div { flex: 1; }
+.cp-banner > div strong { display: block; font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+.cp-banner > div p { font-size: 13px; margin: 0; line-height: 1.4; }
+.cp-banner-arrow { font-size: 22px; color: #aaa; flex-shrink: 0; }
+
+.cp-banner--verificar { background: #e8f4fd; border-color: #3498db; }
+.cp-banner--verificar > div strong { color: #1a6fa8; }
+.cp-banner--verificar > div p { color: #555; }
+.cp-banner--verificar > div p strong { display: inline; color: #1a6fa8; }
+
+.cp-banner--completar { background: #fff8e8; border-color: #ffe49a; }
+.cp-banner--completar > div strong { color: #b45309; }
+.cp-banner--completar > div p { color: #855a15; }

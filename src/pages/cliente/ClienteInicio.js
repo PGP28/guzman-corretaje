@@ -8,10 +8,24 @@ import { useUF } from '../../hooks/useUF';
 import { SkPropCard } from '../../components/Skeleton';
 import './ClientePages.css';
 
+const API = `${API_BASE_URL}/api`;
+const getToken = () => localStorage.getItem('guzman_cliente_token');
+
 const ClienteInicio = ({ user }) => {
   const navigate = useNavigate();
   const [propiedades, setPropiedades] = useState([]);
-  const [cargando, setCargando] = useState(true);
+  const [cargando,    setCargando]    = useState(true);
+  const [perfil,      setPerfil]      = useState(null);
+
+  // Cargar perfil para detectar email pendiente y completitud
+  useEffect(() => {
+    const token = getToken();
+    if (!token) return;
+    fetch(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.json())
+      .then(data => setPerfil(data))
+      .catch(() => {});
+  }, []);
 
   const [reservas, setReservas] = useState([]);
 
@@ -51,6 +65,28 @@ const ClienteInicio = ({ user }) => {
             onError={e => e.target.style.display = 'none'} />
         )}
       </div>
+
+      {/* Banners de aviso */}
+      {perfil?.email_pendiente && (
+        <div className="cp-banner cp-banner--verificar" onClick={() => navigate('/cliente/perfil')}>
+          <span>📧</span>
+          <div>
+            <strong>Verifica tu correo</strong>
+            <p>Enviamos un enlace a <strong>{perfil.email_pendiente}</strong>. Haz clic para ir a tu perfil.</p>
+          </div>
+          <span className="cp-banner-arrow">›</span>
+        </div>
+      )}
+      {perfil && !perfil.email && !perfil.email_pendiente && (
+        <div className="cp-banner cp-banner--completar" onClick={() => navigate('/cliente/perfil')}>
+          <span>💡</span>
+          <div>
+            <strong>Completa tu perfil</strong>
+            <p>Agrega tu Gmail para que tu corredor pueda coordinarte por Google Meet.</p>
+          </div>
+          <span className="cp-banner-arrow">›</span>
+        </div>
+      )}
 
       {/* Stats */}
       <div className="cp-stats">

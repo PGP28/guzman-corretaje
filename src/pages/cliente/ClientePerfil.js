@@ -16,7 +16,8 @@ const PerfilForm = ({ user, onActualizar }) => {
   const [guardando, setGuardando] = useState(false);
   const [error,     setError]     = useState(null);
   const [exito,     setExito]     = useState(null);
-  const [reenvioEnviado, setReenvioEnviado] = useState(false);
+  const [reenvioEnviado,  setReenvioEnviado]  = useState(false);
+  const [reenviando,      setRenviando]        = useState(false);
   const [googleVerified, setGoogleVerified] = useState(false);
 
   useEffect(() => {
@@ -98,6 +99,7 @@ const PerfilForm = ({ user, onActualizar }) => {
   const reenviarVerificacion = async () => {
     if (!perfil?.email_pendiente) return;
     const token = getToken();
+    setRenviando(true);
     try {
       await fetch(`${API}/auth/perfil`, {
         method: 'PATCH',
@@ -107,6 +109,7 @@ const PerfilForm = ({ user, onActualizar }) => {
       setReenvioEnviado(true);
       setTimeout(() => setReenvioEnviado(false), 30000);
     } catch { setError('No se pudo reenviar el correo.'); }
+    finally { setRenviando(false); }
   };
 
   const inicial    = perfil?.nombre?.charAt(0).toUpperCase() || user?.name?.charAt(0).toUpperCase() || '?';
@@ -139,8 +142,8 @@ const PerfilForm = ({ user, onActualizar }) => {
             <strong>Verifica tu correo electrónico</strong>
             <p>Enviamos un enlace a <strong style={{color:'#1a6fa8'}}>{emailPendiente}</strong> — revisa tu bandeja de entrada y haz clic para confirmar.</p>
           </div>
-          <button className="cpf-banner-btn cpf-banner-btn--reenviar" onClick={reenviarVerificacion} disabled={reenvioEnviado}>
-            {reenvioEnviado ? '✓ Enviado' : 'Reenviar'}
+          <button className="cpf-banner-btn cpf-banner-btn--reenviar" onClick={reenviarVerificacion} disabled={reenvioEnviado || reenviando}>
+            {reenviando ? 'Enviando...' : reenvioEnviado ? '✓ Enviado' : 'Reenviar'}
           </button>
         </div>
       )}

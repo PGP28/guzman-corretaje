@@ -75,6 +75,7 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
   const [ubicaciones, setUbicaciones]         = useState({});
   const [cities, setCities]                   = useState([]);
   const [communes, setCommunes]               = useState([]);
+  const [corredores, setCorredores]           = useState([]);
 
   const esCorrector = rol === 'corredor';
 
@@ -104,6 +105,10 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
   };
 
   useEffect(() => { cargarPropiedades(); }, []);
+
+  useEffect(() => {
+    getCorredoresActivos().then(setCorredores).catch(() => {});
+  }, []);
 
   useEffect(() => {
     fetch(`${API_URL}/ubicaciones`)
@@ -312,7 +317,7 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
                   <label className="sd-label">Corredor asignado</label>
                   <Form.Select name="corredor_asignado" value={seleccionada.corredor_asignado || ''} onChange={handleChange} className="sd-input">
                     <option value="">-- Sin corredor asignado --</option>
-                    {getCorredoresActivos().map(c => (
+                    {corredores.map(c => (
                       <option key={c.id} value={c.nombre}>
                         {c.nombre} {c.rol === 'admin' ? '(Admin)' : '(Corredor)'}
                       </option>
@@ -595,7 +600,7 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
         </div>
         {!esCorrector && (
           <>
-            <span className="ep-filtro-divider" />
+            <div className="ep-filtro-separador" />
             <div className="ep-filtro-estado">
               {[
                 { value: 'todos', label: 'Todos' },
@@ -626,35 +631,37 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
           {propiedadesFiltradas.map(p => {
             const est = estadoInfo(p.estado);
             return (
-              <div key={p.id} className="ep-item">
+              <div key={p.id} className="ep-item--card">
                 <div className="ep-item-img">
                   {p.imagenes?.[0] ? <Image src={p.imagenes[0]?.url || p.imagenes[0]} className="ep-img" /> : <div className="ep-img-placeholder">🏠</div>}
                 </div>
-                <div className="ep-item-info">
-                  <div className="ep-item-top">
-                    <span className="ep-item-cat">{p.categoria}</span>
-                    <span className="ep-item-estado" style={{ color: est.color, background: est.bg }}>{est.label}</span>
+                <div className="ep-item-body">
+                  <div className="ep-item-info">
+                    <div className="ep-item-top">
+                      <span className="ep-item-cat">{p.categoria}</span>
+                      <span className="ep-item-estado" style={{ color: est.color, background: est.bg }}>{est.label}</span>
+                    </div>
+                    <h4 className="ep-item-nombre">{p.nombre}</h4>
+                    <p className="ep-item-ubicacion">📍 {p.ubicacion}</p>
+                    {p.codigo && <span className="ep-item-codigo">{p.codigo}</span>}
+                    <p className="ep-item-precio">
+                      {p.unidad_medida === 'UF'
+                        ? `UF ${p.precio}`
+                        : `$ ${parseFloat(String(p.precio).replace(/[$\s.]/g, '').replace(',', '.')).toLocaleString('es-CL')}`
+                      }
+                    </p>
+                    {p.corredor_asignado && <span className="ep-item-corredor">👤 {p.corredor_asignado}</span>}
                   </div>
-                  <h4 className="ep-item-nombre">{p.nombre}</h4>
-                  <p className="ep-item-ubicacion">📍 {p.ubicacion}</p>
-                  {p.codigo && <span className="ep-item-codigo">{p.codigo}</span>}
-                  <p className="ep-item-precio">
-                    {p.unidad_medida === 'UF'
-                      ? `UF ${p.precio}`
-                      : `$ ${parseFloat(String(p.precio).replace(/[$\s.]/g, '').replace(',', '.')).toLocaleString('es-CL')}`
-                    }
-                  </p>
-                  {p.corredor_asignado && <span className="ep-item-corredor">👤 {p.corredor_asignado}</span>}
-                </div>
-                <div className="ep-item-acciones">
-                  <button className="ep-btn-edit" onClick={() => handleEditar(p)}>
-                    <FaEdit /> {esCorrector ? 'Ver' : 'Editar'}
-                  </button>
-                  {!esCorrector && (
-                    <button className="ep-btn-del" onClick={() => setConfirmDelete(p.id)}>
-                      <FaTrash />
+                  <div className="ep-item-acciones">
+                    <button className="ep-btn-edit" onClick={() => handleEditar(p)}>
+                      <FaEdit /> {esCorrector ? 'Ver' : 'Editar'}
                     </button>
-                  )}
+                    {!esCorrector && (
+                      <button className="ep-btn-del" onClick={() => setConfirmDelete(p.id)}>
+                        <FaTrash />
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             );

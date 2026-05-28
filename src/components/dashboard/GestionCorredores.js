@@ -21,6 +21,8 @@ const GestionCorredores = () => {
   const [guardando,      setGuardando]      = useState(false);
   const [confirmDelete,  setConfirmDelete]  = useState(null);
 
+  const [glosarioAbierto, setGlosarioAbierto] = useState(false);
+
   // Cargar corredores desde API
   const cargar = async () => {
     setCargando(true);
@@ -131,6 +133,34 @@ const GestionCorredores = () => {
 
       {exito && <div className="sd-exito">✅ {exito}</div>}
       {error  && <div className="sd-error">⚠️ {error}</div>}
+
+      {/* Glosario métricas (acordeón) */}
+      <div className="gc-glosario">
+        <button className="gc-glosario-btn" onClick={() => setGlosarioAbierto(v => !v)}>
+          <span>📊 ¿Qué significan las métricas?</span>
+          <span>{glosarioAbierto ? '▲' : '▼'}</span>
+        </button>
+        {glosarioAbierto && (
+          <div className="gc-glosario-body">
+            <div className="gc-glosario-item">
+              <span className="gc-glosario-icon">🏠</span>
+              <div><strong>Props.</strong> — Total de propiedades asignadas al corredor, independiente de su estado.</div>
+            </div>
+            <div className="gc-glosario-item">
+              <span className="gc-glosario-dot" style={{background:'#2e7d32'}} />
+              <div><strong>Disp.</strong> — Propiedades disponibles para venta o arriendo (activas en el sitio).</div>
+            </div>
+            <div className="gc-glosario-item">
+              <span className="gc-glosario-dot" style={{background:'#b45309'}} />
+              <div><strong>Arr.</strong> — Propiedades actualmente arrendadas (con inquilino).</div>
+            </div>
+            <div className="gc-glosario-item">
+              <span className="gc-glosario-dot" style={{background:'#1565c0'}} />
+              <div><strong>Vend.</strong> — Propiedades que ya fueron vendidas.</div>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Formulario agregar */}
       {showForm && (

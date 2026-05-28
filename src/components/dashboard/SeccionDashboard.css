@@ -176,7 +176,87 @@
 .ep-item-ubicacion { color: #888; font-size: 12px; margin: 0 0 2px; }
 .ep-item-precio { color: #3f1b86; font-weight: 700; font-size: 14px; margin: 0; }
 
-.ep-item-acciones { display: flex; gap: 8px; flex-shrink: 0; }
+/* ── EDITAR PROPIEDADES — Item card ── */
+.ep-item--card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #ede8fa;
+  border-radius: 14px;
+  transition: box-shadow 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+.ep-item--card:hover { box-shadow: 0 4px 16px rgba(63,27,134,0.1); }
+
+.ep-item--card .ep-item-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.ep-item-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ep-item-body .ep-item-info    { flex: 1; min-width: 0; }
+.ep-item-body .ep-item-acciones { flex-shrink: 0; min-width: fit-content; display: flex; gap: 8px; }
+
+@media (max-width: 767px) {
+  .ep-item--card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .ep-item--card .ep-item-img {
+    width: 100% !important;
+    height: 180px !important;
+    border-radius: 0 !important;
+    flex-shrink: 0;
+  }
+  .ep-item--card .ep-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .ep-item--card .ep-img-placeholder {
+    width: 100%;
+    height: 100%;
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0ebff;
+  }
+  .ep-item-body {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    padding: 12px;
+  }
+  .ep-item-body .ep-item-acciones {
+    width: 100% !important;
+    justify-content: flex-end;
+    border-top: 1px solid #f0ebff;
+    padding-top: 10px;
+    margin-top: 8px;
+    min-width: unset !important;
+    flex-shrink: unset !important;
+  }
+  .ep-item-nombre { white-space: normal !important; word-break: break-word; }
+}
 .ep-btn-edit {
   display: flex; align-items: center; gap: 6px;
   background: #3f1b86; color: #fff; border: none;
@@ -352,6 +432,22 @@
   border-radius: 1px;
   flex-shrink: 0;
   align-self: center;
+}
+
+/* Separador mobile entre grupos de filtros */
+.ep-filtro-separador {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .ep-filtro-separador {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: #e8e4f5;
+    border-radius: 1px;
+    margin: 2px 0;
+  }
 }
 
 .ep-filtro-btn {
@@ -572,19 +668,20 @@
   .ep-lista { gap: 10px; overflow-x: hidden; }
 
   .ep-item {
-    display: grid;
-    grid-template-columns: 64px 1fr;
-    grid-template-rows: auto auto;
-    grid-template-areas: "img info" "acc acc";
-    gap: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
     padding: 12px;
     overflow: hidden;
     box-sizing: border-box;
     width: 100%;
   }
-  .ep-item-img    { grid-area: img; width: 64px; height: 64px; flex-shrink: 0; align-self: start; }
-  .ep-item-info   { grid-area: info; min-width: 0; overflow: hidden; }
-  .ep-item-acciones { grid-area: acc; width: 100%; justify-content: flex-end; border-top: 1px solid #f0ebff; padding-top: 8px; }
+  .ep-item-img    { width: 100%; height: 160px; border-radius: 10px; flex-shrink: 0; }
+  .ep-img         { width: 100%; height: 100%; object-fit: cover; }
+  .ep-img-placeholder { width: 100%; height: 100%; }
+  .ep-item-info   { min-width: 0; overflow: hidden; }
+  .ep-item-acciones { width: 100%; justify-content: flex-end; border-top: 1px solid #f0ebff; padding-top: 8px; min-width: unset; }
   .ep-item-cat    { font-size: 10px; }
   .ep-item-nombre { font-size: 13px; white-space: normal; word-break: break-word; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
   .ep-item-estado { white-space: nowrap; max-width: 100px; overflow: hidden; text-overflow: ellipsis; }

@@ -185,6 +185,62 @@
 
 .gc-bonos-empty { font-size: 12px; color: #aaa; margin: 0; font-style: italic; }
 
+/* Glosario acordeón */
+.gc-glosario {
+  border: 1px solid #ede8fa;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #faf8ff;
+}
+
+.gc-glosario-btn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  color: #3f1b86;
+  transition: background 0.2s;
+}
+.gc-glosario-btn:hover { background: #f0ebff; }
+
+.gc-glosario-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 18px;
+  border-top: 1px solid #ede8fa;
+}
+
+.gc-glosario-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #555;
+}
+
+.gc-glosario-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.gc-glosario-icon {
+  font-size: 12px;
+  flex-shrink: 0;
+  width: 10px;
+  text-align: center;
+  margin-top: 1px;
+}
+
 /* Form row */
 .gc-form-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 

@@ -45,6 +45,17 @@ const ClienteVisitas = ({ user }) => {
   const navigate   = useNavigate();
   const [visitas,  setVisitas]  = useState([]);
   const [cargando, setCargando] = useState(true);
+  const [perfil,   setPerfil]   = useState(null);
+
+  // Cargar perfil para detectar email
+  useEffect(() => {
+    const token = localStorage.getItem('guzman_cliente_token');
+    if (!token) return;
+    fetch(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.json())
+      .then(data => setPerfil(data))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const id = user?.id ? `cliente_id=${user.id}` : user?.username ? `cliente_username=${user.username}` : null;
@@ -83,6 +94,19 @@ const ClienteVisitas = ({ user }) => {
           + Buscar propiedades
         </button>
       </div>
+
+      {/* Banner sin email */}
+      {perfil && !perfil.email && !perfil.email_pendiente && (
+        <div className="cp-banner cp-banner--completar" onClick={() => navigate('/cliente/perfil')}
+          style={{ cursor: 'pointer' }}>
+          <span>📧</span>
+          <div>
+            <strong>Agrega tu Gmail para agendar videollamadas</strong>
+            <p>Sin un correo verificado no podrás agendar visitas virtuales ni recuperar tu cuenta si olvidas tu contraseña.</p>
+          </div>
+          <span className="cp-banner-arrow">›</span>
+        </div>
+      )}
 
       {cargando ? (
         <SkVisitas />

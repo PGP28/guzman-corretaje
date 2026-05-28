@@ -79,10 +79,10 @@ const ClienteInicio = ({ user }) => {
       )}
       {perfil && !perfil.email && !perfil.email_pendiente && (
         <div className="cp-banner cp-banner--completar" onClick={() => navigate('/cliente/perfil')}>
-          <span>💡</span>
+          <span>📧</span>
           <div>
-            <strong>Completa tu perfil</strong>
-            <p>Agrega tu Gmail para que tu corredor pueda coordinarte por Google Meet.</p>
+            <strong>Agrega tu Gmail para agendar videollamadas</strong>
+            <p>Sin un correo verificado no podrás agendar visitas virtuales ni recuperar tu cuenta si olvidas tu contraseña.</p>
           </div>
           <span className="cp-banner-arrow">›</span>
         </div>

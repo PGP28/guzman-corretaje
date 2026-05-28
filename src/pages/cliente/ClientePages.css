@@ -1014,3 +1014,10 @@
 .cp-banner--completar { background: #fff8e8; border-color: #ffe49a; }
 .cp-banner--completar > div strong { color: #b45309; }
 .cp-banner--completar > div p { color: #855a15; }
+
+@media (max-width: 480px) {
+  .cp-banner { padding: 12px 14px; gap: 10px; }
+  .cp-banner > div strong { font-size: 13px; }
+  .cp-banner > div p { font-size: 12px; }
+  .cp-banner-arrow { display: none; }
+}

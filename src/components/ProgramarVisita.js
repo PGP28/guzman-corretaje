@@ -60,6 +60,26 @@ const ProgramarVisita = ({ propiedad, cliente, enPortalCliente = false }) => {
     );
   }
 
+  // Sin email verificado
+  if (!cliente.email) {
+    return (
+      <div className="pv-card pv-card--nologin">
+        <div className="pv-nologin-icon">📧</div>
+        <h4 className="pv-nologin-titulo">Email requerido para agendar</h4>
+        <p className="pv-nologin-txt">
+          Para agendar una visita necesitas tener un email verificado en tu perfil.
+          Así podremos enviarte la confirmación y recordatorios.
+        </p>
+        <button
+          className="pv-btn-login"
+          onClick={() => navigate('/cliente/perfil')}
+        >
+          Agregar email a mi perfil
+        </button>
+      </div>
+    );
+  }
+
   // Enviado con éxito
   if (enviado) {
     return (

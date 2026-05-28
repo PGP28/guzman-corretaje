@@ -1,0 +1,121 @@
+/* Modal sesión expirada */
+.sem-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: sem-fade-in 0.2s ease;
+}
+
+@keyframes sem-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.sem-modal {
+  background: #fff;
+  border-radius: 20px;
+  padding: 36px 32px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  animation: sem-slide-up 0.25s ease;
+}
+
+@keyframes sem-slide-up {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.sem-icono {
+  font-size: 52px;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.sem-titulo {
+  font-size: 20px;
+  font-weight: 800;
+  color: #3f1b86;
+  margin: 0 0 10px;
+}
+
+.sem-desc {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+/* Barra de progreso */
+.sem-barra-wrap {
+  width: 100%;
+  height: 6px;
+  background: #f0ebff;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.sem-barra {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s linear, background 0.5s;
+}
+
+.sem-contador {
+  font-size: 13px;
+  color: #888;
+  margin: 0 0 24px;
+}
+
+/* Botones */
+.sem-btns {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+}
+
+.sem-btn {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.sem-btn:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.sem-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.sem-btn--renovar {
+  background: linear-gradient(135deg, #3f1b86, #5529aa);
+  color: #fff;
+}
+
+.sem-btn--cerrar {
+  background: #f5f5f5;
+  color: #555;
+  border: 1.5px solid #e0e0e0;
+}
+
+@media (max-width: 480px) {
+  .sem-modal {
+    padding: 28px 20px;
+  }
+  .sem-titulo { font-size: 18px; }
+}

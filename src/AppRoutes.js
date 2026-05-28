@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import API_BASE_URL from './config';
+import SessionExpiredModal from './components/SessionExpiredModal';
 import Home from './pages/Home';
 import QuieroVender from './pages/QuieroVender';
 import Contactanos from './pages/Contactanos';
@@ -101,25 +103,51 @@ const AppRoutes = () => {
     localStorage.setItem('guzman_corredor', JSON.stringify(data));
   };
   const handleLogout = () => {
+    // Registrar logout corredor
+    const corredor = JSON.parse(localStorage.getItem('guzman_corredor') || '{}');
+    if (corredor?.id) {
+      fetch(`${API_BASE_URL}/api/corredores/logout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: corredor.id, email: corredor.email, nombre: corredor.nombre }),
+      }).catch(() => {});
+    }
     setUser(null);
     localStorage.removeItem('guzman_corredor');
     window.location.href = '/login';
   };
 
   const handleLoginCliente = (data) => {
-    // Normalizar: el backend devuelve 'nombre', el frontend espera 'name'
-    const normalizado = {
-      ...data,
-      name: data.name || data.nombre || 'Cliente',
-    };
+    const normalizado = { ...data, name: data.name || data.nombre || 'Cliente' };
     setCliente(normalizado);
-    // Actualizar localStorage con el objeto normalizado
     localStorage.setItem('guzman_cliente', JSON.stringify(normalizado));
   };
+
   const handleClienteLogout = () => {
+    const token = localStorage.getItem('guzman_cliente_token');
+    if (token) {
+      fetch(`${API_BASE_URL}/api/auth/logout`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+      }).catch(() => {});
+    }
+    localStorage.removeItem('guzman_cliente_token');
     localStorage.removeItem('guzman_cliente');
     setCliente(null);
     window.location.href = '/login';
+  };
+
+  // Renovar token del cliente
+  const handleRenovarSesionCliente = async () => {
+    const token = localStorage.getItem('guzman_cliente_token');
+    if (!token) throw new Error('Sin token');
+    const res  = await fetch(`${API_BASE_URL}/api/auth/renovar`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error('No se pudo renovar');
+    const data = await res.json();
+    if (data.token) localStorage.setItem('guzman_cliente_token', data.token);
   };
 
   return (
@@ -128,6 +156,15 @@ const AppRoutes = () => {
         user={user} onLoginCorredor={handleLoginCorredor} onLogout={handleLogout}
         cliente={cliente} onLoginCliente={handleLoginCliente} onClienteLogout={handleClienteLogout}
       />
+      {/* Modal sesión próxima a expirar — cliente */}
+      {cliente && (
+        <SessionExpiredModal
+          tokenKey="guzman_cliente_token"
+          onRenovar={handleRenovarSesionCliente}
+          onLogout={handleClienteLogout}
+          tipoUsuario="cliente"
+        />
+      )}
     </Router>
   );
 };

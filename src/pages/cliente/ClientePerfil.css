@@ -1,7 +1,7 @@
 /* ══════════════════════════════════════════════
    CLIENTE PERFIL — Paleta morada Guzmán
 ══════════════════════════════════════════════ */
-.cpf-page { display: flex; flex-direction: column; gap: 20px; max-width: 860px; width: 100%; }
+.cpf-page { display: flex; flex-direction: column; gap: 20px; width: 100%; min-width: 0; box-sizing: border-box; }
 
 .cpf-header { display: flex; align-items: center; gap: 20px; background: linear-gradient(135deg, #3f1b86, #5529aa); border-radius: 16px; padding: 24px 28px; color: #fff; }
 .cpf-avatar-wrap { position: relative; flex-shrink: 0; }
@@ -59,7 +59,7 @@
 .cpf-info-item > div { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
 .cpf-info-label { font-size: 11px; color: #999; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
 .cpf-info-valor { font-size: 14px; font-weight: 600; color: #2d1060; word-break: break-all; }
-.cpf-sin-dato { color: #bbb; font-style: italic; font-weight: 400; font-size: 13px; }
+.cpf-sin-dato { color: #bbb; font-style: italic; font-weight: 400; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 .cpf-info-check { color: #2e7d32; font-size: 16px; flex-shrink: 0; }
 
 .cpf-form { display: flex; flex-direction: column; gap: 16px; }
@@ -109,4 +109,7 @@
   .cpf-btn-google { width: 100%; justify-content: center; }
   .cpf-form-btns { flex-direction: column-reverse; }
   .cpf-btn-cancelar, .cpf-btn-guardar { width: 100%; justify-content: center; }
+  .cpf-info-item { overflow: hidden; }
+  .cpf-info-item > div { overflow: hidden; }
+  .cpf-card { padding: 16px; }
 }

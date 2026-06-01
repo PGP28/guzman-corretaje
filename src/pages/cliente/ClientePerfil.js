@@ -110,7 +110,16 @@ const PerfilForm = ({ user, onActualizar }) => {
       });
       const data = await res.json();
       if (!res.ok) return setEliminacionError(data.error || 'Error al procesar la solicitud.');
-      setEliminacionSolicitada(true);
+
+      // Si el backend eliminó directamente (sin email) → cerrar sesión
+      if (data.eliminado) {
+        localStorage.removeItem('guzman_cliente_token');
+        localStorage.removeItem('guzman_cliente');
+        setEliminacionSolicitada(true);
+        setTimeout(() => { window.location.href = '/login'; }, 3000);
+      } else {
+        setEliminacionSolicitada(true);
+      }
     } catch { setEliminacionError('Error de conexión. Intenta de nuevo.'); }
     finally { setEliminando(false); }
   };
@@ -259,7 +268,7 @@ const PerfilForm = ({ user, onActualizar }) => {
       {!modalEliminar && (
         <div className="cpf-card cpf-danger-zone">
           <h4 className="cpf-card-titulo cpf-danger-titulo">⚠️ Zona de peligro</h4>
-          <p className="cpf-danger-desc">Al eliminar tu cuenta, perderás acceso al portal. Esta acción requiere confirmación por email.</p>
+          <p className="cpf-danger-desc">Al eliminar tu cuenta perderás acceso al portal. Esta acción es irreversible.</p>
           <button className="cpf-btn-eliminar" onClick={() => setModalEliminar(true)}>
             Eliminar mi cuenta
           </button>
@@ -279,12 +288,7 @@ const PerfilForm = ({ user, onActualizar }) => {
                 </p>
               ) : (
                 <p className="cpf-danger-desc">
-                  Para eliminar tu cuenta necesitas tener un email verificado.
-                </p>
-              )}
-              {!perfil?.email && (
-                <p className="cpf-danger-warn">
-                  ⚠️ No tienes un email verificado. Agrega uno desde tu perfil para poder eliminar tu cuenta.
+                  No tienes email registrado. Al confirmar, tu cuenta quedará desactivada inmediatamente.
                 </p>
               )}
               {eliminacionError && <div className="cp-error-card cpf-mensaje">{eliminacionError}</div>}
@@ -292,15 +296,19 @@ const PerfilForm = ({ user, onActualizar }) => {
                 <button className="cpf-btn-cancelar" onClick={() => { setModalEliminar(false); setEliminacionError(null); }}>
                   Cancelar
                 </button>
-                <button className="cpf-btn-eliminar-confirm" onClick={solicitarEliminacion} disabled={eliminando || !perfil?.email}>
-                  {eliminando ? 'Enviando...' : 'Sí, enviar email'}
+                <button className="cpf-btn-eliminar-confirm" onClick={solicitarEliminacion} disabled={eliminando}>
+                  {eliminando ? 'Procesando...' : perfil?.email ? 'Sí, enviar email' : 'Sí, eliminar cuenta'}
                 </button>
               </div>
             </>
           ) : (
             <div style={{textAlign:'center', padding:'12px 0'}}>
-              <span style={{fontSize:'40px'}}>📧</span>
-              <p style={{marginTop:'12px', color:'#555'}}>Enviamos el email de confirmación a <strong>{perfil?.email}</strong>. Revisa tu bandeja y haz clic en el enlace para confirmar.</p>
+              <span style={{fontSize:'40px'}}>{perfil?.email ? '📧' : '✅'}</span>
+              <p style={{marginTop:'12px', color:'#555'}}>
+                {perfil?.email
+                  ? <>Enviamos el email de confirmación a <strong>{perfil.email}</strong>. Revisa tu bandeja y haz clic en el enlace para confirmar.</>
+                  : 'Tu cuenta ha sido eliminada correctamente.'}
+              </p>
               <button className="cpf-btn-cancelar" style={{marginTop:'12px'}} onClick={() => { setModalEliminar(false); setEliminacionSolicitada(false); }}>
                 Cerrar
               </button>

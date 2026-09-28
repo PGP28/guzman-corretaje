@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaPlus, FaCheckCircle, FaClock, FaTimesCircle } from 'react-icons/fa';
 import API_BASE_URL from '../../config';
 import './SolicitarBono.css';
+import { mismoCorredor } from './corredoresHelper';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -56,7 +57,7 @@ const SolicitarBono = ({ user, modoAdmin = false }) => {
     Promise.all(pedidos)
       .then(([listaBonos, props]) => {
         setBonos(listaBonos);
-        if (props) setPropiedades(props.filter(p => (p.corredor_asignado || '').trim().toLowerCase() === miNombre));
+        if (props) setPropiedades(props.filter(p => mismoCorredor(p.corredor_asignado, miNombre)));
       })
       .catch(e => setError(e.message))
       .finally(() => setCargando(false));

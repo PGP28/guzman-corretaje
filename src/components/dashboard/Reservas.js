@@ -43,8 +43,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
     try {
       let url = `${API}/reservas`;
       if (esCorrector && userName) {
-        const primerNombre = userName.split(' ')[0];
-        url += `?corredor=${encodeURIComponent(primerNombre)}`;
+        url += `?corredor=${encodeURIComponent(userName)}`;
       }
       const res = await fetch(url);
       const data = await res.json();

@@ -21,5 +21,11 @@ export const getCorredoresActivos = async () => {
   }
 };
 
+// ¿El nombre guardado en una asignación corresponde a este corredor?
+// Mismo criterio que el backend: nombre completo, sin distinguir mayúsculas
+// ni espacios al inicio o al final.
+export const mismoCorredor = (asignado, nombre) =>
+  !!asignado && !!nombre && asignado.trim().toLowerCase() === nombre.trim().toLowerCase();
+
 // Versión síncrona para compatibilidad (usa cache o array vacío)
 export const getCorredoresActivosSync = () => _cache || [];

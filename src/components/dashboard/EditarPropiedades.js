@@ -11,7 +11,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import API_BASE_URL from '../../config';
-import { getCorredoresActivos } from './corredoresHelper';
+import { getCorredoresActivos, mismoCorredor } from './corredoresHelper';
 import { SkEpItem } from '../Skeleton';
 import './SeccionDashboard.css';
 
@@ -150,10 +150,7 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
       .then(r => r.json())
       .then(data => {
         if (esCorrector && userName) {
-          const primerNombre = userName.split(' ')[0].toLowerCase();
-          setPropiedades(data.filter(p =>
-            p.corredor_asignado?.toLowerCase().includes(primerNombre)
-          ));
+          setPropiedades(data.filter(p => mismoCorredor(p.corredor_asignado, userName)));
         } else {
           setPropiedades(data);
         }

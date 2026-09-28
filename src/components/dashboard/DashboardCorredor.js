@@ -6,6 +6,7 @@ import API_BASE_URL from '../../config';
 import GraficoMetricas from './GraficoMetricas';
 import { SkStatCard } from '../Skeleton';
 import './DashboardInicio.css';
+import { mismoCorredor } from './corredoresHelper';
 
 const DashboardCorreedor = ({ user }) => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const DashboardCorreedor = ({ user }) => {
       axios.get(`${API_BASE_URL}/api/solicitudes`),
     ])
       .then(([props, sols]) => {
-        const esMio = (asignado) => (asignado || '').trim().toLowerCase() === miNombre;
+        const esMio = (asignado) => mismoCorredor(asignado, miNombre);
         setPropiedades(props.data.filter(p => esMio(p.corredor_asignado)));
         setSolicitudes(sols.data.filter(s => esMio(s.corredor)));
       })

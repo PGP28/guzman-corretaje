@@ -6,6 +6,7 @@ import axios from 'axios';
 import API_BASE_URL from '../../config';
 import './SeccionDashboard.css';
 import './GestionCorredores.css';
+import { mismoCorredor } from './corredoresHelper';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -44,10 +45,7 @@ const GestionCorredores = () => {
 
   // Métricas por corredor
   const metricasCorredor = (nombre) => {
-    const primerNombre = nombre?.split(' ')[0]?.toLowerCase();
-    const mias = propiedades.filter(p =>
-      p.corredor_asignado?.toLowerCase().includes(primerNombre)
-    );
+    const mias = propiedades.filter(p => mismoCorredor(p.corredor_asignado, nombre));
     return {
       total:      mias.length,
       disponible: mias.filter(p => (p.estado || 'disponible') === 'disponible').length,

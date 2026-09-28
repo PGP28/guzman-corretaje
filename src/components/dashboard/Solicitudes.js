@@ -3,6 +3,7 @@ import { FaEnvelope, FaWhatsapp, FaUserCheck, FaClock, FaCheck, FaInbox } from '
 import API_BASE_URL from '../../config';
 import './SeccionDashboard.css';
 import './Solicitudes.css';
+import { mismoCorredor } from './corredoresHelper';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -26,8 +27,7 @@ const Solicitudes = ({ rol = 'admin', userName }) => {
       const res = await fetch(`${API}/solicitudes`);
       const data = await res.json();
       if (esCorrector && userName) {
-        const nombre = userName.split(' ')[0].toLowerCase();
-        setSolicitudes(data.filter(s => s.corredor?.toLowerCase().includes(nombre)));
+        setSolicitudes(data.filter(s => mismoCorredor(s.corredor, userName)));
       } else {
         setSolicitudes(data);
       }

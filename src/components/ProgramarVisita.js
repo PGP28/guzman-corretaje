@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaCalendarAlt, FaVideo, FaUserAlt, FaCheckCircle } from 'react-icons/fa';
 import API_BASE_URL from '../config';
 import './ProgramarVisita.css';
+import { aFechaISO } from '../utils/fechas';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -102,7 +103,7 @@ const ProgramarVisita = ({ propiedad, cliente, enPortalCliente = false }) => {
     setError(null);
     setEnviando(true);
     try {
-      const fechaStr = diaSeleccionado.toISOString().split('T')[0];
+      const fechaStr = aFechaISO(diaSeleccionado); // día local, no UTC
       const res = await fetch(`${API}/visitas`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },

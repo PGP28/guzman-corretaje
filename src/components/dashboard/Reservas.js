@@ -3,6 +3,7 @@ import { FaChevronRight, FaCalendarAlt, FaCheckCircle, FaTimesCircle, FaDollarSi
 import API_BASE_URL from '../../config';
 import { formatearPrecio } from '../../pages/cliente/reservaHelper';
 import './SeccionDashboard.css';
+import { formatearFecha } from '../../utils/fechas';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -102,7 +103,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
       visita_fecha_propuesta: fechaVisita,
       visita_hora: horaVisita,
       sub_estado: 'esperando_cliente',
-    }, `Se propuso visita para ${new Date(fechaVisita).toLocaleDateString('es-CL')}${horaVisita ? ' a las ' + horaVisita : ''}`));
+    }, `Se propuso visita para ${formatearFecha(fechaVisita)}${horaVisita ? ' a las ' + horaVisita : ''}`));
     setFechaVisita(''); setHoraVisita('');
   };
 
@@ -266,7 +267,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
             <div className="sd-card-body">
               {seleccionada.visita_fecha_confirmada ? (
                 <>
-                  <p>✅ Visita confirmada para <strong>{new Date(seleccionada.visita_fecha_confirmada).toLocaleDateString('es-CL', { weekday: 'long', day: 'numeric', month: 'long' })}</strong>{seleccionada.visita_hora ? ` a las ${seleccionada.visita_hora}` : ''}</p>
+                  <p>✅ Visita confirmada para <strong>{formatearFecha(seleccionada.visita_fecha_confirmada, { weekday: 'long', day: 'numeric', month: 'long' })}</strong>{seleccionada.visita_hora ? ` a las ${seleccionada.visita_hora}` : ''}</p>
                   <button className="sd-btn-publish" onClick={() => marcarVisitaRealizada(seleccionada)}>
                     Marcar visita como realizada
                   </button>
@@ -274,7 +275,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
               ) : (
                 <>
                   {seleccionada.visita_fecha_propuesta && (
-                    <p>📤 Fecha propuesta: <strong>{new Date(seleccionada.visita_fecha_propuesta).toLocaleDateString('es-CL')}</strong> — esperando respuesta del cliente</p>
+                    <p>📤 Fecha propuesta: <strong>{formatearFecha(seleccionada.visita_fecha_propuesta)}</strong> — esperando respuesta del cliente</p>
                   )}
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: 10, marginTop: 12 }}>
                     <div>

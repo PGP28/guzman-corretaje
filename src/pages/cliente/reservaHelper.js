@@ -143,11 +143,6 @@ export const pagoPendiente = (r) =>
 export const formatearMonto = (monto) =>
   monto == null || monto === '' || isNaN(Number(monto)) ? null : `$ ${Math.round(Number(monto)).toLocaleString('es-CL')}`;
 
-// Fechas 'YYYY-MM-DD' (columnas DATE): se interpretan en hora local.
-// new Date('YYYY-MM-DD') las toma como UTC y en Chile muestra el día anterior.
-export const fechaLocal = (fecha) => {
-  if (!fecha) return null;
-  const s = String(fecha);
-  return new Date(/^\d{4}-\d{2}-\d{2}$/.test(s) ? `${s}T12:00:00` : s);
-};
+// Fechas 'YYYY-MM-DD' en hora local (ver utils/fechas.js)
+export { fechaLocal } from '../../utils/fechas';
 

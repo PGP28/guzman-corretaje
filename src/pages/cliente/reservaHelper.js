@@ -106,13 +106,14 @@ export const obtenerReserva = async (reservaId) => {
   return await res.json();
 };
 
-// Acción del cliente sobre su reserva: 'confirmar_visita' | 'rechazar_visita' | 'cancelar'.
+// Acción del cliente sobre su reserva: 'confirmar_visita' | 'rechazar_visita' | 'cancelar'
+// | 'informar_pago' (extra: { comprobante }).
 // El backend valida la etapa y registra el historial.
-export const accionReserva = async (reservaId, accion) => {
+export const accionReserva = async (reservaId, accion, extra = {}) => {
   const res  = await fetch(`${API}/reservas/${reservaId}/accion`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ accion }),
+    body: JSON.stringify({ ...extra, accion }),
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.error || 'No se pudo completar la acción');
@@ -126,6 +127,21 @@ export const formatearPrecio = (precio, unidad) => {
   const num = parseFloat(String(precio).replace(/[$\s.]/g, '').replace(',', '.'));
   return isNaN(num) ? `$ ${precio}` : `$ ${num.toLocaleString('es-CL')}`;
 };
+
+// Datos bancarios para transferencia (configurados en el backend)
+export const obtenerDatosTransferencia = async () => {
+  const res = await fetch(`${API}/pagos/datos-transferencia`);
+  if (!res.ok) throw new Error('No se pudieron cargar los datos de pago');
+  return await res.json();
+};
+
+// Reserva con pago pendiente: etapa de pago, monto definido y sin confirmar
+export const pagoPendiente = (r) =>
+  r.etapa_actual === 'pago' && !r.pago_confirmado && r.sub_estado !== 'rechazado';
+
+// Montos numéricos (monto_reserva / monto_total) → "$ 1.500.000"
+export const formatearMonto = (monto) =>
+  monto == null || monto === '' || isNaN(Number(monto)) ? null : `$ ${Math.round(Number(monto)).toLocaleString('es-CL')}`;
 
 // Fechas 'YYYY-MM-DD' (columnas DATE): se interpretan en hora local.
 // new Date('YYYY-MM-DD') las toma como UTC y en Chile muestra el día anterior.

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaCheckCircle, FaClock, FaTimes } from 'react-icons/fa';
 import {
   LISTA_ETAPAS, ETAPAS, SUB_ESTADOS,
-  obtenerReserva, accionReserva, fechaLocal, formatearPrecio, calcularProgreso
+  obtenerReserva, accionReserva, fechaLocal, formatearPrecio, formatearMonto, calcularProgreso
 } from './reservaHelper';
 import './ClientePages.css';
 
@@ -166,12 +166,17 @@ const ClienteReservaDetalle = ({ user }) => {
           {/* ── ETAPA 3: PAGO ── */}
           {reserva.etapa_actual === 'pago' && (
             <>
-              {reserva.monto_reserva ? (
+              {reserva.monto_reserva && reserva.pago_comprobante ? (
+                <div className="cp-success-card">
+                  🔍 Informaste la transferencia (N° de operación <strong>{reserva.pago_comprobante}</strong>).
+                  Tu corredor la está verificando.
+                </div>
+              ) : reserva.monto_reserva ? (
                 <>
                   <p>¡Excelente! La propiedad te gustó. Para reservarla debes pagar:</p>
                   <div className="cp-monto-card">
                     <span>Monto de reserva</span>
-                    <strong>$ {Number(reserva.monto_reserva).toLocaleString('es-CL')}</strong>
+                    <strong>{formatearMonto(reserva.monto_reserva)}</strong>
                   </div>
                   <button className="cp-btn-primary" onClick={() => navigate('/cliente/pagos')}>
                     💳 Ir a pagar

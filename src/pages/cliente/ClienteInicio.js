@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaCalendarCheck, FaComments, FaCreditCard, FaSearch } from 'react-icons/fa';
 import { obtenerPropiedades } from '../../propiedadesApi';
 import API_BASE_URL from '../../config';
-import { getReservasCliente, ETAPAS } from './reservaHelper';
+import { getReservasCliente, ETAPAS, pagoPendiente } from './reservaHelper';
 import { useUF } from '../../hooks/useUF';
 import { SkPropCard } from '../../components/Skeleton';
 import './ClientePages.css';
@@ -108,7 +108,7 @@ const ClienteInicio = ({ user }) => {
         <div className="cp-stat" onClick={() => navigate('/cliente/pagos')}>
           <FaCreditCard className="cp-stat-icon" style={{ color: '#b45309' }} />
           <div>
-            <span className="cp-stat-valor">{reservas.filter(r => r.etapa_actual === 'pago').length}</span>
+            <span className="cp-stat-valor">{reservas.filter(r => pagoPendiente(r) && r.monto_reserva && !r.pago_comprobante).length}</span>
             <span className="cp-stat-label">Pagos pendientes</span>
           </div>
         </div>

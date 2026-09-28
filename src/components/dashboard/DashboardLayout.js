@@ -15,7 +15,6 @@ import Reservas from './Reservas';
 import DashboardMensajes from './DashboardMensajes';
 import DashboardVisitas from './DashboardVisitas';
 import Postulaciones from './Postulaciones';
-import { getRolUsuario } from './rolesHelper';
 
 import './DashboardLayout.css';
 const getNavItems = (rol) => {
@@ -39,7 +38,7 @@ const getNavItems = (rol) => {
   return base;
 };
 
-const DashboardLayout = ({ user: userProp, onLogout }) => {
+const DashboardLayout = ({ user: userProp, onLogout, onRenovar }) => {
   const [collapsed, setCollapsed]   = useState(window.innerWidth < 768);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [user, setUser]             = useState(userProp);
@@ -56,8 +55,14 @@ const DashboardLayout = ({ user: userProp, onLogout }) => {
   }, []);
   const showExpanded = !collapsed || isMobile;
 
-  // Determinar rol (con override de preview)
-  const rolReal = getRolUsuario(user?.email) || 'admin';
+  // Al entrar, refrescar datos y rol desde la BD (el backend es quien valida permisos)
+  useEffect(() => {
+    onRenovar?.().then(u => u && setUser(u)).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Rol validado por el backend (con override de preview). Sin rol → mínimo privilegio.
+  const rolReal = user?.rol === 'admin' ? 'admin' : 'corredor';
   const rol = previewCorredor ? 'corredor' : rolReal;
   const navItems = getNavItems(rol);
 
@@ -70,19 +75,6 @@ const DashboardLayout = ({ user: userProp, onLogout }) => {
     if (path === '/dashboard') return location.pathname === '/dashboard';
     return location.pathname.startsWith(path);
   };
-
-  // Si está suspendido, mostrar mensaje
-  if (rol === 'suspendido') {
-    return (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', flexDirection: 'column', gap: 16 }}>
-        <h2 style={{ color: '#e53935' }}>⛔ Acceso suspendido</h2>
-        <p style={{ color: '#666' }}>Tu cuenta ha sido suspendida. Contacta al administrador.</p>
-        <button onClick={onLogout} style={{ padding: '10px 20px', background: '#3f1b86', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer' }}>
-          Cerrar sesión
-        </button>
-      </div>
-    );
-  }
 
   return (
     <div className={`dashboard-layout ${collapsed ? 'collapsed' : ''}`}>

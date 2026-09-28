@@ -18,7 +18,7 @@ const PerfilForm = ({ user, onActualizar }) => {
   const [exito,     setExito]     = useState(null);
   const [reenvioEnviado,  setReenvioEnviado]  = useState(false);
   const [reenviando,      setRenviando]        = useState(false);
-  const [googleVerified,   setGoogleVerified]   = useState(false);
+  const [googleToken,      setGoogleToken]      = useState(null); // access token para que el backend verifique el Gmail
   const [modalEliminar,    setModalEliminar]    = useState(false);
   const [eliminando,       setEliminando]       = useState(false);
   const [eliminacionError, setEliminacionError] = useState(null);
@@ -51,8 +51,8 @@ const PerfilForm = ({ user, onActualizar }) => {
         setForm(prev => ({ ...prev, email: info.email }));
         setEditando(true);
         setExito(`Gmail ${info.email} detectado. Guarda los cambios para confirmar.`);
-        // Marcar como verificado por Google para saltarse la verificación manual
-        setGoogleVerified(true);
+        // El backend confirma con Google que el token es de este Gmail
+        setGoogleToken({ token: tokenResponse.access_token, email: info.email });
       } catch { setError('No se pudo obtener el Gmail de Google.'); }
     },
     onError: () => setError('Error al conectar con Google.'),
@@ -67,7 +67,7 @@ const PerfilForm = ({ user, onActualizar }) => {
       const body = {};
       if (form.telefono !== (perfil?.telefono || '')) body.telefono = form.telefono;
       if (form.email    !== (perfil?.email    || '')) body.email    = form.email;
-      if (body.email && googleVerified) body.google_verified = true;
+      if (body.email && googleToken?.email === body.email) body.google_access_token = googleToken.token;
       if (Object.keys(body).length === 0) { setEditando(false); return; }
 
       const res  = await fetch(`${API}/auth/perfil`, {
@@ -95,7 +95,7 @@ const PerfilForm = ({ user, onActualizar }) => {
 
   const cancelar = () => {
     setForm({ telefono: perfil?.telefono || '', email: perfil?.email || '' });
-    setEditando(false); setError(null); setExito(null); setGoogleVerified(false);
+    setEditando(false); setError(null); setExito(null); setGoogleToken(null);
   };
 
   if (cargando) return <div className="cp-loader"><div className="cp-loader-spinner" /></div>;

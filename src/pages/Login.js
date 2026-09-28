@@ -8,12 +8,6 @@ import './Login.css';
 
 const API = `${API_BASE_URL}/api`;
 
-const ALLOWED_EMAILS = [
-  'ingenieriaguzman1@gmail.com',
-  'guzmanpropiedades12@gmail.com',
-  'andres22.pgpa@gmail.com',
-];
-
 const guardarCliente = (token, cliente, onLoginCliente) => {
   localStorage.setItem('guzman_cliente_token', token);
   localStorage.setItem('guzman_cliente', JSON.stringify({
@@ -129,25 +123,18 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
   const handleGoogleCorredor = async (credentialResponse) => {
     limpiar(); setCargando(true);
     try {
-      const decoded = JSON.parse(atob(credentialResponse.credential.split('.')[1]));
-      const email   = decoded.email?.toLowerCase();
-
-      // Validar email contra tabla corredores en BD
-      const res  = await fetch(`${API}/corredores/validate?email=${encodeURIComponent(email)}`);
+      // El backend verifica el token de Google y que el email sea de un corredor activo
+      const res  = await fetch(`${API}/corredores/login`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ credential: credentialResponse.credential }),
+      });
       const data = await res.json();
 
-      if (!res.ok || !data.autorizado) {
-        return setError('No tienes permisos para acceder al panel de corredores.');
+      if (!res.ok) {
+        return setError(data.error || 'No tienes permisos para acceder al panel de corredores.');
       }
 
-      // Guardar foto si existe
-      if (decoded.picture) {
-        localStorage.setItem(`guzman_perfil_usuario_foto_${email}`, decoded.picture);
-      }
-
-      // Login con datos de BD enriquecidos con foto de Google
-      const corredor = { ...data.corredor, picture: decoded.picture };
-      onLoginCorredor(corredor);
+      onLoginCorredor(data.corredor, data.token);
       navigate('/dashboard');
     } catch {
       setError('Error al procesar las credenciales.');

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
-import axios from 'axios';
-import API_BASE_URL from '../../config';
+import { obtenerPropiedades, obtenerPropiedad } from '../../propiedadesApi';
 import { useUF } from '../../hooks/useUF';
 import ProgramarVisita from '../../components/ProgramarVisita';
 import PropiedadSimilaresCarrusel from '../../components/PropiedadSimilaresCarrusel';
@@ -21,21 +20,18 @@ const ClientePropiedadDetalle = ({ user }) => {
 
   useEffect(() => {
     if (!propiedad) {
-      axios.get(`${API_BASE_URL}/api/properties`)
-        .then(r => {
-          const p = r.data.find(x => String(x.id) === String(id));
-          setPropiedad(p || null);
-        })
-        .catch(() => {})
+      obtenerPropiedad(id)
+        .then(setPropiedad)
+        .catch(() => setPropiedad(null))
         .finally(() => setCargando(false));
     }
   }, [id]);
 
   useEffect(() => {
     if (!propiedad?.categoria) return;
-    axios.get(`${API_BASE_URL}/api/properties`)
-      .then(r => {
-        const filtradas = r.data
+    obtenerPropiedades()
+      .then(data => {
+        const filtradas = data
           .filter(p => p.id !== propiedad.id && p.categoria === propiedad.categoria && (p.estado || 'disponible') === 'disponible')
           .slice(0, 6);
         setSimilares(filtradas);

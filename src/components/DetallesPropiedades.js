@@ -3,6 +3,7 @@ import { Container, Row, Col, Image, Button, Form } from 'react-bootstrap';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useUF } from '../hooks/useUF';
 import API_BASE_URL from '../config';
+import { obtenerPropiedades, obtenerPropiedad } from '../propiedadesApi';
 import ProgramarVisita from './ProgramarVisita';
 import PropiedadSimilaresCarrusel from './PropiedadSimilaresCarrusel';
 import './DetallesPropiedades.css';
@@ -27,13 +28,9 @@ function DetallesPropiedades() {
   useEffect(() => {
     if (!propiedad && id) {
       setCargando(true);
-      fetch(`${API_BASE_URL}/api/properties`)
-        .then(r => r.json())
-        .then(data => {
-          const found = Array.isArray(data) ? data.find(p => String(p.id) === String(id)) : null;
-          setPropiedad(found || null);
-        })
-        .catch(() => {})
+      obtenerPropiedad(id)
+        .then(setPropiedad)
+        .catch(() => setPropiedad(null))
         .finally(() => setCargando(false));
     }
   }, [id, propiedad]);
@@ -49,11 +46,10 @@ function DetallesPropiedades() {
   // Cargar propiedades similares
   useEffect(() => {
     if (!propiedad) return;
-    fetch(`${API_BASE_URL}/api/properties?categoria=${encodeURIComponent(propiedad.categoria)}`)
-      .then(r => r.json())
+    obtenerPropiedades()
       .then(data => {
-        const filtradas = (Array.isArray(data) ? data : [])
-          .filter(p => p.id !== propiedad.id && (p.estado || 'disponible') === 'disponible')
+        const filtradas = data
+          .filter(p => p.id !== propiedad.id && p.categoria === propiedad.categoria && (p.estado || 'disponible') === 'disponible')
           .slice(0, 3);
         setSimilares(filtradas);
       })

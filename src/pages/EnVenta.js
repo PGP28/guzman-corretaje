@@ -4,11 +4,9 @@ import { useLocation } from 'react-router-dom';
 import BuscadorLateral from '../components/BuscadorLateral';
 import TarjetasPropiedades from '../components/TarjetasPropiedades';
 import { SkTarjetaCard } from '../components/Skeleton';
-import axios from 'axios';
-import API_BASE_URL from '../config';
+import { obtenerPropiedades } from '../propiedadesApi';
 import '../styles/Paginador.css';
 
-const API_BASE = `${API_BASE_URL}/api`;
 const POR_PAGINA = 9;
 
 const calcPaginas = (total, actual) => {
@@ -32,9 +30,9 @@ function EnVenta() {
 
   useEffect(() => {
     setCargando(true);
-    axios.get(`${API_BASE}/properties`)
+    obtenerPropiedades()
       .then(res => {
-        const ventas = res.data.filter(p => p.categoria?.toLowerCase().includes('venta'));
+        const ventas = res.filter(p => p.categoria?.toLowerCase().includes('venta'));
         setTodas(ventas);
         const params = new URLSearchParams(location.search);
         let r = [...ventas];

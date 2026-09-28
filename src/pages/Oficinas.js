@@ -4,11 +4,9 @@ import { useLocation } from 'react-router-dom';
 import BuscadorLateral from '../components/BuscadorLateral';
 import TarjetasPropiedades from '../components/TarjetasPropiedades';
 import { SkTarjetaCard } from '../components/Skeleton';
-import axios from 'axios';
-import API_BASE_URL from '../config';
+import { obtenerPropiedades } from '../propiedadesApi';
 import '../styles/Paginador.css';
 
-const API_BASE = `${API_BASE_URL}/api`;
 const POR_PAGINA = 9;
 
 const calcPaginas = (total, actual) => {
@@ -32,9 +30,9 @@ function Oficinas() {
 
   useEffect(() => {
     setCargando(true);
-    axios.get(`${API_BASE}/properties`)
+    obtenerPropiedades()
       .then(res => {
-        const oficinas = res.data.filter(p => p.categoria?.toLowerCase().includes('oficina'));
+        const oficinas = res.filter(p => p.categoria?.toLowerCase().includes('oficina'));
         setTodas(oficinas);
         const params = new URLSearchParams(location.search);
         let r = [...oficinas];

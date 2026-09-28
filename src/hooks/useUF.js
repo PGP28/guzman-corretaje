@@ -4,38 +4,55 @@ import API_BASE_URL from '../config';
 const CACHE_KEY = 'guzman_uf_valor';
 const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 horas en ms
 
-export const useUF = () => {
-  const [uf, setUf] = useState(null);
-  const [cargando, setCargando] = useState(true);
+// Una sola petición compartida por todos los componentes que usan el hook
+// (antes cada tarjeta de propiedad pedía la UF por separado).
+let pendiente = null;
 
-  useEffect(() => {
-    // Revisar cache primero
-    try {
-      const cached = sessionStorage.getItem(CACHE_KEY);
-      if (cached) {
-        const { valor, timestamp } = JSON.parse(cached);
-        if (Date.now() - timestamp < CACHE_TTL) {
-          setUf(valor);
-          setCargando(false);
-          return;
-        }
-      }
-    } catch { }
+const leerCache = () => {
+  try {
+    const cached = sessionStorage.getItem(CACHE_KEY);
+    if (cached) {
+      const { valor, timestamp } = JSON.parse(cached);
+      if (Date.now() - timestamp < CACHE_TTL) return valor;
+    }
+  } catch { }
+  return null;
+};
 
+const obtenerUF = () => {
+  const cacheado = leerCache();
+  if (cacheado) return Promise.resolve(cacheado);
+  if (!pendiente) {
     // Obtener desde proxy del backend (evita CORS)
-    fetch(`${API_BASE_URL}/api/uf`)
+    pendiente = fetch(`${API_BASE_URL}/api/uf`)
       .then(r => r.json())
       .then(data => {
-        if (data.valor && data.valor > 0) {
-          setUf(data.valor);
-          sessionStorage.setItem(CACHE_KEY, JSON.stringify({
-            valor: data.valor,
-            timestamp: Date.now()
-          }));
-        }
+        if (!(data.valor > 0)) return null;
+        try {
+          sessionStorage.setItem(CACHE_KEY, JSON.stringify({ valor: data.valor, timestamp: Date.now() }));
+        } catch { }
+        return data.valor;
       })
-      .catch(() => { })
-      .finally(() => setCargando(false));
+      .catch(() => null)
+      .finally(() => { pendiente = null; });
+  }
+  return pendiente;
+};
+
+export const useUF = () => {
+  const [uf, setUf] = useState(leerCache);
+  const [cargando, setCargando] = useState(uf === null);
+
+  useEffect(() => {
+    if (uf !== null) return;
+    let activo = true;
+    obtenerUF().then(valor => {
+      if (!activo) return;
+      if (valor) setUf(valor);
+      setCargando(false);
+    });
+    return () => { activo = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const ufACLP = (montoUF) => {

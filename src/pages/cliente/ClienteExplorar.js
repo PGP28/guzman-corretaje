@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch, FaArrowLeft } from 'react-icons/fa';
-import axios from 'axios';
-import API_BASE_URL from '../../config';
+import { obtenerPropiedades } from '../../propiedadesApi';
 import { SkPropCard } from '../../components/Skeleton';
 import './ClientePages.css';
 
@@ -14,9 +13,9 @@ const ClienteExplorar = () => {
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    axios.get(`${API_BASE_URL}/api/properties`)
+    obtenerPropiedades()
       .then(r => {
-        setPropiedades(r.data.filter(p => (p.estado || 'disponible') === 'disponible'));
+        setPropiedades(r.filter(p => (p.estado || 'disponible') === 'disponible'));
       })
       .catch(() => {})
       .finally(() => setCargando(false));

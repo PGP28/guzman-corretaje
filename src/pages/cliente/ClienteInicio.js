@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaCalendarCheck, FaComments, FaCreditCard, FaSearch } from 'react-icons/fa';
-import axios from 'axios';
+import { obtenerPropiedades } from '../../propiedadesApi';
 import API_BASE_URL from '../../config';
 import { getReservasCliente, ETAPAS } from './reservaHelper';
 import { useUF } from '../../hooks/useUF';
@@ -46,8 +46,8 @@ const ClienteInicio = ({ user }) => {
   const { ufACLP } = useUF();
 
   useEffect(() => {
-    axios.get(`${API_BASE_URL}/api/properties`)
-      .then(r => setPropiedades(r.data.filter(p => (p.estado || 'disponible') === 'disponible').slice(0, 6)))
+    obtenerPropiedades()
+      .then(r => setPropiedades(r.filter(p => (p.estado || 'disponible') === 'disponible').slice(0, 6)))
       .catch(() => {})
       .finally(() => setCargando(false));
   }, []);

@@ -9,11 +9,9 @@ import backgroundImage from '../assets/images/ENCABEZADO-21.png';
 import Testimonios from '../components/Testimonios';
 import VenderPropiedad from '../components/VenderPropiedad';
 import BuscadorHero from '../components/BuscadorHero';
-import axios from 'axios';
+import { obtenerPropiedades } from '../propiedadesApi';
 
-import API_BASE_URL from '../config';
 
-const API_BASE = `${API_BASE_URL}/api`;
 
 const Home = () => {
   const [propiedadesFiltradas, setPropiedadesFiltradas] = useState([]);
@@ -21,10 +19,10 @@ const Home = () => {
 
   useEffect(() => {
     setCargando(true);
-    axios.get(`${API_BASE}/properties`)
+    obtenerPropiedades()
       .then((res) => {
         // Mostrar las 6 más recientes (cualquier categoría)
-        const destacadas = res.data.slice(0, 6);
+        const destacadas = res.slice(0, 6);
         setPropiedadesFiltradas(destacadas);
       })
       .catch((err) => {

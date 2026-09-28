@@ -4,6 +4,7 @@ import { FaArrowLeft } from 'react-icons/fa';
 import { obtenerPropiedades, obtenerPropiedad } from '../../propiedadesApi';
 import { useUF } from '../../hooks/useUF';
 import ProgramarVisita from '../../components/ProgramarVisita';
+import SolicitarReserva from '../../components/SolicitarReserva';
 import PropiedadSimilaresCarrusel from '../../components/PropiedadSimilaresCarrusel';
 import './ClientePages.css';
 
@@ -186,6 +187,7 @@ const ClientePropiedadDetalle = ({ user }) => {
         {/* Columna derecha — widget visita */}
         <div className="cp-detalle-right">
           <ProgramarVisita propiedad={propiedad} cliente={user} enPortalCliente />
+          <SolicitarReserva propiedad={propiedad} />
         </div>
       </div>
 

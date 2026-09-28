@@ -76,11 +76,7 @@ function DetallesPropiedades() {
   }
 
   const handleReservar = () => {
-    // Guardar en sessionStorage y llevar al portal cliente directamente al detalle
-    sessionStorage.setItem('guzman_reservar_propiedad', JSON.stringify({
-      id: propiedad.id,
-      nombre: propiedad.nombre,
-    }));
+    // La reserva se solicita desde la ficha del portal cliente.
     // Si ya está logueado como cliente, va al detalle. Si no, al login
     const cliente = localStorage.getItem('guzman_cliente');
     if (cliente) {
@@ -417,6 +413,11 @@ function DetallesPropiedades() {
         {/* Widget programar visita */}
         <Col md={4}>
           <ProgramarVisita propiedad={propiedad} cliente={cliente} />
+          {(propiedad.estado || 'disponible') === 'disponible' && (
+            <button className="pv-btn-enviar" style={{ marginTop: 12 }} onClick={handleReservar}>
+              Reservar esta propiedad
+            </button>
+          )}
         </Col>
       </Row>
 

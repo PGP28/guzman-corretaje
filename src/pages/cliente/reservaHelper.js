@@ -64,38 +64,21 @@ export const getReservasCliente = async (identificador) => {
   }
 };
 
-// Crear nueva reserva en la BD
-export const crearReserva = async (propiedad, cliente, mensajeInicial = '') => {
-  const body = {
-    cliente_id:          cliente.id       || null,
-    cliente_username:    cliente.username || null,
-    cliente_email:       cliente.email    || null,
-    cliente_nombre:      cliente.name,
-    propiedad_id:        propiedad.id,
-    propiedad_nombre:    propiedad.nombre,
-    propiedad_ubicacion: propiedad.ubicacion,
-    propiedad_imagen:    propiedad.imagenes?.[0]?.url || propiedad.imagenes?.[0] || '',
-    propiedad_precio:    propiedad.precio,
-    propiedad_unidad:    propiedad.unidad_medida || 'CLP',
-    corredor:            propiedad.corredor_asignado || null,
-    etapa_actual:        'solicitud',
-    sub_estado:          'esperando_corredor',
-    mensaje_inicial:     mensajeInicial,
-    historial: [{
-      fecha:  new Date().toISOString(),
-      accion: 'Solicitud de reserva enviada',
-      por:    'cliente',
-      autor:  cliente.name,
-    }],
-    documentos: [],
-  };
+// Crear una reserva del cliente autenticado. El backend toma los datos del
+// cliente y de la propiedad desde la BD; solo se envía la propiedad y el mensaje.
+export const crearReserva = async (propiedadId, mensajeInicial = '') => {
   const res = await fetch(`${API}/reservas`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
+    body: JSON.stringify({ propiedad_id: propiedadId, mensaje_inicial: mensajeInicial }),
   });
-  if (!res.ok) throw new Error('Error al crear reserva');
-  return await res.json();
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const error = new Error(data.error || 'No se pudo enviar la solicitud de reserva');
+    error.reservaId = data.reserva_id; // si ya existe una reserva en curso
+    throw error;
+  }
+  return data;
 };
 
 // Actualizar reserva (etapa, sub_estado, historial, etc.)

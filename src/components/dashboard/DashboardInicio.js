@@ -14,7 +14,7 @@ const DashboardInicio = ({ user }) => {
   const [cargando, setCargando] = useState(true);
 
   // Usar foto local si existe
-  const fotoLocal = localStorage.getItem(`guzman_perfil_usuario_foto_${user?.email}`);
+  const fotoLocal = user?.foto_url;
   const fotoMostrar = fotoLocal || user?.picture;
 
   useEffect(() => {

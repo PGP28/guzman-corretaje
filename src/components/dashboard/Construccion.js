@@ -1,12 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaPlus, FaHardHat, FaEnvelope, FaBuilding, FaChevronDown,
          FaChevronUp, FaEdit, FaTrash, FaCheck, FaClock, FaTools } from 'react-icons/fa';
+import API_BASE_URL from '../../config';
 import './Construccion.css';
 
-// ── Storage localStorage ──────────────────────────────────────
-const leerProyectos   = () => JSON.parse(localStorage.getItem('guzman_proyectos_construccion') || '[]');
-const guardarProyectos = (l) => localStorage.setItem('guzman_proyectos_construccion', JSON.stringify(l));
-const leerSolicitudesConstruccion = () => JSON.parse(localStorage.getItem('guzman_solicitudes_construccion') || '[]');
+const API = `${API_BASE_URL}/api`;
+
+// fetch que devuelve el JSON o lanza un Error con el mensaje del backend
+const pedir = async (url, opciones = {}) => {
+  const res  = await fetch(url, {
+    ...opciones,
+    headers: { 'Content-Type': 'application/json', ...(opciones.headers || {}) },
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Error de conexión');
+  return data;
+};
+
+const ESTADOS_SOLICITUD = {
+  nueva:       '🔔 Nueva',
+  en_atencion: '⏳ En atención',
+  atendida:    '✅ Atendida',
+};
 
 const ESTADOS_PROYECTO = [
   { value: 'planificacion', label: '📋 Planificación', color: '#1565c0', bg: '#e3f2fd' },
@@ -117,8 +132,11 @@ const TarjetaProyecto = ({ proyecto, onEditar, onEliminar }) => {
 
 // ── Componente principal ──────────────────────────────────────
 const Construccion = () => {
-  const [proyectos, setProyectos]       = useState(leerProyectos);
-  const [solicitudes]                   = useState(leerSolicitudesConstruccion);
+  const [proyectos, setProyectos]       = useState([]);
+  const [solicitudes, setSolicitudes]   = useState([]);
+  const [cargando, setCargando]         = useState(true);
+  const [error, setError]               = useState('');
+  const [guardando, setGuardando]       = useState(false);
   const [vista, setVista]               = useState('proyectos'); // proyectos | solicitudes
   const [showForm, setShowForm]         = useState(false);
   const [editando, setEditando]         = useState(null);
@@ -139,35 +157,83 @@ const Construccion = () => {
     etapas: ETAPAS_DEFAULT.map(n => ({ nombre: n, completada: false })),
   });
 
-  const ok = (msg) => { setExito(msg); setTimeout(() => setExito(''), 3000); };
+  const ok = (msg) => { setError(''); setExito(msg); setTimeout(() => setExito(''), 3000); };
 
-  const handleGuardar = (e) => {
+  useEffect(() => {
+    Promise.all([
+      pedir(`${API}/proyectos-construccion`),
+      pedir(`${API}/solicitudes-construccion`),
+    ])
+      .then(([p, s]) => { setProyectos(p); setSolicitudes(s); })
+      .catch(e => setError(e.message))
+      .finally(() => setCargando(false));
+  }, []);
+
+  const handleGuardar = async (e) => {
     e.preventDefault();
-    if (editando) {
-      const updated = proyectos.map(p => p.id === editando.id ? { ...form, id: editando.id } : p);
-      guardarProyectos(updated); setProyectos(updated);
-      ok('Proyecto actualizado.');
-    } else {
-      const nuevo = { ...form, id: Date.now() };
-      const updated = [nuevo, ...proyectos];
-      guardarProyectos(updated); setProyectos(updated);
-      ok('Proyecto creado exitosamente.');
+    setGuardando(true); setError('');
+    try {
+      const body = JSON.stringify(form);
+      if (editando) {
+        const actualizado = await pedir(`${API}/proyectos-construccion/${editando.id}`, { method: 'PUT', body });
+        setProyectos(prev => prev.map(p => p.id === actualizado.id ? actualizado : p));
+        ok('Proyecto actualizado.');
+      } else {
+        const nuevo = await pedir(`${API}/proyectos-construccion`, { method: 'POST', body });
+        setProyectos(prev => [nuevo, ...prev]);
+        ok('Proyecto creado exitosamente.');
+      }
+      resetForm(); setShowForm(false); setEditando(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setGuardando(false);
     }
-    resetForm(); setShowForm(false); setEditando(null);
   };
 
   const handleEditar = (p) => {
-    setForm({ ...p });
+    setForm({
+      ...p,
+      presupuesto:   p.presupuesto ?? '',
+      fecha_inicio:  p.fecha_inicio || '',
+      fecha_termino: p.fecha_termino || '',
+      ubicacion: p.ubicacion || '', gestor: p.gestor || '', notas: p.notas || '',
+    });
     setEditando(p);
     setShowForm(true);
     setVista('proyectos');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleEliminar = (id) => {
-    const updated = proyectos.filter(p => p.id !== id);
-    guardarProyectos(updated); setProyectos(updated);
-    setConfirmDel(null); ok('Proyecto eliminado.');
+  const handleEliminar = async (id) => {
+    try {
+      await pedir(`${API}/proyectos-construccion/${id}`, { method: 'DELETE' });
+      setProyectos(prev => prev.filter(p => p.id !== id));
+      ok('Proyecto eliminado.');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setConfirmDel(null);
+    }
+  };
+
+  const cambiarEstadoSolicitud = async (id, estado) => {
+    try {
+      const actualizada = await pedir(`${API}/solicitudes-construccion/${id}`, { method: 'PATCH', body: JSON.stringify({ estado }) });
+      setSolicitudes(prev => prev.map(s => s.id === id ? actualizada : s));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const eliminarSolicitud = async (id) => {
+    if (!window.confirm('¿Eliminar esta solicitud?')) return;
+    try {
+      await pedir(`${API}/solicitudes-construccion/${id}`, { method: 'DELETE' });
+      setSolicitudes(prev => prev.filter(s => s.id !== id));
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   const toggleEtapa = (idx) => {
@@ -217,9 +283,11 @@ const Construccion = () => {
       </div>
 
       {exito && <div className="sd-exito">✅ {exito}</div>}
+      {error && <div className="sd-error">⚠️ {error}</div>}
+      {cargando && <div className="ep-empty"><p>Cargando…</p></div>}
 
       {/* ── VISTA PROYECTOS ── */}
-      {vista === 'proyectos' && (
+      {!cargando && vista === 'proyectos' && (
         <>
           {/* Formulario */}
           {showForm && (
@@ -302,8 +370,8 @@ const Construccion = () => {
 
                 <div className="sd-card-footer">
                   <button type="button" className="sd-btn-prev" onClick={() => { setShowForm(false); setEditando(null); resetForm(); }}>Cancelar</button>
-                  <button type="submit" className="sd-btn-publish">
-                    {editando ? '💾 Guardar cambios' : '🏗 Crear proyecto'}
+                  <button type="submit" className="sd-btn-publish" disabled={guardando}>
+                    {guardando ? 'Guardando…' : editando ? '💾 Guardar cambios' : '🏗 Crear proyecto'}
                   </button>
                 </div>
               </form>
@@ -327,7 +395,7 @@ const Construccion = () => {
       )}
 
       {/* ── VISTA SOLICITUDES ── */}
-      {vista === 'solicitudes' && (
+      {!cargando && vista === 'solicitudes' && (
         <div className="cp-solicitudes">
           {solicitudes.length === 0 ? (
             <div className="ep-empty">
@@ -340,15 +408,23 @@ const Construccion = () => {
                 <div className="cp-sol-top">
                   <span className="cp-sol-nombre">{s.nombre}</span>
                   <span className={`cp-sol-badge cp-sol-badge--${s.estado || 'nueva'}`}>
-                    {s.estado === 'nueva' ? '🔔 Nueva' : s.estado === 'en_atencion' ? '⏳ En atención' : '✅ Atendida'}
+                    {ESTADOS_SOLICITUD[s.estado] || ESTADOS_SOLICITUD.nueva}
                   </span>
                 </div>
                 <div className="cp-sol-detalle">
-                  {s.email    && <span>📧 {s.email}</span>}
-                  {s.telefono && <span>📞 {s.telefono}</span>}
+                  {s.servicio && <span>🛠 {s.servicio}</span>}
+                  {s.email    && <a href={`mailto:${s.email}`}>📧 {s.email}</a>}
+                  {s.telefono && <a href={`tel:${s.telefono}`}>📞 {s.telefono}</a>}
                   {s.fecha    && <span>🗓 {s.fecha}</span>}
                 </div>
-                {s.mensaje && <p className="cp-sol-mensaje">"{s.mensaje}"</p>}
+                {s.descripcion && <p className="cp-sol-mensaje">"{s.descripcion}"</p>}
+                <div className="cp-card-acciones">
+                  <select className="sd-input form-select" style={{ maxWidth: 200 }} value={s.estado || 'nueva'}
+                    onChange={e => cambiarEstadoSolicitud(s.id, e.target.value)}>
+                    {Object.entries(ESTADOS_SOLICITUD).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+                  </select>
+                  <button className="cp-btn-del" title="Eliminar" onClick={() => eliminarSolicitud(s.id)}><FaTrash /></button>
+                </div>
               </div>
             ))
           )}

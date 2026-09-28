@@ -32,6 +32,7 @@ const getNavItems = (rol) => {
     base.splice(5, 0, { id: 'corredores',  label: 'Corredores',    icon: <FaUsers />,    path: '/dashboard/corredores' });
     base.splice(6, 0, { id: 'construccion',label: 'Construcción',  icon: <FaHardHat />,  path: '/dashboard/construccion' });
     base.splice(7, 0, { id: 'postulaciones', label: 'Postulaciones', icon: <FaBriefcase />, path: '/dashboard/postulaciones' });
+    base.splice(8, 0, { id: 'bonos', label: 'Bonos', icon: <FaGift />, path: '/dashboard/bonos' });
   } else {
     base.splice(4, 0, { id: 'bonos', label: 'Mis bonos', icon: <FaGift />, path: '/dashboard/bonos' });
   }
@@ -66,8 +67,7 @@ const DashboardLayout = ({ user: userProp, onLogout, onRenovar }) => {
   const rol = previewCorredor ? 'corredor' : rolReal;
   const navItems = getNavItems(rol);
 
-  const fotoLocal   = localStorage.getItem(`guzman_perfil_usuario_foto_${user?.email}`);
-  const fotoMostrar = fotoLocal || user?.picture;
+  const fotoMostrar = user?.foto_url || user?.picture;
 
   const handleNav = (path) => { navigate(path); setMobileOpen(false); };
 
@@ -197,8 +197,8 @@ const DashboardLayout = ({ user: userProp, onLogout, onRenovar }) => {
             <Route path="/mensajes"    element={<DashboardMensajes userName={user?.name} />} />
             <Route path="/solicitudes" element={<Solicitudes rol={rol} userName={user?.name} />} />
             <Route path="/perfil"      element={<MiPerfil user={user} onUpdateUser={u => setUser(u)} />} />
-            {/* Solo corredor */}
-            {rol === 'corredor' && <Route path="/bonos" element={<SolicitarBono user={user} />} />}
+            {/* Bonos: el corredor solicita, el admin revisa */}
+            <Route path="/bonos" element={<SolicitarBono user={user} modoAdmin={rol === 'admin'} />} />
             <Route path="*"            element={<Navigate to="/dashboard" replace />} />
           </Routes>
         </div>

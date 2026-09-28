@@ -10,34 +10,31 @@ import './DashboardInicio.css';
 const DashboardCorreedor = ({ user }) => {
   const navigate = useNavigate();
   const [propiedades, setPropiedades] = useState([]);
+  const [solicitudes, setSolicitudes] = useState([]);
   const [cargando, setCargando] = useState(true);
 
-  const fotoLocal = localStorage.getItem(`guzman_perfil_usuario_foto_${user?.email}`);
-  const fotoMostrar = fotoLocal || user?.picture;
+  const fotoMostrar = user?.foto_url || user?.picture;
+  const miNombre = (user?.name || '').trim().toLowerCase();
   const nombre = user?.name?.split(' ')[0] || 'Corredor';
   const hora = new Date().getHours();
   const saludo = hora < 12 ? 'Buenos días' : hora < 19 ? 'Buenas tardes' : 'Buenas noches';
 
   useEffect(() => {
-    axios.get(`${API_BASE_URL}/api/properties`)
-      .then(res => {
-        // Filtrar solo las propiedades asignadas a este corredor
-        const miNombre = JSON.parse(localStorage.getItem(`guzman_perfil_usuario_${user?.email}`) || '{}').nombre || user?.name;
-        const mias = res.data.filter(p =>
-          p.corredor_asignado && p.corredor_asignado.toLowerCase().includes(miNombre?.split(' ')[0]?.toLowerCase())
-        );
-        setPropiedades(mias);
+    // Propiedades y solicitudes asignadas a este corredor (por su nombre)
+    Promise.all([
+      axios.get(`${API_BASE_URL}/api/properties`),
+      axios.get(`${API_BASE_URL}/api/solicitudes`),
+    ])
+      .then(([props, sols]) => {
+        const esMio = (asignado) => (asignado || '').trim().toLowerCase() === miNombre;
+        setPropiedades(props.data.filter(p => esMio(p.corredor_asignado)));
+        setSolicitudes(sols.data.filter(s => esMio(s.corredor)));
       })
       .catch(() => {})
       .finally(() => setCargando(false));
-  }, [user]);
+  }, [miNombre]);
 
-  // Solicitudes asignadas a este corredor
-  const solicitudes = JSON.parse(localStorage.getItem('guzman_solicitudes') || '[]');
-  const miNombre = JSON.parse(localStorage.getItem(`guzman_perfil_usuario_${user?.email}`) || '{}').nombre || user?.name || '';
-  const misSolicitudes = solicitudes.filter(s =>
-    s.corredor && s.corredor.toLowerCase().includes(miNombre.split(' ')[0]?.toLowerCase())
-  );
+  const misSolicitudes = solicitudes;
   const solicitudesNuevas = misSolicitudes.filter(s => s.estado === 'nueva').length;
 
   const tarjetas = [

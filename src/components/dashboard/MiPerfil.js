@@ -1,57 +1,99 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FaCamera, FaUser, FaEnvelope, FaMapMarkerAlt, FaPhone, FaSave, FaCheckCircle } from 'react-icons/fa';
+import API_BASE_URL from '../../config';
 import './SeccionDashboard.css';
 import './MiPerfil.css';
 
-const STORAGE_KEY = 'guzman_perfil_usuario';
+const API = `${API_BASE_URL}/api/corredores/me`;
+const MAX_FOTO = 2 * 1024 * 1024;
 
+const aForm = (p = {}) => ({
+  nombre:    p.nombre    || '',
+  email:     p.email     || '',
+  telefono:  p.telefono  || '',
+  direccion: p.direccion || '',
+  ciudad:    p.ciudad    || '',
+  cargo:     p.cargo     || '',
+});
+
+// El perfil se guarda en el backend (antes solo en el navegador).
+// El nombre y el email los cambia un admin: el nombre se usa para asignar propiedades.
 const MiPerfil = ({ user, onUpdateUser }) => {
-  const fotoGuardada = localStorage.getItem(`${STORAGE_KEY}_foto_${user?.email}`);
+  const [form, setForm]         = useState(() => aForm({ ...user, nombre: user?.nombre || user?.name }));
+  const [fotoUrl, setFotoUrl]   = useState(user?.foto_url || null);
+  const [guardando, setGuardando] = useState(false);
+  const [subiendo, setSubiendo] = useState(false);
+  const [exito, setExito]       = useState(false);
+  const [error, setError]       = useState('');
+  const fileRef                 = useRef(null);
 
-  const [form, setForm] = useState(() => {
-    const guardado = localStorage.getItem(`${STORAGE_KEY}_${user?.email}`);
-    return guardado ? JSON.parse(guardado) : {
-      nombre:    user?.name || '',
-      email:     user?.email || '',
-      telefono:  '',
-      direccion: '',
-      ciudad:    '',
-      cargo:     '',
-    };
-  });
+  const foto = fotoUrl || user?.picture || null;
 
-  const [foto, setFoto]       = useState(fotoGuardada || user?.picture || null);
-  const [exito, setExito]     = useState(false);
-  const [error, setError]     = useState('');
-  const fileRef               = useRef(null);
+  const aplicarPerfil = (perfil) => {
+    setForm(aForm(perfil));
+    setFotoUrl(perfil.foto_url || null);
+    onUpdateUser?.({ ...user, ...perfil, name: perfil.nombre });
+  };
+
+  const pedir = async (url, opciones = {}) => {
+    const res  = await fetch(url, opciones);
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || 'Error de conexión');
+    return data;
+  };
+
+  useEffect(() => {
+    pedir(API).then(aplicarPerfil).catch(e => setError(e.message));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleChange = (e) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleFotoChange = (e) => {
+  const handleFotoChange = async (e) => {
     const file = e.target.files[0];
+    e.target.value = '';
     if (!file) return;
-    if (file.size > 2 * 1024 * 1024) {
-      setError('La imagen no puede superar 2MB.');
-      return;
+    if (file.size > MAX_FOTO) return setError('La imagen no puede superar 2MB.');
+    setSubiendo(true); setError('');
+    try {
+      const body = new FormData();
+      body.append('foto', file);
+      aplicarPerfil(await pedir(`${API}/foto`, { method: 'POST', body }));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSubiendo(false);
     }
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      const base64 = ev.target.result;
-      setFoto(base64);
-      localStorage.setItem(`${STORAGE_KEY}_foto_${user?.email}`, base64);
-      setError('');
-    };
-    reader.readAsDataURL(file);
   };
 
-  const handleSubmit = (e) => {
+  const restaurarFotoGoogle = async () => {
+    setError('');
+    try {
+      aplicarPerfil(await pedir(`${API}/foto`, { method: 'DELETE' }));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem(`${STORAGE_KEY}_${user?.email}`, JSON.stringify(form));
-    if (onUpdateUser) onUpdateUser({ ...user, name: form.nombre });
-    setExito(true);
-    setTimeout(() => setExito(false), 3000);
+    setGuardando(true); setError('');
+    try {
+      const { telefono, direccion, ciudad, cargo } = form;
+      aplicarPerfil(await pedir(API, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ telefono, direccion, ciudad, cargo }),
+      }));
+      setExito(true);
+      setTimeout(() => setExito(false), 3000);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setGuardando(false);
+    }
   };
 
   const iniciales = form.nombre
@@ -83,7 +125,7 @@ const MiPerfil = ({ user, onUpdateUser }) => {
               <span className="sd-card-icon">📸</span>
               <div>
                 <h3 className="sd-card-titulo">Foto de perfil</h3>
-                <p className="sd-card-subtitulo">JPG o PNG, máx. 2MB</p>
+                <p className="sd-card-subtitulo">JPG, PNG o WEBP, máx. 2MB</p>
               </div>
             </div>
             <div className="sd-card-body" style={{ alignItems: 'center', padding: '32px 24px' }}>
@@ -104,7 +146,7 @@ const MiPerfil = ({ user, onUpdateUser }) => {
                 <input
                   ref={fileRef}
                   type="file"
-                  accept="image/*"
+                  accept="image/jpeg,image/png,image/webp"
                   style={{ display: 'none' }}
                   onChange={handleFotoChange}
                 />
@@ -113,28 +155,26 @@ const MiPerfil = ({ user, onUpdateUser }) => {
               <h4 className="perfil-nombre-display">{form.nombre || 'Sin nombre'}</h4>
               <span className="perfil-email-display">{form.email}</span>
               <span className="perfil-cargo-badge">
-                {form.cargo || 'Administrador'}
+                {form.cargo || (user?.rol === 'admin' ? 'Administrador' : 'Corredor')}
               </span>
 
               <button
                 type="button"
                 className="perfil-btn-foto"
                 onClick={() => fileRef.current?.click()}
+                disabled={subiendo}
               >
                 <FaCamera className="me-2" />
-                {foto && foto !== user?.picture ? 'Cambiar foto' : 'Subir foto'}
+                {subiendo ? 'Subiendo…' : fotoUrl ? 'Cambiar foto' : 'Subir foto'}
               </button>
 
-              {foto && foto !== user?.picture && (
+              {fotoUrl && (
                 <button
                   type="button"
                   className="perfil-btn-google"
-                  onClick={() => {
-                    setFoto(user?.picture || null);
-                    localStorage.removeItem(`${STORAGE_KEY}_foto_${user?.email}`);
-                  }}
+                  onClick={restaurarFotoGoogle}
                 >
-                  Restaurar foto de Google
+                  {user?.picture ? 'Restaurar foto de Google' : 'Quitar foto'}
                 </button>
               )}
             </div>
@@ -157,11 +197,12 @@ const MiPerfil = ({ user, onUpdateUser }) => {
                 <div className="perfil-campo-icono">
                   <FaUser className="perfil-campo-icon" />
                   <div className="sd-campo" style={{ flex: 1 }}>
-                    <label className="sd-label">Nombre completo *</label>
+                    <label className="sd-label">Nombre completo</label>
                     <input
-                      name="nombre" value={form.nombre} onChange={handleChange}
-                      className="sd-input form-control" placeholder="Ej: María González"
-                      required
+                      name="nombre" value={form.nombre}
+                      className="sd-input form-control" readOnly
+                      style={{ background: '#f9f9f9', color: '#888' }}
+                      title="El nombre lo cambia un administrador desde Corredores"
                     />
                   </div>
                 </div>
@@ -224,8 +265,8 @@ const MiPerfil = ({ user, onUpdateUser }) => {
 
               </div>
               <div className="sd-card-footer">
-                <button type="submit" className="sd-btn-publish">
-                  <FaSave className="me-2" /> Guardar cambios
+                <button type="submit" className="sd-btn-publish" disabled={guardando}>
+                  <FaSave className="me-2" /> {guardando ? 'Guardando…' : 'Guardar cambios'}
                 </button>
               </div>
             </form>

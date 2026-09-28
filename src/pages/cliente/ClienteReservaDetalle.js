@@ -3,68 +3,50 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaCheckCircle, FaClock, FaTimes } from 'react-icons/fa';
 import {
   LISTA_ETAPAS, ETAPAS, SUB_ESTADOS,
-  getReservasCliente, saveReservasCliente,
-  agregarHistorial, calcularProgreso
+  obtenerReserva, accionReserva, fechaLocal, formatearPrecio, calcularProgreso
 } from './reservaHelper';
 import './ClientePages.css';
 
 const ClienteReservaDetalle = ({ user }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [reserva, setReserva] = useState(null);
+  const [reserva,  setReserva]  = useState(null);
+  const [cargando, setCargando] = useState(true);
+  const [enviando, setEnviando] = useState(false);
+  const [error,    setError]    = useState(null);
 
   useEffect(() => {
-    const reservas = getReservasCliente(user.email);
-    const r = reservas.find(x => String(x.id) === String(id));
-    setReserva(r);
-  }, [id, user.email]);
+    setCargando(true);
+    obtenerReserva(id)
+      .then(setReserva)
+      .catch(() => setError('No se pudo cargar la reserva.'))
+      .finally(() => setCargando(false));
+  }, [id]);
 
-  const actualizar = (cambios) => {
-    const reservas = getReservasCliente(user.email);
-    const idx = reservas.findIndex(x => x.id === reserva.id);
-    if (idx >= 0) {
-      reservas[idx] = { ...reservas[idx], ...cambios };
-      saveReservasCliente(user.email, reservas);
-      setReserva(reservas[idx]);
+  if (cargando) return <div className="cp-loader"><div className="cp-loader-spinner" /></div>;
+  if (!reserva) return <div className="cp-empty"><span>🔍</span><p>{error || 'Reserva no encontrada'}</p></div>;
+
+  const progreso = calcularProgreso(reserva);
+  const etapaActual = ETAPAS[reserva.etapa_actual] || ETAPAS.solicitud;
+  const subEstado = SUB_ESTADOS[reserva.sub_estado] || SUB_ESTADOS.pendiente;
+
+  // Acciones del cliente: las valida y guarda el backend
+  const ejecutar = async (accion) => {
+    setEnviando(true); setError(null);
+    try {
+      setReserva(await accionReserva(reserva.id, accion));
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setEnviando(false);
     }
   };
 
-  if (!reserva) return <div className="cp-empty"><span>🔍</span><p>Reserva no encontrada</p></div>;
-
-  const progreso = calcularProgreso(reserva);
-  const etapaActual = ETAPAS[reserva.etapa_actual];
-  const subEstado = SUB_ESTADOS[reserva.sub_estado] || SUB_ESTADOS.pendiente;
-
-  // Acciones del cliente según etapa
-  const handleAceptarVisita = () => {
-    const updated = agregarHistorial(
-      { ...reserva,
-        visita_fecha_confirmada: reserva.visita_fecha_propuesta,
-        sub_estado: 'confirmado'
-      },
-      `Cliente confirmó visita para ${new Date(reserva.visita_fecha_propuesta).toLocaleDateString('es-CL')}`,
-      'cliente', user.name
-    );
-    actualizar(updated);
-  };
-
-  const handleRechazarVisita = () => {
-    const updated = agregarHistorial(
-      { ...reserva, visita_fecha_propuesta: null, sub_estado: 'esperando_corredor' },
-      'Cliente rechazó la fecha propuesta',
-      'cliente', user.name
-    );
-    actualizar(updated);
-  };
-
+  const handleAceptarVisita   = () => ejecutar('confirmar_visita');
+  const handleRechazarVisita  = () => ejecutar('rechazar_visita');
   const handleCancelarReserva = () => {
     if (!window.confirm('¿Cancelar esta reserva?')) return;
-    const updated = agregarHistorial(
-      { ...reserva, sub_estado: 'rechazado' },
-      'Cliente canceló la reserva',
-      'cliente', user.name
-    );
-    actualizar(updated);
+    ejecutar('cancelar');
   };
 
   return (
@@ -82,7 +64,7 @@ const ClienteReservaDetalle = ({ user }) => {
           <h1 className="cp-titulo" style={{ margin: 0 }}>{reserva.propiedad_nombre}</h1>
           <p className="cp-subtitulo" style={{ margin: '4px 0' }}>📍 {reserva.propiedad_ubicacion}</p>
           <p className="cp-detalle-precio" style={{ margin: 0 }}>
-            {reserva.propiedad_unidad === 'UF' ? `UF ${reserva.propiedad_precio}` : `$ ${Number(reserva.propiedad_precio).toLocaleString('es-CL')}`}
+            {formatearPrecio(reserva.propiedad_precio, reserva.propiedad_unidad)}
           </p>
           {reserva.corredor && <p style={{ margin: '8px 0 0', fontSize: 13, color: '#666' }}>👤 Corredor: <strong>{reserva.corredor}</strong></p>}
         </div>
@@ -159,14 +141,14 @@ const ClienteReservaDetalle = ({ user }) => {
                 <>
                   <p>El corredor propuso la siguiente fecha para la visita:</p>
                   <div className="cp-visita-card">
-                    <strong>📅 {new Date(reserva.visita_fecha_propuesta).toLocaleDateString('es-CL', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</strong>
+                    <strong>📅 {fechaLocal(reserva.visita_fecha_propuesta).toLocaleDateString('es-CL', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</strong>
                     {reserva.visita_hora && <span> a las {reserva.visita_hora}</span>}
                   </div>
                   <div className="cp-etapa-btns">
-                    <button className="cp-btn-secondary" onClick={handleRechazarVisita}>
+                    <button className="cp-btn-secondary" onClick={handleRechazarVisita} disabled={enviando}>
                       <FaTimes className="me-2" /> No puedo en esa fecha
                     </button>
-                    <button className="cp-btn-primary" onClick={handleAceptarVisita}>
+                    <button className="cp-btn-primary" onClick={handleAceptarVisita} disabled={enviando}>
                       <FaCheckCircle className="me-2" /> Confirmar asistencia
                     </button>
                   </div>
@@ -174,7 +156,7 @@ const ClienteReservaDetalle = ({ user }) => {
               )}
               {reserva.sub_estado === 'confirmado' && (
                 <div className="cp-success-card">
-                  ✅ Visita confirmada para el <strong>{new Date(reserva.visita_fecha_confirmada).toLocaleDateString('es-CL', { weekday: 'long', day: 'numeric', month: 'long' })}</strong>
+                  ✅ Visita confirmada para el <strong>{fechaLocal(reserva.visita_fecha_confirmada).toLocaleDateString('es-CL', { weekday: 'long', day: 'numeric', month: 'long' })}</strong>
                   {reserva.visita_hora && <span> a las {reserva.visita_hora}</span>}
                 </div>
               )}
@@ -251,9 +233,11 @@ const ClienteReservaDetalle = ({ user }) => {
         </div>
       )}
 
+      {error && <div className="cp-error-card" style={{ marginBottom: 12 }}>⚠️ {error}</div>}
+
       {/* Cancelar reserva */}
       {!['completada', 'rechazado'].includes(reserva.sub_estado) && reserva.etapa_actual !== 'completada' && (
-        <button className="cp-btn-danger-outline" onClick={handleCancelarReserva}>
+        <button className="cp-btn-danger-outline" onClick={handleCancelarReserva} disabled={enviando}>
           Cancelar reserva
         </button>
       )}

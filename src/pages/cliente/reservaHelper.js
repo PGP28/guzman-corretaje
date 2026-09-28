@@ -109,18 +109,46 @@ export const actualizarReserva = async (reservaId, cambios) => {
   return await res.json();
 };
 
-// Agregar evento al historial (helper local — devuelve historial actualizado)
-export const agregarHistorial = (reserva, accion, por, autor) => ([
-  ...(reserva.historial || []),
-  { fecha: new Date().toISOString(), accion, por, autor },
-]);
-
 // Calcular progreso (0-100)
 export const calcularProgreso = (reserva) => {
   const etapa = ETAPAS[reserva.etapa_actual] || ETAPAS.solicitud;
   return Math.round(((etapa.orden - 1) / 4) * 100);
 };
 
-// LEGACY: guardar en localStorage (ya no se usa, se mantiene por compatibilidad)
-export const saveReservasCliente = () => {};
+// Obtener una reserva del cliente autenticado
+export const obtenerReserva = async (reservaId) => {
+  const res = await fetch(`${API}/reservas/${reservaId}`);
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error('Error al cargar la reserva');
+  return await res.json();
+};
+
+// Acción del cliente sobre su reserva: 'confirmar_visita' | 'rechazar_visita' | 'cancelar'.
+// El backend valida la etapa y registra el historial.
+export const accionReserva = async (reservaId, accion) => {
+  const res  = await fetch(`${API}/reservas/${reservaId}/accion`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ accion }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'No se pudo completar la acción');
+  return data;
+};
+
+// Precio guardado como texto ("$550.000", "550000", "UF 3.500") → texto para mostrar
+export const formatearPrecio = (precio, unidad) => {
+  if (!precio) return '';
+  if (unidad === 'UF') return `UF ${String(precio).replace(/^UF\s*/i, '')}`;
+  const num = parseFloat(String(precio).replace(/[$\s.]/g, '').replace(',', '.'));
+  return isNaN(num) ? `$ ${precio}` : `$ ${num.toLocaleString('es-CL')}`;
+};
+
+// Fechas 'YYYY-MM-DD' (columnas DATE): se interpretan en hora local.
+// new Date('YYYY-MM-DD') las toma como UTC y en Chile muestra el día anterior.
+export const fechaLocal = (fecha) => {
+  if (!fecha) return null;
+  const s = String(fecha);
+  return new Date(/^\d{4}-\d{2}-\d{2}$/.test(s) ? `${s}T12:00:00` : s);
+};
 

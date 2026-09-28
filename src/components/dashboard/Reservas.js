@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaChevronRight, FaCalendarAlt, FaCheckCircle, FaTimesCircle, FaDollarSign, FaFileSignature } from 'react-icons/fa';
 import API_BASE_URL from '../../config';
+import { formatearPrecio } from '../../pages/cliente/reservaHelper';
 import './SeccionDashboard.css';
 
 const API = `${API_BASE_URL}/api`;
@@ -211,7 +212,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
                 <img src={seleccionada.propiedad_imagen} alt="" style={{ width: 120, height: 120, objectFit: 'cover', borderRadius: 8 }} />
               )}
               <div style={{ flex: 1, minWidth: 200 }}>
-                <p><strong>Precio:</strong> {seleccionada.propiedad_unidad === 'UF' ? `UF ${seleccionada.propiedad_precio}` : `$ ${Number(seleccionada.propiedad_precio).toLocaleString('es-CL')}`}</p>
+                <p><strong>Precio:</strong> {formatearPrecio(seleccionada.propiedad_precio, seleccionada.propiedad_unidad)}</p>
                 <p><strong>Corredor:</strong> {seleccionada.corredor || 'Sin asignar'}</p>
                 <p><strong>Solicitado:</strong> {new Date(seleccionada.fecha_creacion).toLocaleString('es-CL')}</p>
                 <p>

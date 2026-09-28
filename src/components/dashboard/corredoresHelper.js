@@ -29,3 +29,14 @@ export const mismoCorredor = (asignado, nombre) =>
 
 // Versión síncrona para compatibilidad (usa cache o array vacío)
 export const getCorredoresActivosSync = () => _cache || [];
+
+// Categorías de propiedades desde la BD (antes estaban escritas en dos listas distintas)
+let _categorias = null;
+export const getCategorias = () => {
+  if (!_categorias) {
+    _categorias = fetch(`${API_BASE_URL}/api/categorias`)
+      .then(r => (r.ok ? r.json() : Promise.reject(new Error('No se pudieron cargar las categorías'))))
+      .catch(e => { _categorias = null; throw e; });
+  }
+  return _categorias;
+};

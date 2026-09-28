@@ -11,7 +11,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import API_BASE_URL from '../../config';
-import { getCorredoresActivos, mismoCorredor } from './corredoresHelper';
+import { getCorredoresActivos, getCategorias, mismoCorredor } from './corredoresHelper';
 import { SkEpItem } from '../Skeleton';
 import './SeccionDashboard.css';
 
@@ -59,6 +59,13 @@ const SortableImagen = ({ img, idx, onEliminar, onPortada }) => {
   );
 };
 
+// Lanza un Error con el mensaje del backend si la respuesta no es exitosa
+const revisar = async (res) => {
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Error al guardar. Intenta nuevamente.');
+  return data;
+};
+
 const EditarPropiedades = ({ rol = 'admin', userName }) => {
   const [searchParams] = useSearchParams();
   const [propiedades, setPropiedades]         = useState([]);
@@ -76,6 +83,7 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
   const [cities, setCities]                   = useState([]);
   const [communes, setCommunes]               = useState([]);
   const [corredores, setCorredores]           = useState([]);
+  const [categorias, setCategorias]           = useState([]);
 
   const esCorrector = rol === 'corredor';
 
@@ -108,6 +116,7 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
 
   useEffect(() => {
     getCorredoresActivos().then(setCorredores).catch(() => {});
+    getCategorias().then(setCategorias).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -185,20 +194,21 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ estado: seleccionada.estado })
       })
+        .then(revisar)
         .then(() => {
           setExito('Estado actualizado exitosamente.');
           setEditando(false); setSeleccionada(null);
           cargarPropiedades();
           setTimeout(() => setExito(''), 3000);
         })
-        .catch(() => setError('Error al actualizar.'))
+        .catch(err => setError(err.message || 'Error al actualizar.'))
         .finally(() => setGuardando(false));
       return;
     }
 
     // Admin actualiza todo
     const formData = new FormData();
-    ['nombre','ubicacion','precio','unidad_medida','region','ciudad','comuna','constructora','fecha_entrega','corredor_asignado']
+    ['nombre','categoria','ubicacion','precio','unidad_medida','region','ciudad','comuna','constructora','fecha_entrega','corredor_asignado']
       .forEach(c => { if (seleccionada[c] !== undefined) formData.append(c, seleccionada[c] || ''); });
     ['dormitorios','banos','metros_cuadrados','gastos_comunes','estacionamientos','bodega','descripcion','superficie_util','superficie_total']
       .forEach(d => { if (seleccionada.detalles?.[d] !== undefined) formData.append(d, seleccionada.detalles[d]); });
@@ -219,17 +229,16 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
       : Promise.resolve();
 
     Promise.all([
-      fetch(`${API_URL}/properties/${seleccionada.id}/update`, { method: 'PUT', body: formData }),
-      guardarOrden
+      fetch(`${API_URL}/properties/${seleccionada.id}/update`, { method: 'PUT', body: formData }).then(revisar),
+      guardarOrden.then(r => (r ? revisar(r) : null))
     ])
-      .then(([r]) => r.json())
       .then(() => {
         if (seleccionada.estado) {
           return fetch(`${API_URL}/properties/${seleccionada.id}/estado`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ estado: seleccionada.estado })
-          });
+          }).then(revisar);
         }
       })
       .then(() => {
@@ -238,13 +247,13 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
         cargarPropiedades();
         setTimeout(() => setExito(''), 3000);
       })
-      .catch(() => setError('Error al actualizar. Intenta nuevamente.'))
+      .catch(err => setError(err.message || 'Error al actualizar. Intenta nuevamente.'))
       .finally(() => setGuardando(false));
   };
 
   const handleEliminar = (id) => {
     fetch(`${API_URL}/properties/${id}`, { method: 'DELETE' })
-      .then(r => r.json())
+      .then(revisar)
       .then(() => {
         setExito('Propiedad eliminada.');
         setConfirmDelete(null);
@@ -252,7 +261,7 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
         cargarPropiedades();
         setTimeout(() => setExito(''), 3000);
       })
-      .catch(() => setError('Error al eliminar.'));
+      .catch(err => { setConfirmDelete(null); setError(err.message || 'Error al eliminar.'); });
   };
 
   const estadoInfo = (estado) => ESTADOS.find(e => e.value === (estado || 'disponible')) || ESTADOS[0];
@@ -426,12 +435,7 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
                       <div className="sd-campo">
                         <label className="sd-label">Categoría</label>
                         <Form.Select name="categoria" value={seleccionada.categoria || ''} onChange={handleChange} className="sd-input">
-                          <option>Arriendo de Departamentos</option>
-                          <option>Arriendo de Casas</option>
-                          <option>Arriendo de Oficinas</option>
-                          <option>Venta de Casas</option>
-                          <option>Venta de Terrenos</option>
-                          <option>Venta de Oficinas</option>
+                          {categorias.map(c => <option key={c.id} value={c.nombre}>{c.nombre}</option>)}
                         </Form.Select>
                       </div>
                     </Col>

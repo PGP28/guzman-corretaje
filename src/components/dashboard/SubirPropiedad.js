@@ -18,6 +18,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import API_BASE_URL from '../../config';
 import './SeccionDashboard.css';
+import { getCategorias } from './corredoresHelper';
 
 const API_URL = `${API_BASE_URL}/api`;
 
@@ -100,6 +101,7 @@ const SubirPropiedad = () => {
   const [imagenesOrdenadas, setImagenesOrdenadas] = useState([]);
   const [isLoading, setIsLoading]             = useState(false);
   const [exito, setExito]                     = useState(false);
+  const [categorias, setCategorias]           = useState([]);
   const [error, setError]                     = useState(null);
   const [seccion, setSeccion]                 = useState('informacion');
 
@@ -108,6 +110,10 @@ const SubirPropiedad = () => {
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(TouchSensor,   { activationConstraint: { delay: 150, tolerance: 5 } })
   );
+
+  useEffect(() => {
+    getCategorias().then(setCategorias).catch(() => setError('No se pudieron cargar las categorías.'));
+  }, []);
 
   useEffect(() => {
     fetch(`${API_URL}/ubicaciones`)
@@ -194,9 +200,13 @@ const SubirPropiedad = () => {
     imagenesOrdenadas.forEach(img => formData.append('imagenes', img.file));
 
     fetch(`${API_URL}/properties/create`, { method: 'POST', body: formData })
-      .then(r => r.json())
-      .then(() => { setExito(true); resetForm(e.target); })
-      .catch(() => setError('Error al guardar. Intenta nuevamente.'))
+      .then(async r => {
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(data.error || 'Error al guardar. Intenta nuevamente.');
+        setExito(true);
+        resetForm(e.target);
+      })
+      .catch(err => setError(err.message || 'Error de conexión. Intenta nuevamente.'))
       .finally(() => setIsLoading(false));
   };
 
@@ -254,12 +264,7 @@ const SubirPropiedad = () => {
               <label className="sd-label">Categoría *</label>
               <Form.Select name="categoria" required className="sd-input">
                 <option value="">Seleccione una categoría</option>
-                <option>Arriendo de Departamentos</option>
-                <option>Arriendo de Casas</option>
-                <option>Arriendo de Oficinas</option>
-                <option>Venta de Casas</option>
-                <option>Venta de Terrenos</option>
-                <option>Venta de Oficinas</option>
+                {categorias.map(c => <option key={c.id} value={c.nombre}>{c.nombre}</option>)}
               </Form.Select>
             </div>
             <div className="sd-campo">

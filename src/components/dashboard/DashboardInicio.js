@@ -6,6 +6,7 @@ import API_BASE_URL from '../../config';
 import GraficoMetricas from './GraficoMetricas';
 import { SkStatCard, SkEstadoCard } from '../Skeleton';
 import './DashboardInicio.css';
+import { horaChile } from '../../utils/fechas';
 
 const DashboardInicio = ({ user }) => {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const DashboardInicio = ({ user }) => {
       .finally(() => setCargando(false));
   }, []);
 
-  const hora = new Date().getHours();
+  const hora = horaChile();
   const saludo = hora < 12 ? 'Buenos días' : hora < 19 ? 'Buenas tardes' : 'Buenas noches';
   const nombre = user?.name?.split(' ')[0] || 'Admin';
 

@@ -5,8 +5,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { instalarAuthApi } from './apiAuth';
+import { sincronizarHora } from './utils/horaServidor';
 
 instalarAuthApi();
+sincronizarHora();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

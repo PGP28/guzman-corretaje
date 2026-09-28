@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './SessionExpiredModal.css';
+import { ahoraMs } from '../utils/horaServidor';
 
 /**
  * Modal que aparece cuando el token está próximo a expirar.
@@ -88,8 +89,7 @@ const SessionExpiredModal = ({ tokenKey, onRenovar, onLogout, tipoUsuario = 'cli
       if (visibleRef.current) return;
       const exp = getExpiracion();
       if (!exp) return;
-      const ahora     = Date.now();
-      const restantes = (exp - ahora) / 1000;
+      const restantes = (exp - ahoraMs()) / 1000; // hora del servidor, no la del PC
 
       if (restantes <= 0) {
         cerrarSesionRef.current();

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaCalendarAlt, FaVideo, FaUserAlt, FaCheckCircle } from 'react-icons/fa';
 import API_BASE_URL from '../config';
 import './ProgramarVisita.css';
-import { aFechaISO } from '../utils/fechas';
+import { hoyChile, sumarDias, diaSemana } from '../utils/fechas';
+import { sincronizarHora } from '../utils/horaServidor';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -13,16 +14,14 @@ const HORAS = [
   '16:00', '16:30', '17:00', '17:30', '18:00',
 ];
 
+// Próximos 7 días hábiles (sin domingos) a partir de mañana, según el
+// calendario de Chile y la hora del servidor. Cada día: 'YYYY-MM-DD'.
 const getDiasDisponibles = () => {
   const dias = [];
-  const hoy  = new Date();
-  let i = 0;
-  while (dias.length < 7) {
-    const d = new Date(hoy);
-    d.setDate(hoy.getDate() + i + 1);
-    const dow = d.getDay();
-    if (dow !== 0) dias.push(d); // excluir domingo
-    i++;
+  const hoy  = hoyChile();
+  for (let i = 1; dias.length < 7; i++) {
+    const iso = sumarDias(hoy, i);
+    if (diaSemana(iso) !== 0) dias.push(iso);
   }
   return dias;
 };
@@ -32,7 +31,12 @@ const MESES_ES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','N
 
 const ProgramarVisita = ({ propiedad, cliente, enPortalCliente = false }) => {
   const navigate = useNavigate();
-  const dias     = getDiasDisponibles();
+  const [dias, setDias] = useState(getDiasDisponibles);
+
+  // Recalcular con la hora oficial del servidor (no la del PC)
+  useEffect(() => {
+    sincronizarHora().then(() => setDias(getDiasDisponibles()));
+  }, []);
 
   const [tipo,     setTipo]     = useState('presencial');
   const [diaIdx,   setDiaIdx]   = useState(0);
@@ -103,7 +107,7 @@ const ProgramarVisita = ({ propiedad, cliente, enPortalCliente = false }) => {
     setError(null);
     setEnviando(true);
     try {
-      const fechaStr = aFechaISO(diaSeleccionado); // día local, no UTC
+      const fechaStr = diaSeleccionado; // 'YYYY-MM-DD' del calendario de Chile
       const res = await fetch(`${API}/visitas`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -156,15 +160,15 @@ const ProgramarVisita = ({ propiedad, cliente, enPortalCliente = false }) => {
       {/* Selector de días */}
       <p className="pv-label">Selecciona un día</p>
       <div className="pv-dias">
-        {dias.map((d, i) => (
+        {dias.map((iso, i) => (
           <button
-            key={i}
+            key={iso}
             className={`pv-dia-btn ${diaIdx === i ? 'active' : ''}`}
             onClick={() => { setDiaIdx(i); setHora(''); }}
           >
-            <span className="pv-dia-dow">{DIAS_ES[d.getDay()]}</span>
-            <span className="pv-dia-num">{d.getDate()}</span>
-            <span className="pv-dia-mes">{MESES_ES[d.getMonth()]}</span>
+            <span className="pv-dia-dow">{DIAS_ES[diaSemana(iso)]}</span>
+            <span className="pv-dia-num">{Number(iso.slice(8, 10))}</span>
+            <span className="pv-dia-mes">{MESES_ES[Number(iso.slice(5, 7)) - 1]}</span>
           </button>
         ))}
       </div>

@@ -7,6 +7,7 @@ import GraficoMetricas from './GraficoMetricas';
 import { SkStatCard } from '../Skeleton';
 import './DashboardInicio.css';
 import { mismoCorredor } from './corredoresHelper';
+import { horaChile } from '../../utils/fechas';
 
 const DashboardCorreedor = ({ user }) => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const DashboardCorreedor = ({ user }) => {
   const fotoMostrar = user?.foto_url || user?.picture;
   const miNombre = (user?.name || '').trim().toLowerCase();
   const nombre = user?.name?.split(' ')[0] || 'Corredor';
-  const hora = new Date().getHours();
+  const hora = horaChile();
   const saludo = hora < 12 ? 'Buenos días' : hora < 19 ? 'Buenas tardes' : 'Buenas noches';
 
   useEffect(() => {

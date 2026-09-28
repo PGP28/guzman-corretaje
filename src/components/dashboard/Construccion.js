@@ -53,7 +53,7 @@ const TarjetaProyecto = ({ proyecto, onEditar, onEliminar }) => {
             <span className="cp-nombre">{proyecto.nombre}</span>
             <span className="cp-badge" style={{ background: est.bg, color: est.color }}>{est.label}</span>
           </div>
-          <span className="cp-ubicacion">📍 {proyecto.ubicacion}</span>
+          {proyecto.ubicacion && <span className="cp-ubicacion">📍 {proyecto.ubicacion}</span>}
           <span className="cp-cliente">👤 {proyecto.cliente}</span>
         </div>
         <div className="cp-avance-col">

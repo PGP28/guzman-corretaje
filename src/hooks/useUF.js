@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import API_BASE_URL from '../config';
+import { montoPrecio } from '../utils/precio';
 
 const CACHE_KEY = 'guzman_uf_valor';
 const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 horas en ms
@@ -57,17 +58,8 @@ export const useUF = () => {
 
   const ufACLP = (montoUF) => {
     if (!uf || !montoUF) return null;
-    // El precio puede venir como "5.604" (formato chileno miles) o "5604" o "5604.5"
-    // Primero limpiar: si tiene punto y no tiene coma, es separador de miles
-    let str = String(montoUF).trim();
-    // Si tiene punto pero no coma → separador de miles (ej: "5.604" → 5604)
-    if (str.includes('.') && !str.includes(',')) {
-      str = str.replace(/\./g, '');
-    }
-    // Si tiene coma → decimal chileno (ej: "5.604,50" → 5604.50)
-    str = str.replace(',', '.');
-    const monto = parseFloat(str);
-    if (isNaN(monto) || monto <= 0) return null;
+    const monto = montoPrecio(montoUF);  // "5.604", "5604.5" o "5.604,50"
+    if (monto === null) return null;
     const clp = Math.round(monto * uf);
     return `$ ${clp.toLocaleString('es-CL')}`;
   };

@@ -5,6 +5,8 @@ import BuscadorLateral from '../components/BuscadorLateral';
 import TarjetasPropiedades from '../components/TarjetasPropiedades';
 import { SkTarjetaCard } from '../components/Skeleton';
 import { obtenerPropiedades } from '../propiedadesApi';
+import { useUF } from '../hooks/useUF';
+import { enRangoPrecio, compararPrecio } from '../utils/precio';
 import '../styles/Paginador.css';
 
 const POR_PAGINA = 9;
@@ -18,9 +20,8 @@ const calcPaginas = (total, actual) => {
   return pages;
 };
 
-const limpiarPrecio = p => parseFloat(String(p).replace(/[$\s.]/g, '').replace(',', '.')) || 0;
-
 function Terrenos() {
+  const { uf } = useUF();
   const location = useLocation();
   const [todas, setTodas]         = useState([]);
   const [filtradas, setFiltradas] = useState([]);
@@ -50,18 +51,13 @@ function Terrenos() {
     let r = [...todas];
     if (f.region)          r = r.filter(p => p.region === f.region);
     if (f.comuna)          r = r.filter(p => p.comuna === f.comuna);
-    if (f.precioDesde)     r = r.filter(p => limpiarPrecio(p.precio) >= parseFloat(f.precioDesde));
-    if (f.precioHasta)     r = r.filter(p => limpiarPrecio(p.precio) <= parseFloat(f.precioHasta));
+    r = r.filter(p => enRangoPrecio(p, { desde: f.precioDesde, hasta: f.precioHasta, moneda: f.moneda }, uf));
     if (f.estacionamiento) r = r.filter(p => p.detalles?.estacionamientos > 0);
     setFiltradas(r);
     setPagina(1);
   };
 
-  const ordenadas = [...filtradas].sort((a, b) => {
-    if (orden === 'asc')  return limpiarPrecio(a.precio) - limpiarPrecio(b.precio);
-    if (orden === 'desc') return limpiarPrecio(b.precio) - limpiarPrecio(a.precio);
-    return 0;
-  });
+  const ordenadas = [...filtradas].sort(compararPrecio(orden, uf));
 
   const totalPags = Math.ceil(ordenadas.length / POR_PAGINA);
   const pagItems  = ordenadas.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA);

@@ -25,7 +25,8 @@ const ResetPassword = () => {
     setError(null);
 
     if (!token) return setError('Token inválido. Solicita un nuevo enlace de recuperación.');
-    if (password.length < 6) return setError('La contraseña debe tener al menos 6 caracteres.');
+    if (password.length < 8 || !/[A-Za-z]/.test(password) || !/\d/.test(password))
+      return setError('La contraseña debe tener al menos 8 caracteres, con letras y números.');
     if (password !== confirmar) return setError('Las contraseñas no coinciden.');
 
     setCargando(true);
@@ -70,7 +71,7 @@ const ResetPassword = () => {
         ) : (
           <>
             <h2 className="ve-titulo">Nueva contraseña</h2>
-            <p className="ve-subtitulo">Ingresa tu nueva contraseña. Debe tener al menos 6 caracteres.</p>
+            <p className="ve-subtitulo">Ingresa tu nueva contraseña. Debe tener al menos 8 caracteres, con letras y números.</p>
 
             <form onSubmit={handleSubmit} style={{ width: '100%' }} noValidate>
               {/* Campo contraseña */}

@@ -66,7 +66,8 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
     e.preventDefault(); limpiar();
     if (!regData.username || !regData.nombre || !regData.password) return setError('Usuario, nombre y contraseña son requeridos');
     if (regData.password !== regData.confirmar) return setError('Las contraseñas no coinciden');
-    if (regData.password.length < 6) return setError('La contraseña debe tener al menos 6 caracteres');
+    if (regData.password.length < 8 || !/[A-Za-z]/.test(regData.password) || !/\d/.test(regData.password))
+      return setError('La contraseña debe tener al menos 8 caracteres, con letras y números');
     setCargando(true);
     try {
       const res  = await fetch(`${API}/auth/register`, {
@@ -271,7 +272,7 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
                       <p className="login-campo-hint">Solo letras, números, puntos y guiones bajos.</p>
                       <div className="login-field">
                         <FaLock className="login-field-icon" />
-                        <input type={verPwd ? 'text' : 'password'} placeholder="Contraseña * (mín. 6 caracteres)" value={regData.password}
+                        <input type={verPwd ? 'text' : 'password'} placeholder="Contraseña * (mín. 8, con letras y números)" value={regData.password}
                           onChange={e => setRegData(p => ({ ...p, password: e.target.value }))}
                           className="login-input" autoComplete="new-password" />
                         <button type="button" className="login-field-toggle" onClick={() => setVerPwd(v => !v)} tabIndex={-1}>

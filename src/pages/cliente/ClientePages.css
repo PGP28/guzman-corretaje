@@ -1028,3 +1028,16 @@
 
 /* Fotos de las tarjetas de propiedad (flechas y puntos: components/FotosTarjeta) */
 .cp-prop-fotos { position: relative; overflow: hidden; background: #f0ebff; }
+
+/* Webpay */
+.cp-transbank-monto { font-size: 14px; color: #444; margin: 16px 0 12px; }
+.cp-transbank-legal { display: block; margin-top: 10px; font-size: 12px; color: #888; }
+.cp-webpay-resultado {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; font-size: 14px; font-weight: 600;
+}
+.cp-webpay-resultado--ok    { background: #e8f5e9; border: 1px solid #a5d6a7; color: #2e7d32; }
+.cp-webpay-resultado--aviso { background: #fff8e1; border: 1px solid #ffe082; color: #8a6d00; }
+.cp-webpay-resultado--error { background: #fff5f5; border: 1px solid #ffcccc; color: #cc0000; }
+.cp-webpay-resultado-acciones { display: flex; gap: 8px; flex-shrink: 0; }
+.cp-btn-link { background: none; border: none; color: inherit; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 2px 4px; }

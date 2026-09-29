@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { FaCopy, FaCheckCircle, FaCreditCard, FaUniversity } from 'react-icons/fa';
 import {
   getReservasCliente, obtenerDatosTransferencia, accionReserva,
   pagoPendiente, formatearMonto,
 } from './reservaHelper';
 import './ClientePages.css';
+import API_BASE_URL from '../../config';
+import { pedirJSON } from '../../utils/api';
 
 const ETIQUETAS_DATOS = {
   banco:   'Banco',
@@ -16,8 +18,33 @@ const ETIQUETAS_DATOS = {
   email:   'Email',
 };
 
+// Resultado que informa el backend al volver de Webpay (?webpay=...)
+const RESULTADOS_WEBPAY = {
+  autorizado: { clase: 'ok',    texto: '¡Pago recibido! Transbank confirmó tu pago y la reserva avanzó a la firma de documentos.' },
+  rechazado:  { clase: 'error', texto: 'El pago fue rechazado. Puedes intentarlo nuevamente con otra tarjeta o pagar por transferencia.' },
+  anulado:    { clase: 'aviso', texto: 'Anulaste el pago en Webpay. No se realizó ningún cargo; puedes intentarlo cuando quieras.' },
+  error:      { clase: 'error', texto: 'No pudimos confirmar el pago con Transbank. Si se hizo un cargo, escríbenos por Mensajes.' },
+};
+
+// Envía al cliente al formulario seguro de Webpay (POST con token_ws)
+const irAWebpay = (url, token) => {
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = url;
+  const campo = document.createElement('input');
+  campo.type = 'hidden';
+  campo.name = 'token_ws';
+  campo.value = token;
+  form.appendChild(campo);
+  document.body.appendChild(form);
+  form.submit();
+};
+
 const ClientePagos = ({ user }) => {
   const navigate = useNavigate();
+  const [params, setParams] = useSearchParams();
+  const resultadoWebpay = RESULTADOS_WEBPAY[params.get('webpay')] || null;
+  const reservaWebpay   = params.get('reserva');
   const [reservas,    setReservas]    = useState([]);
   const [cargando,    setCargando]    = useState(true);
   const [datosPago,   setDatosPago]   = useState(null); // { configurado, datos }
@@ -46,6 +73,18 @@ const ClientePagos = ({ user }) => {
     navigator.clipboard?.writeText(texto);
     setCopiado(campo);
     setTimeout(() => setCopiado(null), 2000);
+  };
+
+  const handlePagarWebpay = async () => {
+    if (!seleccion) return;
+    setEnviando(true); setError(null);
+    try {
+      const { url, token } = await pedirJSON(`${API_BASE_URL}/api/pagos/webpay/iniciar`, 'POST', { reserva_id: seleccion.id });
+      irAWebpay(url, token);   // la página se va a Transbank
+    } catch (err) {
+      setError(err.message);
+      setEnviando(false);
+    }
   };
 
   const handleEnviarComprobante = async (e) => {
@@ -80,6 +119,18 @@ const ClientePagos = ({ user }) => {
           <p className="cp-subtitulo">{porPagar.length} pago{porPagar.length !== 1 ? 's' : ''} pendiente{porPagar.length !== 1 ? 's' : ''}</p>
         </div>
       </div>
+
+      {resultadoWebpay && (
+        <div className={`cp-webpay-resultado cp-webpay-resultado--${resultadoWebpay.clase}`}>
+          <span>{resultadoWebpay.texto}</span>
+          <div className="cp-webpay-resultado-acciones">
+            {params.get('webpay') === 'autorizado' && reservaWebpay && (
+              <button className="cp-btn-link" onClick={() => navigate(`/cliente/reserva/${reservaWebpay}`)}>Ver reserva</button>
+            )}
+            <button className="cp-btn-link" onClick={() => setParams({})} aria-label="Cerrar aviso">✕</button>
+          </div>
+        </div>
+      )}
 
       {pendientes.length === 0 ? (
         <div className="cp-empty">
@@ -124,11 +175,23 @@ const ClientePagos = ({ user }) => {
             </div>
           ) : (
             <>
+              {porPagar.length > 1 && (
+                <div style={{ marginBottom: 16 }}>
+                  <label className="cp-dato-label">Reserva a pagar</label>
+                  <select className="cp-comprobante-input" value={seleccion?.id || ''}
+                    onChange={e => setReservaId(Number(e.target.value))}>
+                    {porPagar.map(r => (
+                      <option key={r.id} value={r.id}>{r.propiedad_nombre} — {formatearMonto(r.monto_reserva)}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
               <h2 className="cp-section-titulo">Selecciona método de pago</h2>
               <div className="cp-metodos">
                 <button
                   className={`cp-metodo-btn ${metodoPago === 'transferencia' ? 'active' : ''}`}
-                  onClick={() => setMetodoPago('transferencia')}
+                  onClick={() => { setMetodoPago('transferencia'); setError(null); }}
                 >
                   <FaUniversity className="cp-metodo-icon" />
                   <span>Transferencia bancaria</span>
@@ -136,7 +199,7 @@ const ClientePagos = ({ user }) => {
                 </button>
                 <button
                   className={`cp-metodo-btn ${metodoPago === 'transbank' ? 'active' : ''}`}
-                  onClick={() => setMetodoPago('transbank')}
+                  onClick={() => { setMetodoPago('transbank'); setError(null); }}
                 >
                   <FaCreditCard className="cp-metodo-icon" />
                   <span>Webpay / Transbank</span>
@@ -147,18 +210,6 @@ const ClientePagos = ({ user }) => {
               {/* Transferencia */}
               {metodoPago === 'transferencia' && (
                 <div className="cp-transferencia">
-                  {porPagar.length > 1 && (
-                    <div style={{ marginBottom: 16 }}>
-                      <label className="cp-dato-label">Reserva a pagar</label>
-                      <select className="cp-comprobante-input" value={seleccion?.id || ''}
-                        onChange={e => setReservaId(Number(e.target.value))}>
-                        {porPagar.map(r => (
-                          <option key={r.id} value={r.id}>{r.propiedad_nombre} — {formatearMonto(r.monto_reserva)}</option>
-                        ))}
-                      </select>
-                    </div>
-                  )}
-
                   <h3 className="cp-transferencia-titulo">
                     Transfiere {formatearMonto(seleccion?.monto_reserva)} a:
                   </h3>
@@ -215,12 +266,19 @@ const ClientePagos = ({ user }) => {
                     <span className="cp-transbank-icon">🔒</span>
                     <div>
                       <h3>Pago seguro con Webpay</h3>
-                      <p>Serás redirigido a la plataforma segura de Transbank para completar tu pago.</p>
+                      <p>Serás redirigido a la plataforma segura de Transbank para pagar con tarjeta de crédito o débito.</p>
                     </div>
                   </div>
-                  <div className="cp-transbank-nota">
-                    ⚠️ La integración con Transbank estará disponible próximamente. Por ahora usa transferencia bancaria.
-                  </div>
+                  <p className="cp-transbank-monto">
+                    Reserva: <strong>{seleccion?.propiedad_nombre}</strong> — {formatearMonto(seleccion?.monto_reserva)}
+                  </p>
+                  {error && <div className="cp-error-card" style={{ margin: '8px 0' }}>⚠️ {error}</div>}
+                  <button type="button" className="cp-btn-primary" onClick={handlePagarWebpay} disabled={!seleccion || enviando}>
+                    {enviando ? 'Conectando con Webpay…' : `Pagar ${formatearMonto(seleccion?.monto_reserva)} con Webpay`}
+                  </button>
+                  <small className="cp-transbank-legal">
+                    Tus datos de tarjeta los ingresas directamente en Transbank; nunca pasan por nuestro sitio.
+                  </small>
                 </div>
               )}
             </>

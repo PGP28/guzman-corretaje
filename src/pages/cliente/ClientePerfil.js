@@ -265,7 +265,9 @@ const PerfilForm = ({ user, onActualizar }) => {
       {!modalEliminar && (
         <div className="cpf-card cpf-danger-zone">
           <h4 className="cpf-card-titulo cpf-danger-titulo">⚠️ Zona de peligro</h4>
-          <p className="cpf-danger-desc">Al eliminar tu cuenta perderás acceso al portal. Esta acción es irreversible.</p>
+          <p className="cpf-danger-desc">
+            Al eliminar tu cuenta se borran tus datos personales, mensajes, archivos y visitas. Esta acción es irreversible.
+          </p>
           <button className="cpf-btn-eliminar" onClick={() => setModalEliminar(true)}>
             Eliminar mi cuenta
           </button>
@@ -285,9 +287,14 @@ const PerfilForm = ({ user, onActualizar }) => {
                 </p>
               ) : (
                 <p className="cpf-danger-desc">
-                  No tienes email registrado. Al confirmar, tu cuenta quedará desactivada inmediatamente.
+                  No tienes email registrado. Al confirmar, tu cuenta se eliminará inmediatamente.
                 </p>
               )}
+              <p className="cpf-danger-desc">
+                Se borrarán tu cuenta, tus datos de contacto, tus mensajes y archivos del chat, tus visitas
+                y tus reservas sin pago. Las reservas en las que ya informaste un pago se conservan
+                solo con tu nombre y email, como respaldo contable.
+              </p>
               {eliminacionError && <div className="cp-error-card cpf-mensaje">{eliminacionError}</div>}
               <div className="cpf-form-btns">
                 <button className="cpf-btn-cancelar" onClick={() => { setModalEliminar(false); setEliminacionError(null); }}>

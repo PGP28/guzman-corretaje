@@ -18,7 +18,7 @@ const ESTADOS = {
 const DIAS_ES  = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 const MESES_ES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 
-const DashboardVisitas = ({ userName }) => {
+const DashboardVisitas = () => {
   const [visitas,     setVisitas]     = useState([]);
   const [cargando,    setCargando]    = useState(true);
   const [filtroEst,   setFiltroEst]   = useState('todas');
@@ -47,7 +47,7 @@ const DashboardVisitas = ({ userName }) => {
     setError('');
     try {
       const data = await pedirJSON(`${API}/visitas/${id}`, 'PATCH',
-        { estado, corredor: userName, origen: 'corredor', ...extras });
+        { estado, origen: 'corredor', ...extras });
       setVisitas(prev => prev.map(v => v.id === id ? data : v));
       if (seleccionada?.id === id) setSeleccionada(data);
       setMsg(`✅ Visita ${estado}`);

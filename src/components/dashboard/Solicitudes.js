@@ -220,9 +220,11 @@ const Solicitudes = ({ rol = 'admin', userName }) => {
                         </div>
                       </div>
 
-                      <button className="sd-btn-danger" style={{ fontSize: 12, padding: '6px 12px' }} onClick={() => handleEliminar(s.id)}>
-                        Eliminar solicitud
-                      </button>
+                      {!esCorrector && (
+                        <button className="sd-btn-danger" style={{ fontSize: 12, padding: '6px 12px' }} onClick={() => handleEliminar(s.id)}>
+                          Eliminar solicitud
+                        </button>
+                      )}
                     </div>
                   </div>
                 )}

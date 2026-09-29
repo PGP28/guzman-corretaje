@@ -7,6 +7,7 @@ import { obtenerPropiedades, obtenerPropiedad } from '../propiedadesApi';
 import ProgramarVisita from './ProgramarVisita';
 import PropiedadSimilaresCarrusel from './PropiedadSimilaresCarrusel';
 import './DetallesPropiedades.css';
+import { tieneValor } from '../utils/propiedad';
 
 function DetallesPropiedades() {
   const location = useLocation();
@@ -248,7 +249,7 @@ function DetallesPropiedades() {
           </h4>
 
           <Row className="detalles-grid mt-3 g-2">
-            {detalles.dormitorios != null && (
+            {tieneValor(detalles.dormitorios) && (
               <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">🛏</span>
@@ -259,7 +260,7 @@ function DetallesPropiedades() {
                 </div>
               </Col>
             )}
-            {detalles.banos != null && (
+            {tieneValor(detalles.banos) && (
               <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">🚿</span>
@@ -270,7 +271,7 @@ function DetallesPropiedades() {
                 </div>
               </Col>
             )}
-            {detalles.metros_cuadrados != null && (
+            {tieneValor(detalles.metros_cuadrados) && (
               <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">📐</span>
@@ -281,7 +282,7 @@ function DetallesPropiedades() {
                 </div>
               </Col>
             )}
-            {detalles.superficie_total != null && (
+            {tieneValor(detalles.superficie_total) && (
               <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">📏</span>
@@ -292,7 +293,7 @@ function DetallesPropiedades() {
                 </div>
               </Col>
             )}
-            {detalles.estacionamientos != null && (
+            {tieneValor(detalles.estacionamientos) && (
               <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">🚗</span>
@@ -303,7 +304,7 @@ function DetallesPropiedades() {
                 </div>
               </Col>
             )}
-            {detalles.bodega != null && detalles.bodega > 0 && (
+            {tieneValor(detalles.bodega) && (
               <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">📦</span>
@@ -314,7 +315,7 @@ function DetallesPropiedades() {
                 </div>
               </Col>
             )}
-            {detalles.gastos_comunes && (
+            {tieneValor(detalles.gastos_comunes) && (
               <Col xs={6} sm={4} md={4} lg={3}>
                 <div className="detalles-item">
                   <span className="detalles-item-icon">💰</span>
@@ -358,30 +359,30 @@ function DetallesPropiedades() {
           )}
 
           {/* Otras Características */}
-          {(detalles.bodega > 0 || detalles.gastos_comunes || propiedad.constructora || propiedad.fecha_entrega ||
-            detalles.superficie_util || detalles.superficie_total) && (
+          {(tieneValor(detalles.bodega) || tieneValor(detalles.gastos_comunes) || propiedad.constructora || propiedad.fecha_entrega ||
+            tieneValor(detalles.superficie_util) || tieneValor(detalles.superficie_total)) && (
             <>
               <h5 className="detalles-seccion-titulo mt-4">Otras características</h5>
               <div className="detalles-otras-grid">
-                {detalles.superficie_util > 0 && (
+                {tieneValor(detalles.superficie_util) && (
                   <div className="detalles-otra-item">
                     <span className="detalles-otra-label">📍 Superficie útil</span>
                     <span className="detalles-otra-valor">{detalles.superficie_util} m²</span>
                   </div>
                 )}
-                {detalles.superficie_total > 0 && (
+                {tieneValor(detalles.superficie_total) && (
                   <div className="detalles-otra-item">
                     <span className="detalles-otra-label">📍 Superficie total</span>
                     <span className="detalles-otra-valor">{detalles.superficie_total} m²</span>
                   </div>
                 )}
-                {detalles.bodega > 0 && (
+                {tieneValor(detalles.bodega) && (
                   <div className="detalles-otra-item">
                     <span className="detalles-otra-label">📦 Bodega</span>
                     <span className="detalles-otra-valor">{detalles.bodega}</span>
                   </div>
                 )}
-                {detalles.gastos_comunes && (
+                {tieneValor(detalles.gastos_comunes) && (
                   <div className="detalles-otra-item">
                     <span className="detalles-otra-label">💰 Gastos comunes</span>
                     <span className="detalles-otra-valor">{detalles.gastos_comunes}</span>

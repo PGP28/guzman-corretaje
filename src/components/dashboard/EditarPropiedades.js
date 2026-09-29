@@ -211,7 +211,7 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
     ['nombre','categoria','ubicacion','precio','unidad_medida','region','ciudad','comuna','constructora','fecha_entrega','corredor_asignado']
       .forEach(c => { if (seleccionada[c] !== undefined) formData.append(c, seleccionada[c] || ''); });
     ['dormitorios','banos','metros_cuadrados','gastos_comunes','estacionamientos','bodega','descripcion','superficie_util','superficie_total']
-      .forEach(d => { if (seleccionada.detalles?.[d] !== undefined) formData.append(d, seleccionada.detalles[d]); });
+      .forEach(d => { if (seleccionada.detalles?.[d] !== undefined) formData.append(d, seleccionada.detalles[d] ?? ''); });
 
     // Agregar nuevas imágenes si las hay
     if (seleccionada._nuevasImagenes?.length > 0) {

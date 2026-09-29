@@ -7,6 +7,7 @@ import ProgramarVisita from '../../components/ProgramarVisita';
 import SolicitarReserva from '../../components/SolicitarReserva';
 import PropiedadSimilaresCarrusel from '../../components/PropiedadSimilaresCarrusel';
 import './ClientePages.css';
+import { tieneValor } from '../../utils/propiedad';
 
 const ClientePropiedadDetalle = ({ user }) => {
   const { id }       = useParams();
@@ -138,12 +139,12 @@ const ClientePropiedadDetalle = ({ user }) => {
           </h4>
 
           <div className="cp-detalle-specs-grid">
-            {det.dormitorios    != null && <div className="cp-spec-item"><span>🛏</span><label>Dormitorios</label><strong>{det.dormitorios}</strong></div>}
-            {det.banos          != null && <div className="cp-spec-item"><span>🚿</span><label>Baños</label><strong>{det.banos}</strong></div>}
-            {det.metros_cuadrados != null && <div className="cp-spec-item"><span>📐</span><label>Sup. útil</label><strong>{det.metros_cuadrados} m²</strong></div>}
-            {det.superficie_total != null && <div className="cp-spec-item"><span>📏</span><label>Sup. total</label><strong>{det.superficie_total} m²</strong></div>}
-            {det.estacionamientos != null && <div className="cp-spec-item"><span>🚗</span><label>Estacionam.</label><strong>{det.estacionamientos}</strong></div>}
-            {det.bodega > 0     && <div className="cp-spec-item"><span>📦</span><label>Bodega</label><strong>{det.bodega}</strong></div>}
+            {tieneValor(det.dormitorios) && <div className="cp-spec-item"><span>🛏</span><label>Dormitorios</label><strong>{det.dormitorios}</strong></div>}
+            {tieneValor(det.banos) && <div className="cp-spec-item"><span>🚿</span><label>Baños</label><strong>{det.banos}</strong></div>}
+            {tieneValor(det.metros_cuadrados) && <div className="cp-spec-item"><span>📐</span><label>Sup. útil</label><strong>{det.metros_cuadrados} m²</strong></div>}
+            {tieneValor(det.superficie_total) && <div className="cp-spec-item"><span>📏</span><label>Sup. total</label><strong>{det.superficie_total} m²</strong></div>}
+            {tieneValor(det.estacionamientos) && <div className="cp-spec-item"><span>🚗</span><label>Estacionam.</label><strong>{det.estacionamientos}</strong></div>}
+            {tieneValor(det.bodega) && <div className="cp-spec-item"><span>📦</span><label>Bodega</label><strong>{det.bodega}</strong></div>}
           </div>
 
           {det.descripcion && (
@@ -153,11 +154,11 @@ const ClientePropiedadDetalle = ({ user }) => {
             </>
           )}
 
-          {(det.gastos_comunes || propiedad.constructora || propiedad.fecha_entrega) && (
+          {(tieneValor(det.gastos_comunes) || propiedad.constructora || propiedad.fecha_entrega) && (
             <>
               <h5 className="cp-detalle-subtitle mt-4">Otras características</h5>
               <div className="cp-otras-grid">
-                {det.gastos_comunes     && <div className="cp-otra-item"><span className="cp-otra-label">💰 Gastos comunes</span><span>{det.gastos_comunes}</span></div>}
+                {tieneValor(det.gastos_comunes) && <div className="cp-otra-item"><span className="cp-otra-label">💰 Gastos comunes</span><span>{det.gastos_comunes}</span></div>}
                 {propiedad.constructora && <div className="cp-otra-item"><span className="cp-otra-label">🏗 Constructora</span><span>{propiedad.constructora}</span></div>}
                 {propiedad.fecha_entrega && <div className="cp-otra-item"><span className="cp-otra-label">📅 Fecha entrega</span><span>{propiedad.fecha_entrega}</span></div>}
               </div>

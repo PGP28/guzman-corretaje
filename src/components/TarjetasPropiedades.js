@@ -3,6 +3,7 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useUF } from '../hooks/useUF';
 import './TarjetasPropiedades.css';
+import { tieneValor } from '../utils/propiedad';
 
 function PropiedadCard({ propiedad }) {
   const [imagenIndex, setImagenIndex] = useState(0);
@@ -117,22 +118,22 @@ function PropiedadCard({ propiedad }) {
 
         {/* Detalles */}
         <div className="tarjeta-detalles">
-          {detalles.dormitorios != null && (
+          {tieneValor(detalles.dormitorios) && (
             <span className="tarjeta-detalle-item">
               <span className="tarjeta-icono">🛏</span> {detalles.dormitorios}
             </span>
           )}
-          {detalles.banos != null && (
+          {tieneValor(detalles.banos) && (
             <span className="tarjeta-detalle-item">
               <span className="tarjeta-icono">🚿</span> {detalles.banos}
             </span>
           )}
-          {(detalles.metros_cuadrados != null || detalles.metros_cuadrados != null) && (
+          {tieneValor(detalles.metros_cuadrados) && (
             <span className="tarjeta-detalle-item">
               <span className="tarjeta-icono">📐</span> {detalles.metros_cuadrados} m²
             </span>
           )}
-          {detalles.estacionamientos != null && detalles.estacionamientos > 0 && (
+          {tieneValor(detalles.estacionamientos) && (
             <span className="tarjeta-detalle-item">
               <span className="tarjeta-icono">🚗</span> {detalles.estacionamientos}
             </span>

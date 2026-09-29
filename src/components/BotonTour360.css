@@ -1,0 +1,12 @@
+/* Botón "Ver tour 360°" en las fichas de propiedad */
+.btn-tour-360 {
+  display: inline-flex; align-items: center; gap: 8px; border: none; cursor: pointer;
+  background: linear-gradient(135deg, #3f1b86, #8a60da); color: #fff; font-weight: 700;
+  border-radius: 10px; padding: 10px 18px; font-size: 14px; box-shadow: 0 4px 14px rgba(63, 27, 134, 0.3);
+}
+.btn-tour-360:hover { opacity: 0.92; }
+
+.tour-cargando {
+  position: fixed; inset: 0; z-index: 10000; background: rgba(18, 10, 36, 0.92); color: #e6dcff;
+  display: flex; align-items: center; justify-content: center; font-weight: 600;
+}

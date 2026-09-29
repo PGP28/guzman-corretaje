@@ -8,6 +8,7 @@ import SolicitarReserva from '../../components/SolicitarReserva';
 import PropiedadSimilaresCarrusel from '../../components/PropiedadSimilaresCarrusel';
 import './ClientePages.css';
 import { tieneValor, SIN_IMAGEN } from '../../utils/propiedad';
+import BotonTour360 from '../../components/BotonTour360';
 
 const ClientePropiedadDetalle = ({ user }) => {
   const { id }       = useParams();
@@ -130,6 +131,10 @@ const ClientePropiedadDetalle = ({ user }) => {
       </div>
 
       {/* Detalles + Widget visita */}
+      {/* Tour 360° (solo si la propiedad tiene escenas) */}
+      {propiedad.tour_escenas > 0 && (
+        <div style={{ margin: '16px 0' }}><BotonTour360 propiedad={propiedad} /></div>
+      )}
       <div className="cp-detalle-body">
         {/* Columna izquierda */}
         <div className="cp-detalle-left">

@@ -41,6 +41,9 @@ function PropiedadCard({ propiedad }) {
           <span className="tarjeta-badge">{propiedad.categoria}</span>
         )}
 
+        {/* Tiene tour 360° */}
+        {propiedad.tour_escenas > 0 && <span className="tarjeta-badge-360">360°</span>}
+
         {/* Código de referencia */}
         {propiedad.codigo && (
           <span className="tarjeta-codigo">{propiedad.codigo}</span>

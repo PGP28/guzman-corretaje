@@ -1,0 +1,25 @@
+.tour-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  background: #120a24; display: flex; flex-direction: column;
+}
+.tour-cabecera {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 10px 16px; background: #3f1b86; color: #fff;
+}
+.tour-titulo { font-weight: 700; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tour-cerrar {
+  background: rgba(255, 255, 255, 0.15); color: #fff; border: none; border-radius: 50%;
+  width: 36px; height: 36px; font-size: 16px; cursor: pointer; flex-shrink: 0;
+}
+.tour-cerrar:hover { background: rgba(255, 255, 255, 0.3); }
+.tour-visor { flex: 1; min-height: 0; }
+.tour-ayuda { margin: 0; padding: 6px 12px; text-align: center; font-size: 12px; color: #b9a6e6; background: #1b1033; }
+.tour-escenas {
+  display: flex; gap: 8px; padding: 10px 12px; overflow-x: auto; background: #1b1033;
+}
+.tour-escena {
+  flex-shrink: 0; border: 1px solid #5529aa; background: transparent; color: #e6dcff;
+  border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.tour-escena.activa, .tour-escena:hover { background: #5529aa; color: #fff; }
+.tour-mensaje { flex: 1; display: flex; align-items: center; justify-content: center; color: #e6dcff; padding: 24px; text-align: center; }

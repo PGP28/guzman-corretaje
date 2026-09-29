@@ -7,6 +7,7 @@ import ProgramarVisita from './ProgramarVisita';
 import PropiedadSimilaresCarrusel from './PropiedadSimilaresCarrusel';
 import './DetallesPropiedades.css';
 import { tieneValor } from '../utils/propiedad';
+import BotonTour360 from './BotonTour360';
 
 function DetallesPropiedades() {
   const location = useLocation();
@@ -210,6 +211,10 @@ function DetallesPropiedades() {
       <Row className="mt-4">
         {/* Detalles */}
         <Col md={8}>
+          {/* Tour 360° (solo si la propiedad tiene escenas) */}
+          {propiedad.tour_escenas > 0 && (
+            <div className="mb-4"><BotonTour360 propiedad={propiedad} /></div>
+          )}
           <h4 className="detalles-seccion-titulo">
             Detalles de la propiedad
             <span className="detalles-categoria"> · {propiedad.categoria}</span>

@@ -15,6 +15,7 @@ import { getCorredoresActivos, getCategorias, mismoCorredor } from './corredores
 import { SkEpItem } from '../Skeleton';
 import './SeccionDashboard.css';
 import { pedir } from '../../utils/api';
+import GestionTour from './GestionTour';
 
 const API_URL = `${API_BASE_URL}/api`;
 
@@ -420,6 +421,20 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
                         </div>
                       )}
                     </div>
+                </div>
+              </div>
+
+              {/* Tour 360° */}
+              <div className="sd-card active" style={{ marginTop: 16 }}>
+                <div className="sd-card-header">
+                  <span className="sd-card-icon">🔄</span>
+                  <div>
+                    <h3 className="sd-card-titulo">Tour 360°</h3>
+                    <p className="sd-card-subtitulo">Los cambios del tour se guardan al instante</p>
+                  </div>
+                </div>
+                <div className="sd-card-body">
+                  <GestionTour propiedad={seleccionada} />
                 </div>
               </div>
 

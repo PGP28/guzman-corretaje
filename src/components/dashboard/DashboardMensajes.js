@@ -135,6 +135,7 @@ const DashboardMensajes = ({ userName }) => {
       texto: texto.trim(), created_at: new Date().toISOString(),
       autor: userName || 'Corredor',
       archivo_url:    archivo?.url,
+      archivo_ruta:   archivo?.ruta,
       archivo_nombre: archivo?.nombre,
       archivo_tipo:   archivo?.tipo,
       _pendiente: true,
@@ -153,7 +154,7 @@ const DashboardMensajes = ({ userName }) => {
           de:               'corredor',
           texto:            nuevoLocal.texto,
           autor:            userName || 'Corredor',
-          archivo_url:      nuevoLocal.archivo_url    || null,
+          archivo_url:      nuevoLocal.archivo_ruta   || null, // referencia privada (no el enlace firmado)
           archivo_nombre:   nuevoLocal.archivo_nombre || null,
           archivo_tipo:     nuevoLocal.archivo_tipo   || null,
         }),

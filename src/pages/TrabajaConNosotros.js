@@ -223,7 +223,7 @@ const TrabajaConNosotros = () => {
                 </div>
                 <input
                   type="file"
-                  accept="image/*"
+                  accept="image/jpeg,image/png,image/webp"
                   onChange={e => handleFile(e, setFoto, 2)}
                   hidden
                 />

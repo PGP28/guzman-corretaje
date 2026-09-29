@@ -107,7 +107,7 @@ const ClienteMensajes = ({ user }) => {
     const nuevoLocal = {
       id: Date.now(), de: 'cliente',
       texto: texto.trim(), created_at: new Date().toISOString(),
-      archivo_url: archivo?.url, archivo_nombre: archivo?.nombre,
+      archivo_url: archivo?.url, archivo_ruta: archivo?.ruta, archivo_nombre: archivo?.nombre,
       archivo_tipo: archivo?.tipo, _pendiente: true,
     };
     setMensajes(prev => [...prev, nuevoLocal]);
@@ -123,7 +123,7 @@ const ClienteMensajes = ({ user }) => {
           cliente_nombre:   user?.name     || 'Cliente',
           de:               'cliente',
           texto:            nuevoLocal.texto,
-          archivo_url:      nuevoLocal.archivo_url    || null,
+          archivo_url:      nuevoLocal.archivo_ruta   || null, // referencia privada (no el enlace firmado)
           archivo_nombre:   nuevoLocal.archivo_nombre || null,
           archivo_tipo:     nuevoLocal.archivo_tipo   || null,
         }),

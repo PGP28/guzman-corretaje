@@ -3,6 +3,7 @@ import { FaCalendarAlt, FaCheck, FaTimes, FaRedo, FaUser, FaVideo, FaHome } from
 import API_BASE_URL from '../../config';
 import './SeccionDashboard.css';
 import './DashboardVisitas.css';
+import { pedir, pedirJSON } from '../../utils/api';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -28,46 +29,46 @@ const DashboardVisitas = ({ userName }) => {
   const [nota,         setNota]         = useState('');
   const [guardando,    setGuardando]    = useState(false);
   const [msg,          setMsg]          = useState('');
+  const [error,        setError]        = useState('');
 
   useEffect(() => { cargar(); }, []);
 
   const cargar = async () => {
     setCargando(true);
     try {
-      const res  = await fetch(`${API}/visitas`);
-      const data = await res.json();
-      if (Array.isArray(data)) setVisitas(data);
-    } catch { }
+      setVisitas(await pedir(`${API}/visitas`));
+    } catch (err) { setError(`No se pudieron cargar las visitas: ${err.message}`); }
     finally { setCargando(false); }
   };
 
+  /** Devuelve true si se guardó */
   const actualizarEstado = async (id, estado, extras = {}) => {
     setGuardando(true);
+    setError('');
     try {
-      const res  = await fetch(`${API}/visitas/${id}`, {
-        method:  'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ estado, corredor: userName, origen: 'corredor', ...extras }),
-      });
-      const data = await res.json();
-      if (!res.ok) return;
+      const data = await pedirJSON(`${API}/visitas/${id}`, 'PATCH',
+        { estado, corredor: userName, origen: 'corredor', ...extras });
       setVisitas(prev => prev.map(v => v.id === id ? data : v));
       if (seleccionada?.id === id) setSeleccionada(data);
       setMsg(`✅ Visita ${estado}`);
       setReagendando(false);
       setTimeout(() => setMsg(''), 3000);
-    } catch { }
+      return true;
+    } catch (err) {
+      setError(`No se pudo actualizar la visita: ${err.message}`);
+      return false;
+    }
     finally { setGuardando(false); }
   };
 
   const handleReagendar = async (id) => {
     if (!nuevaFecha || !nuevaHora) return;
-    await actualizarEstado(id, 'reagendada', {
+    const ok = await actualizarEstado(id, 'reagendada', {
       fecha:         nuevaFecha,
       hora:          nuevaHora,
       nota_corredor: nota.trim() || null,
     });
-    setNuevaFecha(''); setNuevaHora(''); setNota('');
+    if (ok) { setNuevaFecha(''); setNuevaHora(''); setNota(''); }
   };
 
   const formatFecha = (fechaStr) => {
@@ -100,6 +101,7 @@ const DashboardVisitas = ({ userName }) => {
         </div>
 
         {msg && <div className="sd-exito">{msg}</div>}
+        {error && <div className="sd-error">{error}</div>}
 
         <div className="dv-detalle-grid">
           {/* Info cliente */}
@@ -224,6 +226,7 @@ const DashboardVisitas = ({ userName }) => {
       </div>
 
       {msg && <div className="sd-exito">{msg}</div>}
+      {error && <div className="sd-error">{error}</div>}
 
       {/* Filtros */}
       <div className="ep-filtros">

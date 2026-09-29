@@ -7,6 +7,7 @@ import { getReservasCliente, ETAPAS, pagoPendiente } from './reservaHelper';
 import { useUF } from '../../hooks/useUF';
 import { SkPropCard } from '../../components/Skeleton';
 import './ClientePages.css';
+import { pedir } from '../../utils/api';
 
 const API = `${API_BASE_URL}/api`;
 const getToken = () => localStorage.getItem('guzman_cliente_token');
@@ -21,10 +22,9 @@ const ClienteInicio = ({ user }) => {
   useEffect(() => {
     const token = getToken();
     if (!token) return;
-    fetch(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
-      .then(r => r.json())
-      .then(data => setPerfil(data))
-      .catch(() => {});
+    pedir(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(setPerfil)
+      .catch(() => {}); // sin perfil solo no se muestran los avisos de completitud
   }, []);
 
   const [reservas, setReservas] = useState([]);

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FaPaperPlane, FaPaperclip, FaTimes, FaFilePdf, FaFileWord, FaFileAlt } from 'react-icons/fa';
 import API_BASE_URL from '../../config';
 import './ClientePages.css';
+import { pedir, pedirJSON } from '../../utils/api';
 
 const API = `${API_BASE_URL}/api`;
 const POLL_INTERVAL = 8000;
@@ -90,11 +91,8 @@ const ClienteMensajes = ({ user }) => {
     try {
       const form = new FormData();
       form.append('archivo', f);
-      const res  = await fetch(`${API}/mensajes/upload`, { method: 'POST', body: form });
-      const data = await res.json();
-      if (!res.ok) return setError(data.error || 'Error al subir el archivo');
-      setArchivo(data);
-    } catch { setError('Error de conexión al subir el archivo.'); }
+      setArchivo(await pedir(`${API}/mensajes/upload`, { method: 'POST', body: form }));
+    } catch (err) { setError(err.message); }
     finally { setSubiendo(false); if (fileRef.current) fileRef.current.value = ''; }
   };
 
@@ -110,26 +108,31 @@ const ClienteMensajes = ({ user }) => {
       archivo_url: archivo?.url, archivo_ruta: archivo?.ruta, archivo_nombre: archivo?.nombre,
       archivo_tipo: archivo?.tipo, _pendiente: true,
     };
+    const archivoEnviado = archivo;
+    setError(null);
     setMensajes(prev => [...prev, nuevoLocal]);
     setTexto('');
     setArchivo(null);
 
     try {
-      await fetch(`${API}/mensajes`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          cliente_id:       user?.id       || null,
-          cliente_username: user?.username || null,
-          cliente_nombre:   user?.name     || 'Cliente',
-          de:               'cliente',
-          texto:            nuevoLocal.texto,
-          archivo_url:      nuevoLocal.archivo_ruta   || null, // referencia privada (no el enlace firmado)
-          archivo_nombre:   nuevoLocal.archivo_nombre || null,
-          archivo_tipo:     nuevoLocal.archivo_tipo   || null,
-        }),
+      await pedirJSON(`${API}/mensajes`, 'POST', {
+        cliente_id:       user?.id       || null,
+        cliente_username: user?.username || null,
+        cliente_nombre:   user?.name     || 'Cliente',
+        de:               'cliente',
+        texto:            nuevoLocal.texto,
+        archivo_url:      nuevoLocal.archivo_ruta   || null, // referencia privada (no el enlace firmado)
+        archivo_nombre:   nuevoLocal.archivo_nombre || null,
+        archivo_tipo:     nuevoLocal.archivo_tipo   || null,
       });
       await cargarMensajes(true);
-    } catch { }
+    } catch (err) {
+      // No se envió: se quita el mensaje provisorio y se devuelve lo escrito
+      setMensajes(prev => prev.filter(m => m.id !== nuevoLocal.id));
+      setTexto(nuevoLocal.texto);
+      setArchivo(archivoEnviado);
+      setError(`No se pudo enviar tu mensaje: ${err.message}`);
+    }
     finally { setEnviando(false); }
   };
 

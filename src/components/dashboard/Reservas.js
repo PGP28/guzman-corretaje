@@ -4,6 +4,7 @@ import API_BASE_URL from '../../config';
 import { formatearPrecio } from '../../pages/cliente/reservaHelper';
 import './SeccionDashboard.css';
 import { formatearFecha } from '../../utils/fechas';
+import { pedir, pedirJSON } from '../../utils/api';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -35,6 +36,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
   const [horaVisita, setHoraVisita]   = useState('');
   const [nuevoDoc, setNuevoDoc]       = useState('');
   const [msg, setMsg]                 = useState('');
+  const [error, setError]             = useState('');
 
   const esCorrector = rol === 'corredor';
 
@@ -46,28 +48,23 @@ const Reservas = ({ rol = 'admin', userName }) => {
       if (esCorrector && userName) {
         url += `?corredor=${encodeURIComponent(userName)}`;
       }
-      const res = await fetch(url);
-      const data = await res.json();
-      setReservas(data);
-    } catch {
+      setReservas(await pedir(url));
+    } catch (err) {
       setReservas([]);
+      setError(`No se pudieron cargar las reservas: ${err.message}`);
     }
   };
 
   const guardarReserva = async (reservaActualizada) => {
+    setError('');
     try {
-      const res = await fetch(`${API}/reservas/${reservaActualizada.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(reservaActualizada),
-      });
-      const data = await res.json();
+      const data = await pedirJSON(`${API}/reservas/${reservaActualizada.id}`, 'PATCH', reservaActualizada);
       setSeleccionada(data);
       await cargar();
       setMsg('✅ Reserva actualizada');
       setTimeout(() => setMsg(''), 2500);
-    } catch {
-      setMsg('❌ Error al actualizar');
+    } catch (err) {
+      setError(`No se pudo actualizar la reserva: ${err.message}`);
     }
   };
 
@@ -196,6 +193,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
         </div>
 
         {msg && <div className="sd-exito">{msg}</div>}
+        {error && <div className="sd-error">{error}</div>}
 
         {/* Info propiedad */}
         <div className="sd-card active">
@@ -431,6 +429,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
       </div>
 
       {msg && <div className="sd-exito">{msg}</div>}
+      {error && <div className="sd-error">{error}</div>}
 
       {/* Filtros por etapa */}
       <div className="ep-filtros">

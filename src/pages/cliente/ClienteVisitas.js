@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API_BASE_URL from '../../config';
 import './ClientePages.css';
+import { pedir, pedirJSON } from '../../utils/api';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -46,32 +47,32 @@ const ClienteVisitas = ({ user }) => {
   const [visitas,  setVisitas]  = useState([]);
   const [cargando, setCargando] = useState(true);
   const [perfil,   setPerfil]   = useState(null);
+  const [error,    setError]    = useState('');
 
   // Cargar perfil para detectar email
   useEffect(() => {
     const token = localStorage.getItem('guzman_cliente_token');
     if (!token) return;
-    fetch(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
-      .then(r => r.json())
-      .then(data => setPerfil(data))
-      .catch(() => {});
+    pedir(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(setPerfil)
+      .catch(() => {}); // sin perfil solo no se muestra el aviso de email
   }, []);
 
   useEffect(() => {
     const id = user?.id ? `cliente_id=${user.id}` : user?.username ? `cliente_username=${user.username}` : null;
     if (!id) { setCargando(false); return; }
-    fetch(`${API}/visitas?${id}`)
-      .then(r => r.json())
-      .then(data => setVisitas(Array.isArray(data) ? data : []))
-      .catch(() => {})
+    pedir(`${API}/visitas?${id}`)
+      .then(setVisitas)
+      .catch(err => setError(`No se pudieron cargar tus visitas: ${err.message}`))
       .finally(() => setCargando(false));
   }, [user?.id]);
 
   const cancelar = async (vid) => {
+    setError('');
     try {
-      await fetch(`${API}/visitas/${vid}`, { method: 'DELETE' });
+      await pedir(`${API}/visitas/${vid}`, { method: 'DELETE' });
       setVisitas(prev => prev.map(v => v.id === vid ? { ...v, estado: 'cancelada' } : v));
-    } catch { }
+    } catch (err) { setError(`No se pudo cancelar la visita: ${err.message}`); }
   };
 
   const formatFecha = (fechaStr) => {
@@ -107,6 +108,8 @@ const ClienteVisitas = ({ user }) => {
           <span className="cp-banner-arrow">›</span>
         </div>
       )}
+
+      {error && <div className="cp-error">{error}</div>}
 
       {cargando ? (
         <SkVisitas />
@@ -151,18 +154,16 @@ const VisitaCard = ({ visita, onCancelar, formatFecha, onRespuesta }) => {
   const [respuesta,    setRespuesta]    = useState('');
   const [enviando,     setEnviando]     = useState(false);
   const [enviado,      setEnviado]      = useState(!!visita.respuesta_cliente);
+  const [errorResp,    setErrorResp]    = useState('');
 
   const enviarRespuesta = async () => {
     if (!respuesta.trim()) return;
     setEnviando(true);
+    setErrorResp('');
     try {
-      const res = await fetch(`${API}/visitas/${visita.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ respuesta_cliente: respuesta.trim(), origen: 'cliente' }),
-      });
-      if (res.ok) { setEnviado(true); setRespondiendo(false); onRespuesta?.(visita.id, respuesta.trim()); }
-    } catch { }
+      await pedirJSON(`${API}/visitas/${visita.id}`, 'PATCH', { respuesta_cliente: respuesta.trim(), origen: 'cliente' });
+      setEnviado(true); setRespondiendo(false); onRespuesta?.(visita.id, respuesta.trim());
+    } catch (err) { setErrorResp(`No se pudo enviar tu respuesta: ${err.message}`); }
     finally { setEnviando(false); }
   };
 
@@ -220,6 +221,7 @@ const VisitaCard = ({ visita, onCancelar, formatFecha, onRespuesta }) => {
                     {enviando ? 'Enviando...' : 'Enviar respuesta'}
                   </button>
                 </div>
+                {errorResp && <div className="cp-error mt-2">{errorResp}</div>}
               </>
             )}
           </div>

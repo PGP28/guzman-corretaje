@@ -4,6 +4,7 @@ import { FaUser, FaPhone, FaEnvelope, FaCheck, FaGoogle, FaTimes, FaEdit } from 
 import API_BASE_URL from '../../config';
 import './ClientePages.css';
 import './ClientePerfil.css';
+import { pedir } from '../../utils/api';
 
 const API = `${API_BASE_URL}/api`;
 const getToken = () => localStorage.getItem('guzman_cliente_token');
@@ -27,13 +28,12 @@ const PerfilForm = ({ user, onActualizar }) => {
   useEffect(() => {
     const token = getToken();
     if (!token) { setCargando(false); return; }
-    fetch(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
-      .then(r => r.json())
+    pedir(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
       .then(data => {
         setPerfil(data);
         setForm({ telefono: data.telefono || '', email: data.email || '' });
       })
-      .catch(() => setError('No se pudo cargar el perfil.'))
+      .catch(err => setError(`No se pudo cargar el perfil: ${err.message}`))
       .finally(() => setCargando(false));
   }, []);
 
@@ -70,17 +70,14 @@ const PerfilForm = ({ user, onActualizar }) => {
       if (body.email && googleToken?.email === body.email) body.google_access_token = googleToken.token;
       if (Object.keys(body).length === 0) { setEditando(false); return; }
 
-      const res  = await fetch(`${API}/auth/perfil`, {
+      await pedir(`${API}/auth/perfil`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(body),
       });
-      const data = await res.json();
-      if (!res.ok) return setError(data.error || 'Error al guardar.');
 
       // Refrescar perfil completo desde la API para obtener email_pendiente
-      const meRes  = await fetch(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } });
-      const meData = await meRes.json();
+      const meData = await pedir(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } });
       setPerfil(meData);
       setForm({ telefono: meData.telefono || '', email: meData.email || '' });
       setEditando(false);
@@ -89,7 +86,7 @@ const PerfilForm = ({ user, onActualizar }) => {
       localStorage.setItem('guzman_cliente', JSON.stringify({ ...clienteLocal, email: meData.email || clienteLocal.email }));
       onActualizar?.(meData);
       setTimeout(() => setExito(null), 5000);
-    } catch { setError('Error de conexión. Intenta de nuevo.'); }
+    } catch (err) { setError(err.message); }
     finally { setGuardando(false); }
   };
 
@@ -129,14 +126,14 @@ const PerfilForm = ({ user, onActualizar }) => {
     const token = getToken();
     setRenviando(true);
     try {
-      await fetch(`${API}/auth/perfil`, {
+      await pedir(`${API}/auth/perfil`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ email: perfil.email_pendiente }),
       });
       setReenvioEnviado(true);
       setTimeout(() => setReenvioEnviado(false), 30000);
-    } catch { setError('No se pudo reenviar el correo.'); }
+    } catch (err) { setError(`No se pudo reenviar el correo: ${err.message}`); }
     finally { setRenviando(false); }
   };
 

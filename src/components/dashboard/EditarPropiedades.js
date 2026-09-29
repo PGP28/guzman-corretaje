@@ -14,6 +14,7 @@ import API_BASE_URL from '../../config';
 import { getCorredoresActivos, getCategorias, mismoCorredor } from './corredoresHelper';
 import { SkEpItem } from '../Skeleton';
 import './SeccionDashboard.css';
+import { pedir } from '../../utils/api';
 
 const API_URL = `${API_BASE_URL}/api`;
 
@@ -98,8 +99,15 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
     });
   };
 
-  const handleEliminarImagen = (idx, img) => {
-    if (img?.id) fetch(`${API_URL}/properties/${seleccionada.id}/imagen/${img.id}`, { method: 'DELETE' }).catch(() => {});
+  const handleEliminarImagen = async (idx, img) => {
+    if (img?.id) {
+      try {
+        await pedir(`${API_URL}/properties/${seleccionada.id}/imagen/${img.id}`, { method: 'DELETE' });
+      } catch (err) {
+        setError(`No se pudo eliminar la imagen: ${err.message}`);
+        return;
+      }
+    }
     setSeleccionada(prev => ({ ...prev, imagenes: prev.imagenes.filter((_, i) => i !== idx) }));
   };
 
@@ -120,10 +128,9 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
   }, []);
 
   useEffect(() => {
-    fetch(`${API_URL}/ubicaciones`)
-      .then(r => r.json())
-      .then(data => setUbicaciones(data))
-      .catch(() => {});
+    pedir(`${API_URL}/ubicaciones`)
+      .then(setUbicaciones)
+      .catch(err => setError(`No se pudieron cargar las regiones y comunas: ${err.message}`));
   }, []);
 
   // Al abrir edición, inicializar cities y communes según la propiedad
@@ -155,8 +162,7 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
 
   const cargarPropiedades = () => {
     setCargando(true);
-    fetch(`${API_URL}/properties`)
-      .then(r => r.json())
+    pedir(`${API_URL}/properties`)
       .then(data => {
         if (esCorrector && userName) {
           setPropiedades(data.filter(p => mismoCorredor(p.corredor_asignado, userName)));
@@ -164,7 +170,7 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
           setPropiedades(data);
         }
       })
-      .catch(() => {})
+      .catch(err => setError(`No se pudieron cargar las propiedades: ${err.message}`))
       .finally(() => setCargando(false));
   };
 

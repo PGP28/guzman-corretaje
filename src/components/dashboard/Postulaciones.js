@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaDownload, FaEye, FaTrash, FaEnvelope, FaPhone, FaFilePdf, FaImage, FaFileAlt, FaTimes } from 'react-icons/fa';
 import API_BASE_URL from '../../config';
 import './SeccionDashboard.css';
+import { pedir, pedirJSON } from '../../utils/api';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -19,6 +20,7 @@ const Postulaciones = () => {
   const [confirmDel,    setConfirmDel]    = useState(null);
   const [cargando,      setCargando]      = useState(true);
   const [msg,           setMsg]           = useState('');
+  const [error,         setError]         = useState('');
   const [modalFoto,       setModalFoto]       = useState(null);
   const [mensajeExpandido, setMensajeExpandido] = useState(false);
 
@@ -32,38 +34,32 @@ const Postulaciones = () => {
   const cargar = async () => {
     setCargando(true);
     try {
-      const res  = await fetch(`${API}/postulaciones`);
-      const data = await res.json();
-      if (Array.isArray(data)) setPostulaciones(data);
-    } catch { }
+      setPostulaciones(await pedir(`${API}/postulaciones`));
+    } catch (err) { setError(`No se pudieron cargar las postulaciones: ${err.message}`); }
     finally { setCargando(false); }
   };
 
   const cambiarEstado = async (id, nuevoEstado) => {
+    setError('');
     try {
-      const res  = await fetch(`${API}/postulaciones/${id}`, {
-        method:  'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ estado: nuevoEstado }),
-      });
-      const data = await res.json();
-      if (!res.ok) return;
+      const data = await pedirJSON(`${API}/postulaciones/${id}`, 'PATCH', { estado: nuevoEstado });
       setPostulaciones(prev => prev.map(p => p.id === id ? data : p));
       if (seleccionada?.id === id) setSeleccionada(data);
       setMsg(`✅ Estado actualizado a ${ESTADOS[nuevoEstado].label}`);
       setTimeout(() => setMsg(''), 2500);
-    } catch { }
+    } catch (err) { setError(`No se pudo cambiar el estado: ${err.message}`); }
   };
 
   const eliminar = async (id) => {
+    setError('');
     try {
-      await fetch(`${API}/postulaciones/${id}`, { method: 'DELETE' });
+      await pedir(`${API}/postulaciones/${id}`, { method: 'DELETE' });
       setPostulaciones(prev => prev.filter(p => p.id !== id));
-      setConfirmDel(null);
       if (seleccionada?.id === id) setSeleccionada(null);
       setMsg('✅ Postulación eliminada');
       setTimeout(() => setMsg(''), 2500);
-    } catch { }
+    } catch (err) { setError(`No se pudo eliminar la postulación: ${err.message}`); }
+    finally { setConfirmDel(null); }
   };
 
   const formatFecha = (iso) => {
@@ -96,6 +92,7 @@ const Postulaciones = () => {
         </div>
 
         {msg && <div className="sd-exito">{msg}</div>}
+        {error && <div className="sd-error">{error}</div>}
 
         {/* Info del postulante */}
         <div className="sd-card active">
@@ -286,6 +283,7 @@ const Postulaciones = () => {
       </div>
 
       {msg && <div className="sd-exito">{msg}</div>}
+      {error && <div className="sd-error">{error}</div>}
 
       <div className="ep-filtros">
         <button className={`ep-filtro-btn ${filtroEstado === 'todas' ? 'active' : ''}`} onClick={() => setFiltroEstado('todas')}>

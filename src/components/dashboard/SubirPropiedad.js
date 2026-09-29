@@ -18,6 +18,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import API_BASE_URL from '../../config';
 import './SeccionDashboard.css';
+import { pedir } from '../../utils/api';
 import { getCategorias } from './corredoresHelper';
 
 const API_URL = `${API_BASE_URL}/api`;
@@ -116,10 +117,9 @@ const SubirPropiedad = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`${API_URL}/ubicaciones`)
-      .then(r => r.json())
-      .then(data => setUbicaciones(data))
-      .catch(() => {});
+    pedir(`${API_URL}/ubicaciones`)
+      .then(setUbicaciones)
+      .catch(err => setError(`No se pudieron cargar las regiones y comunas: ${err.message}`));
   }, []);
 
   const handleRegionChange = (e) => {

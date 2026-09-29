@@ -89,7 +89,7 @@ const GestionCorredores = () => {
       const res = await axios.patch(`${API}/corredores/${u.id}`, { activo: !u.activo });
       setUsuarios(prev => prev.map(x => x.id === u.id ? res.data : x));
       mostrarExito(`${u.nombre} ${res.data.activo ? 'activado' : 'suspendido'}.`);
-    } catch { setError('Error al cambiar estado.'); }
+    } catch (err) { setError(err.response?.data?.error || 'Error al cambiar estado.'); }
   };
 
   // Toggle rol
@@ -99,7 +99,7 @@ const GestionCorredores = () => {
       const res = await axios.patch(`${API}/corredores/${u.id}`, { rol: nuevoRol });
       setUsuarios(prev => prev.map(x => x.id === u.id ? res.data : x));
       mostrarExito(`Rol de ${u.nombre} cambiado a ${nuevoRol}.`);
-    } catch { setError('Error al cambiar rol.'); }
+    } catch (err) { setError(err.response?.data?.error || 'Error al cambiar rol.'); }
   };
 
   // Eliminar corredor
@@ -109,7 +109,7 @@ const GestionCorredores = () => {
       setUsuarios(prev => prev.filter(u => u.id !== id));
       setConfirmDelete(null);
       mostrarExito('Corredor eliminado.');
-    } catch { setError('Error al eliminar corredor.'); }
+    } catch (err) { setError(err.response?.data?.error || 'Error al eliminar corredor.'); }
   };
 
   const activos    = usuarios.filter(u => u.activo).length;

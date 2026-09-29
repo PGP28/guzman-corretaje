@@ -4,6 +4,7 @@ import API_BASE_URL from '../../config';
 import './SeccionDashboard.css';
 import './Solicitudes.css';
 import { mismoCorredor } from './corredoresHelper';
+import { pedir, pedirJSON } from '../../utils/api';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -21,17 +22,20 @@ const Solicitudes = ({ rol = 'admin', userName }) => {
   const [seleccionada, setSeleccionada] = useState(null);
   const [corredor, setCorredor]         = useState('');
 
+  const [error, setError]               = useState('');
+
   const cargar = async () => {
     setCargando(true);
     try {
-      const res = await fetch(`${API}/solicitudes`);
-      const data = await res.json();
-      if (esCorrector && userName) {
-        setSolicitudes(data.filter(s => mismoCorredor(s.corredor, userName)));
-      } else {
-        setSolicitudes(data);
-      }
-    } catch { setSolicitudes([]); }
+      const data = await pedir(`${API}/solicitudes`);
+      setSolicitudes(esCorrector && userName
+        ? data.filter(s => mismoCorredor(s.corredor, userName))
+        : data);
+      setError('');
+    } catch (err) {
+      setSolicitudes([]);
+      setError(`No se pudieron cargar las solicitudes: ${err.message}`);
+    }
     finally { setCargando(false); }
   };
 
@@ -39,35 +43,27 @@ const Solicitudes = ({ rol = 'admin', userName }) => {
 
   const handleCambiarEstado = async (id, nuevoEstado) => {
     try {
-      await fetch(`${API}/solicitudes/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ estado: nuevoEstado }),
-      });
+      await pedirJSON(`${API}/solicitudes/${id}`, 'PATCH', { estado: nuevoEstado });
       await cargar();
-    } catch {}
+    } catch (err) { setError(`No se pudo cambiar el estado: ${err.message}`); }
   };
 
   const handleAsignar = async (id) => {
     if (!corredor.trim()) return;
     try {
-      await fetch(`${API}/solicitudes/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ corredor: corredor.trim(), estado: 'en_atencion' }),
-      });
+      await pedirJSON(`${API}/solicitudes/${id}`, 'PATCH', { corredor: corredor.trim(), estado: 'en_atencion' });
       setCorredor('');
       setSeleccionada(null);
       await cargar();
-    } catch {}
+    } catch (err) { setError(`No se pudo asignar la solicitud: ${err.message}`); }
   };
 
   const handleEliminar = async (id) => {
     try {
-      await fetch(`${API}/solicitudes/${id}`, { method: 'DELETE' });
+      await pedir(`${API}/solicitudes/${id}`, { method: 'DELETE' });
       if (seleccionada?.id === id) setSeleccionada(null);
       await cargar();
-    } catch {}
+    } catch (err) { setError(`No se pudo eliminar la solicitud: ${err.message}`); }
   };
 
   const filtradas = filtro === 'todas'
@@ -116,6 +112,8 @@ const Solicitudes = ({ rol = 'admin', userName }) => {
           </button>
         ))}
       </div>
+
+      {error && <div className="sd-error">{error}</div>}
 
       {/* Lista */}
       {cargando ? (

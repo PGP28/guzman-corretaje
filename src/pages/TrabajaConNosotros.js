@@ -17,6 +17,7 @@ const TrabajaConNosotros = () => {
   const [enviando, setEnviando] = useState(false);
   const [enviado, setEnviado]   = useState(false);
   const [error, setError]       = useState('');
+  const [acepta, setAcepta]     = useState(false);
 
   const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -39,6 +40,10 @@ const TrabajaConNosotros = () => {
       setError('Debes adjuntar CV, foto y carta de presentación.');
       return;
     }
+    if (!acepta) {
+      setError('Debes aceptar la Política de Privacidad para enviar tu postulación.');
+      return;
+    }
     setEnviando(true);
     setError('');
 
@@ -52,6 +57,7 @@ const TrabajaConNosotros = () => {
       body.append('cv',       cv);
       body.append('foto',     foto);
       body.append('carta',    carta);
+      body.append('acepta_privacidad', 'true');
 
       const res = await fetch(`${API_BASE_URL}/api/postulaciones`, {
         method: 'POST',
@@ -245,6 +251,14 @@ const TrabajaConNosotros = () => {
                 />
               </label>
             </div>
+
+            <label className="trabajo-privacidad">
+              <input type="checkbox" checked={acepta} onChange={e => setAcepta(e.target.checked)} />
+              <span>
+                Acepto la <a href="/privacidad" target="_blank" rel="noopener noreferrer">Política de Privacidad</a> y
+                autorizo el uso de mis datos, CV y foto para evaluar mi postulación. Se conservan por 24 meses.
+              </span>
+            </label>
 
             {error && <div className="trabajo-error">⚠️ {error}</div>}
 

@@ -11,6 +11,7 @@ import ClientePropiedadDetalle from './ClientePropiedadDetalle';
 import ClienteReservaDetalle from './ClienteReservaDetalle';
 import ClienteVisitas from './ClienteVisitas';
 import ClientePerfil from './ClientePerfil';
+import AvisoPrivacidad from './AvisoPrivacidad';
 import './ClienteLayout.css';
 
 const NAV_ITEMS = [
@@ -54,6 +55,7 @@ const ClienteLayout = ({ user, onLogout }) => {
   return (
     <div className={`cl-layout ${collapsed ? 'collapsed' : ''}`}>
       {mobileOpen && <div className="cl-overlay" onClick={() => setMobileOpen(false)} />}
+      <AvisoPrivacidad onLogout={onLogout} />
 
       {/* Sidebar */}
       <aside className={`cl-sidebar ${mobileOpen ? 'mobile-open' : ''}`}>

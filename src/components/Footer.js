@@ -98,6 +98,7 @@ const Footer = () => (
       <Container fluid className="px-3 px-md-5">
         <p className="footer-copyright-text">
           © {new Date().getFullYear()} - GUZMAN Corretaje | Agentes inmobiliarios en Chile | Todos los derechos reservados.
+          {' | '}<a href="/privacidad" className="footer-copyright-link">Política de Privacidad</a>
         </p>
       </Container>
     </div>

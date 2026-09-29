@@ -24,6 +24,7 @@ const PerfilForm = ({ user, onActualizar }) => {
   const [eliminando,       setEliminando]       = useState(false);
   const [eliminacionError, setEliminacionError] = useState(null);
   const [eliminacionSolicitada, setEliminacionSolicitada] = useState(false);
+  const [descargando,      setDescargando]      = useState(false);
 
   useEffect(() => {
     const token = getToken();
@@ -119,6 +120,21 @@ const PerfilForm = ({ user, onActualizar }) => {
       }
     } catch { setEliminacionError('Error de conexión. Intenta de nuevo.'); }
     finally { setEliminando(false); }
+  };
+
+  // Derecho de acceso y portabilidad (Ley 21.719): todos tus datos en un archivo JSON
+  const descargarDatos = async () => {
+    setDescargando(true); setError(null);
+    try {
+      const datos = await pedir(`${API}/auth/mis-datos`, { headers: { Authorization: `Bearer ${getToken()}` } });
+      const url = URL.createObjectURL(new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json' }));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'mis-datos-corretaje-guzman.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) { setError(`No se pudieron descargar tus datos: ${err.message}`); }
+    finally { setDescargando(false); }
   };
 
   const reenviarVerificacion = async () => {
@@ -259,6 +275,18 @@ const PerfilForm = ({ user, onActualizar }) => {
           <div className="cpf-beneficio"><span className="cpf-beneficio-icon">📹</span><div><strong>Gmail y Google Meet</strong><p>Si prefieres reunión virtual, tu corredor puede enviarte una invitación a Google Meet directamente a tu Gmail.</p></div></div>
           <div className="cpf-beneficio"><span className="cpf-beneficio-icon">🔒</span><div><strong>Privacidad garantizada</strong><p>Tu información solo es visible para tu corredor asignado. Nunca se comparte con terceros.</p></div></div>
         </div>
+      </div>
+
+      {/* Tus datos (Ley 21.719) */}
+      <div className="cpf-card">
+        <h4 className="cpf-card-titulo">🔐 Tus datos</h4>
+        <p className="cpf-danger-desc" style={{ color: '#666' }}>
+          Descarga una copia de toda la información que tenemos sobre ti (cuenta, visitas, reservas, pagos y mensajes).
+          Revisa cómo la usamos en nuestra <a href="/privacidad" target="_blank" rel="noopener noreferrer">Política de Privacidad</a>.
+        </p>
+        <button className="cpf-btn-guardar" onClick={descargarDatos} disabled={descargando}>
+          {descargando ? 'Preparando…' : '⬇ Descargar mis datos'}
+        </button>
       </div>
 
       {/* Zona peligrosa */}

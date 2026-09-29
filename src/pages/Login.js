@@ -30,7 +30,7 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
   const [subTab, setSubTab] = useState('login');
 
   const [loginData, setLoginData] = useState({ username: '', password: '' });
-  const [regData,   setRegData]   = useState({ username: '', nombre: '', password: '', confirmar: '', email: '', telefono: '' });
+  const [regData,   setRegData]   = useState({ username: '', nombre: '', password: '', confirmar: '', email: '', telefono: '', acepta: false });
   const [recuperarEmail, setRecuperarEmail] = useState('');
   const [recuperarMsg,   setRecuperarMsg]   = useState(null);
   const [verPwd,    setVerPwd]    = useState(false);
@@ -68,6 +68,7 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
     if (regData.password !== regData.confirmar) return setError('Las contraseñas no coinciden');
     if (regData.password.length < 8 || !/[A-Za-z]/.test(regData.password) || !/\d/.test(regData.password))
       return setError('La contraseña debe tener al menos 8 caracteres, con letras y números');
+    if (!regData.acepta) return setError('Debes aceptar la Política de Privacidad para crear tu cuenta');
     setCargando(true);
     try {
       const res  = await fetch(`${API}/auth/register`, {
@@ -78,6 +79,7 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
           password: regData.password,
           email:    regData.email.trim()    || undefined,
           telefono: regData.telefono.trim() || undefined,
+          acepta_privacidad: regData.acepta,
         }),
       });
       const data = await res.json();
@@ -110,7 +112,8 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
     try {
       const res = await fetch(`${API}/auth/google`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ credential: credentialResponse.credential }),
+        // El aviso bajo el botón de Google informa que al continuar se acepta la política
+        body: JSON.stringify({ credential: credentialResponse.credential, acepta_privacidad: true }),
       });
       const data = await res.json();
       if (!res.ok) return setError(data.error || 'Error con Google');
@@ -250,6 +253,9 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
                       <GoogleLogin onSuccess={handleGoogleCliente} onError={() => setError('Error al iniciar sesión con Google.')}
                         theme="outline" size="large" width="300" text="signin_with" locale="es" />
                     </div>
+                    <p className="login-privacidad-aviso">
+                      Al continuar con Google aceptas nuestra <a href="/privacidad" target="_blank" rel="noopener noreferrer">Política de Privacidad</a>.
+                    </p>
                   </>
                 )}
 
@@ -306,6 +312,14 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
                           onChange={e => setRegData(p => ({ ...p, telefono: e.target.value }))}
                           className="login-input" autoComplete="tel" />
                       </div>
+                      <label className="login-privacidad-check">
+                        <input type="checkbox" checked={regData.acepta}
+                          onChange={e => setRegData(p => ({ ...p, acepta: e.target.checked }))} />
+                        <span>
+                          Acepto la <a href="/privacidad" target="_blank" rel="noopener noreferrer">Política de Privacidad</a> y
+                          el tratamiento de mis datos para gestionar mi cuenta y mis reservas.
+                        </span>
+                      </label>
                       <p className="login-switch-hint">
                         ¿Ya tienes cuenta?{' '}
                         <button type="button" className="login-link" onClick={() => cambiarSubTab('login')}>Inicia sesión</button>
@@ -322,6 +336,9 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
                       <GoogleLogin onSuccess={handleGoogleCliente} onError={() => setError('Error al conectar con Google.')}
                         theme="outline" size="large" width="300" text="signup_with" locale="es" />
                     </div>
+                    <p className="login-privacidad-aviso">
+                      Al continuar con Google aceptas nuestra <a href="/privacidad" target="_blank" rel="noopener noreferrer">Política de Privacidad</a>.
+                    </p>
                   </>
                 )}
                 {/* RECUPERAR */}

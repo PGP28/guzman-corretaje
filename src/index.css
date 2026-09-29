@@ -73,3 +73,7 @@ html, body {
 
 .card-nav-btn--left { left: 8px; }
 .card-nav-btn--right { right: 8px; }
+
+/* Aviso de Política de Privacidad bajo los formularios (Ley 21.719) */
+.aviso-privacidad { font-size: 12px; color: #888; margin: 10px 0 0; line-height: 1.5; }
+.aviso-privacidad a { color: #5529aa; font-weight: 600; }

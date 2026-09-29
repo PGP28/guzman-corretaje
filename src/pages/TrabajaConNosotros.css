@@ -262,3 +262,8 @@
 @media (max-width: 991px) {
   .trabajo-info-card { position: relative; top: 0; }
 }
+
+/* Política de Privacidad (Ley 21.719) */
+.trabajo-privacidad { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: #555; margin: 8px 0 14px; line-height: 1.5; cursor: pointer; }
+.trabajo-privacidad input { margin-top: 3px; accent-color: #5529aa; flex-shrink: 0; }
+.trabajo-privacidad a { color: #5529aa; font-weight: 600; }

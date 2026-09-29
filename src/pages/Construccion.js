@@ -144,6 +144,10 @@ function Construccion() {
                     <button type="submit" className="const-btn-submit w-100">
                       Enviar solicitud por WhatsApp
                     </button>
+                    <p className="aviso-privacidad">
+                      Al enviar aceptas que usemos tus datos para responder tu solicitud, según nuestra{' '}
+                      <a href="/privacidad" target="_blank" rel="noopener noreferrer">Política de Privacidad</a>.
+                    </p>
                   </Form>
                 )}
               </div>

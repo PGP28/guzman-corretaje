@@ -236,3 +236,6 @@
     line-height: 1.5;
   }
 }
+
+.footer-copyright-link { color: inherit; text-decoration: underline; }
+.footer-copyright-link:hover { color: #fff; }

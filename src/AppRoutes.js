@@ -6,6 +6,7 @@ import SessionExpiredModal from './components/SessionExpiredModal';
 import Home from './pages/Home';
 import QuieroVender from './pages/QuieroVender';
 import Contactanos from './pages/Contactanos';
+import PoliticaPrivacidad from './pages/PoliticaPrivacidad';
 import Construccion from './pages/Construccion';
 import TrabajaConNosotros from './pages/TrabajaConNosotros';
 import NavigationBar from './components/Navbar';
@@ -45,6 +46,7 @@ const AppContent = ({ user, onLoginCorredor, onLogout, onRenovarCorredor, client
           <Route path="/Oficinas" element={<Oficinas />} />
           <Route path="/QuieroVender" element={<QuieroVender />} />
           <Route path="/Contactanos" element={<Contactanos />} />
+          <Route path="/privacidad" element={<PoliticaPrivacidad />} />
           <Route path="/Construccion" element={<Construccion />} />
           <Route path="/TrabajaConNosotros" element={<TrabajaConNosotros />} />
           <Route path="/DetallesPropiedades" element={<DetallesPropiedades />} />

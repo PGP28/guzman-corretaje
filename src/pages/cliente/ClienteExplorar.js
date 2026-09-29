@@ -4,7 +4,7 @@ import { FaSearch, FaArrowLeft } from 'react-icons/fa';
 import { obtenerPropiedades } from '../../propiedadesApi';
 import { SkPropCard } from '../../components/Skeleton';
 import './ClientePages.css';
-import { SIN_IMAGEN } from '../../utils/propiedad';
+import FotosTarjeta from '../../components/FotosTarjeta';
 
 const ClienteExplorar = () => {
   const navigate = useNavigate();
@@ -81,11 +81,7 @@ const ClienteExplorar = () => {
         <div className="cp-props-grid">
           {filtered.map(p => (
             <div key={p.id} className="cp-prop-card" onClick={() => navigate(`/cliente/propiedad/${p.id}`, { state: { propiedad: p } })}>
-              <img
-                src={p.imagenes?.[0]?.url || p.imagenes?.[0] || SIN_IMAGEN}
-                alt={p.nombre}
-                className="cp-prop-img"
-              />
+              <FotosTarjeta imagenes={p.imagenes} alt={p.nombre} className="cp-prop-fotos" imgClassName="cp-prop-img" />
               <div className="cp-prop-body">
                 <span className="cp-prop-cat">{p.categoria}</span>
                 <h4 className="cp-prop-nombre">{p.nombre}</h4>

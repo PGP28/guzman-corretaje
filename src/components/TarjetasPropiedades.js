@@ -1,26 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useUF } from '../hooks/useUF';
 import './TarjetasPropiedades.css';
-import { tieneValor, SIN_IMAGEN } from '../utils/propiedad';
+import { tieneValor } from '../utils/propiedad';
+import FotosTarjeta from './FotosTarjeta';
 
 function PropiedadCard({ propiedad }) {
-  const [imagenIndex, setImagenIndex] = useState(0);
   const navigate = useNavigate();
   const { ufACLP } = useUF();
-
-  const imagenes = (propiedad.imagenes || []).map(i => i?.url || i);
-
-  const siguienteImagen = (e) => {
-    e.stopPropagation();
-    setImagenIndex((prev) => (prev === imagenes.length - 1 ? 0 : prev + 1));
-  };
-
-  const anteriorImagen = (e) => {
-    e.stopPropagation();
-    setImagenIndex((prev) => (prev === 0 ? imagenes.length - 1 : prev - 1));
-  };
 
   const handleClick = () => {
     navigate(`/propiedad/${propiedad.id}`, { state: { propiedad } });
@@ -41,31 +29,13 @@ function PropiedadCard({ propiedad }) {
 
   return (
     <Card className="tarjeta-propiedad" onClick={handleClick}>
-      {/* Imagen con carousel */}
-      <div className={`tarjeta-img-wrapper ${(propiedad.estado && propiedad.estado !== 'disponible') ? 'no-disponible' : ''}`}>
-        <img
-          src={imagenes[imagenIndex] || SIN_IMAGEN}
-          alt={propiedad.nombre}
-          className="tarjeta-img"
-          loading="lazy"
-        />
-
-        {/* Botones de navegación */}
-        {imagenes.length > 1 && (
-          <>
-            <button className="tarjeta-nav tarjeta-nav--left" onClick={anteriorImagen}>
-              <svg width="10" height="18" viewBox="0 0 10 18" fill="none">
-                <path d="M9 1L1 9L9 17" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            <button className="tarjeta-nav tarjeta-nav--right" onClick={siguienteImagen}>
-              <svg width="10" height="18" viewBox="0 0 10 18" fill="none">
-                <path d="M1 1L9 9L1 17" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-          </>
-        )}
-
+      {/* Fotos con flechas (carga de antemano la anterior y la siguiente) */}
+      <FotosTarjeta
+        imagenes={propiedad.imagenes}
+        alt={propiedad.nombre}
+        className={`tarjeta-img-wrapper ${(propiedad.estado && propiedad.estado !== 'disponible') ? 'no-disponible' : ''}`}
+        imgClassName="tarjeta-img"
+      >
         {/* Badge de categoría */}
         {propiedad.categoria && (
           <span className="tarjeta-badge">{propiedad.categoria}</span>
@@ -82,19 +52,7 @@ function PropiedadCard({ propiedad }) {
             {propiedad.estado === 'arrendada' ? '🔒 Arrendada' : '✅ Vendida'}
           </span>
         )}
-
-        {/* Indicadores de imagen */}
-        {imagenes.length > 1 && (
-          <div className="tarjeta-dots">
-            {imagenes.map((_, i) => (
-              <span
-                key={i}
-                className={`tarjeta-dot ${i === imagenIndex ? 'tarjeta-dot--active' : ''}`}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+      </FotosTarjeta>
 
       {/* Cuerpo de la tarjeta */}
       <Card.Body className="tarjeta-body">

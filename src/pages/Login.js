@@ -183,6 +183,10 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
         <div className="login-right">
           <div className="login-card">
 
+            <button className="login-btn-home" onClick={() => navigate('/')}>
+              <FaArrowLeft className="me-2" /> Volver al sitio web
+            </button>
+
             {/* Tabs principales */}
             <div className="login-tabs">
               <button className={`login-tab ${tab === 'cliente'  ? 'active' : ''}`} onClick={() => cambiarTab('cliente')}>
@@ -377,10 +381,6 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
                 <p className="login-info">Solo cuentas autorizadas por Guzmán Corretaje pueden acceder al panel.</p>
               </>
             )}
-
-            <button className="login-btn-home" onClick={() => navigate('/')}>
-              <FaArrowLeft className="me-2" /> Volver al sitio web
-            </button>
 
           </div>
         </div>

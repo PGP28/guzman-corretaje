@@ -1025,3 +1025,6 @@
   .cp-banner > div p { font-size: 12px; }
   .cp-banner-arrow { display: none; }
 }
+
+/* Fotos de las tarjetas de propiedad (flechas y puntos: components/FotosTarjeta) */
+.cp-prop-fotos { position: relative; overflow: hidden; background: #f0ebff; }

@@ -10,8 +10,9 @@
  *  - ufACLP: fn(montoUF) → string | null
  *  - cssPrefix: 'detalles' (público) | 'cp' (portal)  — controla las clases CSS
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SIN_IMAGEN } from '../utils/propiedad';
+import { precargar } from './FotosTarjeta';
 
 /* ── Skeleton ── */
 const SkSimilares = ({ cssPrefix }) => (
@@ -42,6 +43,15 @@ const SimilarCard = ({ sim, rutaBase, formatPrecio, ufACLP, cssPrefix }) => {
   const prev = (e) => { e.stopPropagation(); setImgIdx(i => i === 0 ? imgs.length - 1 : i - 1); };
   const next = (e) => { e.stopPropagation(); setImgIdx(i => i === imgs.length - 1 ? 0 : i + 1); };
 
+  // Descarga de antemano la foto anterior y la siguiente (cambio inmediato con las flechas)
+  const precargarVecinas = () => {
+    const n = imgs.length;
+    if (n < 2) return;
+    [imgs[(imgIdx + 1) % n], imgs[(imgIdx - 1 + n) % n]].forEach(i => precargar(i?.url || i));
+  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { if (imgIdx !== 0) precargarVecinas(); }, [imgIdx]);
+
   // Usamos window.location.href para forzar recarga completa del componente
   const handleClick = () => {
     window.scrollTo(0, 0);
@@ -50,7 +60,7 @@ const SimilarCard = ({ sim, rutaBase, formatPrecio, ufACLP, cssPrefix }) => {
 
   return (
     <div className={`${cssPrefix}-similar-card`} onClick={handleClick} style={{ cursor: 'pointer' }}>
-      <div className={`${cssPrefix}-similar-img-wrap`}>
+      <div className={`${cssPrefix}-similar-img-wrap`} onMouseEnter={precargarVecinas} onTouchStart={precargarVecinas}>
         <img src={imgSrc} alt={sim.nombre} />
         <span className={`${cssPrefix}-similar-badge`}>{sim.categoria}</span>
         {imgs.length > 1 && (

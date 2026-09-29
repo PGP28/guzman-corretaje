@@ -18,32 +18,31 @@ const SERVICIOS = [
 function Construccion() {
   const [formData, setFormData] = useState({ nombre: '', telefono: '', email: '', servicio: '', descripcion: '' });
   const [enviado,   setEnviado]   = useState(false);
-  const [enviando,  setEnviando]  = useState(false);
 
   const handleChange = (e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setEnviando(true);
     const msg = encodeURIComponent(
       `Hola, soy ${formData.nombre}. Solicito información sobre: ${formData.servicio}. ${formData.descripcion} Contacto: ${formData.email} / ${formData.telefono}`
     );
-    try {
-      await fetch(`${API}/solicitudes-construccion`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nombre:      formData.nombre,
-          email:       formData.email,
-          telefono:    formData.telefono,
-          servicio:    formData.servicio,
-          descripcion: formData.descripcion,
-          origen:      'Construcción',
-        }),
-      });
-    } catch { /* continuar aunque falle el guardado */ }
-    finally { setEnviando(false); }
+    // WhatsApp se abre de inmediato: si se abre después de esperar al servidor,
+    // Safari y los navegadores móviles bloquean la ventana.
     window.open(`https://wa.me/+56952389494?text=${msg}`, '_blank');
+    // La solicitud se guarda en segundo plano (keepalive: termina aunque se cambie de pestaña)
+    fetch(`${API}/solicitudes-construccion`, {
+      keepalive: true,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre:      formData.nombre,
+        email:       formData.email,
+        telefono:    formData.telefono,
+        servicio:    formData.servicio,
+        descripcion: formData.descripcion,
+        origen:      'Construcción',
+      }),
+    }).catch(() => { /* WhatsApp es el canal principal */ });
     setEnviado(true);
   };
 
@@ -142,8 +141,8 @@ function Construccion() {
                         placeholder="Describe tu proyecto o necesidad..." className="const-input"
                       />
                     </Form.Group>
-                    <button type="submit" className="const-btn-submit w-100" disabled={enviando}>
-                      {enviando ? 'Enviando...' : 'Enviar solicitud por WhatsApp'}
+                    <button type="submit" className="const-btn-submit w-100">
+                      Enviar solicitud por WhatsApp
                     </button>
                   </Form>
                 )}

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Image, Button, Form } from 'react-bootstrap';
+import { Container, Row, Col, Image, Button } from 'react-bootstrap';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useUF } from '../hooks/useUF';
-import API_BASE_URL from '../config';
 import { obtenerPropiedades, obtenerPropiedad } from '../propiedadesApi';
 import ProgramarVisita from './ProgramarVisita';
 import PropiedadSimilaresCarrusel from './PropiedadSimilaresCarrusel';
@@ -19,8 +18,6 @@ function DetallesPropiedades() {
   const [cargando,  setCargando]    = useState(!location.state?.propiedad && !!id);
   const [imagenIndex, setImagenIndex] = useState(0);
   const imagenPrincipal = propiedad?.imagenes?.[imagenIndex]?.url || propiedad?.imagenes?.[imagenIndex] || '';
-  const [formData, setFormData] = useState({ email: '', telefono: '', mensaje: '' });
-  const [enviado, setEnviado] = useState(false);
   const { ufACLP, formatUF } = useUF();
   const [similares, setSimilares] = useState([]);
   const [cargandoSimilares, setCargandoSimilares] = useState(true);
@@ -98,36 +95,6 @@ function DetallesPropiedades() {
     const num = parseFloat(limpio);
     if (isNaN(num)) return `$ ${precio}`;
     return `$ ${num.toLocaleString('es-CL')}`;
-  };
-
-  const handleFormChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    const msg = encodeURIComponent(
-      `Hola, me interesa la propiedad "${propiedad.nombre}" ubicada en ${propiedad.ubicacion}. ${formData.mensaje}`
-    );
-    // Guardar solicitud en Supabase via API
-    try {
-      await fetch(`${API_BASE_URL}/api/solicitudes`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nombre:       'Cliente interesado',
-          email:        formData.email,
-          telefono:     formData.telefono,
-          mensaje:      `Propiedad: ${propiedad.nombre} (${propiedad.ubicacion}). ${formData.mensaje}`,
-          propiedad_id: propiedad.id,
-          origen:       'Detalle propiedad',
-        }),
-      });
-    } catch (err) {
-      console.error('Error al guardar solicitud:', err);
-    }
-    window.open(`https://wa.me/+56946433583?text=${msg}`, '_blank');
-    setEnviado(true);
   };
 
   return (

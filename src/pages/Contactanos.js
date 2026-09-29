@@ -9,33 +9,32 @@ const API = `${API_BASE_URL}/api`;
 function Contactanos() {
   const [formData, setFormData] = useState({ nombre: '', email: '', telefono: '', mensaje: '' });
   const [enviado,  setEnviado]  = useState(false);
-  const [enviando, setEnviando] = useState(false);
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setEnviando(true);
     const msg = encodeURIComponent(
       `Hola, soy ${formData.nombre}. ${formData.mensaje} Mi contacto: ${formData.email} / ${formData.telefono}`
     );
-    try {
-      await fetch(`${API}/solicitudes`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nombre:   formData.nombre,
-          email:    formData.email,
-          telefono: formData.telefono,
-          mensaje:  formData.mensaje,
-          origen:   'Contáctanos',
-        }),
-      });
-    } catch { /* continuar aunque falle el guardado */ }
-    finally { setEnviando(false); }
+    // WhatsApp se abre de inmediato: si se abre después de esperar al servidor,
+    // Safari y los navegadores móviles bloquean la ventana.
     window.open(`https://wa.me/+56946433583?text=${msg}`, '_blank');
+    // La solicitud se guarda en segundo plano (keepalive: termina aunque se cambie de pestaña)
+    fetch(`${API}/solicitudes`, {
+      keepalive: true,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre:   formData.nombre,
+        email:    formData.email,
+        telefono: formData.telefono,
+        mensaje:  formData.mensaje,
+        origen:   'Contáctanos',
+      }),
+    }).catch(() => { /* WhatsApp es el canal principal */ });
     setEnviado(true);
   };
 
@@ -85,8 +84,8 @@ function Contactanos() {
                     <Form.Group className="mb-4">
                       <Form.Control as="textarea" rows={4} name="mensaje" value={formData.mensaje} onChange={handleChange} placeholder="¿En qué podemos ayudarte?" required className="contactanos-input" />
                     </Form.Group>
-                    <button type="submit" className="contactanos-btn-submit w-100" disabled={enviando}>
-                      {enviando ? 'Enviando...' : 'Enviar mensaje por WhatsApp'}
+                    <button type="submit" className="contactanos-btn-submit w-100">
+                      Enviar mensaje por WhatsApp
                     </button>
                   </Form>
                 )}

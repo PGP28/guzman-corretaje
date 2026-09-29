@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { FaBars, FaTimes, FaHome, FaUpload, FaEdit, FaUsers, FaSignOutAlt,
-         FaChevronLeft, FaUser, FaEnvelope, FaGift, FaHardHat, FaCalendarCheck, FaBriefcase, FaComments, FaCalendarAlt } from 'react-icons/fa';
+         FaChevronLeft, FaUser, FaEnvelope, FaGift, FaHardHat, FaCalendarCheck, FaBriefcase, FaComments, FaCalendarAlt, FaFileContract } from 'react-icons/fa';
 import DashboardInicio from './DashboardInicio';
 import DashboardCorredor from './DashboardCorredor';
 import SubirPropiedad from './SubirPropiedad';
@@ -15,6 +15,7 @@ import Reservas from './Reservas';
 import DashboardMensajes from './DashboardMensajes';
 import DashboardVisitas from './DashboardVisitas';
 import Postulaciones from './Postulaciones';
+import Contratos from './Contratos';
 
 import './DashboardLayout.css';
 const getNavItems = (rol) => {
@@ -23,6 +24,7 @@ const getNavItems = (rol) => {
     { id: 'editar',     label: rol === 'admin' ? 'Editar' : 'Mis propiedades', icon: <FaEdit />, path: '/dashboard/editar' },
     { id: 'visitas',    label: 'Visitas',     icon: <FaCalendarAlt />,   path: '/dashboard/visitas' },
     { id: 'reservas',   label: 'Reservas',    icon: <FaCalendarCheck />, path: '/dashboard/reservas' },
+    { id: 'contratos',  label: 'Contratos',   icon: <FaFileContract />,  path: '/dashboard/contratos' },
     { id: 'mensajes',   label: 'Mensajes',    icon: <FaComments />,      path: '/dashboard/mensajes' },
     { id: 'solicitudes',label: 'Solicitudes', icon: <FaEnvelope />,      path: '/dashboard/solicitudes' },
     { id: 'perfil',     label: 'Mi Perfil',   icon: <FaUser />,          path: '/dashboard/perfil' },
@@ -193,6 +195,7 @@ const DashboardLayout = ({ user: userProp, onLogout, onRenovar }) => {
             {/* Ambos roles */}
             <Route path="/editar"      element={<EditarPropiedades rol={rol} userEmail={user?.email} userName={user?.name} />} />
             <Route path="/reservas"    element={<Reservas rol={rol} userName={user?.name} />} />
+            <Route path="/contratos"   element={<Contratos rol={rol} />} />
             <Route path="/visitas"     element={<DashboardVisitas userName={user?.name} />} />
             <Route path="/mensajes"    element={<DashboardMensajes userName={user?.name} />} />
             <Route path="/solicitudes" element={<Solicitudes rol={rol} userName={user?.name} />} />

@@ -8,6 +8,7 @@ import { SkStatCard } from '../Skeleton';
 import './DashboardInicio.css';
 import { mismoCorredor } from './corredoresHelper';
 import { horaChile } from '../../utils/fechas';
+import AvisoContratos from './AvisoContratos';
 
 const DashboardCorreedor = ({ user }) => {
   const navigate = useNavigate();
@@ -56,6 +57,9 @@ const DashboardCorreedor = ({ user }) => {
         </div>
         {fotoMostrar && <img src={fotoMostrar} alt={user?.name} className="di-avatar" />}
       </div>
+
+      {/* Contratos de arriendo por vencer */}
+      <AvisoContratos />
 
       {/* Stats */}
       <div className="di-stats">

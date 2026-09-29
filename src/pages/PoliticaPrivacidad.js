@@ -55,6 +55,11 @@ function PoliticaPrivacidad() {
                 <td>Ejecución del servicio y obligación legal</td>
               </tr>
               <tr>
+                <td>Contratos de arriendo: nombre y datos de contacto del arrendatario y del arrendador, fechas y canon</td>
+                <td>Administrar el contrato y avisar oportunamente su vencimiento para gestionar la renovación</td>
+                <td>Ejecución del contrato de corretaje y arriendo</td>
+              </tr>
+              <tr>
                 <td>Formularios de contacto, “Quiero vender” y construcción: nombre, email, teléfono y mensaje</td>
                 <td>Responder tu solicitud</td>
                 <td>Tu consentimiento</td>
@@ -100,6 +105,7 @@ function PoliticaPrivacidad() {
           <ul>
             <li><strong>Cuenta y su información</strong>: mientras tengas la cuenta. Puedes eliminarla cuando quieras.</li>
             <li><strong>Reservas con pago</strong>: se conservan, aunque elimines tu cuenta, durante el plazo que exige la normativa tributaria y contable.</li>
+            <li><strong>Contratos de arriendo</strong>: mientras estén vigentes y luego durante el plazo que exige la normativa legal y tributaria.</li>
             <li><strong>Postulaciones laborales</strong>: 24 meses desde que se reciben.</li>
             <li><strong>Solicitudes de contacto y de construcción</strong>: 24 meses desde que se reciben.</li>
             <li><strong>Registros de acceso</strong>: 12 meses.</li>

@@ -7,6 +7,7 @@ import GraficoMetricas from './GraficoMetricas';
 import { SkStatCard, SkEstadoCard } from '../Skeleton';
 import './DashboardInicio.css';
 import { horaChile } from '../../utils/fechas';
+import AvisoContratos from './AvisoContratos';
 
 const DashboardInicio = ({ user }) => {
   const navigate = useNavigate();
@@ -62,6 +63,9 @@ const DashboardInicio = ({ user }) => {
           <img src={fotoMostrar} alt={user?.name} className="di-avatar" />
         )}
       </div>
+
+      {/* Contratos de arriendo por vencer */}
+      <AvisoContratos />
 
       {/* Stats — categorías */}
       <div className="di-stats">

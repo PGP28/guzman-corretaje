@@ -1,4 +1,3 @@
-$content = @"
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -11,6 +10,7 @@ $content = @"
 
 # production
 /build
+*.zip
 
 # misc
 .DS_Store
@@ -23,7 +23,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Archivos de datos locales
+# Archivos de datos y herramientas locales
 propiedades_guzman_completo.json
-"@
-[System.IO.File]::WriteAllText(".gitignore", $content, [System.Text.UTF8Encoding]::new($false))
+/hts-cache
+/.claude

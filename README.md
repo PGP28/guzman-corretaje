@@ -1,70 +1,46 @@
-# Getting Started with Create React App
+# Guzmán Corretaje — Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Sitio público, portal de clientes y dashboard de corredores de Guzmán Corretaje.
 
-## Available Scripts
+- **React 18** (Create React App) · React Router 7 · React Bootstrap
+- Consume la API del backend (`guzman_corretaje_backend`)
+- Login con Google (`@react-oauth/google`) y JWT emitido por el backend
 
-In the project directory, you can run:
+## Ejecutar en local
 
-### `npm start`
+```bash
+npm ci
+npm start            # http://localhost:3000
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Configuración
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+| Variable | Descripción |
+|---|---|
+| `REACT_APP_API_URL` | URL del backend. Se define en `.env` (versionado) y se incrusta al compilar. |
 
-### `npm test`
+Para apuntar a un backend local sin modificar `.env`, crear `.env.local` (no se versiona):
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+REACT_APP_API_URL=http://127.0.0.1:5000
+```
 
-### `npm run build`
+El backend debe incluir el origen del frontend en su variable `CORS_ORIGINS`.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Compilar
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+npm run build        # genera la carpeta build/
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+`build/` es un sitio estático: cualquier hosting sirve, siempre que redirija
+todas las rutas a `index.html` (la app usa rutas del lado del cliente como
+`/propiedad/40` o `/dashboard`).
 
-### `npm run eject`
+## Estructura
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- `src/pages/` — páginas públicas y portal de clientes (`pages/cliente/`)
+- `src/components/` — componentes compartidos y dashboard (`components/dashboard/`)
+- `src/utils/` — fechas y hora del servidor, reglas de visualización
+- `src/apiAuth.js` — adjunta el token a todas las llamadas al backend
+- `src/propiedadesApi.js` — listado de propiedades compartido entre páginas

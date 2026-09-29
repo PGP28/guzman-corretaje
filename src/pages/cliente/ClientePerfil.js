@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
 import { FaUser, FaPhone, FaEnvelope, FaCheck, FaGoogle, FaTimes, FaEdit } from 'react-icons/fa';
-import API_BASE_URL from '../../config';
+import API_BASE_URL, { GOOGLE_CLIENT_ID } from '../../config';
 import './ClientePages.css';
 import './ClientePerfil.css';
 import { pedir } from '../../utils/api';
@@ -325,7 +325,7 @@ const PerfilForm = ({ user, onActualizar }) => {
 };
 
 const ClientePerfil = ({ user, onActualizar }) => (
-  <GoogleOAuthProvider clientId="5209620256-ersm6c8r2umre8gopg3ntsbambvjjdpm.apps.googleusercontent.com">
+  <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
     <PerfilForm user={user} onActualizar={onActualizar} />
   </GoogleOAuthProvider>
 );

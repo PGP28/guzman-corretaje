@@ -10,6 +10,7 @@ import Testimonios from '../components/Testimonios';
 import VenderPropiedad from '../components/VenderPropiedad';
 import BuscadorHero from '../components/BuscadorHero';
 import { obtenerPropiedades } from '../propiedadesApi';
+import { enlaceWhatsApp } from '../config';
 
 
 
@@ -78,7 +79,7 @@ const Home = () => {
             </div>
             <div className="boton-contactar">
               <a
-                href="https://wa.me/+56946433583?text=Hola,%20vengo%20de%20la%20pagina%20web%20y%20me%20interesa%20saber%20m%C3%A1s%20sobre%20sus%20propiedades."
+                href={enlaceWhatsApp('Hola, vengo de la pagina web y me interesa saber más sobre sus propiedades.')}
                 target="_blank"
                 rel="noopener noreferrer"
               >

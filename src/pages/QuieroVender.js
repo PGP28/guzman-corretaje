@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Form } from 'react-bootstrap';
 import { FaHome, FaHandshake, FaChartLine, FaClock } from 'react-icons/fa';
 import logoVender from '../assets/images/LOGO_PNG-16.png';
-import API_BASE_URL from '../config';
+import API_BASE_URL, { WHATSAPP_PRINCIPAL } from '../config';
 import './QuieroVender.css';
 
 const API = `${API_BASE_URL}/api`;
@@ -29,7 +29,7 @@ function QuieroVender() {
     );
     // WhatsApp se abre de inmediato: si se abre después de esperar al servidor,
     // Safari y los navegadores móviles bloquean la ventana.
-    window.open(`https://wa.me/+56946433583?text=${msg}`, '_blank');
+    window.open(`https://wa.me/${WHATSAPP_PRINCIPAL}?text=${msg}`, '_blank');
     // La solicitud se guarda en segundo plano (keepalive: termina aunque se cambie de pestaña)
     fetch(`${API}/solicitudes`, {
       keepalive: true,

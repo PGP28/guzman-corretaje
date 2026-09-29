@@ -7,7 +7,7 @@ import ProgramarVisita from '../../components/ProgramarVisita';
 import SolicitarReserva from '../../components/SolicitarReserva';
 import PropiedadSimilaresCarrusel from '../../components/PropiedadSimilaresCarrusel';
 import './ClientePages.css';
-import { tieneValor } from '../../utils/propiedad';
+import { tieneValor, SIN_IMAGEN } from '../../utils/propiedad';
 
 const ClientePropiedadDetalle = ({ user }) => {
   const { id }       = useParams();
@@ -91,7 +91,7 @@ const ClientePropiedadDetalle = ({ user }) => {
       <div className="cp-galeria-nueva">
         <div className="cp-galeria-main-wrap">
           <img
-            src={imgActual || 'https://via.placeholder.com/800x500?text=Sin+imagen'}
+            src={imgActual || SIN_IMAGEN}
             alt={propiedad.nombre}
             className="cp-galeria-main-img"
           />

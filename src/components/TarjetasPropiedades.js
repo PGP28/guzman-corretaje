@@ -3,7 +3,7 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useUF } from '../hooks/useUF';
 import './TarjetasPropiedades.css';
-import { tieneValor } from '../utils/propiedad';
+import { tieneValor, SIN_IMAGEN } from '../utils/propiedad';
 
 function PropiedadCard({ propiedad }) {
   const [imagenIndex, setImagenIndex] = useState(0);
@@ -44,7 +44,7 @@ function PropiedadCard({ propiedad }) {
       {/* Imagen con carousel */}
       <div className={`tarjeta-img-wrapper ${(propiedad.estado && propiedad.estado !== 'disponible') ? 'no-disponible' : ''}`}>
         <img
-          src={imagenes[imagenIndex] || 'https://via.placeholder.com/367x207?text=Sin+imagen'}
+          src={imagenes[imagenIndex] || SIN_IMAGEN}
           alt={propiedad.nombre}
           className="tarjeta-img"
           loading="lazy"

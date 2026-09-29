@@ -4,6 +4,7 @@ import { FaSearch, FaArrowLeft } from 'react-icons/fa';
 import { obtenerPropiedades } from '../../propiedadesApi';
 import { SkPropCard } from '../../components/Skeleton';
 import './ClientePages.css';
+import { SIN_IMAGEN } from '../../utils/propiedad';
 
 const ClienteExplorar = () => {
   const navigate = useNavigate();
@@ -81,7 +82,7 @@ const ClienteExplorar = () => {
           {filtered.map(p => (
             <div key={p.id} className="cp-prop-card" onClick={() => navigate(`/cliente/propiedad/${p.id}`, { state: { propiedad: p } })}>
               <img
-                src={p.imagenes?.[0]?.url || p.imagenes?.[0] || 'https://via.placeholder.com/300x160?text=Sin+imagen'}
+                src={p.imagenes?.[0]?.url || p.imagenes?.[0] || SIN_IMAGEN}
                 alt={p.nombre}
                 className="cp-prop-img"
               />

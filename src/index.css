@@ -7,6 +7,13 @@
   box-sizing: border-box;
 }
 
+/* Las columnas de la grilla son contenedores posicionados (como en Bootstrap 4,
+   que el sitio cargaba antes junto a Bootstrap 5): hay elementos absolutos
+   que se ubican respecto de su columna. */
+.row > [class*="col"] {
+  position: relative;
+}
+
 html, body {
   height: 100%;
   margin: 0;

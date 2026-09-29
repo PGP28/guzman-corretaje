@@ -3,7 +3,7 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FaArrowLeft, FaUser, FaLock, FaEye, FaEyeSlash, FaPhone, FaEnvelope } from 'react-icons/fa';
 import logoNav from '../assets/images/LOGO_PNG-17_Modified.png';
-import API_BASE_URL from '../config';
+import API_BASE_URL, { GOOGLE_CLIENT_ID } from '../config';
 import './Login.css';
 
 const API = `${API_BASE_URL}/api`;
@@ -146,7 +146,7 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
   const isCliente = tab === 'cliente';
 
   return (
-    <GoogleOAuthProvider clientId="5209620256-ersm6c8r2umre8gopg3ntsbambvjjdpm.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <div className="login-page">
 
         {/* Lado izquierdo */}

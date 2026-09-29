@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+  <rect width="800" height="500" fill="#f4f0ff"/>
+  <g fill="none" stroke="#b9a6e6" stroke-width="14" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M300 250 L400 170 L500 250"/>
+    <path d="M325 232 V320 H475 V232"/>
+    <path d="M385 320 V275 H415 V320"/>
+  </g>
+  <text x="400" y="380" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#7c62c4">Sin imagen</text>
+</svg>

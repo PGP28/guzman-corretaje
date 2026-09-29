@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaInstagram, FaTiktok, FaLock, FaBriefcase } from 'react-icons/fa';
 import logo from '../assets/images/LOGO_PNG-19.png';
 import './Footer.css';
+import { enlaceWhatsApp } from '../config';
 
 const Footer = () => (
   <footer className="footer-guzman">
@@ -69,7 +70,7 @@ const Footer = () => (
             <ul className="footer-lista">
               <li className="footer-contacto-item">
                 <FaWhatsapp className="footer-icon" />
-                <a href="https://wa.me/+56946433583" target="_blank" rel="noopener noreferrer" className="footer-link">
+                <a href={enlaceWhatsApp()} target="_blank" rel="noopener noreferrer" className="footer-link">
                   +56 9 4643 3583
                 </a>
               </li>

@@ -11,6 +11,7 @@
  *  - cssPrefix: 'detalles' (público) | 'cp' (portal)  — controla las clases CSS
  */
 import React, { useState } from 'react';
+import { SIN_IMAGEN } from '../utils/propiedad';
 
 /* ── Skeleton ── */
 const SkSimilares = ({ cssPrefix }) => (
@@ -36,7 +37,7 @@ const SkSimilares = ({ cssPrefix }) => (
 const SimilarCard = ({ sim, rutaBase, formatPrecio, ufACLP, cssPrefix }) => {
   const [imgIdx, setImgIdx] = useState(0);
   const imgs   = sim.imagenes || [];
-  const imgSrc = imgs[imgIdx]?.url || imgs[imgIdx] || 'https://via.placeholder.com/400x225?text=Sin+imagen';
+  const imgSrc = imgs[imgIdx]?.url || imgs[imgIdx] || SIN_IMAGEN;
 
   const prev = (e) => { e.stopPropagation(); setImgIdx(i => i === 0 ? imgs.length - 1 : i - 1); };
   const next = (e) => { e.stopPropagation(); setImgIdx(i => i === imgs.length - 1 ? 0 : i + 1); };

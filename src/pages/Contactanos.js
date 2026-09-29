@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form } from 'react-bootstrap';
 import { FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaInstagram, FaTiktok } from 'react-icons/fa';
-import API_BASE_URL from '../config';
+import API_BASE_URL, { WHATSAPP_PRINCIPAL, enlaceWhatsApp } from '../config';
 import './Contactanos.css';
 
 const API = `${API_BASE_URL}/api`;
@@ -21,7 +21,7 @@ function Contactanos() {
     );
     // WhatsApp se abre de inmediato: si se abre después de esperar al servidor,
     // Safari y los navegadores móviles bloquean la ventana.
-    window.open(`https://wa.me/+56946433583?text=${msg}`, '_blank');
+    window.open(`https://wa.me/${WHATSAPP_PRINCIPAL}?text=${msg}`, '_blank');
     // La solicitud se guarda en segundo plano (keepalive: termina aunque se cambie de pestaña)
     fetch(`${API}/solicitudes`, {
       keepalive: true,
@@ -102,7 +102,7 @@ function Contactanos() {
                     <div className="contactanos-info-icon"><FaWhatsapp /></div>
                     <div>
                       <div className="contactanos-info-label">WhatsApp</div>
-                      <a href="https://wa.me/+56946433583" target="_blank" rel="noopener noreferrer" className="contactanos-info-valor">
+                      <a href={enlaceWhatsApp()} target="_blank" rel="noopener noreferrer" className="contactanos-info-valor">
                         +56 9 4643 3583
                       </a>
                     </div>
@@ -145,7 +145,7 @@ function Contactanos() {
 
                 {/* Botón WhatsApp directo */}
                 <a
-                  href="https://wa.me/+56946433583?text=Hola,%20vengo%20de%20la%20p%C3%A1gina%20web%20y%20quisiera%20m%C3%A1s%20informaci%C3%B3n."
+                  href={enlaceWhatsApp('Hola, vengo de la página web y quisiera más información.')}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="contactanos-btn-wa"

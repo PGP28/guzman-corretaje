@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { FaWhatsapp, FaTimes } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
 import './WhatsAppFloat.css';
+import { WHATSAPP_PRINCIPAL } from '../config';
 
-const NUMERO = '+56946433583';
+const NUMERO = WHATSAPP_PRINCIPAL;
 
 const getUrl = () => {
   const texto = '¡Hola! Les escribo desde la página web de Guzmán Corretaje.%0A%0AMe gustaría obtener más información sobre sus propiedades disponibles.%0A%0A¿Me pueden ayudar?';

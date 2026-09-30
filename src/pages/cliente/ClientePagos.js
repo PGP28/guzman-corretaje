@@ -27,6 +27,16 @@ const RESULTADOS_WEBPAY = {
   error:      { clase: 'error', texto: 'No pudimos confirmar el pago con Transbank. Si se hizo un cargo, escríbenos por Mensajes.' },
 };
 
+// Datos públicos de prueba de Transbank: solo se muestran si el backend
+// está en el ambiente de integración (no sirven para pagos reales).
+const DATOS_PRUEBA_WEBPAY = [
+  { campo: 'tarjeta', etiqueta: 'Tarjeta Visa',    valor: '4051 8856 0044 6623', copia: '4051885600446623' },
+  { campo: 'cvv',     etiqueta: 'CVV',             valor: '123' },
+  { campo: 'fecha',   etiqueta: 'Vencimiento',     valor: 'Cualquier fecha futura', sinCopia: true },
+  { campo: 'rut',     etiqueta: 'RUT (autenticación)', valor: '11.111.111-1', copia: '111111111' },
+  { campo: 'clave',   etiqueta: 'Clave',           valor: '123' },
+];
+
 // Envía al cliente al formulario seguro de Webpay (POST con token_ws)
 const irAWebpay = (url, token) => {
   const form = document.createElement('form');
@@ -55,6 +65,7 @@ const ClientePagos = ({ user }) => {
   const [enviando,    setEnviando]    = useState(false);
   const [error,       setError]       = useState(null);
   const [copiado,     setCopiado]     = useState(null);
+  const [webpayPruebas, setWebpayPruebas] = useState(false);
 
   useEffect(() => {
     Promise.all([getReservasCliente(user), obtenerDatosTransferencia().catch(() => null)])
@@ -64,6 +75,14 @@ const ClientePagos = ({ user }) => {
       })
       .finally(() => setCargando(false));
   }, [user?.id, user?.username]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ¿Webpay está en el ambiente de pruebas? (muestra las tarjetas de prueba)
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/pagos/webpay/estado`)
+      .then(r => (r.ok ? r.json() : null))
+      .then(e => setWebpayPruebas(Boolean(e?.pruebas)))
+      .catch(() => {});
+  }, []);
 
   const pendientes = reservas.filter(pagoPendiente);
   // Solo se puede pagar cuando el corredor ya definió el monto y aún no hay comprobante
@@ -274,6 +293,28 @@ const ClientePagos = ({ user }) => {
                   <p className="cp-transbank-monto">
                     Reserva: <strong>{seleccion?.propiedad_nombre}</strong> — {formatearMonto(seleccion?.monto_reserva)}
                   </p>
+                  {webpayPruebas && (
+                    <div className="cp-webpay-pruebas">
+                      <p className="cp-webpay-pruebas-titulo">🧪 Modo de pruebas — no se cobra dinero real</p>
+                      <p className="cp-webpay-pruebas-texto">Copia estos datos antes de continuar y úsalos en Transbank:</p>
+                      <div className="cp-transferencia-datos">
+                        {DATOS_PRUEBA_WEBPAY.map(d => (
+                          <div key={d.campo} className="cp-dato-row">
+                            <span className="cp-dato-label">{d.etiqueta}</span>
+                            <div className="cp-dato-valor-row">
+                              <span className="cp-dato-valor">{d.valor}</span>
+                              {!d.sinCopia && (
+                                <button type="button" className="cp-copiar-btn" aria-label={`Copiar ${d.etiqueta}`}
+                                  onClick={() => copiar(d.copia || d.valor, `prueba-${d.campo}`)}>
+                                  {copiado === `prueba-${d.campo}` ? <FaCheckCircle style={{ color: '#2e7d32' }} /> : <FaCopy />}
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                   {error && <div className="cp-error-card" style={{ margin: '8px 0' }}>⚠️ {error}</div>}
                   <button type="button" className="cp-btn-primary" onClick={handlePagarWebpay} disabled={!seleccion || enviando}>
                     {enviando ? 'Conectando con Webpay…' : `Pagar ${formatearMonto(seleccion?.monto_reserva)} con Webpay`}

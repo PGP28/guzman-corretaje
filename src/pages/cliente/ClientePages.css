@@ -1041,3 +1041,10 @@
 .cp-webpay-resultado--error { background: #fff5f5; border: 1px solid #ffcccc; color: #cc0000; }
 .cp-webpay-resultado-acciones { display: flex; gap: 8px; flex-shrink: 0; }
 .cp-btn-link { background: none; border: none; color: inherit; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 2px 4px; }
+
+/* Datos de prueba de Webpay (solo ambiente de integración) */
+.cp-webpay-pruebas { background: #fffbea; border: 1px dashed #e0b400; border-radius: 12px; padding: 12px 16px; margin: 12px 0; }
+.cp-webpay-pruebas-titulo { margin: 0 0 4px; font-weight: 700; color: #8a6d00; font-size: 14px; }
+.cp-webpay-pruebas-texto { margin: 0 0 4px; font-size: 13px; color: #666; }
+.cp-webpay-pruebas .cp-dato-row { border-bottom-color: #f3e7b3; }
+.cp-webpay-pruebas .cp-dato-row:last-child { border-bottom: none; }

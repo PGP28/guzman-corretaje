@@ -5,6 +5,7 @@ import { obtenerPropiedades } from '../../propiedadesApi';
 import { SkPropCard } from '../../components/Skeleton';
 import './ClientePages.css';
 import FotosTarjeta from '../../components/FotosTarjeta';
+import { datosTarjeta } from '../../utils/analitica';
 
 const ClienteExplorar = () => {
   const navigate = useNavigate();
@@ -80,7 +81,7 @@ const ClienteExplorar = () => {
       ) : (
         <div className="cp-props-grid">
           {filtered.map(p => (
-            <div key={p.id} className="cp-prop-card" onClick={() => navigate(`/cliente/propiedad/${p.id}`, { state: { propiedad: p } })}>
+            <div key={p.id} className="cp-prop-card" {...datosTarjeta(p, 'explorar')} onClick={() => navigate(`/cliente/propiedad/${p.id}`, { state: { propiedad: p } })}>
               <FotosTarjeta imagenes={p.imagenes} alt={p.nombre} className="cp-prop-fotos" imgClassName="cp-prop-img" />
               <div className="cp-prop-body">
                 <span className="cp-prop-cat">{p.categoria}</span>

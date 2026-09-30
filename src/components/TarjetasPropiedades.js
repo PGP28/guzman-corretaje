@@ -3,6 +3,7 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useUF } from '../hooks/useUF';
 import './TarjetasPropiedades.css';
+import { datosTarjeta } from '../utils/analitica';
 import { tieneValor } from '../utils/propiedad';
 import FotosTarjeta from './FotosTarjeta';
 
@@ -28,7 +29,7 @@ function PropiedadCard({ propiedad }) {
   };
 
   return (
-    <Card className="tarjeta-propiedad" onClick={handleClick}>
+    <Card className="tarjeta-propiedad" onClick={handleClick} {...datosTarjeta(propiedad, 'listado')}>
       {/* Fotos con flechas (carga de antemano la anterior y la siguiente) */}
       <FotosTarjeta
         imagenes={propiedad.imagenes}

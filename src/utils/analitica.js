@@ -48,9 +48,22 @@ export const iniciarAnalitica = () => {
     gtag('consent', 'update', { analytics_storage: 'granted' });
     cargarGTM();
   }
-  // Clics de contacto en cualquier parte del sitio (WhatsApp, teléfono, correo)
   document.addEventListener('click', (e) => {
-    const enlace = e.target.closest && e.target.closest('a[href]');
+    if (!e.target.closest) return;
+    // Clic en una tarjeta de propiedad (sitio público y portal del cliente).
+    // Las flechas de las fotos son botones: cambiar de foto no cuenta.
+    const tarjeta = e.target.closest('[data-propiedad-id]');
+    if (tarjeta && !e.target.closest('button')) {
+      const d = tarjeta.dataset;
+      registrarEvento('click_propiedad', {
+        propiedad_id: d.propiedadId, propiedad_nombre: d.propiedadNombre,
+        propiedad_categoria: d.propiedadCategoria, origen: d.propiedadOrigen,
+        zona: window.location.pathname.startsWith('/cliente') ? 'privada' : 'publica',
+        pagina: window.location.pathname,
+      });
+    }
+    // Clics de contacto en cualquier parte del sitio (WhatsApp, teléfono, correo)
+    const enlace = e.target.closest('a[href]');
     if (!enlace) return;
     const href = enlace.getAttribute('href') || '';
     const canal = href.includes('wa.me/') ? 'whatsapp' : href.startsWith('tel:') ? 'telefono'
@@ -58,6 +71,17 @@ export const iniciarAnalitica = () => {
     if (canal) registrarEvento('click_contacto', { canal, pagina: window.location.pathname });
   }, true);
 };
+
+/**
+ * Atributos que marcan una tarjeta de propiedad para medir sus clics
+ * (los recoge el listener global de iniciarAnalitica).
+ */
+export const datosTarjeta = (p, origen) => ({
+  'data-propiedad-id': p.id,
+  'data-propiedad-nombre': p.nombre || '',
+  'data-propiedad-categoria': p.categoria || '',
+  'data-propiedad-origen': origen,
+});
 
 /**
  * Registra un evento (p. ej. 'click_whatsapp'). Solo datos no personales:

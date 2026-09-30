@@ -13,6 +13,7 @@
 import React, { useState, useEffect } from 'react';
 import { SIN_IMAGEN } from '../utils/propiedad';
 import { precargar } from './FotosTarjeta';
+import { datosTarjeta } from '../utils/analitica';
 
 /* ── Skeleton ── */
 const SkSimilares = ({ cssPrefix }) => (
@@ -59,7 +60,7 @@ const SimilarCard = ({ sim, rutaBase, formatPrecio, ufACLP, cssPrefix }) => {
   };
 
   return (
-    <div className={`${cssPrefix}-similar-card`} onClick={handleClick} style={{ cursor: 'pointer' }}>
+    <div className={`${cssPrefix}-similar-card`} onClick={handleClick} style={{ cursor: 'pointer' }} {...datosTarjeta(sim, 'similares')}>
       <div className={`${cssPrefix}-similar-img-wrap`} onMouseEnter={precargarVecinas} onTouchStart={precargarVecinas}>
         <img src={imgSrc} alt={sim.nombre} />
         <span className={`${cssPrefix}-similar-badge`}>{sim.categoria}</span>

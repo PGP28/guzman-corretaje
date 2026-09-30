@@ -424,13 +424,13 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
                 </div>
               </div>
 
-              {/* Tour 360° */}
+              {/* Recorrido virtual (fotos 360° y/o tradicionales) */}
               <div className="sd-card active" style={{ marginTop: 16 }}>
                 <div className="sd-card-header">
                   <span className="sd-card-icon">🔄</span>
                   <div>
-                    <h3 className="sd-card-titulo">Tour 360°</h3>
-                    <p className="sd-card-subtitulo">Los cambios del tour se guardan al instante</p>
+                    <h3 className="sd-card-titulo">Recorrido virtual</h3>
+                    <p className="sd-card-subtitulo">Fotos 360° o normales por ambiente · los cambios se guardan al instante</p>
                   </div>
                 </div>
                 <div className="sd-card-body">

@@ -4,14 +4,15 @@ import './BotonTour360.css';
 // El visor (three.js) se descarga solo cuando se abre el tour
 const Tour360Modal = lazy(() => import('./Tour360Modal'));
 
-/** Botón "Ver tour 360°" para las fichas de propiedad (solo si tiene escenas). */
+/** Botón del recorrido virtual (tour 360° o fotos por ambiente) para las fichas de propiedad. */
 const BotonTour360 = ({ propiedad }) => {
   const [abierto, setAbierto] = useState(false);
   if (!propiedad?.tour_escenas) return null;
   return (
     <>
       <button type="button" className="btn-tour-360" onClick={() => setAbierto(true)}>
-        🔄 Ver tour 360° <small>({propiedad.tour_escenas} {propiedad.tour_escenas === 1 ? 'ambiente' : 'ambientes'})</small>
+        {propiedad.tour_360 ? '🔄 Ver tour 360°' : '🏠 Ver recorrido virtual'}{' '}
+        <small>({propiedad.tour_escenas} {propiedad.tour_escenas === 1 ? 'ambiente' : 'ambientes'})</small>
       </button>
       {abierto && (
         <Suspense fallback={<div className="tour-cargando">Cargando tour 360°…</div>}>

@@ -41,8 +41,10 @@ function PropiedadCard({ propiedad }) {
           <span className="tarjeta-badge">{propiedad.categoria}</span>
         )}
 
-        {/* Tiene tour 360° */}
-        {propiedad.tour_escenas > 0 && <span className="tarjeta-badge-360">360°</span>}
+        {/* Tiene recorrido virtual (360° o fotos por ambiente) */}
+        {propiedad.tour_escenas > 0 && (
+          <span className="tarjeta-badge-360">{propiedad.tour_360 ? '360°' : 'Recorrido'}</span>
+        )}
 
         {/* Código de referencia */}
         {propiedad.codigo && (

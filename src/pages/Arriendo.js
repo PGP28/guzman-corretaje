@@ -97,7 +97,11 @@ function Arriendo() {
           ) : pagItems.length > 0 ? (
             <TarjetasPropiedades propiedades={pagItems} />
           ) : (
-            <div className="text-center py-5"><p className="text-muted">No hay propiedades con los filtros seleccionados.</p></div>
+            <div className="text-center py-5"><p className="text-muted">
+              {todas.length === 0
+                ? 'Por ahora no tenemos propiedades en arriendo publicadas. Escríbenos y te avisamos cuando haya nuevas.'
+                : 'No hay propiedades con los filtros seleccionados.'}
+            </p></div>
           )}
           {totalPags > 1 && (
             <div className="paginador">

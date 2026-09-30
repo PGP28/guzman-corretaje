@@ -694,3 +694,44 @@
   .sk-ep-info { grid-area: info; }
   .sk-ep-btn  { display: none; }
 }
+
+/* ── Reservas: lista en móvil ─────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Filtros por etapa: una fila deslizable en vez de un botón por línea */
+  .ep-filtros.ep-filtros--etapas {
+    flex-direction: row; flex-wrap: nowrap; overflow-x: auto; gap: 6px;
+    padding-bottom: 4px; margin-bottom: 4px; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .ep-filtros.ep-filtros--etapas::-webkit-scrollbar { display: none; }
+  .ep-filtros--etapas .ep-filtro-btn { flex: 0 0 auto; }
+
+  /* Tarjeta: foto pequeña + datos arriba, botón a lo ancho abajo */
+  .ep-item.ep-item--reserva {
+    display: grid; grid-template-columns: 56px 1fr; align-items: start;
+    gap: 8px 12px; padding: 12px;
+  }
+  .ep-item--reserva .ep-item-img { width: 56px; height: 56px; }
+  .ep-item--reserva .ep-img-placeholder { font-size: 22px; }
+  .ep-item--reserva .ep-item-cat { white-space: normal; word-break: break-word; }
+  .ep-item--reserva .ep-item-nombre { font-size: 14px; }
+  .ep-item--reserva .ep-item-email { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ep-item--reserva .ep-item-acciones {
+    grid-column: 1 / -1; width: 100%; border-top: 1px solid #f0ebff; padding-top: 10px;
+  }
+  .ep-item--reserva .ep-btn-edit { width: 100%; justify-content: center; font-size: 13px; padding: 9px 12px; }
+}
+
+/* ── Reservas: formularios de las etapas ──────────────────────── */
+.rs-form-visita { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; margin-top: 12px; }
+.rs-form-visita-accion { align-self: end; }
+.rs-form-montos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
+.rs-form-doc { display: flex; gap: 10px; }
+@media (max-width: 575px) {
+  .rs-form-visita { grid-template-columns: 1fr 1fr; }
+  .rs-form-visita-accion { grid-column: 1 / -1; }
+  .rs-form-visita-accion .sd-btn-publish { width: 100%; justify-content: center; }
+  .rs-form-montos { grid-template-columns: 1fr; }
+  .rs-form-doc { flex-wrap: wrap; }
+  .rs-form-doc .sd-input { flex: 1 1 100% !important; }
+  .rs-form-doc .sd-btn-prev { width: 100%; justify-content: center; }
+}

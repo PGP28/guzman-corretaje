@@ -93,7 +93,11 @@ function Terrenos() {
           ) : pagItems.length > 0 ? (
             <TarjetasPropiedades propiedades={pagItems} />
           ) : (
-            <div className="text-center py-5"><p className="text-muted">No hay terrenos con los filtros seleccionados.</p></div>
+            <div className="text-center py-5"><p className="text-muted">
+              {todas.length === 0
+                ? 'Por ahora no tenemos terrenos publicados. Escríbenos y te avisamos cuando haya nuevos.'
+                : 'No hay terrenos con los filtros seleccionados.'}
+            </p></div>
           )}
           {totalPags > 1 && (
             <div className="paginador">

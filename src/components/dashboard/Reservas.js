@@ -187,7 +187,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
         <div className="sd-header">
           <div>
             <h1 className="sd-titulo">Reserva #{seleccionada.id}</h1>
-            <p className="sd-subtitulo">Cliente: {seleccionada.cliente_nombre} · {seleccionada.cliente_email}</p>
+            <p className="sd-subtitulo">Cliente: {seleccionada.cliente_nombre}{seleccionada.cliente_email ? ` · ${seleccionada.cliente_email}` : ''}</p>
           </div>
           <button className="sd-btn-prev" onClick={() => setSeleccionada(null)}>← Volver</button>
         </div>
@@ -275,7 +275,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
                   {seleccionada.visita_fecha_propuesta && (
                     <p>📤 Fecha propuesta: <strong>{formatearFecha(seleccionada.visita_fecha_propuesta)}</strong> — esperando respuesta del cliente</p>
                   )}
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: 10, marginTop: 12 }}>
+                  <div className="rs-form-visita">
                     <div>
                       <label className="sd-label">Fecha</label>
                       <input type="date" value={fechaVisita} onChange={e => setFechaVisita(e.target.value)} className="sd-input" />
@@ -284,7 +284,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
                       <label className="sd-label">Hora (opcional)</label>
                       <input type="time" value={horaVisita} onChange={e => setHoraVisita(e.target.value)} className="sd-input" />
                     </div>
-                    <div style={{ alignSelf: 'end' }}>
+                    <div className="rs-form-visita-accion">
                       <button className="sd-btn-publish" onClick={() => proponerVisita(seleccionada)}>
                         {seleccionada.visita_fecha_propuesta ? 'Reenviar propuesta' : 'Proponer fecha'}
                       </button>
@@ -324,7 +324,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
               ) : (
                 <>
                   <p>Define los montos a cobrar:</p>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, margin: '12px 0' }}>
+                  <div className="rs-form-montos">
                     <div>
                       <label className="sd-label">Monto de reserva ($)</label>
                       <input type="number" value={editMonto.reserva} onChange={e => setEditMonto(v => ({ ...v, reserva: e.target.value }))} className="sd-input" placeholder="Ej: 500000" />
@@ -375,7 +375,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
                 ))}
               </div>
 
-              <div style={{ display: 'flex', gap: 10 }}>
+              <div className="rs-form-doc">
                 <input type="text" value={nuevoDoc} onChange={e => setNuevoDoc(e.target.value)} className="sd-input" placeholder="Ej: Contrato de arriendo" style={{ flex: 1 }} />
                 <button className="sd-btn-prev" onClick={() => agregarDocumento(seleccionada)}>
                   <FaFileSignature className="me-2" /> Agregar
@@ -432,7 +432,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
       {error && <div className="sd-error">{error}</div>}
 
       {/* Filtros por etapa */}
-      <div className="ep-filtros">
+      <div className="ep-filtros ep-filtros--etapas">
         <button className={`ep-filtro-btn ${filtroEtapa === 'todas' ? 'active' : ''}`} onClick={() => setFiltroEtapa('todas')}>
           Todas ({reservas.length})
         </button>
@@ -454,7 +454,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
             const etapa = ETAPAS[r.etapa_actual] || ETAPAS.solicitud;
             const subEst = SUB_ESTADOS[r.sub_estado] || SUB_ESTADOS.pendiente;
             return (
-              <div key={r.id} className="ep-item" onClick={() => setSeleccionada(r)}>
+              <div key={r.id} className="ep-item ep-item--reserva" onClick={() => setSeleccionada(r)}>
                 <div className="ep-item-img">
                   {r.propiedad_imagen
                     ? <img src={r.propiedad_imagen} alt="" className="ep-img" />
@@ -471,7 +471,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
                     </span>
                   </div>
                   <h4 className="ep-item-nombre">👤 {r.cliente_nombre}</h4>
-                  <p className="ep-item-ubicacion">📧 {r.cliente_email}</p>
+                  {r.cliente_email && <p className="ep-item-ubicacion ep-item-email">📧 {r.cliente_email}</p>}
                   <p className="ep-item-precio" style={{ fontSize: 12, color: subEst.color, fontStyle: 'italic' }}>
                     {subEst.label}
                   </p>

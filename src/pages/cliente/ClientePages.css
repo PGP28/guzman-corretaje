@@ -607,7 +607,7 @@
   position: absolute; top: 22px; left: 50%; width: 100%;
   height: 2px; background: #e5e5e5; z-index: 1;
 }
-.cp-timeline-step--completada + .cp-timeline-step .cp-timeline-connector,
+/* Solo el tramo que sale de una etapa completada va en verde */
 .cp-timeline-step--completada .cp-timeline-connector {
   background: #2e7d32;
 }
@@ -775,13 +775,13 @@
   .cp-timeline-content { flex: 1; }
   .cp-timeline-label { font-size: 13px; }
   .cp-timeline-desc  { display: block; font-size: 11px; }
+  /* Línea vertical que une cada círculo con el siguiente (centro del ícono de 36px) */
   .cp-timeline-connector {
-    position: static;
+    position: absolute;
     width: 2px;
-    height: 20px;
-    top: auto;
+    top: 46px;                  /* bajo el ícono: 10px de padding + 36px */
+    height: calc(100% - 36px);  /* hasta el ícono del paso siguiente */
     left: 17px;
-    margin-left: 17px;
     background: #e5e5e5;
   }
   .cp-timeline-step--completada .cp-timeline-connector { background: #2e7d32; }

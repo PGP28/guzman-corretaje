@@ -1048,3 +1048,9 @@
 .cp-webpay-pruebas-texto { margin: 0 0 4px; font-size: 13px; color: #666; }
 .cp-webpay-pruebas .cp-dato-row { border-bottom-color: #f3e7b3; }
 .cp-webpay-pruebas .cp-dato-row:last-child { border-bottom: none; }
+
+/* Documentos de la etapa de firma (portal del cliente) */
+.cp-doc-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.cp-doc-descargar { background: none; border: none; padding: 0; color: #5529aa; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; align-self: flex-start; }
+.cp-doc-descargar:hover { text-decoration: underline; }
+.cp-docs-titulo { margin: 20px 0 10px; font-size: 15px; color: #3f1b86; }

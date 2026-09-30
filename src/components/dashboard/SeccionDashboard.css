@@ -729,9 +729,25 @@
 @media (max-width: 575px) {
   .rs-form-visita { grid-template-columns: 1fr 1fr; }
   .rs-form-visita-accion { grid-column: 1 / -1; }
-  .rs-form-visita-accion .sd-btn-publish { width: 100%; justify-content: center; }
+  .rs-form-visita-accion .sd-btn-publish { width: 100%; max-width: none; justify-content: center; }
   .rs-form-montos { grid-template-columns: 1fr; }
   .rs-form-doc { flex-wrap: wrap; }
   .rs-form-doc .sd-input { flex: 1 1 100% !important; }
-  .rs-form-doc .sd-btn-prev { width: 100%; justify-content: center; }
+  .rs-form-doc .sd-btn-prev { width: 100%; max-width: none; justify-content: center; }
+}
+
+/* ── Reservas: documentos de la etapa de firma ────────────────── */
+.rs-doc { background: #f9f9f9; padding: 12px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+.rs-doc-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.rs-doc-nombre { font-weight: 600; color: #333; word-break: break-word; }
+.rs-doc-link { background: none; border: none; padding: 0; color: #5529aa; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; align-self: flex-start; }
+.rs-doc-link:hover { text-decoration: underline; }
+.rs-doc-sin-pdf { color: #999; font-size: 12px; }
+.rs-doc-acciones { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.rs-doc-eliminar { background: none; border: 1px solid #f3c7c7; color: #c0392b; border-radius: 8px; padding: 7px 10px; cursor: pointer; }
+.rs-doc-eliminar:hover { background: #fdecec; }
+.rs-doc-archivo { cursor: pointer; max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin: 0; }
+@media (max-width: 575px) {
+  .rs-doc-acciones { width: 100%; }
+  .rs-doc-archivo { max-width: none; width: 100%; justify-content: center; }
 }

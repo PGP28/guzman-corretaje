@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaChevronRight, FaCalendarAlt, FaCheckCircle, FaTimesCircle, FaDollarSign, FaFileSignature } from 'react-icons/fa';
+import { FaChevronRight, FaCheckCircle, FaTimesCircle, FaDollarSign, FaFileSignature, FaFilePdf, FaTrash } from 'react-icons/fa';
 import API_BASE_URL from '../../config';
 import { formatearPrecio } from '../../pages/cliente/reservaHelper';
 import './SeccionDashboard.css';
@@ -35,6 +35,8 @@ const Reservas = ({ rol = 'admin', userName }) => {
   const [fechaVisita, setFechaVisita] = useState('');
   const [horaVisita, setHoraVisita]   = useState('');
   const [nuevoDoc, setNuevoDoc]       = useState('');
+  const [archivoDoc, setArchivoDoc]   = useState(null);
+  const [subiendoDoc, setSubiendoDoc] = useState(false);
   const [msg, setMsg]                 = useState('');
   const [error, setError]             = useState('');
 
@@ -133,29 +135,58 @@ const Reservas = ({ rol = 'admin', userName }) => {
     }, 'Pago confirmado. Avanza a firma de documentos.'));
   };
 
-  const agregarDocumento = (r) => {
-    if (!nuevoDoc.trim()) return;
-    const docs = [...(r.documentos || []), {
-      id: Date.now(),
-      nombre: nuevoDoc,
-      firmado_cliente: false,
-      firmado_dueno: false,
-    }];
-    guardarReserva(agregarHist({
-      ...r,
-      documentos: docs,
-    }, `Documento agregado: ${nuevoDoc}`));
-    setNuevoDoc('');
+  // ─── Documentos de la etapa de firma (endpoints propios; el PDF queda privado) ───
+  const accionDocumento = async (promesa, exito) => {
+    setError('');
+    try {
+      const data = await promesa;
+      setSeleccionada(data);
+      await cargar();
+      setMsg(exito);
+      setTimeout(() => setMsg(''), 2500);
+      return true;
+    } catch (err) {
+      setError(err.message);
+      return false;
+    }
   };
 
-  const toggleFirma = (r, docId, quien) => {
-    const docs = r.documentos.map(d =>
-      d.id === docId ? { ...d, [`firmado_${quien}`]: !d[`firmado_${quien}`] } : d
-    );
-    guardarReserva(agregarHist({
-      ...r,
-      documentos: docs,
-    }, `Firma de ${quien} actualizada`));
+  const agregarDocumento = async (r) => {
+    if (!nuevoDoc.trim()) return setError('Escribe el nombre del documento');
+    if (archivoDoc && archivoDoc.size > 10 * 1024 * 1024) return setError('El PDF no puede superar 10 MB');
+    const fd = new FormData();
+    fd.append('nombre', nuevoDoc.trim());
+    if (archivoDoc) fd.append('archivo', archivoDoc);
+    setSubiendoDoc(true);
+    const ok = await accionDocumento(
+      pedir(`${API}/reservas/${r.id}/documentos`, { method: 'POST', body: fd }),
+      '✅ Documento agregado y cliente avisado');
+    setSubiendoDoc(false);
+    if (ok) { setNuevoDoc(''); setArchivoDoc(null); }
+  };
+
+  const toggleFirma = (r, doc, quien) => {
+    const campo = `firmado_${quien}`;
+    accionDocumento(pedirJSON(`${API}/reservas/${r.id}/documentos/${doc.id}`, 'PATCH', { [campo]: !doc[campo] }),
+      '✅ Firma actualizada');
+  };
+
+  const eliminarDocumento = (r, doc) => {
+    if (!window.confirm(`¿Eliminar el documento "${doc.nombre}"?`)) return;
+    accionDocumento(pedir(`${API}/reservas/${r.id}/documentos/${doc.id}`, { method: 'DELETE' }),
+      '✅ Documento eliminado');
+  };
+
+  const verDocumento = async (r, doc) => {
+    // La ventana se abre antes de esperar al servidor (si no, el navegador la bloquea)
+    const ventana = window.open('', '_blank');
+    try {
+      const { url } = await pedir(`${API}/reservas/${r.id}/documentos/${doc.id}/archivo`);
+      if (ventana) ventana.location.href = url; else window.location.href = url;
+    } catch (err) {
+      ventana?.close();
+      setError(err.message);
+    }
   };
 
   const completarReserva = (r) => {
@@ -352,23 +383,44 @@ const Reservas = ({ rol = 'admin', userName }) => {
             </div>
             <div className="sd-card-body">
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
+                {!seleccionada.documentos?.length && (
+                  <p style={{ color: '#888', margin: 0 }}>
+                    Agrega los documentos que se firmarán (p. ej., contrato de arriendo o promesa de compraventa).
+                    Si adjuntas el PDF, el cliente podrá descargarlo desde su portal y recibirá un aviso por correo.
+                  </p>
+                )}
                 {seleccionada.documentos?.map(d => (
-                  <div key={d.id} style={{ background: '#f9f9f9', padding: 12, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
-                    <span>📄 {d.nombre}</span>
-                    <div style={{ display: 'flex', gap: 8 }}>
+                  <div key={d.id} className="rs-doc">
+                    <div className="rs-doc-info">
+                      <span className="rs-doc-nombre">📄 {d.nombre}</span>
+                      {d.archivo
+                        ? <button type="button" className="rs-doc-link" onClick={() => verDocumento(seleccionada, d)}>
+                            <FaFilePdf /> Ver PDF
+                          </button>
+                        : <small className="rs-doc-sin-pdf">Sin PDF adjunto</small>}
+                    </div>
+                    <div className="rs-doc-acciones">
                       <button
-                        className={`sd-btn-prev ${d.firmado_cliente ? '' : ''}`}
+                        type="button"
+                        className="sd-btn-prev"
                         style={{ background: d.firmado_cliente ? '#e8f5e9' : '#fff', color: d.firmado_cliente ? '#2e7d32' : '#666' }}
-                        onClick={() => toggleFirma(seleccionada, d.id, 'cliente')}
+                        onClick={() => toggleFirma(seleccionada, d, 'cliente')}
+                        title="Marcar si el cliente ya firmó"
                       >
                         {d.firmado_cliente ? '✅' : '⏳'} Cliente
                       </button>
                       <button
+                        type="button"
                         className="sd-btn-prev"
                         style={{ background: d.firmado_dueno ? '#e8f5e9' : '#fff', color: d.firmado_dueno ? '#2e7d32' : '#666' }}
-                        onClick={() => toggleFirma(seleccionada, d.id, 'dueno')}
+                        onClick={() => toggleFirma(seleccionada, d, 'dueno')}
+                        title="Marcar si el dueño ya firmó"
                       >
                         {d.firmado_dueno ? '✅' : '⏳'} Dueño
+                      </button>
+                      <button type="button" className="rs-doc-eliminar" onClick={() => eliminarDocumento(seleccionada, d)}
+                        aria-label={`Eliminar ${d.nombre}`} title="Eliminar documento">
+                        <FaTrash />
                       </button>
                     </div>
                   </div>
@@ -376,9 +428,14 @@ const Reservas = ({ rol = 'admin', userName }) => {
               </div>
 
               <div className="rs-form-doc">
-                <input type="text" value={nuevoDoc} onChange={e => setNuevoDoc(e.target.value)} className="sd-input" placeholder="Ej: Contrato de arriendo" style={{ flex: 1 }} />
-                <button className="sd-btn-prev" onClick={() => agregarDocumento(seleccionada)}>
-                  <FaFileSignature className="me-2" /> Agregar
+                <input type="text" value={nuevoDoc} onChange={e => setNuevoDoc(e.target.value)} className="sd-input" placeholder="Ej: Contrato de arriendo" maxLength={150} style={{ flex: 1 }} />
+                <label className="sd-btn-prev rs-doc-archivo">
+                  <FaFilePdf className="me-2" /> {archivoDoc ? archivoDoc.name : 'Adjuntar PDF (opcional)'}
+                  <input type="file" accept="application/pdf" hidden
+                    onChange={e => setArchivoDoc(e.target.files?.[0] || null)} />
+                </label>
+                <button type="button" className="sd-btn-prev" onClick={() => agregarDocumento(seleccionada)} disabled={subiendoDoc}>
+                  <FaFileSignature className="me-2" /> {subiendoDoc ? 'Subiendo…' : 'Agregar'}
                 </button>
               </div>
 

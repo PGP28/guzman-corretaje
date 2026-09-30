@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FaArrowLeft, FaCheckCircle, FaClock, FaTimes } from 'react-icons/fa';
+import { FaArrowLeft, FaCheckCircle, FaClock, FaTimes, FaFilePdf } from 'react-icons/fa';
 import {
   LISTA_ETAPAS, ETAPAS, SUB_ESTADOS,
-  obtenerReserva, accionReserva, fechaLocal, formatearPrecio, formatearMonto, calcularProgreso
+  obtenerReserva, accionReserva, fechaLocal, formatearPrecio, formatearMonto, calcularProgreso,
+  urlDocumentoReserva
 } from './reservaHelper';
 import './ClientePages.css';
 
@@ -41,6 +42,39 @@ const ClienteReservaDetalle = ({ user }) => {
       setEnviando(false);
     }
   };
+
+  const descargarDocumento = async (doc) => {
+    // La ventana se abre antes de esperar al servidor (si no, el navegador la bloquea)
+    const ventana = window.open('', '_blank');
+    try {
+      const { url } = await urlDocumentoReserva(reserva.id, doc.id);
+      if (ventana) ventana.location.href = url; else window.location.href = url;
+    } catch (err) {
+      ventana?.close();
+      setError(err.message);
+    }
+  };
+
+  const listaDocumentos = (
+    <div className="cp-docs-lista">
+      {reserva.documentos?.map(d => (
+        <div key={d.id} className="cp-doc-item">
+          <div className="cp-doc-info">
+            <span>📄 {d.nombre}</span>
+            {d.archivo && (
+              <button type="button" className="cp-doc-descargar" onClick={() => descargarDocumento(d)}>
+                <FaFilePdf /> Ver / descargar PDF
+              </button>
+            )}
+          </div>
+          <div className="cp-doc-estado">
+            {d.firmado_cliente ? '✅' : '⏳'} Tú ·
+            {d.firmado_dueno ? ' ✅' : ' ⏳'} Dueño
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 
   const handleAceptarVisita   = () => ejecutar('confirmar_visita');
   const handleRechazarVisita  = () => ejecutar('rechazar_visita');
@@ -191,21 +225,13 @@ const ClienteReservaDetalle = ({ user }) => {
           {/* ── ETAPA 4: FIRMA ── */}
           {reserva.etapa_actual === 'firma' && (
             <>
-              <p>El pago fue confirmado. Ahora debes firmar los documentos legales junto con el propietario.</p>
-              {reserva.documentos?.length > 0 ? (
-                <div className="cp-docs-lista">
-                  {reserva.documentos.map(d => (
-                    <div key={d.id} className="cp-doc-item">
-                      <span>📄 {d.nombre}</span>
-                      <div className="cp-doc-estado">
-                        {d.firmado_cliente ? '✅' : '⏳'} Tú ·
-                        {d.firmado_dueno ? ' ✅' : ' ⏳'} Dueño
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p>El corredor está preparando los documentos.</p>
+              <p>
+                El pago fue confirmado. Ahora se firman los documentos legales junto con el propietario.
+                Revisa cada documento con calma; tu corredor te contactará para coordinar la firma
+                (presencial o en notaría) y aquí verás cuándo quede firmado por cada parte.
+              </p>
+              {reserva.documentos?.length > 0 ? listaDocumentos : (
+                <p>Tu corredor está preparando los documentos. Te avisaremos por correo cuando estén listos.</p>
               )}
             </>
           )}
@@ -216,6 +242,12 @@ const ClienteReservaDetalle = ({ user }) => {
               🎉 <h2>¡Proceso completado!</h2>
               <p>Tu reserva de {reserva.propiedad_nombre} fue finalizada exitosamente.</p>
             </div>
+          )}
+          {reserva.etapa_actual === 'completada' && reserva.documentos?.some(d => d.archivo) && (
+            <>
+              <h4 className="cp-docs-titulo">Tus documentos</h4>
+              {listaDocumentos}
+            </>
           )}
         </div>
       </div>

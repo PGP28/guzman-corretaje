@@ -1,7 +1,12 @@
 // Helper centralizado para gestión del flujo de reservas (5 etapas)
 import API_BASE_URL from '../../config';
+import { pedir } from '../../utils/api';
 
 const API = `${API_BASE_URL}/api`;
+
+/** Enlace temporal (privado) para descargar un documento de la etapa de firma. */
+export const urlDocumentoReserva = (reservaId, docId) =>
+  pedir(`${API}/reservas/${reservaId}/documentos/${docId}/archivo`);
 
 export const ETAPAS = {
   solicitud: {

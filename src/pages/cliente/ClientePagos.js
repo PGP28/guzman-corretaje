@@ -25,6 +25,7 @@ const RESULTADOS_WEBPAY = {
   rechazado:  { clase: 'error', texto: 'El pago fue rechazado. Puedes intentarlo nuevamente con otra tarjeta o pagar por transferencia.' },
   anulado:    { clase: 'aviso', texto: 'Anulaste el pago en Webpay. No se realizó ningún cargo; puedes intentarlo cuando quieras.' },
   error:      { clase: 'error', texto: 'No pudimos confirmar el pago con Transbank. Si se hizo un cargo, escríbenos por Mensajes.' },
+  no_disponible: { clase: 'aviso', texto: 'Otro cliente reservó esta propiedad mientras pagabas. No se realizó ningún cargo; tu corredor te contactará para ver otras opciones.' },
 };
 
 // Datos públicos de prueba de Transbank: solo se muestran si el backend

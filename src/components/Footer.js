@@ -4,6 +4,8 @@ import { FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaInstagram, FaTikt
 import logo from '../assets/images/LOGO_PNG-19.png';
 import './Footer.css';
 import { enlaceWhatsApp } from '../config';
+import { GTM_ID } from '../utils/analitica';
+import { EVENTO_ABRIR_PREFERENCIAS } from './AvisoCookies';
 
 const Footer = () => (
   <footer className="footer-guzman">
@@ -99,6 +101,15 @@ const Footer = () => (
         <p className="footer-copyright-text">
           © {new Date().getFullYear()} - GUZMAN Corretaje | Agentes inmobiliarios en Chile | Todos los derechos reservados.
           {' | '}<a href="/privacidad" className="footer-copyright-link">Política de Privacidad</a>
+          {GTM_ID && (
+            <>
+              {' | '}
+              <button type="button" className="footer-copyright-link footer-cookies-btn"
+                onClick={() => window.dispatchEvent(new Event(EVENTO_ABRIR_PREFERENCIAS))}>
+                Preferencias de cookies
+              </button>
+            </>
+          )}
         </p>
       </Container>
     </div>

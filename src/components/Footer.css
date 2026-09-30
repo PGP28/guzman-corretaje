@@ -239,3 +239,4 @@
 
 .footer-copyright-link { color: inherit; text-decoration: underline; }
 .footer-copyright-link:hover { color: #fff; }
+.footer-cookies-btn { background: none; border: none; padding: 0; font: inherit; cursor: pointer; }

@@ -5,6 +5,7 @@ import API_BASE_URL from '../config';
 import './ProgramarVisita.css';
 import { hoyChile, sumarDias, diaSemana } from '../utils/fechas';
 import { sincronizarHora } from '../utils/horaServidor';
+import { registrarEvento } from '../utils/analitica';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -130,6 +131,7 @@ const ProgramarVisita = ({ propiedad, cliente, enPortalCliente = false }) => {
       const data = await res.json();
       if (!res.ok) return setError(data.error || 'Error al agendar');
       setEnviado(true);
+      registrarEvento('visita_agendada', { propiedad_id: propiedad?.id });
     } catch {
       setError('Error de conexión. Intenta de nuevo.');
     } finally {

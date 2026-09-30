@@ -1,5 +1,6 @@
 import React, { Suspense, lazy, useState } from 'react';
 import './BotonTour360.css';
+import { registrarEvento } from '../utils/analitica';
 
 // El visor (three.js) se descarga solo cuando se abre el tour
 const Tour360Modal = lazy(() => import('./Tour360Modal'));
@@ -10,7 +11,7 @@ const BotonTour360 = ({ propiedad }) => {
   if (!propiedad?.tour_escenas) return null;
   return (
     <>
-      <button type="button" className="btn-tour-360" onClick={() => setAbierto(true)}>
+      <button type="button" className="btn-tour-360" onClick={() => { setAbierto(true); registrarEvento('abrir_tour', { propiedad_id: propiedad.id, tipo: propiedad.tour_360 ? '360' : 'fotos' }); }}>
         {propiedad.tour_360 ? '🔄 Ver tour 360°' : '🏠 Ver recorrido virtual'}{' '}
         <small>({propiedad.tour_escenas} {propiedad.tour_escenas === 1 ? 'ambiente' : 'ambientes'})</small>
       </button>

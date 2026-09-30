@@ -6,9 +6,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { instalarAuthApi } from './apiAuth';
 import { sincronizarHora } from './utils/horaServidor';
+import { iniciarAnalitica } from './utils/analitica';
 
 instalarAuthApi();
 sincronizarHora();
+iniciarAnalitica();   // Google Tag Manager, solo si el visitante ya aceptó
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

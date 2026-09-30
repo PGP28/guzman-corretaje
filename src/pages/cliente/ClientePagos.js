@@ -8,6 +8,7 @@ import {
 import './ClientePages.css';
 import API_BASE_URL from '../../config';
 import { pedirJSON } from '../../utils/api';
+import { registrarEvento } from '../../utils/analitica';
 
 const ETIQUETAS_DATOS = {
   banco:   'Banco',
@@ -80,6 +81,7 @@ const ClientePagos = ({ user }) => {
     setEnviando(true); setError(null);
     try {
       const { url, token } = await pedirJSON(`${API_BASE_URL}/api/pagos/webpay/iniciar`, 'POST', { reserva_id: seleccion.id });
+      registrarEvento('inicio_pago', { metodo: 'webpay' });
       irAWebpay(url, token);   // la página se va a Transbank
     } catch (err) {
       setError(err.message);

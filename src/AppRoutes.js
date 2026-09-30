@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'r
 import API_BASE_URL from './config';
 import { TOKEN_CLIENTE, TOKEN_CORREDOR, cerrarSesionLocal } from './apiAuth';
 import SessionExpiredModal from './components/SessionExpiredModal';
+import AvisoCookies from './components/AvisoCookies';
 import Home from './pages/Home';
 import QuieroVender from './pages/QuieroVender';
 import Contactanos from './pages/Contactanos';
@@ -183,6 +184,8 @@ const AppRoutes = () => {
         onRenovarCorredor={handleRenovarSesionCorredor}
         cliente={cliente} onLoginCliente={handleLoginCliente} onClienteLogout={handleClienteLogout}
       />
+      {/* Aviso de cookies de medición + páginas vistas (Google Tag Manager) */}
+      <AvisoCookies />
       {/* Modal sesión próxima a expirar — cliente */}
       {cliente && (
         <SessionExpiredModal

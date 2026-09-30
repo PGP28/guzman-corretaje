@@ -3,6 +3,7 @@ import { Container, Row, Col, Form } from 'react-bootstrap';
 import { FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaInstagram, FaTiktok } from 'react-icons/fa';
 import API_BASE_URL, { WHATSAPP_PRINCIPAL, enlaceWhatsApp } from '../config';
 import './Contactanos.css';
+import { registrarEvento } from '../utils/analitica';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -22,6 +23,7 @@ function Contactanos() {
     // WhatsApp se abre de inmediato: si se abre después de esperar al servidor,
     // Safari y los navegadores móviles bloquean la ventana.
     window.open(`https://wa.me/${WHATSAPP_PRINCIPAL}?text=${msg}`, '_blank');
+    registrarEvento('envio_formulario', { formulario: 'contactanos' });
     // La solicitud se guarda en segundo plano (keepalive: termina aunque se cambie de pestaña)
     fetch(`${API}/solicitudes`, {
       keepalive: true,

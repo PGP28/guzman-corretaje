@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaFileSignature } from 'react-icons/fa';
 import { crearReserva } from '../pages/cliente/reservaHelper';
 import './ProgramarVisita.css';
+import { registrarEvento } from '../utils/analitica';
 
 // Tarjeta para que un cliente del portal solicite reservar una propiedad.
 // El backend valida disponibilidad y reservas duplicadas, y avisa al corredor.
@@ -19,6 +20,7 @@ const SolicitarReserva = ({ propiedad }) => {
     setEnviando(true); setError(null); setExistente(null);
     try {
       const reserva = await crearReserva(propiedad.id, mensaje.trim());
+      registrarEvento('solicitud_reserva', { propiedad_id: propiedad.id });
       navigate(`/cliente/reserva/${reserva.id}`);
     } catch (e) {
       setError(e.message);

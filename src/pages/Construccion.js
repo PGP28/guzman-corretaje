@@ -3,6 +3,7 @@ import { Container, Row, Col, Form } from 'react-bootstrap';
 import { FaHammer, FaHome, FaWrench, FaPaintRoller, FaRuler, FaCheckCircle } from 'react-icons/fa';
 import API_BASE_URL, { WHATSAPP_CONSTRUCCION } from '../config';
 import './Construccion.css';
+import { registrarEvento } from '../utils/analitica';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -29,6 +30,7 @@ function Construccion() {
     // WhatsApp se abre de inmediato: si se abre después de esperar al servidor,
     // Safari y los navegadores móviles bloquean la ventana.
     window.open(`https://wa.me/${WHATSAPP_CONSTRUCCION}?text=${msg}`, '_blank');
+    registrarEvento('envio_formulario', { formulario: 'construccion' });
     // La solicitud se guarda en segundo plano (keepalive: termina aunque se cambie de pestaña)
     fetch(`${API}/solicitudes-construccion`, {
       keepalive: true,

@@ -5,6 +5,7 @@ import { FaArrowLeft, FaUser, FaLock, FaEye, FaEyeSlash, FaPhone, FaEnvelope } f
 import logoNav from '../assets/images/LOGO_PNG-17_Modified.png';
 import API_BASE_URL, { GOOGLE_CLIENT_ID } from '../config';
 import './Login.css';
+import { registrarEvento } from '../utils/analitica';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -55,6 +56,7 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
       });
       const data = await res.json();
       if (!res.ok) return setError(data.error || 'Usuario o contraseña incorrectos');
+      registrarEvento('login', { method: 'password' });
       guardarCliente(data.token, data.cliente, onLoginCliente);
       navigate(redirectUrl);
     } catch { setError('Error de conexión. Intenta de nuevo.'); }
@@ -84,6 +86,7 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
       });
       const data = await res.json();
       if (!res.ok) return setError(data.error || 'Error al crear la cuenta');
+      registrarEvento('sign_up', { method: 'password' });
       guardarCliente(data.token, data.cliente, onLoginCliente);
       navigate(redirectUrl);
     } catch { setError('Error de conexión. Intenta de nuevo.'); }
@@ -117,6 +120,7 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
       });
       const data = await res.json();
       if (!res.ok) return setError(data.error || 'Error con Google');
+      registrarEvento('login', { method: 'google' });
       guardarCliente(data.token, data.cliente, onLoginCliente);
       navigate(redirectUrl);
     } catch { setError('Error al procesar las credenciales de Google.'); }

@@ -92,6 +92,7 @@ function PoliticaPrivacidad() {
             <li><strong>Mailgun</strong> — envío de correos (Estados Unidos).</li>
             <li><strong>Google</strong> — inicio de sesión con tu cuenta de Google, si eliges esa opción.</li>
             <li><strong>Transbank</strong> — procesamiento de pagos con tarjeta mediante Webpay.</li>
+            <li><strong>Google Analytics</strong> (mediante Google Tag Manager) — medición anónima del uso del sitio, solo si la aceptas (ver punto 7).</li>
           </ul>
           <p>
             Algunos de estos proveedores están fuera de Chile, por lo que tus datos pueden transferirse internacionalmente.
@@ -146,9 +147,15 @@ function PoliticaPrivacidad() {
           <h2>7. Almacenamiento en tu navegador</h2>
           <p>
             Usamos el almacenamiento local de tu navegador solo para mantener tu sesión iniciada y recordar datos
-            necesarios para el funcionamiento del sitio (por ejemplo, el valor de la UF del día). No usamos cookies de
-            publicidad ni de seguimiento de terceros. Si en el futuro incorporamos herramientas de medición, actualizaremos
-            esta política y te pediremos autorización cuando corresponda.
+            necesarios para el funcionamiento del sitio (por ejemplo, el valor de la UF del día).
+          </p>
+          <p>
+            Además, <strong>solo si lo aceptas</strong> en el aviso de cookies, usamos Google Analytics (a través de Google
+            Tag Manager) para medir cómo se usa el sitio: páginas visitadas, clics en los botones de contacto, envío de
+            formularios y apertura de recorridos virtuales. Estas mediciones no incluyen tu nombre, email, teléfono ni el
+            contenido de lo que escribes, y no las usamos para publicidad. Si no aceptas, no se carga ninguna herramienta
+            de medición. Puedes cambiar tu decisión cuando quieras desde el enlace «Preferencias de cookies» al pie de
+            cada página.
           </p>
         </section>
 

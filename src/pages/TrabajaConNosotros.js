@@ -3,6 +3,7 @@ import { Container, Row, Col, Form } from 'react-bootstrap';
 import { FaBriefcase, FaUserTie, FaCheckCircle, FaFilePdf, FaImage, FaFileAlt } from 'react-icons/fa';
 import API_BASE_URL from '../config';
 import './TrabajaConNosotros.css';
+import { registrarEvento } from '../utils/analitica';
 
 const TrabajaConNosotros = () => {
   const [formData, setFormData] = useState({
@@ -71,6 +72,7 @@ const TrabajaConNosotros = () => {
       }
 
       setEnviado(true);
+      registrarEvento('envio_formulario', { formulario: 'trabaja_con_nosotros' });
     } catch {
       setError('Error de conexión. Verifica tu internet e intenta de nuevo.');
     } finally {

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaHome, FaKey, FaBuilding, FaEnvelope, FaArrowUp } from 'react-icons/fa';
 import axios from 'axios';
 import API_BASE_URL from '../../config';
 import GraficoMetricas from './GraficoMetricas';
-import { SkStatCard } from '../Skeleton';
+import ResumenPropiedades from './ResumenPropiedades';
 import './DashboardInicio.css';
 import { mismoCorredor } from './corredoresHelper';
 import { horaChile } from '../../utils/fechas';
@@ -40,12 +39,16 @@ const DashboardCorreedor = ({ user }) => {
   const misSolicitudes = solicitudes;
   const solicitudesNuevas = misSolicitudes.filter(s => s.estado === 'nueva').length;
 
-  const tarjetas = [
-    { label: 'Mis propiedades', valor: propiedades.length,                                                    icon: <FaBuilding />, color: 'purple' },
-    { label: 'Disponibles',     valor: propiedades.filter(p => (p.estado || 'disponible') === 'disponible').length, icon: <FaHome />,    color: 'teal' },
-    { label: 'Arrendadas',      valor: propiedades.filter(p => p.estado === 'arrendada').length,              icon: <FaKey />,     color: 'amber' },
-    { label: 'Solicitudes',     valor: misSolicitudes.length,                                                 icon: <FaEnvelope />, color: 'blue' },
-  ];
+  const cat = (texto) => propiedades.filter(p => p.categoria?.toLowerCase().includes(texto)).length;
+  const stats = {
+    total:      propiedades.length,
+    venta:      cat('venta'),
+    arriendo:   cat('arriendo'),
+    terrenos:   cat('terreno'),
+    disponible: propiedades.filter(p => (p.estado || 'disponible') === 'disponible').length,
+    arrendada:  propiedades.filter(p => p.estado === 'arrendada').length,
+    vendida:    propiedades.filter(p => p.estado === 'vendida').length,
+  };
 
   return (
     <div className="di-page">
@@ -61,26 +64,18 @@ const DashboardCorreedor = ({ user }) => {
       {/* Contratos de arriendo por vencer */}
       <AvisoContratos />
 
-      {/* Stats */}
-      <div className="di-stats">
-        {cargando
-          ? Array(4).fill(0).map((_, i) => <SkStatCard key={i} />)
-          : tarjetas.map((t, i) => (
-          <div key={i} className={`di-stat-card di-stat-card--${t.color}`}>
-            <div className="di-stat-icon">{t.icon}</div>
-            <div className="di-stat-info">
-              <span className="di-stat-valor">{t.valor}</span>
-              <span className="di-stat-label">{t.label}</span>
-            </div>
-            {i === 3 && solicitudesNuevas > 0 && (
-              <span className="di-stat-badge">{solicitudesNuevas} nuevas</span>
-            )}
+      {/* Mis propiedades (lectura; las acciones son enlaces explícitos) */}
+      <ResumenPropiedades stats={stats} cargando={cargando} titulo="Mis propiedades" avisoCorredor={false}>
+        {!cargando && solicitudesNuevas > 0 && (
+          <div className="rp-aviso rp-aviso--info" role="status">
+            <span><strong>{solicitudesNuevas} {solicitudesNuevas === 1 ? 'solicitud nueva' : 'solicitudes nuevas'}</strong> de contacto esperan tu respuesta.</span>
+            <button type="button" className="rp-aviso-btn" onClick={() => navigate('/dashboard/solicitudes')}>Ver solicitudes</button>
           </div>
-        ))}
-      </div>
+        )}
+      </ResumenPropiedades>
 
       {/* Gráfico */}
-      <GraficoMetricas propiedades={propiedades} cargando={cargando} />
+      <GraficoMetricas />
 
       {/* Accesos rápidos */}
       <div className="di-accesos">

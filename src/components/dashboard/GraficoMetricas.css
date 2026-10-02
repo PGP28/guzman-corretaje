@@ -136,3 +136,10 @@
   .gm-chart { width: 100%; overflow: hidden; }
   .gm-nota { font-size: 10px; }
 }
+
+/* Sin datos / error */
+.gm-chart { position: relative; }
+.gm-vacio { color: #888; font-size: 13px; text-align: center; margin: 8px 0; }
+.gm-vacio--sobre {
+  position: absolute; left: 0; right: 0; top: 40%; z-index: 1; margin: 0; pointer-events: none;
+}

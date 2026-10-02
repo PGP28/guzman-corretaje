@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaHome, FaKey, FaMountain, FaBuilding, FaArrowUp } from 'react-icons/fa';
 import axios from 'axios';
 import API_BASE_URL from '../../config';
 import GraficoMetricas from './GraficoMetricas';
-import { SkStatCard, SkEstadoCard } from '../Skeleton';
 import './DashboardInicio.css';
 import { horaChile } from '../../utils/fechas';
 import AvisoContratos from './AvisoContratos';
+import ResumenPropiedades from './ResumenPropiedades';
 
 const DashboardInicio = ({ user }) => {
   const navigate = useNavigate();
   const [stats, setStats] = useState(null);
-  const [propiedades, setPropiedades] = useState([]);
   const [cargando, setCargando] = useState(true);
 
   // Usar foto local si existe
@@ -23,7 +21,6 @@ const DashboardInicio = ({ user }) => {
     axios.get(`${API_BASE_URL}/api/properties`)
       .then(res => {
         const props = res.data;
-        setPropiedades(props);
         setStats({
           total:      props.length,
           venta:      props.filter(p => p.categoria?.toLowerCase().includes('venta')).length,
@@ -44,12 +41,6 @@ const DashboardInicio = ({ user }) => {
   const saludo = hora < 12 ? 'Buenos días' : hora < 19 ? 'Buenas tardes' : 'Buenas noches';
   const nombre = user?.name?.split(' ')[0] || 'Admin';
 
-  const tarjetas = [
-    { label: 'Total propiedades', valor: stats?.total,    icon: <FaBuilding />, color: 'purple' },
-    { label: 'En venta',          valor: stats?.venta,    icon: <FaHome />,     color: 'teal' },
-    { label: 'En arriendo',       valor: stats?.arriendo, icon: <FaKey />,      color: 'blue' },
-    { label: 'Terrenos',          valor: stats?.terrenos, icon: <FaMountain />, color: 'amber' },
-  ];
 
   return (
     <div className="di-page">
@@ -67,67 +58,11 @@ const DashboardInicio = ({ user }) => {
       {/* Contratos de arriendo por vencer */}
       <AvisoContratos />
 
-      {/* Stats — categorías */}
-      <div className="di-stats">
-        {cargando
-          ? Array(4).fill(0).map((_, i) => <SkStatCard key={i} />)
-          : tarjetas.map((t, i) => (
-          <div key={i} className={`di-stat-card di-stat-card--${t.color}`}>
-            <div className="di-stat-icon">{t.icon}</div>
-            <div className="di-stat-info">
-              <span className="di-stat-valor">{t.valor}</span>
-              <span className="di-stat-label">{t.label}</span>
-            </div>
-            <FaArrowUp className="di-stat-trend" />
-          </div>
-        ))}
-      </div>
-
-      {/* Stats — estados */}
-      <div className="di-stats-estados">
-        {cargando
-          ? Array(5).fill(0).map((_, i) => <SkEstadoCard key={i} />)
-          : (<>
-          <div className="di-estado-card di-estado-card--disponible" onClick={() => navigate('/dashboard/editar?estado=disponible')} style={{cursor:'pointer'}}>
-            <span className="di-estado-dot" />
-            <div>
-              <span className="di-estado-valor">{stats?.disponible}</span>
-              <span className="di-estado-label">Disponibles</span>
-            </div>
-          </div>
-          <div className="di-estado-card di-estado-card--arrendada" onClick={() => navigate('/dashboard/editar?estado=arrendada')} style={{cursor:'pointer'}}>
-            <span className="di-estado-dot" />
-            <div>
-              <span className="di-estado-valor">{stats?.arrendada}</span>
-              <span className="di-estado-label">Arrendadas</span>
-            </div>
-          </div>
-          <div className="di-estado-card di-estado-card--vendida" onClick={() => navigate('/dashboard/editar?estado=vendida')} style={{cursor:'pointer'}}>
-            <span className="di-estado-dot" />
-            <div>
-              <span className="di-estado-valor">{stats?.vendida}</span>
-              <span className="di-estado-label">Vendidas</span>
-            </div>
-          </div>
-          <div className="di-estado-card di-estado-card--corredor" onClick={() => navigate('/dashboard/editar?corredor=con')} style={{cursor:'pointer'}}>
-            <span className="di-estado-dot" />
-            <div>
-              <span className="di-estado-valor">{stats?.con_corredor}</span>
-              <span className="di-estado-label">Con corredor</span>
-            </div>
-          </div>
-          <div className="di-estado-card di-estado-card--sin-corredor" onClick={() => navigate('/dashboard/editar?corredor=sin')} style={{cursor:'pointer'}}>
-            <span className="di-estado-dot" />
-            <div>
-              <span className="di-estado-valor">{stats?.sin_corredor}</span>
-              <span className="di-estado-label">Sin corredor</span>
-            </div>
-          </div>
-        </>)}
-      </div>
+      {/* Resumen de propiedades (lectura; las acciones son enlaces explícitos) */}
+      <ResumenPropiedades stats={stats} cargando={cargando} />
 
       {/* Gráfico métricas */}
-      <GraficoMetricas propiedades={propiedades} cargando={cargando} />
+      <GraficoMetricas />
 
       {/* Accesos rápidos */}
       <div className="di-accesos">

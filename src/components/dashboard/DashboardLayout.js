@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { FaBars, FaTimes, FaHome, FaUpload, FaEdit, FaUsers, FaSignOutAlt,
-         FaChevronLeft, FaUser, FaEnvelope, FaGift, FaHardHat, FaCalendarCheck, FaBriefcase, FaComments, FaCalendarAlt, FaFileContract } from 'react-icons/fa';
+         FaChevronLeft, FaUser, FaEnvelope, FaGift, FaHardHat, FaCalendarCheck, FaBriefcase, FaComments, FaCalendarAlt, FaFileContract, FaCity } from 'react-icons/fa';
 import DashboardInicio from './DashboardInicio';
 import DashboardCorredor from './DashboardCorredor';
 import SubirPropiedad from './SubirPropiedad';
@@ -16,6 +16,7 @@ import DashboardMensajes from './DashboardMensajes';
 import DashboardVisitas from './DashboardVisitas';
 import Postulaciones from './Postulaciones';
 import Contratos from './Contratos';
+import GestionProyectos from './GestionProyectos';
 
 import './DashboardLayout.css';
 const getNavItems = (rol) => {
@@ -31,10 +32,11 @@ const getNavItems = (rol) => {
   ];
   if (rol === 'admin') {
     base.splice(1, 0, { id: 'subir',       label: 'Subir',         icon: <FaUpload />,   path: '/dashboard/subir' });
-    base.splice(5, 0, { id: 'corredores',  label: 'Corredores',    icon: <FaUsers />,    path: '/dashboard/corredores' });
-    base.splice(6, 0, { id: 'construccion',label: 'Construcción',  icon: <FaHardHat />,  path: '/dashboard/construccion' });
-    base.splice(7, 0, { id: 'postulaciones', label: 'Postulaciones', icon: <FaBriefcase />, path: '/dashboard/postulaciones' });
-    base.splice(8, 0, { id: 'bonos', label: 'Bonos', icon: <FaGift />, path: '/dashboard/bonos' });
+    base.splice(3, 0, { id: 'proyectos',   label: 'Proyectos',     icon: <FaCity />,     path: '/dashboard/proyectos' });
+    base.splice(6, 0, { id: 'corredores',  label: 'Corredores',    icon: <FaUsers />,    path: '/dashboard/corredores' });
+    base.splice(7, 0, { id: 'construccion',label: 'Construcción',  icon: <FaHardHat />,  path: '/dashboard/construccion' });
+    base.splice(8, 0, { id: 'postulaciones', label: 'Postulaciones', icon: <FaBriefcase />, path: '/dashboard/postulaciones' });
+    base.splice(9, 0, { id: 'bonos', label: 'Bonos', icon: <FaGift />, path: '/dashboard/bonos' });
   } else {
     base.splice(4, 0, { id: 'bonos', label: 'Mis bonos', icon: <FaGift />, path: '/dashboard/bonos' });
   }
@@ -188,6 +190,7 @@ const DashboardLayout = ({ user: userProp, onLogout, onRenovar }) => {
 
             {/* Solo admin */}
             {rol === 'admin' && <Route path="/subir"          element={<SubirPropiedad />} />}
+            {rol === 'admin' && <Route path="/proyectos"      element={<GestionProyectos />} />}
             {rol === 'admin' && <Route path="/corredores"     element={<GestionCorredores />} />}
             {rol === 'admin' && <Route path="/construccion"   element={<Construccion />} />}
             {rol === 'admin' && <Route path="/postulaciones"  element={<Postulaciones />} />}

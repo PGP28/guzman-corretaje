@@ -11,6 +11,8 @@ import PoliticaPrivacidad from './pages/PoliticaPrivacidad';
 import Construccion from './pages/Construccion';
 import TrabajaConNosotros from './pages/TrabajaConNosotros';
 import PostulacionEditar from './pages/PostulacionEditar';
+import Proyectos from './pages/Proyectos';
+import ProyectoDetalle from './pages/ProyectoDetalle';
 import NavigationBar from './components/Navbar';
 import WhatsAppFloat from './components/WhatsAppFloat';
 import Footer from './components/Footer';
@@ -52,6 +54,8 @@ const AppContent = ({ user, onLoginCorredor, onLogout, onRenovarCorredor, client
           <Route path="/Construccion" element={<Construccion />} />
           <Route path="/TrabajaConNosotros" element={<TrabajaConNosotros />} />
           <Route path="/postulacion/editar" element={<PostulacionEditar />} />
+          <Route path="/proyectos" element={<Proyectos />} />
+          <Route path="/proyectos/:slug" element={<ProyectoDetalle />} />
           <Route path="/DetallesPropiedades" element={<DetallesPropiedades />} />
           <Route path="/propiedad/:id" element={<DetallesPropiedades />} />
 

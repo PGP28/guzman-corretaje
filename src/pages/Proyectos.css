@@ -1,0 +1,66 @@
+/* ── Listado de proyectos ─────────────────────────────────────── */
+.proy-page { background: #faf8ff; min-height: 70vh; padding-bottom: 60px; }
+.proy-hero {
+  background: linear-gradient(135deg, #2d1060 0%, #3f1b86 55%, #5529aa 100%);
+  color: #fff; padding: 110px 0 56px;
+}
+.proy-hero-kicker { text-transform: uppercase; letter-spacing: 1.5px; font-size: 12px; font-weight: 700; color: #d4c4f7; margin: 0 0 8px; }
+.proy-hero h1 { font-weight: 800; font-size: clamp(28px, 4vw, 42px); margin: 0 0 12px; }
+.proy-hero-lead { max-width: 640px; color: #e8dffa; font-size: 16px; line-height: 1.6; margin: 0; }
+
+.proy-contenido { margin-top: -28px; }
+.proy-filtros {
+  background: #fff; border: 1px solid #ede8fa; border-radius: 16px; padding: 16px 20px;
+  display: flex; flex-wrap: wrap; gap: 14px 20px; align-items: flex-end;
+  box-shadow: 0 8px 24px rgba(63, 27, 134, 0.08);
+}
+.proy-filtro { display: flex; flex-direction: column; gap: 6px; margin: 0; min-width: 150px; }
+.proy-filtro > span { font-size: 12px; font-weight: 700; color: #5529aa; text-transform: uppercase; letter-spacing: 0.5px; }
+.proy-filtro select, .proy-filtro input {
+  border: 1px solid #ddd2f5; border-radius: 10px; padding: 9px 12px; font-size: 14px; background: #fff; min-height: 42px;
+}
+.proy-filtro select:focus, .proy-filtro input:focus { outline: 2px solid #8a60da; outline-offset: 1px; }
+.proy-chips { display: flex; gap: 6px; }
+.proy-chip {
+  min-width: 42px; min-height: 42px; border: 1px solid #ddd2f5; border-radius: 10px; background: #fff;
+  color: #3f1b86; font-weight: 700; cursor: pointer;
+}
+.proy-chip.activo { background: #3f1b86; color: #fff; border-color: #3f1b86; }
+.proy-limpiar { background: none; border: none; color: #5529aa; font-weight: 700; font-size: 13px; padding: 10px 4px; cursor: pointer; }
+.proy-limpiar:hover { text-decoration: underline; }
+
+.proy-conteo { color: #666; font-size: 14px; margin: 22px 0 14px; }
+.proy-mensaje { color: #666; text-align: center; padding: 40px 0; }
+
+.proy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 22px; }
+.proy-card {
+  background: #fff; border: 1px solid #ede8fa; border-radius: 16px; overflow: hidden; color: inherit;
+  text-decoration: none; display: flex; flex-direction: column; transition: box-shadow 0.2s, transform 0.2s;
+}
+.proy-card:hover { box-shadow: 0 10px 28px rgba(63, 27, 134, 0.14); transform: translateY(-2px); color: inherit; }
+.proy-card:focus-visible { outline: 3px solid #8a60da; outline-offset: 2px; }
+.proy-card--cargando { height: 360px; background: linear-gradient(90deg, #f0ebff 25%, #e6defa 50%, #f0ebff 75%); background-size: 200% 100%; animation: proy-brillo 1.2s infinite; }
+@keyframes proy-brillo { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+.proy-card-foto { position: relative; aspect-ratio: 4 / 3; background: #f0ebff; display: flex; align-items: center; justify-content: center; font-size: 42px; }
+.proy-card-foto img { width: 100%; height: 100%; object-fit: cover; }
+.proy-card-insignias { position: absolute; top: 12px; left: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
+.proy-insignia { font-size: 11px; font-weight: 700; padding: 4px 9px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; }
+.proy-insignia--3d { background: rgba(45, 16, 96, 0.88); color: #fff; }
+.proy-insignia--desc { background: #e53935; color: #fff; }
+
+.proy-card-cuerpo { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.proy-card-entrega { font-size: 11px; font-weight: 700; color: #8a60da; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; }
+.proy-card-nombre { font-size: 20px; font-weight: 800; color: #2d1060; margin: 2px 0; }
+.proy-card-ubic { color: #666; font-size: 14px; margin: 0; display: flex; align-items: center; gap: 6px; }
+.proy-card-datos { display: flex; gap: 14px; color: #444; font-size: 14px; margin-top: 6px; flex-wrap: wrap; }
+.proy-card-precio { margin: auto 0 0; padding-top: 10px; font-size: 22px; font-weight: 800; color: #3f1b86; }
+.proy-card-precio small { font-size: 12px; font-weight: 600; color: #888; margin-right: 4px; }
+.proy-card-subsidio { margin: 2px 0 0; font-size: 12px; color: #2e7d32; font-weight: 600; }
+
+@media (max-width: 767px) {
+  .proy-hero { padding: 96px 0 48px; }
+  .proy-filtros { padding: 14px; }
+  .proy-filtro { flex: 1 1 140px; }
+}
+@media (prefers-reduced-motion: reduce) { .proy-card, .proy-card--cargando { transition: none; animation: none; } }

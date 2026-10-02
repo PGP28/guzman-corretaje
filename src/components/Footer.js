@@ -27,6 +27,7 @@ const Footer = () => (
               <ul className="footer-lista">
                 <li><a href="/Arriendo" className="footer-link">Arriendos</a></li>
                 <li><a href="/EnVenta" className="footer-link">En venta</a></li>
+                <li><a href="/proyectos" className="footer-link">Proyectos</a></li>
                 <li><a href="/Terrenos" className="footer-link">Terrenos</a></li>
               </ul>
               {/* Divisor vertical */}

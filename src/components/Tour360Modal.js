@@ -20,7 +20,7 @@ const IDIOMA = {
  * tradicional (a pantalla completa; clic para ampliarla). Se carga de forma
  * diferida (React.lazy) para no sumar el peso de three.js al sitio.
  */
-const Tour360Modal = ({ propiedadId, titulo, onClose }) => {
+const Tour360Modal = ({ propiedadId, escenas: escenasDadas, titulo, onClose }) => {
   const contenedor = useRef(null);
   const visor      = useRef(null);
   const panoramaActual = useRef(null);   // URL de la foto 360° cargada en el visor
@@ -29,11 +29,16 @@ const Tour360Modal = ({ propiedadId, titulo, onClose }) => {
   const [ampliada, setAmpliada] = useState(false);
   const [error,    setError]    = useState('');
 
+  // Las escenas vienen dadas (proyectos) o se piden a la API de la propiedad
   useEffect(() => {
+    if (escenasDadas) {
+      if (escenasDadas.length) setEscenas(escenasDadas); else setError('Este recorrido aún no tiene fotos.');
+      return;
+    }
     pedir(`${API_BASE_URL}/api/properties/${propiedadId}/tour`)
       .then(lista => lista.length ? setEscenas(lista) : setError('Esta propiedad aún no tiene recorrido virtual.'))
       .catch(err => setError(`No se pudo cargar el recorrido: ${err.message}`));
-  }, [propiedadId]);
+  }, [propiedadId, escenasDadas]);
 
   const escena = escenas[actual];
   const es360  = escena?.tipo !== 'foto';

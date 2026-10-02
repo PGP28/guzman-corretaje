@@ -1,0 +1,77 @@
+/* ── Proyectos inmobiliarios (panel) ──────────────────────────── */
+.gp-lista { display: flex; flex-direction: column; gap: 10px; }
+.gp-fila { background: #fff; border: 1px solid #ede8fa; border-radius: 14px; padding: 12px; display: flex; gap: 14px; align-items: center; }
+.gp-fila-foto { width: 84px; height: 64px; border-radius: 10px; overflow: hidden; background: #f0ebff; display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
+.gp-fila-foto img { width: 100%; height: 100%; object-fit: cover; }
+.gp-fila-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.gp-fila-info strong { color: #2d1060; font-size: 16px; }
+.gp-fila-info > span { color: #666; font-size: 13px; }
+.gp-fila-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.gp-fila-acciones { display: flex; gap: 8px; align-items: center; }
+.gp-estado { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+.gp-vacio { color: #777; text-align: center; padding: 30px 0; }
+
+.gp-nuevo { background: #fff; border: 1px solid #ddd2f5; border-radius: 14px; padding: 16px; margin-bottom: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.gp-nuevo-acciones { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 8px; }
+
+.gp-btn-chico { padding: 7px 12px !important; font-size: 13px !important; display: inline-flex !important; align-items: center; gap: 6px; cursor: pointer; margin: 0; }
+.gp-btn-quitar { background: none; border: 1px solid #f3c7c7; color: #c0392b; border-radius: 8px; padding: 6px 10px; font-size: 13px; cursor: pointer; }
+.gp-btn-quitar:hover { background: #fdecec; }
+
+/* Editor */
+.gp-barra { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; position: sticky; top: 0; z-index: 5; background: #f7f4fd; padding: 10px 0; }
+.gp-barra-titulo { flex: 1; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; min-width: 200px; }
+.gp-barra-titulo .sd-titulo { margin: 0; font-size: 22px; }
+.gp-sin-guardar { font-size: 12px; color: #b45309; font-weight: 700; }
+.gp-barra-acciones { display: flex; gap: 8px; flex-wrap: wrap; }
+.gp-barra-acciones a { text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+
+.gp-pestanas { display: flex; gap: 4px; border-bottom: 2px solid #ede8fa; margin-bottom: 16px; overflow-x: auto; scrollbar-width: none; }
+.gp-pestanas::-webkit-scrollbar { display: none; }
+.gp-pestana { background: none; border: none; padding: 10px 14px; font-weight: 700; color: #777; font-size: 14px; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; cursor: pointer; }
+.gp-pestana.activa { color: #3f1b86; border-bottom-color: #5529aa; }
+.gp-pestana:focus-visible { outline: 2px solid #8a60da; }
+
+.gp-panel { background: #fff; border: 1px solid #ede8fa; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+.gp-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; }
+.gp-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.gp-columna { display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 0; }
+.gp-ayuda { color: #777; font-size: 12px; margin: 0; }
+.gp-checks { display: flex; gap: 18px; flex-wrap: wrap; font-size: 14px; color: #444; margin: 0; }
+.gp-checks label, .gp-checks span { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+
+.gp-item { border: 1px solid #ede8fa; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+.gp-item-cabecera { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.gp-item-cabecera strong { color: #2d1060; }
+.gp-item-cuerpo { display: flex; gap: 16px; align-items: flex-start; }
+.gp-orden { display: flex; gap: 4px; }
+.gp-orden button { background: #fff; border: 1px solid #ddd2f5; border-radius: 8px; width: 34px; height: 34px; color: #5529aa; cursor: pointer; }
+.gp-orden button:disabled { opacity: 0.35; cursor: default; }
+.gp-orden .gp-orden-quitar { color: #c0392b; border-color: #f3c7c7; }
+
+.gp-imagen { width: 200px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; }
+.gp-imagen img, .gp-imagen-vacia { width: 100%; aspect-ratio: 4 / 3; border-radius: 10px; object-fit: cover; background: #f7f4fd; }
+.gp-imagen-vacia { display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 13px; border: 1px dashed #ddd2f5; }
+.gp-imagen-acciones { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.gp-escenas { display: flex; flex-direction: column; gap: 8px; }
+.gp-escena { display: flex; gap: 10px; align-items: center; }
+.gp-escena img { width: 96px; height: 48px; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
+.gp-escena input { flex: 1; min-width: 0; }
+.gp-escena-tipo { font-size: 11px; font-weight: 700; color: #5529aa; background: #f0ebff; padding: 3px 8px; border-radius: 10px; }
+
+.gp-galeria { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+.gp-galeria-item { border: 1px solid #ede8fa; border-radius: 12px; padding: 8px; display: flex; flex-direction: column; gap: 6px; }
+.gp-galeria-item img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; }
+
+.gp-vista-marco { border: 1px solid #ddd2f5; border-radius: 14px; overflow: hidden; margin-top: 8px; }
+.gp-vista-marco .pd-lateral { position: static; }
+
+@media (max-width: 767px) {
+  .gp-grid, .gp-grid--3, .gp-nuevo { grid-template-columns: 1fr; }
+  .gp-item-cuerpo { flex-direction: column; }
+  .gp-imagen { width: 100%; }
+  .gp-fila { flex-wrap: wrap; }
+  .gp-fila-acciones { width: 100%; justify-content: flex-end; }
+  .gp-barra { position: static; }
+}

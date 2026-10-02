@@ -47,6 +47,7 @@ const NavigationBar = () => {
   const links = [
     { href: '/Arriendo',     label: 'Arriendos' },
     { href: '/EnVenta',      label: 'En venta' },
+    { href: '/proyectos',    label: 'Proyectos' },
     { href: '/Terrenos',     label: 'Terrenos' },
     { href: '/Oficinas',     label: 'Oficinas' },
     { href: '/Construccion', label: 'Construcción' },

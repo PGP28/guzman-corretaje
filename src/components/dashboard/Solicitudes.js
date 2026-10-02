@@ -156,6 +156,11 @@ const Solicitudes = ({ rol = 'admin', userName }) => {
                 {/* Detalle expandido */}
                 {activa && (
                   <div className="sol-item-detalle">
+                    {s.origen === 'Proyecto' && (
+                      <p className="sol-item-mensaje">
+                        <strong>Interés en:</strong> {s.tipo_propiedad || 'Proyecto'}{s.tipologia ? ` · tipología ${s.tipologia}` : ''}
+                      </p>
+                    )}
                     <p className="sol-item-mensaje">
                       <strong>Mensaje:</strong> {s.mensaje || 'Sin mensaje'}
                     </p>

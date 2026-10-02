@@ -13,6 +13,8 @@ import { CSS } from '@dnd-kit/utilities';
 import API_BASE_URL from '../../config';
 import { getCorredoresActivos, getCategorias, mismoCorredor } from './corredoresHelper';
 import { SkEpItem } from '../Skeleton';
+import DireccionInput from '../DireccionInput';
+import { errorDireccion } from '../../utils/formatos';
 import './SeccionDashboard.css';
 import { pedir } from '../../utils/api';
 import GestionTour from './GestionTour';
@@ -192,6 +194,10 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
 
   const handleGuardar = (e) => {
     e.preventDefault();
+    if (!esCorrector) {
+      const errDir = errorDireccion(seleccionada.ubicacion);
+      if (errDir) return setError(errDir);
+    }
     setGuardando(true); setError('');
 
     // Corredor solo actualiza estado
@@ -496,7 +502,7 @@ const EditarPropiedades = ({ rol = 'admin', userName }) => {
                     <Col md={12}>
                       <div className="sd-campo">
                         <label className="sd-label">Dirección</label>
-                        <Form.Control name="ubicacion" value={seleccionada.ubicacion || ''} onChange={handleChange} className="sd-input" placeholder="Ej: Av. Cristóbal Colón 3206" />
+                        <DireccionInput name="ubicacion" value={seleccionada.ubicacion || ''} onChange={v => handleChange({ target: { name: 'ubicacion', value: v } })} />
                       </div>
                     </Col>
                   </Row>

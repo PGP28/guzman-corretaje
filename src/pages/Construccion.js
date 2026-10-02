@@ -4,6 +4,8 @@ import { FaHammer, FaHome, FaWrench, FaPaintRoller, FaRuler, FaCheckCircle } fro
 import API_BASE_URL, { WHATSAPP_CONSTRUCCION } from '../config';
 import './Construccion.css';
 import { registrarEvento } from '../utils/analitica';
+import TelefonoInput from '../components/TelefonoInput';
+import { telefonoValido, MSG_TELEFONO } from '../utils/formatos';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -19,11 +21,14 @@ const SERVICIOS = [
 function Construccion() {
   const [formData, setFormData] = useState({ nombre: '', telefono: '', email: '', servicio: '', descripcion: '' });
   const [enviado,   setEnviado]   = useState(false);
+  const [errorTel,  setErrorTel]  = useState('');
 
   const handleChange = (e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!telefonoValido(formData.telefono)) return setErrorTel(MSG_TELEFONO);
+    setErrorTel('');
     const msg = encodeURIComponent(
       `Hola, soy ${formData.nombre}. Solicito información sobre: ${formData.servicio}. ${formData.descripcion} Contacto: ${formData.email} / ${formData.telefono}`
     );
@@ -118,10 +123,8 @@ function Construccion() {
                       </Col>
                       <Col md={6}>
                         <Form.Group className="mb-3">
-                          <Form.Control
-                            type="tel" name="telefono" value={formData.telefono} onChange={handleChange}
-                            placeholder="+56 9 XXXX XXXX *" required className="const-input"
-                          />
+                          <TelefonoInput value={formData.telefono} onChange={(v, e) => handleChange(e)} required className="const-input" invalido={!!errorTel} />
+                          {errorTel && <small className="form-error-tel">{errorTel}</small>}
                         </Form.Group>
                       </Col>
                     </Row>

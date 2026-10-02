@@ -4,6 +4,8 @@ import { FaBriefcase, FaUserTie, FaCheckCircle, FaFilePdf, FaImage, FaFileAlt } 
 import API_BASE_URL from '../config';
 import './TrabajaConNosotros.css';
 import { registrarEvento } from '../utils/analitica';
+import TelefonoInput from '../components/TelefonoInput';
+import { telefonoValido, MSG_TELEFONO } from '../utils/formatos';
 
 const TrabajaConNosotros = () => {
   const [formData, setFormData] = useState({
@@ -37,6 +39,10 @@ const TrabajaConNosotros = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!telefonoValido(formData.telefono)) {
+      setError(MSG_TELEFONO);
+      return;
+    }
     if (!cv || !foto || !carta) {
       setError('Debes adjuntar CV, foto y carta de presentación.');
       return;
@@ -89,6 +95,10 @@ const TrabajaConNosotros = () => {
           <p>
             Recibimos tu información correctamente. Nuestro equipo de RRHH revisará tu
             postulación y te contactaremos si tu perfil coincide con nuestras búsquedas.
+          </p>
+          <p>
+            Te enviamos un correo de confirmación a <strong>{formData.email}</strong> con un enlace para
+            corregir tus datos o reemplazar un archivo mientras tu postulación esté en revisión.
           </p>
           <a href="/" className="trabajo-btn-volver">← Volver al sitio</a>
         </div>
@@ -162,15 +172,7 @@ const TrabajaConNosotros = () => {
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Teléfono *</Form.Label>
-                  <Form.Control
-                    type="tel"
-                    name="telefono"
-                    value={formData.telefono}
-                    onChange={handleChange}
-                    required
-                    placeholder="+56 9 1234 5678"
-                    className="trabajo-input"
-                  />
+                  <TelefonoInput value={formData.telefono} onChange={(v, e) => handleChange(e)} required className="trabajo-input" />
                 </Form.Group>
               </Col>
             </Row>

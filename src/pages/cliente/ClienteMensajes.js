@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FaPaperPlane, FaPaperclip, FaTimes, FaFilePdf, FaFileWord, FaFileAlt } from 'react-icons/fa';
 import API_BASE_URL from '../../config';
 import './ClientePages.css';
+import { horaDe } from '../../utils/formatos';
 import { pedir, pedirJSON } from '../../utils/api';
 
 const API = `${API_BASE_URL}/api`;
@@ -139,7 +140,7 @@ const ClienteMensajes = ({ user }) => {
   const formatHora = (iso) => {
     if (!iso) return '';
     try {
-      return new Date(iso).toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', hour12: false });
+      return horaDe(iso);
     } catch { return ''; }
   };
 

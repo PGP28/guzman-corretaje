@@ -5,6 +5,8 @@ import API_BASE_URL, { GOOGLE_CLIENT_ID } from '../../config';
 import './ClientePages.css';
 import './ClientePerfil.css';
 import { pedir } from '../../utils/api';
+import TelefonoInput from '../../components/TelefonoInput';
+import { telefonoValido, MSG_TELEFONO } from '../../utils/formatos';
 
 const API = `${API_BASE_URL}/api`;
 const getToken = () => localStorage.getItem('guzman_cliente_token');
@@ -62,6 +64,7 @@ const PerfilForm = ({ user, onActualizar }) => {
 
   const guardar = async (e) => {
     e.preventDefault();
+    if (form.telefono && !telefonoValido(form.telefono)) return setError(MSG_TELEFONO);
     setError(null); setExito(null); setGuardando(true);
     const token = getToken();
     try {
@@ -238,9 +241,8 @@ const PerfilForm = ({ user, onActualizar }) => {
           <form onSubmit={guardar} className="cpf-form">
             <div className="cpf-campo">
               <label htmlFor="tel"><FaPhone className="cpf-label-icon" /> Teléfono</label>
-              <input id="tel" type="tel" placeholder="+56 9 XXXX XXXX" value={form.telefono}
-                onChange={e => setForm(p => ({ ...p, telefono: e.target.value }))}
-                className="cpf-input" autoComplete="tel" />
+              <TelefonoInput id="tel" value={form.telefono} onChange={v => setForm(p => ({ ...p, telefono: v }))}
+                className="cpf-input" />
               <small className="cpf-campo-hint">Tu corredor lo usará para coordinar visitas.</small>
             </div>
             <div className="cpf-campo">

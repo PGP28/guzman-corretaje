@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { FaDownload, FaEye, FaTrash, FaEnvelope, FaPhone, FaFilePdf, FaImage, FaFileAlt, FaTimes } from 'react-icons/fa';
+import { FaDownload, FaEye, FaTrash, FaEnvelope, FaPhone, FaFilePdf, FaImage, FaFileAlt, FaTimes, FaEdit, FaSave } from 'react-icons/fa';
 import API_BASE_URL from '../../config';
 import './SeccionDashboard.css';
 import { pedir, pedirJSON } from '../../utils/api';
+import TelefonoInput from '../TelefonoInput';
+import { telefonoValido, MSG_TELEFONO, formatearFechaHora } from '../../utils/formatos';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -11,6 +13,14 @@ const ESTADOS = {
   revisada:    { label: '👁️ Revisada',    color: '#1565c0', bg: '#e3f2fd' },
   contactada:  { label: '📞 Contactada',  color: '#2e7d32', bg: '#e8f5e9' },
   descartada:  { label: '❌ Descartada',  color: '#e53935', bg: '#ffebee' },
+};
+
+// Qué significa cada estado (se muestra al confirmar el cambio)
+const AYUDA_ESTADO = {
+  nueva:      'Vuelve a quedar como pendiente de revisión.',
+  revisada:   'Indica que ya revisaste los antecedentes. El postulante aún puede editar su postulación.',
+  contactada: 'Indica que ya te comunicaste con el postulante. Desde ahora no podrá editar su postulación.',
+  descartada: 'La postulación no sigue en el proceso. El postulante ya no podrá editarla.',
 };
 
 const Postulaciones = () => {
@@ -23,10 +33,15 @@ const Postulaciones = () => {
   const [error,         setError]         = useState('');
   const [modalFoto,       setModalFoto]       = useState(null);
   const [mensajeExpandido, setMensajeExpandido] = useState(false);
+  const [confirmEstado,   setConfirmEstado]   = useState(null);   // estado al que se quiere cambiar
+  const [editando,        setEditando]        = useState(null);   // datos en edición (admin)
+  const [guardando,       setGuardando]       = useState(false);
 
   const handleSeleccionar = (p) => {
     setSeleccionada(p);
     setMensajeExpandido(false);
+    setEditando(null);
+    setConfirmEstado(null);
   };
 
   useEffect(() => { cargar(); }, []);
@@ -48,6 +63,31 @@ const Postulaciones = () => {
       setMsg(`✅ Estado actualizado a ${ESTADOS[nuevoEstado].label}`);
       setTimeout(() => setMsg(''), 2500);
     } catch (err) { setError(`No se pudo cambiar el estado: ${err.message}`); }
+    finally { setConfirmEstado(null); }
+  };
+
+  // ── Edición de los datos del postulante (admin) ──
+  const abrirEdicion = () => {
+    const { nombre, email, telefono, cargo, mensaje } = seleccionada;
+    setEditando({ nombre, email, telefono, cargo: cargo || 'Corredor', mensaje: mensaje || '' });
+    setError('');
+  };
+  const cambiarEdicion = (e) => setEditando(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  const guardarEdicion = async (e) => {
+    e.preventDefault();
+    if (editando.nombre.trim().length < 3) return setError('Ingresa el nombre completo');
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(editando.email.trim())) return setError('Ingresa un email válido');
+    if (!telefonoValido(editando.telefono)) return setError(MSG_TELEFONO);
+    setGuardando(true); setError('');
+    try {
+      const data = await pedirJSON(`${API}/postulaciones/${seleccionada.id}`, 'PATCH', editando);
+      setPostulaciones(prev => prev.map(p => p.id === data.id ? data : p));
+      setSeleccionada(data);
+      setEditando(null);
+      setMsg('✅ Datos del postulante actualizados');
+      setTimeout(() => setMsg(''), 2500);
+    } catch (err) { setError(`No se pudieron guardar los cambios: ${err.message}`); }
+    finally { setGuardando(false); }
   };
 
   const eliminar = async (id) => {
@@ -64,10 +104,7 @@ const Postulaciones = () => {
 
   const formatFecha = (iso) => {
     if (!iso) return '—';
-    return new Date(iso).toLocaleString('es-CL', {
-      day: '2-digit', month: '2-digit', year: 'numeric',
-      hour: '2-digit', minute: '2-digit', hour12: false
-    });
+    return formatearFechaHora(iso);
   };
 
   const filtradas = filtroEstado === 'todas'
@@ -102,8 +139,50 @@ const Postulaciones = () => {
               <h3 className="sd-card-titulo">Información del postulante</h3>
               <p className="sd-card-subtitulo">Cargo: {seleccionada.cargo}</p>
             </div>
+            {!editando && (
+              <button type="button" className="sd-btn-prev post-editar-btn" onClick={abrirEdicion}>
+                <FaEdit className="me-2" /> Editar datos
+              </button>
+            )}
           </div>
           <div className="sd-card-body">
+            {seleccionada.editada_at && (
+              <div className="post-editada">
+                ✏️ Editada por {!seleccionada.editada_por || seleccionada.editada_por === 'Postulante' ? 'el postulante' : seleccionada.editada_por} el {formatFecha(seleccionada.editada_at)}
+              </div>
+            )}
+            {editando ? (
+              <form className="post-edicion" onSubmit={guardarEdicion}>
+                <div className="post-edicion-grid">
+                  <div className="sd-campo">
+                    <label className="sd-label">Nombre *</label>
+                    <input name="nombre" className="sd-input" value={editando.nombre} onChange={cambiarEdicion} maxLength={120} required />
+                  </div>
+                  <div className="sd-campo">
+                    <label className="sd-label">Cargo</label>
+                    <input name="cargo" className="sd-input" value={editando.cargo} onChange={cambiarEdicion} maxLength={80} />
+                  </div>
+                  <div className="sd-campo">
+                    <label className="sd-label">Email *</label>
+                    <input name="email" type="email" className="sd-input" value={editando.email} onChange={cambiarEdicion} maxLength={120} required />
+                  </div>
+                  <div className="sd-campo">
+                    <label className="sd-label">Teléfono *</label>
+                    <TelefonoInput value={editando.telefono} onChange={(v, e) => cambiarEdicion(e)} className="sd-input" required />
+                  </div>
+                </div>
+                <div className="sd-campo">
+                  <label className="sd-label">Mensaje del postulante</label>
+                  <textarea name="mensaje" className="sd-input" rows={4} value={editando.mensaje} onChange={cambiarEdicion} maxLength={3000} />
+                </div>
+                <div className="post-edicion-btns">
+                  <button type="button" className="sd-btn-prev" onClick={() => { setEditando(null); setError(''); }} disabled={guardando}>Cancelar</button>
+                  <button type="submit" className="sd-btn-publish" disabled={guardando}>
+                    <FaSave className="me-2" /> {guardando ? 'Guardando…' : 'Guardar cambios'}
+                  </button>
+                </div>
+              </form>
+            ) : (
             <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', justifyContent: 'center' }}>
               {seleccionada.foto_url && (
                 <img
@@ -148,6 +227,7 @@ const Postulaciones = () => {
                 )}
               </div>
             </div>
+            )}
           </div>
         </div>
 
@@ -215,7 +295,9 @@ const Postulaciones = () => {
                   key={k}
                   className="ep-filtro-btn"
                   style={seleccionada.estado === k ? { background: e.bg, color: e.color, borderColor: e.color } : {}}
-                  onClick={() => cambiarEstado(seleccionada.id, k)}
+                  onClick={() => seleccionada.estado !== k && setConfirmEstado(k)}
+                  disabled={seleccionada.estado === k}
+                  title={seleccionada.estado === k ? 'Estado actual' : `Cambiar a ${e.label}`}
                 >
                   {e.label}
                 </button>
@@ -235,11 +317,31 @@ const Postulaciones = () => {
           </div>
         </div>
 
+        {confirmEstado && (
+          <div className="sd-confirm-overlay" role="dialog" aria-modal="true">
+            <div className="sd-confirm-modal">
+              <h4>¿Cambiar el estado de la postulación?</h4>
+              <p>
+                <strong>{seleccionada.nombre}</strong> pasará de{' '}
+                <span className="post-estado-chip" style={{ background: est.bg, color: est.color }}>{est.label}</span>{' '}a{' '}
+                <span className="post-estado-chip" style={{ background: ESTADOS[confirmEstado].bg, color: ESTADOS[confirmEstado].color }}>
+                  {ESTADOS[confirmEstado].label}
+                </span>.
+              </p>
+              <p className="post-estado-ayuda">{AYUDA_ESTADO[confirmEstado]}</p>
+              <div className="sd-confirm-btns">
+                <button className="sd-btn-prev" onClick={() => setConfirmEstado(null)}>Cancelar</button>
+                <button className="sd-btn-publish" onClick={() => cambiarEstado(seleccionada.id, confirmEstado)}>Sí, cambiar estado</button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {confirmDel && (
           <div className="sd-confirm-overlay">
             <div className="sd-confirm-modal">
               <h4>⚠️ Confirmar eliminación</h4>
-              <p>¿Eliminar esta postulación? Se eliminará también de Google Drive.</p>
+              <p>¿Eliminar esta postulación? También se borrarán su CV, foto y carta. Esta acción no se puede deshacer.</p>
               <div className="sd-confirm-btns">
                 <button className="sd-btn-prev" onClick={() => setConfirmDel(null)}>Cancelar</button>
                 <button className="sd-btn-danger" onClick={() => eliminar(confirmDel)}>Sí, eliminar</button>

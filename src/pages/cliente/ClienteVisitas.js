@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import API_BASE_URL from '../../config';
 import './ClientePages.css';
 import { pedir, pedirJSON } from '../../utils/api';
+import { formatearHora } from '../../utils/formatos';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -187,7 +188,7 @@ const VisitaCard = ({ visita, onCancelar, formatFecha, onRespuesta }) => {
         {/* Fecha y hora */}
         <div className="cv-fecha-row">
           <span className="cv-fecha">📅 {formatFecha(visita.fecha)}</span>
-          <span className="cv-hora">🕐 {visita.hora}</span>
+          <span className="cv-hora">🕐 {formatearHora(visita.hora)}</span>
         </div>
 
         {/* Nota del corredor */}

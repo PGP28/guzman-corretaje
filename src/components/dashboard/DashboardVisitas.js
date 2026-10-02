@@ -4,6 +4,8 @@ import API_BASE_URL from '../../config';
 import './SeccionDashboard.css';
 import './DashboardVisitas.css';
 import { pedir, pedirJSON } from '../../utils/api';
+import SelectorHora from '../SelectorHora';
+import { formatearHora } from '../../utils/formatos';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -140,7 +142,7 @@ const DashboardVisitas = () => {
                 </div>
                 <div className="dv-fecha-item">
                   <span className="dv-fecha-label">Hora</span>
-                  <span className="dv-fecha-valor">{seleccionada.hora}</span>
+                  <span className="dv-fecha-valor">{formatearHora(seleccionada.hora)}</span>
                 </div>
                 <div className="dv-fecha-item">
                   <span className="dv-fecha-label">Estado</span>
@@ -193,8 +195,7 @@ const DashboardVisitas = () => {
                   <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 12 }}>
                     <input type="date" value={nuevaFecha} onChange={e => setNuevaFecha(e.target.value)}
                       className="dv-input" min={new Date().toISOString().split('T')[0]} />
-                    <input type="time" value={nuevaHora} onChange={e => setNuevaHora(e.target.value)}
-                      className="dv-input" />
+                    <SelectorHora value={nuevaHora} onChange={setNuevaHora} className="dv-input" />
                   </div>
                   <textarea className="dv-input dv-textarea" placeholder="Nota para el cliente (opcional)"
                     value={nota} onChange={e => setNota(e.target.value)} rows={2} />
@@ -265,7 +266,7 @@ const DashboardVisitas = () => {
                   <p className="dv-item-cliente"><FaUser /> {v.cliente_nombre} {v.cliente_username && `(@${v.cliente_username})`}</p>
                   <div className="dv-item-fecha">
                     <span>📅 {formatFecha(v.fecha)}</span>
-                    <span>🕐 {v.hora}</span>
+                    <span>🕐 {formatearHora(v.hora)}</span>
                   </div>
                 </div>
                 <div className="dv-item-accion">

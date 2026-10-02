@@ -3,6 +3,9 @@ import { FaCamera, FaUser, FaEnvelope, FaMapMarkerAlt, FaPhone, FaSave, FaCheckC
 import API_BASE_URL from '../../config';
 import './SeccionDashboard.css';
 import './MiPerfil.css';
+import TelefonoInput from '../TelefonoInput';
+import DireccionInput from '../DireccionInput';
+import { telefonoValido, MSG_TELEFONO, errorDireccion } from '../../utils/formatos';
 
 const API = `${API_BASE_URL}/api/corredores/me`;
 const MAX_FOTO = 2 * 1024 * 1024;
@@ -79,6 +82,9 @@ const MiPerfil = ({ user, onUpdateUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (form.telefono && !telefonoValido(form.telefono)) return setError(MSG_TELEFONO);
+    const errDir = errorDireccion(form.direccion, false);
+    if (errDir) return setError(errDir);
     setGuardando(true); setError('');
     try {
       const { telefono, direccion, ciudad, cargo } = form;
@@ -223,10 +229,7 @@ const MiPerfil = ({ user, onUpdateUser }) => {
                   <FaPhone className="perfil-campo-icon" />
                   <div className="sd-campo" style={{ flex: 1 }}>
                     <label className="sd-label">Teléfono</label>
-                    <input
-                      name="telefono" value={form.telefono} onChange={handleChange}
-                      className="sd-input form-control" placeholder="+56 9 XXXX XXXX"
-                    />
+                    <TelefonoInput value={form.telefono} onChange={(v, e) => handleChange(e)} className="sd-input form-control" />
                   </div>
                 </div>
 
@@ -234,9 +237,10 @@ const MiPerfil = ({ user, onUpdateUser }) => {
                   <FaMapMarkerAlt className="perfil-campo-icon" />
                   <div className="sd-campo" style={{ flex: 1 }}>
                     <label className="sd-label">Dirección</label>
-                    <input
-                      name="direccion" value={form.direccion} onChange={handleChange}
-                      className="sd-input form-control" placeholder="Av. Principal 123"
+                    <DireccionInput
+                      name="direccion" value={form.direccion} required={false}
+                      onChange={v => handleChange({ target: { name: 'direccion', value: v } })}
+                      className="sd-input form-control"
                     />
                   </div>
                 </div>

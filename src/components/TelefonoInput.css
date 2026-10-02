@@ -1,0 +1,29 @@
+/* Teléfono con prefijo +56 fijo: el prefijo y el campo se ven como un solo control */
+.tel-cl { display: flex; align-items: stretch; width: 100%; }
+.tel-cl-prefijo {
+  display: inline-flex; align-items: center; padding: 0 10px; flex-shrink: 0;
+  background: #f4f0ff; color: #3f1b86; font-weight: 700; font-size: 14px; white-space: nowrap;
+  border: 1px solid #d5d5d5; border-right: none; border-radius: 8px 0 0 8px;
+}
+.tel-cl .tel-cl-input {
+  flex: 1; min-width: 0; width: auto;
+  border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;
+}
+.tel-cl-input:not(.form-control):not(.sd-input) {
+  border: 1px solid #d5d5d5; border-radius: 0 8px 8px 0; padding: 10px 12px; font-size: 14px; outline: none;
+}
+.tel-cl-input:focus { border-color: #5529aa; }
+.tel-cl--invalido .tel-cl-prefijo, .tel-cl--invalido .tel-cl-input { border-color: #e53935 !important; }
+.tel-cl--disabled .tel-cl-prefijo { opacity: 0.6; }
+
+/* Mensaje de error bajo el campo (formularios públicos) */
+.form-error-tel { display: block; color: #e53935; font-size: 12px; margin-top: 4px; }
+
+/* Registro en el login: el campo ya trae su propio borde */
+.login-field.login-field--tel { border: none; padding: 0; background: none; flex-direction: column; align-items: stretch; box-shadow: none; }
+.login-field--tel .tel-cl-prefijo { border: 1.5px solid #e0d4ff; border-right: none; border-radius: 10px 0 0 10px; background: #f4f0ff; }
+.login-field--tel .tel-cl-input.login-input {
+  border: 1.5px solid #e0d4ff; border-radius: 0 10px 10px 0; padding: 12px; background: #faf8ff;
+}
+.login-field--tel .tel-cl-input.login-input:focus { border-color: #8a60da; }
+.login-field-nota { color: #999; font-size: 11px; margin: 3px 0 0 4px; }

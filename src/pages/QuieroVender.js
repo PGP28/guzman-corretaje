@@ -5,6 +5,8 @@ import logoVender from '../assets/images/LOGO_PNG-16.png';
 import API_BASE_URL, { WHATSAPP_PRINCIPAL } from '../config';
 import './QuieroVender.css';
 import { registrarEvento } from '../utils/analitica';
+import TelefonoInput from '../components/TelefonoInput';
+import { telefonoValido, MSG_TELEFONO } from '../utils/formatos';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -18,6 +20,7 @@ const beneficios = [
 function QuieroVender() {
   const [formData, setFormData] = useState({ nombre: '', email: '', telefono: '', tipoPropiedad: '', mensaje: '' });
   const [enviado,  setEnviado]  = useState(false);
+  const [errorTel, setErrorTel] = useState('');
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -25,6 +28,8 @@ function QuieroVender() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!telefonoValido(formData.telefono)) return setErrorTel(MSG_TELEFONO);
+    setErrorTel('');
     const msg = encodeURIComponent(
       `Hola, soy ${formData.nombre}. Quiero vender mi propiedad (${formData.tipoPropiedad}). ${formData.mensaje} Mi contacto: ${formData.email} / ${formData.telefono}`
     );
@@ -109,7 +114,8 @@ function QuieroVender() {
                       </Col>
                       <Col md={6}>
                         <Form.Group className="mb-3">
-                          <Form.Control type="tel" name="telefono" value={formData.telefono} onChange={handleChange} placeholder="+56 9 XXXX XXXX *" required className="qv-input" />
+                          <TelefonoInput value={formData.telefono} onChange={(v, e) => handleChange(e)} required className="qv-input" invalido={!!errorTel} />
+                          {errorTel && <small className="form-error-tel">{errorTel}</small>}
                         </Form.Group>
                       </Col>
                     </Row>

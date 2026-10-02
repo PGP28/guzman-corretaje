@@ -5,6 +5,8 @@ import { formatearPrecio } from '../../pages/cliente/reservaHelper';
 import './SeccionDashboard.css';
 import { formatearFecha } from '../../utils/fechas';
 import { pedir, pedirJSON } from '../../utils/api';
+import SelectorHora from '../SelectorHora';
+import { formatearHora, formatearFechaHora } from '../../utils/formatos';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -102,7 +104,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
       visita_fecha_propuesta: fechaVisita,
       visita_hora: horaVisita,
       sub_estado: 'esperando_cliente',
-    }, `Se propuso visita para ${formatearFecha(fechaVisita)}${horaVisita ? ' a las ' + horaVisita : ''}`));
+    }, `Se propuso visita para ${formatearFecha(fechaVisita)}${horaVisita ? ' a las ' + formatearHora(horaVisita) : ''}`));
     setFechaVisita(''); setHoraVisita('');
   };
 
@@ -243,7 +245,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
               <div style={{ flex: 1, minWidth: 200 }}>
                 <p><strong>Precio:</strong> {formatearPrecio(seleccionada.propiedad_precio, seleccionada.propiedad_unidad)}</p>
                 <p><strong>Corredor:</strong> {seleccionada.corredor || 'Sin asignar'}</p>
-                <p><strong>Solicitado:</strong> {new Date(seleccionada.fecha_creacion).toLocaleString('es-CL')}</p>
+                <p><strong>Solicitado:</strong> {formatearFechaHora(seleccionada.fecha_creacion)}</p>
                 <p>
                   <strong>Etapa actual:</strong>{' '}
                   <span style={{ background: etapa.color + '20', color: etapa.color, padding: '3px 10px', borderRadius: 20, fontWeight: 700 }}>
@@ -296,7 +298,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
             <div className="sd-card-body">
               {seleccionada.visita_fecha_confirmada ? (
                 <>
-                  <p>✅ Visita confirmada para <strong>{formatearFecha(seleccionada.visita_fecha_confirmada, { weekday: 'long', day: 'numeric', month: 'long' })}</strong>{seleccionada.visita_hora ? ` a las ${seleccionada.visita_hora}` : ''}</p>
+                  <p>✅ Visita confirmada para <strong>{formatearFecha(seleccionada.visita_fecha_confirmada, { weekday: 'long', day: 'numeric', month: 'long' })}</strong>{seleccionada.visita_hora ? ` a las ${formatearHora(seleccionada.visita_hora)}` : ''}</p>
                   <button className="sd-btn-publish" onClick={() => marcarVisitaRealizada(seleccionada)}>
                     Marcar visita como realizada
                   </button>
@@ -313,7 +315,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
                     </div>
                     <div>
                       <label className="sd-label">Hora (opcional)</label>
-                      <input type="time" value={horaVisita} onChange={e => setHoraVisita(e.target.value)} className="sd-input" />
+                      <SelectorHora value={horaVisita} onChange={setHoraVisita} placeholder="Sin hora" />
                     </div>
                     <div className="rs-form-visita-accion">
                       <button className="sd-btn-publish" onClick={() => proponerVisita(seleccionada)}>
@@ -460,7 +462,7 @@ const Reservas = ({ rol = 'admin', userName }) => {
               {[...(seleccionada.historial || [])].reverse().map((h, i) => (
                 <div key={i} style={{ padding: '8px 0', borderBottom: '1px solid #f0f0f0', fontSize: 13 }}>
                   <span style={{ color: '#888', fontSize: 11, marginRight: 10 }}>
-                    {new Date(h.fecha).toLocaleDateString('es-CL')} · {new Date(h.fecha).toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' })}
+                    {formatearFechaHora(h.fecha)}
                   </span>
                   <span>{h.accion}</span>
                   <span style={{ color: '#999', fontSize: 11, fontStyle: 'italic', marginLeft: 8 }}>por {h.autor}</span>

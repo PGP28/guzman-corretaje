@@ -6,6 +6,8 @@ import { getCorredoresActivos } from './corredoresHelper';
 import { formatearFecha } from '../../utils/fechas';
 import './SeccionDashboard.css';
 import './Contratos.css';
+import TelefonoInput from '../TelefonoInput';
+import { telefonoValido, MSG_TELEFONO } from '../../utils/formatos';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -111,6 +113,9 @@ const Contratos = ({ rol = 'admin' }) => {
 
   const guardar = async (e) => {
     e.preventDefault();
+    if ([form.arrendatario_telefono, form.arrendador_telefono].some(t => t && !telefonoValido(t))) {
+      return setError(MSG_TELEFONO);
+    }
     setGuardando(true); setError('');
     const cuerpo = { ...form };
     if (!cuerpo.reserva_id) delete cuerpo.reserva_id;
@@ -227,11 +232,11 @@ const Contratos = ({ rol = 'admin' }) => {
             </div>
             <div className="sd-campo">
               <label className="sd-label">Teléfono arrendatario</label>
-              <input name="arrendatario_telefono" className="sd-input" value={form.arrendatario_telefono} onChange={cambiar} />
+              <TelefonoInput name="arrendatario_telefono" className="sd-input" value={form.arrendatario_telefono} onChange={(v, e) => cambiar(e)} />
             </div>
             <div className="sd-campo">
               <label className="sd-label">Teléfono arrendador</label>
-              <input name="arrendador_telefono" className="sd-input" value={form.arrendador_telefono} onChange={cambiar} />
+              <TelefonoInput name="arrendador_telefono" className="sd-input" value={form.arrendador_telefono} onChange={(v, e) => cambiar(e)} />
             </div>
             <div className="sd-campo">
               <label className="sd-label">Fecha de inicio *</label>

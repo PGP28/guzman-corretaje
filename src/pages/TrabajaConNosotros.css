@@ -267,3 +267,7 @@
 .trabajo-privacidad { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: #555; margin: 8px 0 14px; line-height: 1.5; cursor: pointer; }
 .trabajo-privacidad input { margin-top: 3px; accent-color: #5529aa; flex-shrink: 0; }
 .trabajo-privacidad a { color: #5529aa; font-weight: 600; }
+
+/* Edición de la postulación (enlace enviado por correo) */
+.trabajo-form--edicion { max-width: 760px; margin: 0 auto 40px; }
+.trabajo-btn-volver--boton { border: none; cursor: pointer; margin-right: 8px; }

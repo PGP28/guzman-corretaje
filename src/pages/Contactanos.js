@@ -4,12 +4,15 @@ import { FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaInstagram, FaTikt
 import API_BASE_URL, { WHATSAPP_PRINCIPAL, enlaceWhatsApp } from '../config';
 import './Contactanos.css';
 import { registrarEvento } from '../utils/analitica';
+import TelefonoInput from '../components/TelefonoInput';
+import { telefonoValido, MSG_TELEFONO } from '../utils/formatos';
 
 const API = `${API_BASE_URL}/api`;
 
 function Contactanos() {
   const [formData, setFormData] = useState({ nombre: '', email: '', telefono: '', mensaje: '' });
   const [enviado,  setEnviado]  = useState(false);
+  const [errorTel, setErrorTel] = useState('');
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -17,6 +20,8 @@ function Contactanos() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (formData.telefono && !telefonoValido(formData.telefono)) return setErrorTel(MSG_TELEFONO);
+    setErrorTel('');
     const msg = encodeURIComponent(
       `Hola, soy ${formData.nombre}. ${formData.mensaje} Mi contacto: ${formData.email} / ${formData.telefono}`
     );
@@ -76,7 +81,8 @@ function Contactanos() {
                       </Col>
                       <Col md={6}>
                         <Form.Group className="mb-3">
-                          <Form.Control type="tel" name="telefono" value={formData.telefono} onChange={handleChange} placeholder="+56 9 XXXX XXXX" className="contactanos-input" />
+                          <TelefonoInput value={formData.telefono} onChange={(v, e) => handleChange(e)} className="contactanos-input" invalido={!!errorTel} />
+                          {errorTel && <small className="form-error-tel">{errorTel}</small>}
                         </Form.Group>
                       </Col>
                     </Row>

@@ -181,10 +181,11 @@ const ProgramarVisita = ({ propiedad, cliente, enPortalCliente = false }) => {
         {HORAS.map(h => (
           <button
             key={h}
+            type="button"
             className={`pv-hora-btn ${hora === h ? 'active' : ''}`}
             onClick={() => setHora(h)}
           >
-            {h}
+            {h} hrs
           </button>
         ))}
       </div>

@@ -10,6 +10,7 @@ import Contactanos from './pages/Contactanos';
 import PoliticaPrivacidad from './pages/PoliticaPrivacidad';
 import Construccion from './pages/Construccion';
 import TrabajaConNosotros from './pages/TrabajaConNosotros';
+import PostulacionEditar from './pages/PostulacionEditar';
 import NavigationBar from './components/Navbar';
 import WhatsAppFloat from './components/WhatsAppFloat';
 import Footer from './components/Footer';
@@ -50,6 +51,7 @@ const AppContent = ({ user, onLoginCorredor, onLogout, onRenovarCorredor, client
           <Route path="/privacidad" element={<PoliticaPrivacidad />} />
           <Route path="/Construccion" element={<Construccion />} />
           <Route path="/TrabajaConNosotros" element={<TrabajaConNosotros />} />
+          <Route path="/postulacion/editar" element={<PostulacionEditar />} />
           <Route path="/DetallesPropiedades" element={<DetallesPropiedades />} />
           <Route path="/propiedad/:id" element={<DetallesPropiedades />} />
 

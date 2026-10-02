@@ -7,6 +7,7 @@ import {
   urlDocumentoReserva
 } from './reservaHelper';
 import './ClientePages.css';
+import { formatearHora, formatearFechaHora } from '../../utils/formatos';
 
 const ClienteReservaDetalle = ({ user }) => {
   const { id } = useParams();
@@ -176,7 +177,7 @@ const ClienteReservaDetalle = ({ user }) => {
                   <p>El corredor propuso la siguiente fecha para la visita:</p>
                   <div className="cp-visita-card">
                     <strong>📅 {fechaLocal(reserva.visita_fecha_propuesta).toLocaleDateString('es-CL', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</strong>
-                    {reserva.visita_hora && <span> a las {reserva.visita_hora}</span>}
+                    {reserva.visita_hora && <span> a las {formatearHora(reserva.visita_hora)}</span>}
                   </div>
                   <div className="cp-etapa-btns">
                     <button className="cp-btn-secondary" onClick={handleRechazarVisita} disabled={enviando}>
@@ -191,7 +192,7 @@ const ClienteReservaDetalle = ({ user }) => {
               {reserva.sub_estado === 'confirmado' && (
                 <div className="cp-success-card">
                   ✅ Visita confirmada para el <strong>{fechaLocal(reserva.visita_fecha_confirmada).toLocaleDateString('es-CL', { weekday: 'long', day: 'numeric', month: 'long' })}</strong>
-                  {reserva.visita_hora && <span> a las {reserva.visita_hora}</span>}
+                  {reserva.visita_hora && <span> a las {formatearHora(reserva.visita_hora)}</span>}
                 </div>
               )}
             </>
@@ -260,7 +261,7 @@ const ClienteReservaDetalle = ({ user }) => {
             {[...reserva.historial].reverse().map((h, i) => (
               <div key={i} className="cp-historial-item">
                 <span className="cp-historial-fecha">
-                  {new Date(h.fecha).toLocaleDateString('es-CL')} · {new Date(h.fecha).toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' })}
+                  {formatearFechaHora(h.fecha)}
                 </span>
                 <span className="cp-historial-accion">{h.accion}</span>
                 <span className="cp-historial-autor">por {h.autor}</span>

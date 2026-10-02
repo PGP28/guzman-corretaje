@@ -3,6 +3,7 @@ import { FaPaperPlane, FaUser, FaSearch, FaCircle, FaPaperclip, FaTimes, FaFileA
 import API_BASE_URL from '../../config';
 import './DashboardMensajes.css';
 import { pedir, pedirJSON } from '../../utils/api';
+import { horaDe } from '../../utils/formatos';
 
 const API = `${API_BASE_URL}/api`;
 const POLL_INTERVAL = 6000;
@@ -175,7 +176,7 @@ const DashboardMensajes = ({ userName }) => {
       const hoy = new Date();
       const esHoy = d.toDateString() === hoy.toDateString();
       return esHoy
-        ? d.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', hour12: false })
+        ? horaDe(iso)
         : d.toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit' });
     } catch { return ''; }
   };

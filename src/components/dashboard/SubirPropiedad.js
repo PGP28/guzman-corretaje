@@ -20,6 +20,8 @@ import API_BASE_URL from '../../config';
 import './SeccionDashboard.css';
 import { pedir } from '../../utils/api';
 import { getCategorias } from './corredoresHelper';
+import DireccionInput from '../DireccionInput';
+import { errorDireccion } from '../../utils/formatos';
 
 const API_URL = `${API_BASE_URL}/api`;
 
@@ -96,6 +98,7 @@ const SECCIONES = [
 const SubirPropiedad = () => {
   const [ubicaciones, setUbicaciones]         = useState({});
   const [selectedRegion, setSelectedRegion]   = useState('');
+  const [direccion, setDireccion]             = useState('');
   const [selectedCity, setSelectedCity]       = useState('');
   const [cities, setCities]                   = useState([]);
   const [communes, setCommunes]               = useState([]);
@@ -182,6 +185,12 @@ const SubirPropiedad = () => {
         setSeccion(campo.seccion);
         return false;
       }
+    }
+    const errDir = errorDireccion(formEl.elements.ubicacion?.value);
+    if (errDir) {
+      setError(errDir);
+      setSeccion('ubicacion');
+      return false;
     }
     if (imagenesOrdenadas.length === 0) {
       setError('Debes subir al menos una imagen.');
@@ -304,7 +313,7 @@ const SubirPropiedad = () => {
           <div className="sd-card-body">
             <div className="sd-campo">
               <label className="sd-label">Dirección *</label>
-              <Form.Control type="text" name="ubicacion" required className="sd-input" placeholder="Ej: Av. Cristóbal Colón 3206" />
+              <DireccionInput name="ubicacion" value={direccion} onChange={setDireccion} />
             </div>
             <Row>
               <Col md={6}>

@@ -751,3 +751,16 @@
   .rs-doc-acciones { width: 100%; }
   .rs-doc-archivo { max-width: none; width: 100%; justify-content: center; }
 }
+
+/* ── Postulaciones: edición y confirmación de estado ─────────── */
+.post-editar-btn { margin-left: auto; white-space: nowrap; }
+.post-editada { background: #fff8e1; color: #8a6d00; border-radius: 8px; padding: 8px 12px; font-size: 13px; margin-bottom: 12px; }
+.post-edicion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+.post-edicion-btns { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+.post-estado-chip { padding: 2px 10px; border-radius: 20px; font-weight: 700; font-size: 13px; white-space: nowrap; }
+.post-estado-ayuda { color: #666; font-size: 13px; }
+@media (max-width: 575px) {
+  .post-edicion-grid { grid-template-columns: 1fr; }
+  .post-editar-btn { margin: 10px 0 0; width: 100%; max-width: none; }
+  .post-edicion-btns button { flex: 1; max-width: none; }
+}

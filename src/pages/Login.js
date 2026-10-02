@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { FaArrowLeft, FaUser, FaLock, FaEye, FaEyeSlash, FaPhone, FaEnvelope } from 'react-icons/fa';
+import { FaArrowLeft, FaUser, FaLock, FaEye, FaEyeSlash, FaEnvelope } from 'react-icons/fa';
 import logoNav from '../assets/images/LOGO_PNG-17_Modified.png';
 import API_BASE_URL, { GOOGLE_CLIENT_ID } from '../config';
 import './Login.css';
 import { registrarEvento } from '../utils/analitica';
+import TelefonoInput from '../components/TelefonoInput';
+import { telefonoValido, MSG_TELEFONO } from '../utils/formatos';
 
 const API = `${API_BASE_URL}/api`;
 
@@ -68,6 +70,7 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
     e.preventDefault(); limpiar();
     if (!regData.username || !regData.nombre || !regData.password) return setError('Usuario, nombre y contraseña son requeridos');
     if (regData.password !== regData.confirmar) return setError('Las contraseñas no coinciden');
+    if (regData.telefono && !telefonoValido(regData.telefono)) return setError(MSG_TELEFONO);
     if (regData.password.length < 8 || !/[A-Za-z]/.test(regData.password) || !/\d/.test(regData.password))
       return setError('La contraseña debe tener al menos 8 caracteres, con letras y números');
     if (!regData.acepta) return setError('Debes aceptar la Política de Privacidad para crear tu cuenta');
@@ -310,11 +313,10 @@ const Login = ({ onLoginCorredor, onLoginCliente }) => {
                           ⚠️ Sin correo no podrás recuperar tu contraseña si la olvidas. Te recomendamos agregarlo.
                         </div>
                       )}
-                      <div className="login-field">
-                        <FaPhone className="login-field-icon" />
-                        <input type="tel" placeholder="Teléfono (opcional)" value={regData.telefono}
-                          onChange={e => setRegData(p => ({ ...p, telefono: e.target.value }))}
-                          className="login-input" autoComplete="tel" />
+                      <div className="login-field login-field--tel">
+                        <TelefonoInput value={regData.telefono} onChange={v => setRegData(p => ({ ...p, telefono: v }))}
+                          className="login-input" />
+                        <small className="login-field-nota">Teléfono (opcional)</small>
                       </div>
                       <label className="login-privacidad-check">
                         <input type="checkbox" checked={regData.acepta}

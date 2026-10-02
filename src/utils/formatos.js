@@ -52,49 +52,46 @@ export const telefonoValido = (valor) => digitosTelefono(valor).length === 9;
 
 // ── Dirección ───────────────────────────────────────────────────
 // Sin autocompletado (no hay presupuesto para Google Places): la dirección se
-// ingresa en partes y cada una se valida. Las mismas reglas valida el backend
-// (services/validaciones.py → error_direccion).
+// ingresa en partes y cada una se valida. El número es opcional (muchas
+// publicaciones no muestran la dirección exacta), pero si se escribe debe ser
+// válido. Las mismas reglas valida el backend (services/validaciones.py).
 const LETRA = /[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g;
-const NUMERO_RE = /^[1-9]\d{0,5}[A-Z]?(-[A-Z0-9]{1,3})?$/;            // 1234, 1234B, 120-A
+const NUMERO_RE = /^([1-9]\d{0,5}[A-Z]?(-[A-Z0-9]{1,3})?|S\/N)$/;     // 1234, 1234B, 120-A, S/N
 const SEPARAR_RE = /^(.*?)\s+(S\/N|\d{1,6}[A-Za-z]?(?:-[A-Za-z0-9]{1,3})?)\s*(?:,\s*(.*))?$/i;
 
 const limpiar = (t) => String(t || '').replace(/\s+/g, ' ').trim();
 
-/** 'Av. Providencia 1234, Depto 501' → { calle, numero, sinNumero, complemento } */
+/** 'Av. Providencia 1234, Depto 501' → { calle, numero, complemento } */
 export const separarDireccion = (texto) => {
   const t = limpiar(texto);
   const m = SEPARAR_RE.exec(t);
-  if (!m) return { calle: t, numero: '', sinNumero: false, complemento: '' };
-  const sinNumero = m[2].toUpperCase() === 'S/N';
-  return { calle: m[1], numero: sinNumero ? '' : m[2].toUpperCase(), sinNumero, complemento: limpiar(m[3]) };
+  if (m) return { calle: m[1], numero: m[2].toUpperCase(), complemento: limpiar(m[3]) };
+  // Sin número: 'Avenida Eyzaguirre, Puente Alto'
+  const [calle, ...resto] = t.split(',');
+  return { calle: limpiar(calle), numero: '', complemento: limpiar(resto.join(',')) };
 };
 
 /** Partes → 'Av. Providencia 1234, Depto 501' ('' si no hay nada escrito). */
-export const armarDireccion = ({ calle, numero, sinNumero, complemento }) => {
-  const c = limpiar(calle);
-  const n = sinNumero ? 'S/N' : limpiar(numero);
-  const base = limpiar(`${c} ${n}`);
+export const armarDireccion = ({ calle, numero, complemento }) => {
+  const base = limpiar(`${limpiar(calle)} ${limpiar(numero)}`);
   if (!base) return '';
   return limpiar(complemento) ? `${base}, ${limpiar(complemento)}` : base;
 };
 
 /** Errores por parte: { calle?, numero?, complemento? } (vacío si está todo bien). */
-export const erroresDireccion = ({ calle, numero, sinNumero, complemento }) => {
+export const erroresDireccion = ({ calle, numero, complemento }) => {
   const errores = {};
   const c = limpiar(calle);
   const letras = (c.match(LETRA) || []).join('').toLowerCase();
-  if (!c) errores.calle = 'Escribe el nombre de la calle o avenida';
+  if (!c) errores.calle = 'Escribe el nombre de la calle, avenida o sector';
   else if (letras.length < 3) errores.calle = 'El nombre de la calle debe tener al menos 3 letras';
   else if (new Set(letras).size < 2) errores.calle = 'Revisa el nombre de la calle';
-  else if (/[,;]/.test(c)) errores.calle = 'Escribe solo la calle aquí; el depto o casa va en el campo de abajo';
+  else if (/[,;]/.test(c)) errores.calle = 'Escribe solo la calle aquí; el depto, casa o comuna va en el campo de abajo';
   else if (/\d{3,}$/.test(c)) errores.calle = 'El número va en el campo "Número", no junto a la calle';
-  if (!sinNumero) {
-    const n = limpiar(numero).toUpperCase();
-    if (!n) errores.numero = 'Escribe el número (o marca "No tiene número")';
-    else if (!NUMERO_RE.test(n)) errores.numero = 'Número inválido (ej: 1234, 1234B o 120-A)';
-  }
+  const n = limpiar(numero).toUpperCase();
+  if (n && !NUMERO_RE.test(n)) errores.numero = 'Número inválido (ej: 1234, 1234B o 120-A)';
   const comp = limpiar(complemento);
-  if (comp && !/[A-Za-zÁÉÍÓÚÑáéíóúñ0-9]/.test(comp)) errores.complemento = 'Revisa el depto, casa u oficina';
+  if (comp && !/[A-Za-zÁÉÍÓÚÑáéíóúñ0-9]/.test(comp)) errores.complemento = 'Revisa el depto, casa o comuna';
   return errores;
 };
 

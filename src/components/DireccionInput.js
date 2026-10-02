@@ -3,7 +3,8 @@ import { armarDireccion, separarDireccion, erroresDireccion } from '../utils/for
 import './DireccionInput.css';
 
 /**
- * Dirección en campos separados: calle, número (o "S/N") y depto/casa opcional.
+ * Dirección en campos separados: calle o sector, número (opcional) y
+ * depto/casa/comuna (opcional).
  * No hay autocompletado (Google Places tiene costo), así que la validación de
  * cada parte es lo que asegura que la dirección quede completa y bien escrita.
  * onChange recibe el texto armado: 'Av. Providencia 1234, Depto 501'.
@@ -19,13 +20,12 @@ const DireccionInput = ({ value, onChange, name = 'direccion', className = 'sd-i
 
   const cambiar = (campo, valor) => {
     const nuevas = { ...partes, [campo]: valor };
-    if (campo === 'sinNumero' && valor) nuevas.numero = '';
     setPartes(nuevas);
     onChange(armarDireccion(nuevas));
   };
   const tocar = (campo) => setTocado(t => ({ ...t, [campo]: true }));
 
-  const vacia = !partes.calle && !partes.numero && !partes.sinNumero && !partes.complemento;
+  const vacia = !partes.calle && !partes.numero && !partes.complemento;
   const errores = !required && vacia ? {} : erroresDireccion(partes);
 
   return (
@@ -37,7 +37,7 @@ const DireccionInput = ({ value, onChange, name = 'direccion', className = 'sd-i
           <input
             type="text" className={`${className} ${tocado.calle && errores.calle ? 'dir-input--error' : ''}`}
             value={partes.calle} onChange={e => cambiar('calle', e.target.value)} onBlur={() => tocar('calle')}
-            placeholder="Calle o avenida (ej: Av. Providencia)" maxLength={120} aria-label="Calle o avenida"
+            placeholder="Calle, avenida o sector (ej: Av. Providencia)" maxLength={120} aria-label="Calle, avenida o sector"
             autoComplete="address-line1"
           />
           {tocado.calle && errores.calle && <small className="dir-input-error">{errores.calle}</small>}
@@ -46,21 +46,17 @@ const DireccionInput = ({ value, onChange, name = 'direccion', className = 'sd-i
           <input
             type="text" inputMode="numeric"
             className={`${className} ${tocado.numero && errores.numero ? 'dir-input--error' : ''}`}
-            value={partes.sinNumero ? 'S/N' : partes.numero} disabled={partes.sinNumero}
-            onChange={e => cambiar('numero', e.target.value.toUpperCase().replace(/[^0-9A-Z-]/g, '').slice(0, 8))}
-            onBlur={() => tocar('numero')} placeholder="Número" aria-label="Número"
+            value={partes.numero}
+            onChange={e => cambiar('numero', e.target.value.toUpperCase().replace(/[^0-9A-Z/-]/g, '').slice(0, 8))}
+            onBlur={() => tocar('numero')} placeholder="Número (opcional)" aria-label="Número (opcional)"
           />
           {tocado.numero && errores.numero && <small className="dir-input-error">{errores.numero}</small>}
         </div>
       </div>
-      <label className="dir-sin-numero">
-        <input type="checkbox" checked={partes.sinNumero} onChange={e => { cambiar('sinNumero', e.target.checked); tocar('numero'); }} />
-        {' '}No tiene número (S/N) — por ejemplo, parcelas o caminos rurales
-      </label>
       <input
         type="text" className={`${className} dir-complemento ${tocado.complemento && errores.complemento ? 'dir-input--error' : ''}`}
         value={partes.complemento} onChange={e => cambiar('complemento', e.target.value)} onBlur={() => tocar('complemento')}
-        placeholder="Depto, casa, oficina o referencia (opcional)" maxLength={60} aria-label="Depto, casa u oficina"
+        placeholder="Depto, casa o comuna (opcional)" maxLength={60} aria-label="Depto, casa o comuna"
         autoComplete="address-line2"
       />
       {tocado.complemento && errores.complemento && <small className="dir-input-error">{errores.complemento}</small>}
